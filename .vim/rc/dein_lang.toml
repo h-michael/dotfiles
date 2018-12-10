@@ -1,0 +1,27 @@
+# [[plugins]]
+# repo = 'ndmitchell/ghcid'
+# rtp = 'plugins/nvim'
+
+# [[plugins]]
+# repo = 'nbouscal/vim-stylish-haskell'
+
+# [[plugins]]
+# repo = 'neovimhaskell/neovim-ghcmod'
+
+# [[plugins]]
+# repo = 'eagletmt/ghcmod-vim'
+
+# [[plugins]]
+# repo = 'ujihisa/neco-ghc'
+
+# [[plugins]]
+# repo = 'h-michael/elm-vim'
+# rev = 'fix-command'
+# hook_add = '''
+#   let g:elm_format_autosave = 1
+#   let g:elm_detailed_complete = 1
+# '''
+
+# [[plugins]]
+# repo = 'matthewleon/psc-ide-vim'
+# rev = 'stdout-buffer'

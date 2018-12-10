@@ -1,0 +1,280 @@
+# Dark powered asynchronous unite all interfaces for Neovim/Vim8
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+on_cmd = ['Denite', 'DeniteBufferDir', 'DeniteCursorWord', 'DeniteProjectDir']
+on_func  = ['denite#']
+depends = ['cpsm']
+hook_post_update = 'UpdateRemotePlugins'
+hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
+hook_add = '''
+  nnoremap <silent> ;vrc
+        \ :<C-u>Denite file/rec:~/.vim/rc<CR>
+  xnoremap <silent> ;r
+        \ :<C-u>Denite -default-action=replace -buffer-name=register
+        \ register neoyank<CR>
+  nnoremap <silent> / :<C-u>Denite line -auto-resume<CR>
+  nnoremap <silent> * :<C-u>DeniteCursorWord line<CR>
+
+  nnoremap <silent> ;fr :<C-u>Denite file/rec  <CR>
+  nnoremap <silent> ;dr :<C-u>Denite directory/rec  <CR>
+  nnoremap <silent> ;bf :<C-u>Denite buffer -default-action=tabopen <CR>
+  nnoremap <silent> ;bdf :<C-u>DeniteBufferDir file_rec -default-action=tabopen <CR>
+  nnoremap <silent> ;bdb :<C-u>DeniteBufferDir buffer  <CR>
+  nnoremap <silent> ;bp :<C-u>DeniteProjectDir buffe  r<CR>
+  nnoremap <silent> ;gr :<C-u>Denite grep -default-action=tabopen -no-empty <CR>
+  nnoremap <silent> ;cgr :<C-u>DeniteCursorWord grep -default-action=tabopen -no-empty<CR>
+  nnoremap <silent> ;n :<C-u>Denite -resume -select=+1 -immediately<CR>
+  nnoremap <silent> ;p :<C-u>Denite -resume -select=-1 -immediately<CR>
+  nnoremap <silent> ;gh :<C-u>Denite ghq  <CR>
+  nnoremap <silent> ;ft :<C-u>Denite filetype<CR>
+'''
+
+# Neovim/Vim buffer filtering plugin
+[[plugins]]
+repo = 'lambdalisue/lista.nvim'
+on_cmd = ['Lista', 'ListaResume', 'ListaCursorWord']
+on_func  = ['lista#']
+hook_post_update = 'UpdateRemotePlugins'
+hook_add = '''
+  nnoremap # :<C-u>Lista<CR>
+  nnoremap g# :<C-u>ListaCursorWord<CR>
+  let g:lista#custom_mappings = [
+        \ ['<C-b>', '<Left>'],
+        \ ['<C-f>', '<Right>'],
+        \ ['<C-a>', '<Home>'],
+        \ ['<C-e>', '<End>'],
+        \ ['<C-d>', '<Del>'],
+        \ ['<C-P>', '<lista:select_previous_candidate>', 'noremap'],
+        \ ['<C-N>', '<lista:select_next_candidate>', 'noremap'],
+        \ [';', 'pinkyless#stickyshift#enter(";")', 'expr noremap'],
+        \]
+'''
+
+# Asynchronously control git repositories in Neovim/Vim 8
+[[plugins]]
+repo = 'lambdalisue/gina.vim'
+on_cmd = ['Gina']
+on_fn = ['gina#']
+
+# The dark powered file explorer implementation
+[[plugins]]
+repo = 'Shougo/defx.nvim'
+hook_post_update = 'UpdateRemotePlugins'
+hook_add = '''
+  nnoremap <silent> ;df :<C-u>Defx <CR>
+  nnoremap <silent> ;vf :<C-u>Defx -split=vertical <CR>
+  nnoremap <silent> ;sf :<C-u>Defx -split=horizontal <CR>
+'''
+hook_source = '''
+  autocmd MyAutoCmd FileType defx call s:defx_my_settings()
+  function! s:defx_my_settings() abort
+    " Define mappings
+    nnoremap <silent><buffer><expr> <CR>
+    \ defx#async_action('open')
+    nnoremap <silent><buffer><expr> l
+    \ defx#async_action('open')
+    nnoremap <silent><buffer><expr> E
+    \ defx#async_action('open', 'vsplit')
+    nnoremap <silent><buffer><expr> P
+    \ defx#async_action('open', 'pedit')
+    nnoremap <silent><buffer><expr> K
+    \ defx#async_action('new_directory')
+    nnoremap <silent><buffer><expr> N
+    \ defx#async_action('new_file')
+    nnoremap <silent><buffer><expr> d
+    \ defx#async_action('remove_trash')
+    nnoremap <silent><buffer><expr> r
+    \ defx#async_action('rename')
+    nnoremap <silent><buffer><expr> h
+    \ defx#async_action('cd', ['..'])
+    nnoremap <silent><buffer><expr> ~
+    \ defx#async_action('cd')
+    nnoremap <silent><buffer><expr> q
+    \ defx#async_action('quit')
+    nnoremap <silent><buffer><expr> <Space>
+    \ defx#async_action('toggle_select') . 'j'
+    nnoremap <silent><buffer><expr> *
+    \ defx#async_action('toggle_select_all')
+    nnoremap <silent><buffer><expr> j
+    \ line('.') == line('$') ? 'gg' : 'j'
+    nnoremap <silent><buffer><expr> k
+    \ line('.') == 1 ? 'G' : 'k'
+    nnoremap <silent><buffer><expr> <C-l>
+    \ defx#async_action('redraw')
+    nnoremap <silent><buffer><expr> <C-g>
+    \ defx#async_action('print')
+  endfunction
+'''
+
+# Language Server Protocol (LSP) support for vim and neovim.
+[[plugins]]
+repo = 'autozimu/LanguageClient-neovim'
+rev = 'next'
+build = 'bash install.sh'
+on_ft = [
+  'rust',
+  'c',
+  'cpp',
+  'dart',
+  'javascript',
+  'javascript.jsx',
+  'purescript',
+  'haskell',
+  'ocaml',
+  'go',
+  'python',
+  'Dockerfile'
+]
+hook_post_update = 'UpdateRemotePlugins'
+hook_source = '''
+  set hidden
+  set completefunc=LanguageClient#complete
+  let g:LanguageClient_diagnosticsEnable = 0
+  let g:LanguageClient_selectionUI = 'fzf'
+  let g:LanguageClient_serverCommands = {
+      \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+      \ 'c': ['clangd'],
+      \ 'cpp': ['clangd'],
+      \ 'dart': ['dart_language_server'],
+      \ 'javascript': [g:current_flow_path, 'flow', 'lsp'],
+      \ 'javascript.jsx': [g:current_flow_path, 'flow', 'lsp'],
+      \ 'haskell': ['hie', '--lsp'],
+      \ 'ocaml': ['ocaml-language-server', '--stdio'],
+      \ 'go': ['go-langserver'],
+      \ 'python': ['pyls'],
+      \ 'Dockerfile': ['docker-langserver', '--stdio']
+      \ }
+      " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'stable', 'rls'],
+      " \ 'rust': ['env', 'RUST_LOG=gen_lsp_server=debug', 'ra_lsp_server'],
+      " \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+
+  " let g:LanguageClient_rootMarkers = {
+  "     \ 'javascript': ['package.json'],
+  "     \ 'rust': ['Cargo.toml'],
+  "     \ 'ruby': ['Gemfile']
+  "     \ }
+      " \ 'c': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+      " \ 'cpp': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+      " \ 'ruby': ['solargraph', 'stdio'],
+      " \ 'javascript': ['javascript-typescript-stdio'],
+      " \ 'javascript.jsx': ['javascript-typescript-stdio'],
+  let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
+  let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
+  let g:LanguageClient_completionPreferTextEdit = 1
+  " set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
+  nnoremap <silent> ;lh  :call LanguageClient_textDocument_hover()<CR>
+  nnoremap <silent> ;jd   :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> ;ji   :call LanguageClient_textDocument_implementation()<CR>
+  nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+  nnoremap <silent> ;jr   :call LanguageClient_textDocument_references()<CR>
+  nnoremap <silent> ;ft  :call LanguageClient_textDocument_formatting()<CR>
+  nnoremap <silent> ;mn  :call LanguageClient_contextMenu()<CR>
+  nnoremap <silent> ;sy  :call LanguageClient_textDocument_documentSymbol()<CR>
+  nnoremap <silent> ;sa  :call LanguageClient_textDocument_codeAction()<CR>
+
+  let g:LanguageClient_loggingLevel='DEBUG'
+  " let g:LanguageClient_loggingLevel = 'INFO'
+  let g:LanguageClient_loggingFile =  expand('~/.local/share/nvim/LanguageClient.log')
+  let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
+
+  function! LspMaybeHover(is_running) abort
+    if a:is_running.result && g:LanguageClient_autoHoverAndHighlightStatus
+      call LanguageClient_textDocument_hover()
+    endif
+  endfunction
+
+  function! LspMaybeHighlight(is_running) abort
+    if a:is_running.result && g:LanguageClient_autoHoverAndHighlightStatus
+      call LanguageClient#textDocument_documentHighlight()
+    endif
+  endfunction
+
+  augroup lsp_aucommands
+    au!
+    au CursorHold * call LanguageClient#isAlive(function('LspMaybeHover'))
+    au CursorMoved * call LanguageClient#isAlive(function('LspMaybeHighlight'))
+  augroup END
+
+  let g:LanguageClient_autoHoverAndHighlightStatus = 0
+
+  function! ToggleLspAutoHoverAndHilight() abort
+    if g:LanguageClient_autoHoverAndHighlightStatus
+      let g:LanguageClient_autoHoverAndHighlightStatus = 0
+      call LanguageClient#clearDocumentHighlight()
+      echo ""
+    else
+      let g:LanguageClient_autoHoverAndHighlightStatus = 1
+    end
+  endfunction
+  nnoremap <silent> ;tg  :call ToggleLspAutoHoverAndHilight()<CR>
+'''
+
+# utility comamnds of dein.vim with rich completion.
+[[plugins]]
+repo = 'haya14busa/dein-command.vim'
+hook_post_update = 'UpdateRemotePlugins'
+on_cmd = 'Dein'
+
+# Saves yank history includes unite.vim history/yank source.
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_event = 'TextYankPost'
+on_source = ['denite.nvim']
+
+# Benchmarck
+[[plugins]]
+repo = 'tweekmonster/startuptime.vim'
+on_cmd = 'StartupTime'
+
+[[plugins]]
+repo = 'mattn/benchvimrc-vim'
+on_cmd = 'BenchVimrc'
+
+# MRU plugin includes unite.vim MRU sources
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['unite.vim', 'denite.nvim']
+on_if = 1
+
+# The vim source for neocomplete/deoplete
+[[plugins]]
+repo = 'Shougo/neco-vim'
+on_ft = 'vim'
+
+# Syntax source for neocomplete/deoplete
+[[plugins]]
+repo = 'Shougo/neco-syntax'
+on_event = 'InsertEnter'
+
+# can edit vinari
+[[plugins]]
+repo = 'Shougo/vinarise.vim'
+on_cmd = 'Vinarise'
+hook_source = 'let g:vinarise_enable_auto_detect = 1'
+
+# A secure alternative to Vim modelines
+[[plugins]]
+repo = 'ciaranm/securemodelines'
+on_event = 'BufRead'
+
+# endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+on_cmd = ['TabbarToggle', 'TagbarOpen']
+hook_source = '''
+  nnoremap <silent> ;tb :TagbarToggle<CR>
+'''
+
+# simple memo plugin for Vim.
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+on_cmd = ['MemoNew', 'MemoList', 'MemoGrep']
+hook_add = '''
+  map <Leader>mn  :MemoNew<CR>
+  map <Leader>ml  :MemoList<CR>
+  map <Leader>mg  :MemoGrep<CR>
+'''

@@ -1,0 +1,119 @@
+"---------------------------------------------------------------------------
+" Michael-z's .vimrc
+"---------------------------------------------------------------------------
+
+" profile start profile.txt
+" profile file ~/.vim/rc/*
+" profile func dein#*
+
+if &compatible
+  set nocompatible
+endif
+
+function! s:source_rc(path, ...) "abort {{{
+  let l:use_global = get(a:000, 0, !has('vim_starting'))
+  let l:abspath = resolve(expand('~/.vim/rc/' . a:path))
+  if !l:use_global
+    execute 'source' fnameescape(l:abspath)
+    return
+  endif
+
+  " substitute all 'set' to 'setglobal'
+  let l:content = map(readfile(l:abspath),
+        \ "substitute(v:val, '^\\W*\\zsset\\ze\\W', 'setglobal', '')")
+  " create tempfile and source the tempfile
+  let l:tempfile = tempname()
+  try
+    call writefile(l:content, l:tempfile)
+    execute printf('source %s', fnameescape(l:tempfile))
+  finally
+    if filereadable(l:tempfile)
+      call delete(l:tempfile)
+    endif
+  endtry
+endfunction"}}}
+
+" Set augroup.
+augroup MyAutoCmd
+  autocmd!
+  autocmd FileType,Syntax,BufNewFile,BufNew,BufRead *?
+        \ call vimrc#on_filetype()
+  autocmd CursorHold *? syntax sync minlines=300
+augroup END
+
+if has('vim_starting')
+  call s:source_rc('init.rc.vim')
+endif
+
+if has('nvim')
+  if IsMac()
+    let g:python_host_prog = '/usr/local/bin/python2'
+    let g:python3_host_prog = '/usr/local/bin/python3'
+  else
+    let g:python_host_prog = '/usr/bin/python2'
+    let g:python3_host_prog = '/usr/bin/python3'
+  endif
+
+  " Skip neovim module check
+  let g:python_host_skip_check = 1
+  let g:python3_host_skip_check = 1
+endif
+
+call s:source_rc('dein.rc.vim')
+
+if !empty(argv())
+  call vimrc#on_filetype()
+endif
+
+"---------------------------------------------------------------------------
+" OCaml:
+"
+
+" call s:source_rc('ocaml.rc.vim')
+
+"---------------------------------------------------------------------------
+
+if !has('vim_starting')
+  call dein#call_hook('source')
+  call dein#call_hook('post_source')
+
+  syntax enable
+  filetype plugin indent on
+endif
+
+"---------------------------------------------------------------------------
+
+call s:source_rc('encoding.rc.vim')
+
+call s:source_rc('options.rc.vim')
+
+call s:source_rc('mappings.rc.vim')
+
+if has('nvim')
+  call s:source_rc('neovim.rc.vim')
+endif
+
+if IsWindows()
+  call s:source_rc('windows.rc.vim')
+else
+  call s:source_rc('unix.rc.vim')
+endif
+
+if !has('nvim') && has('gui_running')
+  call s:source_rc('gui.rc.vim')
+endif
+
+
+"---------------------------------------------------------------------------
+" Others:
+"
+
+" If true Vim master, use English help file.
+set helplang& helplang=en,ja
+
+" Default home directory.
+let t:cwd = getcwd()
+
+set secure
+
+" vim: foldmethod=marker

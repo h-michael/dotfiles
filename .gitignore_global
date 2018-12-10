@@ -1,0 +1,13 @@
+venv
+.envrc
+.solargraph.yml
+tags
+GPATH
+GRTAGS
+GTAGS
+my_tmux_build.sh
+example_queries/
+docker.sh
+.idea/
+*.iml
+build-vim.sh

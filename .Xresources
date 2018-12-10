@@ -1,0 +1,68 @@
+URxvt.geometry: 96x32
+URxvt.scrollBar_right: true
+URxvt.scrollBar_floating: true
+URxvt.scrollstyle: plain
+URxvt.cursorBlink: true
+URxvt.cursorUnderline: true
+URxvt.ponterBlank: true
+URxvt.visualBell: true
+URxvt.saveLines: 10000
+URxvt.fading: 40
+
+!! Font list and Spacing
+URxvt.allow_bold:           true
+URxvt.font:                 ttf:Ricty Diminished Discord for Powerline:regular:size=11:antialias=true
+!!URxvt.font:                 xft:Ricty Nerd Font:regular:size=11:antialias=true
+!!URxvt.font:                 xft:Ricty:regular:size=11:antialias=true
+URxvt.letterSpace:          -1
+!URxvt.lineSpace:            0
+
+!! Color Scheme and Opacity - gruvbox-dark https://github.com/morhetz/gruvbox
+dzen2.foreground: #22EE11
+dzen2.background: black
+
+URxvt.depth:                32
+URxvt.color0:               [90]#282828
+URxvt.color1:               [90]#cc241d
+URxvt.color2:               [90]#98971a
+URxvt.color3:               [90]#d79921
+URxvt.color4:               [90]#458588
+URxvt.color5:               [90]#b16286
+URxvt.color6:               [90]#689d6a
+URxvt.color7:               [90]#a89984
+URxvt.color8:               [90]#928374
+URxvt.color9:               [90]#fb4934
+URxvt.color10:              [90]#b8bb26
+URxvt.color11:              [90]#fabd2f
+URxvt.color12:              [90]#83a598
+URxvt.color13:              [90]#d3869b
+URxvt.color14:              [90]#8ec07c
+URxvt.color15:              [90]#ebdbb2
+URxvt.foreground:           [90]#ebdbb2
+URxvt.background:           [90]#282828
+URxvt.colorIT:              [90]#8ec07c
+URxvt.colorBD:              [90]#d5c4a1
+URxvt.colorUL:              [90]#83a598
+URxvt.scrollColor:          [90]#504945
+!URxvt.troughColor:          [90]#3C3836
+
+!! Display input method inline
+URxvt.inputMethod: fcitx
+URxvt.preeditType: OnTheSpot
+
+!! Resize font size
+URxvt.resize-font.smaller: C-,
+URxvt.resize-font.bigger: C-.
+
+URxvt.scrollTtyOutput: false
+URxvt.scrollTtyKeypress: true
+
+URxvt.perl-ext-common:  default,clipboard,keyboard-select,url-select,font-size,election-to-clipboard,remote-clipboard
+
+URxvt.copyCommand:  xclip -i -selection clipboard
+URxvt.pasteCommand: xclip -o -selection clipboard
+URxvt.underlineURLs: True
+
+URxvt.keysym.M-c:      clipboard:copy
+URxvt.keysym.M-v:      clipboard:paste
+URxvt.keysym.C-M-V:    urxvt-xsel:paste_selected

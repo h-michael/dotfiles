@@ -1,0 +1,5 @@
+remove lock = Caps_Lock
+
+keycode 66 = Control_L
+
+add control = Control_L

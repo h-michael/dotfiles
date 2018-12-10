@@ -1,0 +1,126 @@
+# Dark powered asynchronous completion framework for neovim/Vim8
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+depends = 'context_filetype.vim'
+on_source = ['LanguageClient-neovim']
+on_event = ['InsertEnter']
+hook_source = '''
+  source ~/.vim/rc/plugins/deoplete.rc.vim
+  call deoplete#enable()
+'''
+hook_post_update = 'UpdateRemotePlugins'
+
+# Include completion framework for neocomplete/deoplete
+[[plugins]]
+repo = 'Shougo/neoinclude.vim'
+on_source = ['deoplete.nvim']
+
+# Print documents in echo area.
+[[plugins]]
+repo = 'Shougo/echodoc.vim'
+on_source = ['deoplete.nvim']
+hook_add = 'let g:echodoc_enable_at_startup = 1'
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = ['rust']
+hook_source = '''
+  let g:rustfmt_autosave = 0
+  let g:rust_fold = 1
+'''
+
+# [[plugins]]
+# repo = 'racer-rust/vim-racer'
+# on_ft = ['rust']
+# hook_source = '''
+#   let g:racer_cmd = expand('$HOME/.cargo/bin/racer')
+#   let g:racer_experimental_completer = 1
+#   au FileType rust nmap gd <Plug>(rust-def)
+#   au FileType rust nmap gs <Plug>(rust-def-split)
+#   au FileType rust nmap gx <Plug>(rust-def-vertical)
+#   au FileType rust nmap <leader>gd <Plug>(rust-doc)
+# '''
+
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+on_i = 1
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'fatih/vim-go'
+hook_post_update = 'GoInstallBinaries'
+on_ft = ['go']
+hook_source = '''
+  " vim-go
+  " options
+  let g:go_bin_path = expand("~/.go/bin")
+  " let g:go#use_vimproc = 1
+  let g:go_asmfmt_autosave = 1
+  let g:go_auto_type_info = 0
+  let g:go_autodetect_gopath = 1
+  let g:go_def_mapping_enabled = 0
+  let g:go_def_mode = 'godef'
+  let g:go_doc_command = 'godoc'
+  let g:go_doc_options = ''
+  let g:go_fmt_autosave = 1
+  let g:go_fmt_command = 'goimports'
+  let g:go_fmt_experimental = 1
+  let g:go_loclist_height = 15
+  let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'gotype']
+  let g:go_snippet_engine = 'ultisnips' " neosnippet
+  let g:go_template_enabled = 0
+  let g:go_term_enabled = 1
+  let g:go_term_height = 30
+  let g:go_term_width = 30
+
+  " highlight
+  let g:go_highlight_array_whitespace_error = 0    " default : 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_chan_whitespace_error = 0     " default : 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_fields = 0                    " default : 0
+  let g:go_highlight_format_strings = 1
+  let g:go_highlight_functions = 1                 " default : 0
+  let g:go_highlight_generate_tags = 1             " default : 0
+  let g:go_highlight_interfaces = 1                " default : 0
+  let g:go_highlight_methods = 1                   " default : 0
+  let g:go_highlight_operators = 1                 " default : 0
+  let g:go_highlight_space_tab_error = 0           " default : 1
+  let g:go_highlight_string_spellcheck = 0         " default : 1
+  let g:go_highlight_structs = 1                   " default : 0
+  let g:go_highlight_trailing_whitespace_error = 0 " default : 1 highlight
+  let g:go_highlight_array_whitespace_error = 0    " default : 1
+  let g:go_highlight_build_constraints = 1
+  let g:go_highlight_chan_whitespace_error = 0     " default : 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_fields = 0                    " default : 0
+  let g:go_highlight_format_strings = 1
+  let g:go_highlight_functions = 1                 " default : 0
+  let g:go_highlight_generate_tags = 1             " default : 0
+  let g:go_highlight_interfaces = 1                " default : 0
+  let g:go_highlight_methods = 1                   " default : 0
+  let g:go_highlight_operators = 1                 " default : 0
+  let g:go_highlight_space_tab_error = 0           " default : 1
+  let g:go_highlight_string_spellcheck = 0         " default : 1
+  let g:go_highlight_structs = 1                   " default : 0
+  let g:go_highlight_trailing_whitespace_error = 0 " default : 1
+'''
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+build = 'make'
+on_ft = 'go'
+depends = 'deoplete.nvim'
+hook_source = '''
+  let s:gopath = expand('$GOPATH/src/github.com')
+  let s:srcpath = expand('$HOME/src/github.com')
+'''
+
+[[plugins]]
+repo = 'dart-lang/dart-vim-plugin'
+on_ft = 'dart'
+hook_source = '''
+  let dart_html_in_string=v:vital_import_without_let
+  let dart_style_guide = 2
+  let dart_format_on_save = 1
+'''

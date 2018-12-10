@@ -1,0 +1,152 @@
+# Dark powered Vim/Neovim plugin manager
+[[plugins]]
+repo = 'Shougo/dein.vim'
+hook_post_update = 'UpdateRemotePlugins'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+on_if = '!has("nvim")'
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+on_if = '!has("nvim")'
+
+[[plugins]]
+repo = 'nixprime/cpsm'
+build = 'env PY3=ON ./install.sh'
+
+# A solid language pack for Vim.
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+hook_add = '''
+  let g:polyglot_disabled = ['rust', 'ruby']
+'''
+# vim plugin for direnv support
+[[plugins]]
+repo = 'direnv/direnv.vim'
+
+[[plugins]]
+repo = 'w0rp/ale'
+hook_source = 'source ~/.vim/rc/plugins/ale.rc.vim'
+
+[[plugins]]
+repo = 'editorconfig/editorconfig-vim'
+
+# Molokai color scheme for Vim
+[[plugins]]
+repo = 'h-michael/molokai'
+hook_post_update = 'Dein recache-runtimepath'
+hook_add = '''
+  let g:molokai_original = 1
+  let g:rehash256 = 1
+  au MyAutoCmd VimEnter * nested colorscheme molokai
+'''
+
+# lean & mean status/tabline for vim that's light as air
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+
+# A collection of themes for vim-airline
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+hook_add = 'source ~/.vim/rc/plugins/vim-airline.rc.vim'
+depends = ['vim-airline']
+
+# commentary.vim: comment stuff out
+[[plugins]]
+repo = 'tpope/vim-commentary'
+hook_add = '''
+  autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
+'''
+
+# Vim plugin, insert or delete brackets, parens, quotes in pair
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+
+# surround.vim: quoting/parenthesizing made simple
+[[plugins]]
+repo = 'tpope/vim-surround'
+hook_add = '''
+  nmap s <Plug>Ysurround
+  nmap ss <Plug>Yssurround
+  let g:surround_{char2nr('e')} = "begin \r end"
+  let g:surround_{char2nr('d')} = "do \r end"
+  let g:surround_{char2nr("-")} = ":\r"
+'''
+
+# Rest your pinkies.
+[[plugins]]
+repo = 'lambdalisue/pinkyless.vim'
+
+# vim-jp/autofmt
+[[plugins]]
+repo = 'vim-jp/autofmt'
+
+# Context filetype library for Vim script
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+# Vim constext filetype
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+# repeat.vim: enable repeating supported plugin maps with "."
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+# A Filetype plugin for csv files
+[[plugis]]
+repo = 'chrisbra/csv.vim'
+
+[[plugins]]
+repo = 'Shougo/deoplete-clangx'
+
+# [[plugins]]
+# repo = 'junegunn/fzf'
+# build = './install --all'
+# merged = 0
+
+# [[plugins]]
+# repo = 'junegunn/fzf.vim'
+# depends = 'fzf'
+
+# Translate-shell.vim is a plugin for translating text without leaving Vim.
+# [[plugins]]
+# repo = 'echuraev/translate-shell.vim'
+# build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
+# hook_add = '''
+#   let g:trans_directions_list = [
+#       \['en', 'ja'],
+#       \['ja', 'en'],
+#       \['', 'ja'],
+#       \['', ''],
+#   \]
+#   let g:trans_close_window_after_saving = 1
+#   let g:trans_save_only_unique = 1
+#   let g:trans_save_audio = 1
+#   let g:trans_save_raw_history = 1
+#   let g:trans_save_history = 3
+#   let g:trans_history_format = '%s;%t;%as;%at'
+#   let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
+#   " let g:trans_history_format = '%s;%t'
+#   " let g:trans_history_file = '~/trans_history/trans_history.csv'
+#   " let g:trans_bin = "/usr/bin/"
+# '''
+
+# [[plugins]]
+# repo = 'Shougo/neosnippet'
+
+# [[plugins]]
+# repo = 'Shougo/neosnippet-snippets'
+
+# [[plugins]]
+# repo = 'styled-components/vim-styled-components'
+
+# Vim comment plugin: supported operator/non-operator mappings, repeatable by dot-command, 300+ filetypes
+# [[plugins]]
+# repo = 'tyru/caw.vim'
+
+# A comprehensive Vim utility functions for Vim plugins
+# [[plugins]]
+# repo = 'vim-jp/vital.vim'
