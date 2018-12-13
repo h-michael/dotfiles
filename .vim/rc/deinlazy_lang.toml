@@ -42,11 +42,6 @@ hook_source = '''
 # '''
 
 [[plugins]]
-repo = 'vim-ruby/vim-ruby'
-on_i = 1
-on_ft = ['ruby']
-
-[[plugins]]
 repo = 'fatih/vim-go'
 hook_post_update = 'GoInstallBinaries'
 on_ft = ['go']

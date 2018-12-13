@@ -1,3 +1,9 @@
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+
+[[plugins]]
+repo = 'Shougo/deoplete-clangx'
+
 # [[plugins]]
 # repo = 'ndmitchell/ghcid'
 # rtp = 'plugins/nvim'

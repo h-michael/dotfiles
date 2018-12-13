@@ -15,7 +15,7 @@ hook_add = '''
   nnoremap <silent> / :<C-u>Denite line -auto-resume<CR>
   nnoremap <silent> * :<C-u>DeniteCursorWord line<CR>
 
-  nnoremap <silent> ;fr :<C-u>Denite file/rec  <CR>
+  nnoremap <silent> ;fr :<C-u>Denite file/rec -default-action=tabswitch <CR>
   nnoremap <silent> ;dr :<C-u>Denite directory/rec  <CR>
   nnoremap <silent> ;bf :<C-u>Denite buffer -default-action=tabopen <CR>
   nnoremap <silent> ;bdf :<C-u>DeniteBufferDir file_rec -default-action=tabopen <CR>

@@ -99,9 +99,6 @@ repo = 'tpope/vim-repeat'
 [[plugis]]
 repo = 'chrisbra/csv.vim'
 
-[[plugins]]
-repo = 'Shougo/deoplete-clangx'
-
 # [[plugins]]
 # repo = 'junegunn/fzf'
 # build = './install --all'
