@@ -27,7 +27,7 @@ repo = 'direnv/direnv.vim'
 
 [[plugins]]
 repo = 'w0rp/ale'
-hook_source = 'source ~/.vim/rc/plugins/ale.rc.vim'
+hook_add = 'source ~/.vim/rc/plugins/ale.rc.vim'
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
