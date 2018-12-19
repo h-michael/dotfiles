@@ -153,11 +153,11 @@ hook_source = '''
   "     \ 'rust': ['Cargo.toml'],
   "     \ 'ruby': ['Gemfile']
   "     \ }
-      " \ 'c': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
-      " \ 'cpp': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
-      " \ 'ruby': ['solargraph', 'stdio'],
-      " \ 'javascript': ['javascript-typescript-stdio'],
-      " \ 'javascript.jsx': ['javascript-typescript-stdio'],
+  "     \ 'c': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+  "     \ 'cpp': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+  "     \ 'ruby': ['solargraph', 'stdio'],
+  "     \ 'javascript': ['javascript-typescript-stdio'],
+  "     \ 'javascript.jsx': ['javascript-typescript-stdio'],
   let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
   let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
   let g:LanguageClient_completionPreferTextEdit = 1
@@ -172,8 +172,8 @@ hook_source = '''
   nnoremap <silent> ;sy  :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <silent> ;sa  :call LanguageClient_textDocument_codeAction()<CR>
 
-  let g:LanguageClient_loggingLevel='DEBUG'
-  " let g:LanguageClient_loggingLevel = 'INFO'
+  " let g:LanguageClient_loggingLevel='DEBUG'
+  let g:LanguageClient_loggingLevel = 'INFO'
   let g:LanguageClient_loggingFile =  expand('~/.local/share/nvim/LanguageClient.log')
   let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
 
