@@ -15,14 +15,14 @@ hook_add = '''
   nnoremap <silent> / :<C-u>Denite line -auto-resume<CR>
   nnoremap <silent> * :<C-u>DeniteCursorWord line<CR>
 
-  nnoremap <silent> ;fr :<C-u>Denite file/rec -default-action=tabswitch <CR>
+  nnoremap <silent> ;fr :<C-u>Denite file/rec <CR>
   nnoremap <silent> ;dr :<C-u>Denite directory/rec  <CR>
-  nnoremap <silent> ;bf :<C-u>Denite buffer -default-action=tabopen <CR>
-  nnoremap <silent> ;bdf :<C-u>DeniteBufferDir file_rec -default-action=tabopen <CR>
-  nnoremap <silent> ;bdb :<C-u>DeniteBufferDir buffer  <CR>
-  nnoremap <silent> ;bp :<C-u>DeniteProjectDir buffe  r<CR>
+  nnoremap <silent> ;bf :<C-u>Denite buffer <CR>
+  nnoremap <silent> ;bdf :<C-u>DeniteBufferDir file_rec <CR>
+  nnoremap <silent> ;bdb :<C-u>DeniteBufferDir buffer <CR>
+  nnoremap <silent> ;bp :<C-u>DeniteProjectDir buffer <CR>
   nnoremap <silent> ;gr :<C-u>Denite grep -default-action=tabopen -no-empty <CR>
-  nnoremap <silent> ;cgr :<C-u>DeniteCursorWord grep -default-action=tabopen -no-empty<CR>
+  nnoremap <silent> ;cgr :<C-u>DeniteCursorWord grep -no-empty<CR>
   nnoremap <silent> ;n :<C-u>Denite -resume -select=+1 -immediately<CR>
   nnoremap <silent> ;p :<C-u>Denite -resume -select=-1 -immediately<CR>
   nnoremap <silent> ;gh :<C-u>Denite ghq  <CR>
