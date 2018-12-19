@@ -48,7 +48,7 @@ let g:airline#extensions#promptline#enabled = 0
 " let g:airline#extensions#gutentags#enabled = 1
 
 " tabline setting
-" let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
 " let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 function! ALEStatus()
