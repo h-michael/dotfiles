@@ -293,7 +293,10 @@ set -g history-limit 5000
 set -sg repeat-time 300
 
 # start with mouse mode enabled
-# set -g mouse on
+set -g mouse on
+# Explicit `Enter` key fires copying the selection
+# unbind -T copy-mode MouseDragEnd1Pane
+# bind-key -T copy-mode Enter send-keys -X copy-pipe "tmux copy-buffer"
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
