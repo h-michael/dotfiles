@@ -651,6 +651,8 @@
               "all_targets": true,
               "build_on_save": true,
               "all_features": true,
+              "racer_completion": true,
+              "full_docs": true,
               "comments": {
                   "lineComment": "//",
                   "blockComment": [ "/*", "*/" ]
