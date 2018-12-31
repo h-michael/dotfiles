@@ -136,8 +136,8 @@ hook_source = '''
       \ 'c': ['clangd'],
       \ 'cpp': ['clangd'],
       \ 'dart': ['dart_language_server'],
-      \ 'javascript': [g:current_flow_path, 'flow', 'lsp'],
-      \ 'javascript.jsx': [g:current_flow_path, 'flow', 'lsp'],
+      \ 'javascript': [g:current_flow_path, 'lsp'],
+      \ 'javascript.jsx': [g:current_flow_path, 'lsp'],
       \ 'haskell': ['hie', '--lsp'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ 'go': ['go-langserver'],
@@ -164,6 +164,7 @@ hook_source = '''
   " set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
   nnoremap <silent> ;lh  :call LanguageClient_textDocument_hover()<CR>
   nnoremap <silent> ;jd   :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> ;jt   :call LanguageClient_textDocument_typeDefinition()<CR>
   nnoremap <silent> ;ji   :call LanguageClient_textDocument_implementation()<CR>
   nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
   nnoremap <silent> ;jr   :call LanguageClient_textDocument_references()<CR>

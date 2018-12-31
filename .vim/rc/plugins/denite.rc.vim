@@ -32,9 +32,6 @@ call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap
 call denite#custom#map('insert', '<D-H>', '<denite:move_to_top>', 'noremap')
 call denite#custom#map('insert', '<D-M>', '<denite:move_to_middle>', 'noremap')
 call denite#custom#map('insert', '<D-L>', '<denite:move_to_bottom>', 'noremap')
-call denite#custom#map('insert', '<C-n>', '<denite:move_to_next_line>', 'noremap')
-call denite#custom#map('insert', '<C-p>', '<denite:move_to_previous_line>', 'noremap')
-call denite#custom#map('insert', "'",     '<denite:move_to_next_line>', 'noremap')
 call denite#custom#map('insert', '<BS>',  '<denite:smart_delete_char_before_caret>', 'noremap')
 call denite#custom#map('insert', '<C-h>', '<denite:smart_delete_char_before_caret>', 'noremap')
 

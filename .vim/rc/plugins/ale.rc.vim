@@ -1,17 +1,19 @@
+" if has('nvim-0.3.2')
+"   let g:ale_virtualtext_cursor = 1
+"   let g:ale_echo_cursor= 0
+"   highlight! link ALEVirtualTextError ErrorMsg
+"   highlight! link ALEVirtualTextWarning WarningMsg
+" else
+"   let g:ale_set_balloons_legacy_echo = 1
+"   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" endif
+let g:ale_set_balloons_legacy_echo = 1
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_sign_column_always = 1
-if has('nvim-0.3.2')
-  let g:ale_virtualtext_cursor = 1
-  let g:ale_echo_cursor= 0
-  highlight! link ALEVirtualTextError ErrorMsg
-  highlight! link ALEVirtualTextWarning WarningMsg
-else
-  let g:ale_set_balloons_legacy_echo = 1
-  let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-endif
 " let g:ale_sign_error = 'E'
 " let g:ale_sign_warning = 'W'
-let g:ale_sign_error = '✖'
-let g:ale_sign_warning = '⚠'
+" let g:ale_sign_error = '✖'
+" let g:ale_sign_warning = '⚠'
 " let g:ale_echo_msg_error_str = 'E'
 " let g:ale_echo_msg_warning_str = 'W'
 
@@ -22,7 +24,7 @@ let g:ale_ruby_rubocop_executable = 'bundle'
 
 let g:ale_linters = {
 \   'ruby': ['rubocop'],
-\   'rust': [],
+\   'rust': ['rls', 'cargo'],
 \   'javascript': ['eslint'],
 \   'javascript.jsx': ['eslint'],
 \   'jsx': ['eslint'],

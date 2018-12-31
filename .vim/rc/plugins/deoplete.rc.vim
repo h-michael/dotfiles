@@ -103,8 +103,6 @@ call deoplete#custom#option({
       \ })
 
 " Ignore
-" let g:deoplete#ignore_sources.go =
-"       \ ['dictionary', 'member', 'omni', 'tag', 'syntax']
 " let g:deoplete#ignore_sources.c =
 "       \ ['dictionary', 'member', 'omni', 'tag', 'syntax', 'file/include']
 " let g:deoplete#ignore_sources.cpp    = g:deoplete#ignore_sources.c
@@ -114,23 +112,7 @@ call deoplete#custom#option({
 " let g:deoplete#ignore_sources.ruby =
 "       \ ['omni'] " file/include conflicting deoplete-jedi
 
-" Go
-call deoplete#custom#source('go', 'matchers', ['matcher_full_fuzzy'])
-call deoplete#custom#source('go', 'sorters', [])
-" let g:deoplete#sources#go#auto_goos = 1
-" let g:deoplete#sources#go#cgo = 1
-" let g:deoplete#sources#go#cgo#libclang_path = '/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libclang.dylib'
-" let g:deoplete#sources#go#cgo#sort_algo = 'alphabetical'
-" let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-" let g:deoplete#sources#go#on_event = 1
-" let g:deoplete#sources#go#package_dot = 1
-" let g:deoplete#sources#go#pointer = 1
-" let g:deoplete#sources#go#sort_class = ['func', 'type', 'var', 'const', 'package']
-" let g:deoplete#sources#go#use_cache = 0
-" let g:deoplete#sources#go#json_directory = $XDG_CACHE_HOME.'/deoplete/go/darwin_amd64'
-
 " debug:
 " call deoplete#enable_logging('DEBUG', $XDG_LOG_HOME.'/nvim/python/deoplete.log')
 " call deoplete#custom#option('profile', v:true)
 " call deoplete#custom#source('core', 'debug_enabled', 1)
-" call deoplete#custom#source('go', 'debug_enabled', 1)

@@ -32,15 +32,22 @@ hook_add = 'source ~/.vim/rc/plugins/ale.rc.vim'
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
 
-# Molokai color scheme for Vim
 [[plugins]]
-repo = 'h-michael/molokai'
+repo = 'phanviet/vim-monokai-pro'
 hook_post_update = 'Dein recache-runtimepath'
 hook_add = '''
-  let g:molokai_original = 1
-  let g:rehash256 = 1
-  au MyAutoCmd VimEnter * nested colorscheme molokai
+  au MyAutoCmd VimEnter * nested colorscheme monokai_pro
 '''
+
+# Molokai color scheme for Vim
+# [[plugins]]
+# repo = 'h-michael/molokai'
+# hook_post_update = 'Dein recache-runtimepath'
+# hook_add = '''
+#   let g:molokai_original = 1
+#   let g:rehash256 = 1
+#   au MyAutoCmd VimEnter * nested colorscheme molokai
+# '''
 
 # lean & mean status/tabline for vim that's light as air
 [[plugins]]
