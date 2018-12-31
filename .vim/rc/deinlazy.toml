@@ -7,26 +7,29 @@ depends = ['cpsm']
 hook_post_update = 'UpdateRemotePlugins'
 hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
 hook_add = '''
-  nnoremap <silent> ;vrc
-        \ :<C-u>Denite file/rec:~/.vim/rc<CR>
-  xnoremap <silent> ;r
-        \ :<C-u>Denite -default-action=replace -buffer-name=register
-        \ register neoyank<CR>
-  nnoremap <silent> / :<C-u>Denite line -auto-resume<CR>
-  nnoremap <silent> * :<C-u>DeniteCursorWord line<CR>
+  nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc<CR>
+  nnoremap <silent> /    :<C-u>Denite           line -auto-resume<CR>
+  nnoremap <silent> *    :<C-u>DeniteCursorWord line<CR>
 
-  nnoremap <silent> ;fr :<C-u>Denite file/rec <CR>
-  nnoremap <silent> ;dr :<C-u>Denite directory/rec  <CR>
-  nnoremap <silent> ;bf :<C-u>Denite buffer <CR>
-  nnoremap <silent> ;bdf :<C-u>DeniteBufferDir file_rec <CR>
-  nnoremap <silent> ;bdb :<C-u>DeniteBufferDir buffer <CR>
-  nnoremap <silent> ;bp :<C-u>DeniteProjectDir buffer <CR>
-  nnoremap <silent> ;gr :<C-u>Denite grep -default-action=tabopen -no-empty <CR>
-  nnoremap <silent> ;cgr :<C-u>DeniteCursorWord grep -no-empty<CR>
-  nnoremap <silent> ;n :<C-u>Denite -resume -select=+1 -immediately<CR>
-  nnoremap <silent> ;p :<C-u>Denite -resume -select=-1 -immediately<CR>
-  nnoremap <silent> ;gh :<C-u>Denite ghq  <CR>
-  nnoremap <silent> ;ft :<C-u>Denite filetype<CR>
+  nnoremap <silent> ;bf  :<C-u>Denite           buffer <CR>
+  nnoremap <silent> ;bd  :<C-u>DeniteBufferDir  buffer <CR>
+  nnoremap <silent> ;bp  :<C-u>DeniteProjectDir buffer <CR>
+
+  nnoremap <silent> ;fr  :<C-u>Denite           file/rec <CR>
+  nnoremap <silent> ;fd  :<C-u>DeniteBufferDir  file/rec <CR>
+  nnoremap <silent> ;fp  :<C-u>DeniteProjectDir file/rec <CR>
+
+  nnoremap <silent> ;dr  :<C-u>Denite           directory/rec <CR>
+  nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory/rec <CR>
+  nnoremap <silent> ;dp  :<C-u>DeniteProjectDir directory/rec <CR>
+
+  nnoremap <silent> ;gr  :<C-u>Denite           grep -default-action=tabopen -no-empty <CR>
+  nnoremap <silent> ;gcw :<C-u>DeniteCursorWord grep -no-empty <CR>
+
+  nnoremap <silent> ;gh  :<C-u>Denite           ghq <CR>
+  nnoremap <silent> ;ft  :<C-u>Denite           filetype <CR>
+  nnoremap <silent> ;n   :<C-u>Denite -resume -select=+1 -immediately<CR>
+  nnoremap <silent> ;p   :<C-u>Denite -resume -select=-1 -immediately<CR>
 '''
 
 # Neovim/Vim buffer filtering plugin
@@ -36,8 +39,8 @@ on_cmd = ['Lista', 'ListaResume', 'ListaCursorWord']
 on_func  = ['lista#']
 hook_post_update = 'UpdateRemotePlugins'
 hook_add = '''
-  nnoremap # :<C-u>Lista<CR>
-  nnoremap g# :<C-u>ListaCursorWord<CR>
+  nnoremap <silent> ;lt :<C-u>Lista<CR>
+  nnoremap <silent> ;lcw :<C-u>ListaCursorWord<CR>
   let g:lista#custom_mappings = [
         \ ['<C-b>', '<Left>'],
         \ ['<C-f>', '<Right>'],
