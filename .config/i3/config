@@ -23,6 +23,7 @@ exec --no-startup-id nm-applet
 exec --no-startup-id dropbox
 exec --no-startup-id devmon
 exec --no-startup-id blueman-applet
+exec --no-startup-id thunar --daemon
 
 # exec --no-startup-id i3-msg 'workspace 2; exec google-chrome-stable'
 # exec --no-startup-id i3-msg 'workspace 3; exec slack; exec gitter'
