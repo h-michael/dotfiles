@@ -284,6 +284,7 @@ if "[ -f /usr/local/bin/fish ]" "set-option -g default-command /usr/local/bin/fi
 
 set-option -s escape-time 0
 
+set -g set-titles-string '#h ❐ #S ● #I #W'
 set -g status-interva 5
 
 # increase history size
