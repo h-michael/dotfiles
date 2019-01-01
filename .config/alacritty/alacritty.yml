@@ -250,9 +250,7 @@ live_config_reload: true
 # Entries in shell.args are passed unmodified as arguments to the shell.
 #
 shell:
-  # program: /usr/bin/tmux
-
-  program: /usr/bin/fish
+  program: /usr/local/bin/fish
   #  args:
   #    - --login
 
