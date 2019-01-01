@@ -28,6 +28,7 @@ mac_link () {
 }
 
 _common_link () {
+  ln -sf ~/Dropbox/dotfiles/upgrade.fish ~/upgrade.fish
   ln -sf ~/Dropbox/dotfiles/.vim ~/.vim
   ln -sf ~/Dropbox/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sf ~/Dropbox/dotfiles/.tmux.conf.local ~/.tmux.conf.local
