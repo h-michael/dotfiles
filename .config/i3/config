@@ -70,8 +70,9 @@ bindsym $mod+p exec rofi -show run
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 bindsym $mod+Shift+b exec google-chrome-stable
-bindsym $mod+Shift+s exec slack
+bindsym $mod+Shift+d exec discord
 bindsym $mod+Shift+g exec gitter
+bindsym $mod+Shift+s exec slack
 
 bindsym --release Print exec scrot -m $HOME/Documents/screenshots/%Y_%m_%d_%H%M-%s_$wx$h.png
 bindsym --release Shift+Print exec scrot -s $HOME/Documents/screenshots/%Y_%m_%d_%H%M-%s_$wx$h.png
