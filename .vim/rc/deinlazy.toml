@@ -161,17 +161,18 @@ hook_source = '''
       \ 'python': ['pyls'],
       \ 'Dockerfile': ['docker-langserver', '--stdio']
       \ }
+
       " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'stable', 'rls'],
+      " \ 'rust': ['ra_lsp_server'],
       " \ 'rust': ['env', 'RUST_LOG=gen_lsp_server=debug', 'ra_lsp_server'],
-      " \ 'rust': ['rustup', 'run', 'stable', 'rls'],
 
   " let g:LanguageClient_rootMarkers = {
   "     \ 'javascript': ['package.json'],
   "     \ 'rust': ['Cargo.toml'],
   "     \ 'ruby': ['Gemfile']
   "     \ }
-  "     \ 'c': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
-  "     \ 'cpp': ['/home/h-michael/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+  "     \ 'c': ['~/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
+  "     \ 'cpp': ['~/.vscode-oss/extensions/ms-vscode.cpptools-0.19.0/bin/Microsoft.VSCode.CPP.Extension.linux'],
   "     \ 'ruby': ['solargraph', 'stdio'],
   "     \ 'javascript': ['javascript-typescript-stdio'],
   "     \ 'javascript.jsx': ['javascript-typescript-stdio'],
@@ -194,6 +195,14 @@ hook_source = '''
   let g:LanguageClient_loggingLevel = 'INFO'
   let g:LanguageClient_loggingFile =  expand('~/.local/share/nvim/LanguageClient.log')
   let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
+
+  function! ChangeRustLsp2Rls() abort
+    let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
+  endfunction
+
+  function! ChangeRustLsp2Analyzer() abort
+    let g:LanguageClient_serverCommands.rust = ['ra_lsp_server']
+  endfunction
 
   function! LspMaybeHover(is_running) abort
     if a:is_running.result && g:LanguageClient_autoHoverAndHighlightStatus
