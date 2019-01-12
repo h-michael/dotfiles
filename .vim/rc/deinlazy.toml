@@ -1,35 +1,49 @@
-# Dark powered asynchronous unite all interfaces for Neovim/Vim8
 [[plugins]]
 repo = 'Shougo/denite.nvim'
-on_cmd = ['Denite', 'DeniteBufferDir', 'DeniteCursorWord', 'DeniteProjectDir']
+on_cmd = [
+  'Denite',
+  'DeniteBufferDir',
+  'DeniteProjectDir',
+  'DeniteCursorWord'
+]
 on_func  = ['denite#']
 depends = ['cpsm']
 hook_post_update = 'UpdateRemotePlugins'
 hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
 hook_add = '''
-  nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc<CR>
-  nnoremap <silent> /    :<C-u>Denite           line -auto-resume<CR>
-  nnoremap <silent> *    :<C-u>DeniteCursorWord line<CR>
+  nnoremap <silent> /    :<C-u>Denite           line -auto-resume <CR>
+  nnoremap <silent> *    :<C-u>DeniteCursorWord line <CR>
+  xnoremap <silent> ;r   :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank <CR>
+  nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc <CR>
+  nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique <CR>
 
-  nnoremap <silent> ;bf  :<C-u>Denite           buffer <CR>
-  nnoremap <silent> ;bd  :<C-u>DeniteBufferDir  buffer <CR>
-  nnoremap <silent> ;bp  :<C-u>DeniteProjectDir buffer <CR>
+  nnoremap <silent> ;b   :<C-u>Denite           buffer <CR>
+  nnoremap <silent> ;db  :<C-u>DeniteBufferDir  buffer <CR>
+  nnoremap <silent> ;pb  :<C-u>DeniteProjectDir buffer <CR>
+
+  nnoremap <silent> ;f   :<C-u>Denite           file <CR>
+  nnoremap <silent> ;df  :<C-u>DeniteBufferDir  file <CR>
+  nnoremap <silent> ;pf  :<C-u>DeniteProjectDir file <CR>
 
   nnoremap <silent> ;fr  :<C-u>Denite           file/rec <CR>
-  nnoremap <silent> ;fd  :<C-u>DeniteBufferDir  file/rec <CR>
-  nnoremap <silent> ;fp  :<C-u>DeniteProjectDir file/rec <CR>
+  nnoremap <silent> ;dfr :<C-u>DeniteBufferDir  file/rec <CR>
+  nnoremap <silent> ;pfr :<C-u>DeniteProjectDir file/rec <CR>
 
-  nnoremap <silent> ;dr  :<C-u>Denite           directory/rec <CR>
-  nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory/rec <CR>
-  nnoremap <silent> ;dp  :<C-u>DeniteProjectDir directory/rec <CR>
+  nnoremap <silent> ;d   :<C-u>Denite           directory <CR>
+  nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory <CR>
+  nnoremap <silent> ;pd  :<C-u>DeniteProjectDir directory <CR>
 
-  nnoremap <silent> ;gr  :<C-u>Denite           grep -default-action=tabopen -no-empty <CR>
-  nnoremap <silent> ;gcw :<C-u>DeniteCursorWord grep -no-empty <CR>
+  nnoremap <silent> ;dr  :<C-u>Denite           directory_rec <CR>
+  nnoremap <silent> ;ddr :<C-u>DeniteBufferDir  directory_rec <CR>
+  nnoremap <silent> ;pdr :<C-u>DeniteProjectDir directory_rec <CR>
+
+  nnoremap <silent> ;g   :<C-u>Denite           grep -no-empty <CR>
+  nnoremap <silent> ;cwg :<C-u>DeniteCursorWord grep -no-empty <CR>
 
   nnoremap <silent> ;gh  :<C-u>Denite           ghq <CR>
   nnoremap <silent> ;ft  :<C-u>Denite           filetype <CR>
-  nnoremap <silent> ;n   :<C-u>Denite -resume -select=+1 -immediately<CR>
-  nnoremap <silent> ;p   :<C-u>Denite -resume -select=-1 -immediately<CR>
+  nnoremap <silent> ;n   :<C-u>Denite -resume -cursor-pos=+1 -immediately<CR>
+  nnoremap <silent> ;p   :<C-u>Denite -resume -cursor-pos=-1 -immediately<CR>
 '''
 
 # Neovim/Vim buffer filtering plugin
