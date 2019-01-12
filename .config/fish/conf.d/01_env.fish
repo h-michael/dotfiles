@@ -135,3 +135,8 @@ if is_linux; and type powerline-rs > /dev/null
       powerline-rs --shell bare $status
   end
 end
+
+function history-merge --on-event fish_preexec
+  history --save
+  history --merge
+end
