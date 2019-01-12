@@ -292,7 +292,7 @@ on_ft = ['ruby']
 [[plugins]]
 repo = 'majutsushi/tagbar'
 on_cmd = ['TabbarToggle', 'TagbarOpen']
-hook_source = '''
+hook_add = '''
   nnoremap <silent> ;tb :TagbarToggle<CR>
 '''
 
