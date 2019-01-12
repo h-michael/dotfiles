@@ -196,13 +196,30 @@ hook_source = '''
   let g:LanguageClient_loggingFile =  expand('~/.local/share/nvim/LanguageClient.log')
   let g:LanguageClient_serverStderr = expand('~/.local/share/nvim/LanguageServer.log')
 
-  function! ChangeRustLsp2Rls() abort
-    let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
+  function! SwitchStableRls() abort
+    if (&ft=='rust')
+      LanguageClientStop
+      call ale#Set('rust_rls_toolchain', 'stable')
+      call ale#lsp#reset#StopAllLSPs()
+      sleep 100m
+      let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
+      LanguageClientStart
+    endif
   endfunction
 
-  function! ChangeRustLsp2Analyzer() abort
-    let g:LanguageClient_serverCommands.rust = ['ra_lsp_server']
+  function! SwitchNightlyRls() abort
+    if (&ft=='rust')
+      LanguageClientStop
+      call ale#Set('rust_rls_toolchain', 'nightly')
+      call ale#lsp#reset#StopAllLSPs()
+      sleep 100m
+      let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
+      LanguageClientStart
+    endif
   endfunction
+
+  command! SwitchStableRls :call SwitchStableRls()
+  command! SwitchNightlyRls :call SwitchNightlyRls()
 
   function! LspMaybeHover(is_running) abort
     if a:is_running.result && g:LanguageClient_autoHoverAndHighlightStatus
