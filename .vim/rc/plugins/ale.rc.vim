@@ -38,12 +38,10 @@ let g:ale_fixers = {
 \}
 
 nnoremap <silent> ;af :<C-u>ALEFix <CR>
+
 let g:ale_javascript_prettier_use_local_config = 1
-let g:ale_rust_cargo_include_features = 'clippy'
+let g:ale_rust_cargo_use_clippy = 1
+let g:ale_rust_rls_toolchain = 'stable'
+
 " let g:ale_fix_on_save = 1
 " let b:ale_set_balloons = 1
-
-
-" for Rust
-call ale#Set('rust_rls_toolchain', 'stable')
-call ale#Set('rust_cargo_use_clippy', 1)

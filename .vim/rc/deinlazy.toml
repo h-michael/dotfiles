@@ -199,10 +199,10 @@ hook_source = '''
   function! SwitchStableRls() abort
     if (&ft=='rust')
       LanguageClientStop
-      call ale#Set('rust_rls_toolchain', 'stable')
-      call ale#lsp#reset#StopAllLSPs()
-      sleep 100m
+      ALEStopAllLSPs
+      let g:ale_rust_rls_toolchain = 'stable'
       let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'stable', 'rls']
+      sleep 100m
       LanguageClientStart
     endif
   endfunction
@@ -210,10 +210,10 @@ hook_source = '''
   function! SwitchNightlyRls() abort
     if (&ft=='rust')
       LanguageClientStop
-      call ale#Set('rust_rls_toolchain', 'nightly')
-      call ale#lsp#reset#StopAllLSPs()
-      sleep 100m
+      ALEStopAllLSPs
+      let g:ale_rust_rls_toolchain = 'nightly'
       let g:LanguageClient_serverCommands.rust = ['rustup', 'run', 'nightly', 'rls']
+      sleep 100m
       LanguageClientStart
     endif
   endfunction
