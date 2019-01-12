@@ -11,3 +11,4 @@ docker.sh
 .idea/
 *.iml
 build-vim.sh
+rusty-tags.vi
