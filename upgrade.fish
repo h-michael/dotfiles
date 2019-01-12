@@ -1,6 +1,6 @@
 #!/usr/local/bin/fish
 
-read --silent password
+read -s password
 
 if is_mac
   rbenv update
@@ -17,8 +17,7 @@ rustup update
 cargo install-update -a
 
 if is_linux
-  echo $password | sudo -S yay -Syu
- 
+  echo $password | sudo -S yay -Syu  --noconfirm
   cd ~/ghq/github.com/h-michael/neovim
   git checkout master
   hub sync
@@ -26,7 +25,7 @@ if is_linux
   make clean
   make CMAKE_BUILD_TYPE=Release
   echo $password | sudo -S make install
- 
+
   cd ~/ghq/github.com/h-michael/tmux
   git checkout master
   hub sync
@@ -34,7 +33,7 @@ if is_linux
   ./configure
   make
   echo $password | sudo -S make install
- 
+
   cd ~/ghq/github.com/h-michael/alacritty
   git checkout master
   hub sync
@@ -58,4 +57,3 @@ if is_linux
 end
 
 fish -c fish_update_completions
-
