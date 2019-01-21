@@ -106,6 +106,9 @@ repo = 'tpope/vim-repeat'
 [[plugis]]
 repo = 'chrisbra/csv.vim'
 
+[[plugins]]
+repo = 'haya14busa/vim-poweryank'
+
 # [[plugins]]
 # repo = 'junegunn/fzf'
 # build = './install --all'
