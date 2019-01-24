@@ -295,9 +295,14 @@ set -sg repeat-time 300
 
 # start with mouse mode enabled
 set -g mouse on
+
 # Explicit `Enter` key fires copying the selection
 # unbind -T copy-mode MouseDragEnd1Pane
-# bind-key -T copy-mode Enter send-keys -X copy-pipe "tmux copy-buffer"
+unbind -T copy-mode-vi MouseDragEnd1Pane
+# bind -T copy-mode y send-keys -X copy-pipe 'tmux copy-buffer | tmux save-buffer - | yank > #{pane_tty} | tmux cancel'
+# bind -T copy-mode-vi y send-keys -X copy-pipe 'tmux copy-buffer | tmux save-buffer - | yank > #{pane_tty} | tmux cancel'
+# bind -T copy-mode y send-keys -X copy-pipe-and-cancel 'tmux copy-buffer | tmux save-buffer - | yank > #{pane_tty} | tmux cancel'
+bind -T copy-mode-vi Y send-keys -X copy-pipe-and-cancel 'tmux copy-buffer | tmux save-buffer - | yank > #{pane_tty} | tmux cancel'
 
 # force Vi mode
 #   really you should export VISUAL or EDITOR environment variable, see manual
@@ -331,3 +336,15 @@ bind -r C-l next-window     # select next window
 
 # set -g terminal-overrides 'xterm:colors=256'
 set -g terminal-overrides ',xterm-256color:Tc'
+
+# copy with OSC 52(this needs yank script)
+if -b 'command -v yank > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | yank > #{pane_tty}"'
+
+# transfer copied text to attached terminal with yank
+bind -T copy-mode-vi y send-keys -X copy-pipe 'yank > #{pane_tty}'
+
+# transfer most-recently copied text to attached terminal with yank
+bind -n M-y run-shell 'tmux save-buffer - | yank > #{pane_tty}'
+
+# transfer previously copied text (chosen from a menu) to attached terminal
+bind -n M-Y choose-buffer 'run-shell "tmux save-buffer -b \"%%%\" - | yank > #{pane_tty}"'
