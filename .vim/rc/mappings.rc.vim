@@ -26,7 +26,7 @@ nnoremap PP "0p
 "
 
 " Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell!<cr>
+map <leader>ss :setlocal spell! <CR>
 
 " Shortcuts using <leader>
 map <leader>sn ]s
@@ -62,5 +62,6 @@ nnoremap <silent> <C-h> :<C-u>tabprevious<CR>
 nmap <Space><Space> :bn<CR>
 nmap <BS><BS> :bp<CR>
 
+" autocmd MyAutoCmd BufReadPost * delmarks!
 " autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 " autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!

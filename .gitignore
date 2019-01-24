@@ -16,6 +16,7 @@ application/*
 .vim/tags
 .vim/trans_history
 .vim/.trans_raw_history
+.vim/trans
 .config/nvim/trans_history
 .config/nvim/.trans_raw_history
 GPATH

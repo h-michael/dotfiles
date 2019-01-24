@@ -16,6 +16,7 @@ hook_add = '''
   xnoremap <silent> ;r   :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank <CR>
   nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc <CR>
   nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique <CR>
+  nnoremap <silent> ;mk  :<C-u>Denite           mark -auto-resume <CR>
 
   nnoremap <silent> ;b   :<C-u>Denite           buffer <CR>
   nnoremap <silent> ;db  :<C-u>DeniteBufferDir  buffer <CR>
@@ -66,6 +67,13 @@ hook_add = '''
         \ [';', 'pinkyless#stickyshift#enter(";")', 'expr noremap'],
         \]
 '''
+
+# # denite.nvim source and kind to mark and list directories
+# [[plugins]]
+# repo = 'kmnk/denite-dirmark'
+# on_cmd = ['Denite']
+# on_func  = ['denite#']
+# hook_post_update = 'UpdateRemotePlugins'
 
 # Asynchronously control git repositories in Neovim/Vim 8
 [[plugins]]
@@ -149,7 +157,7 @@ hook_source = '''
   let g:LanguageClient_diagnosticsEnable = 0
   let g:LanguageClient_selectionUI = 'fzf'
   let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       \ 'c': ['clangd'],
       \ 'cpp': ['clangd'],
       \ 'dart': ['dart_language_server'],
@@ -181,12 +189,13 @@ hook_source = '''
   let g:LanguageClient_completionPreferTextEdit = 1
   " set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
   nnoremap <silent> ;lh  :call LanguageClient_textDocument_hover()<CR>
-  nnoremap <silent> ;jd   :call LanguageClient_textDocument_definition()<CR>
-  nnoremap <silent> ;jt   :call LanguageClient_textDocument_typeDefinition()<CR>
-  nnoremap <silent> ;ji   :call LanguageClient_textDocument_implementation()<CR>
+  nnoremap <silent> ;jd  :call LanguageClient_textDocument_definition()<CR>
+  nnoremap <silent> ;jt  :call LanguageClient_textDocument_typeDefinition()<CR>
+  nnoremap <silent> ;ji  :call LanguageClient_textDocument_implementation()<CR>
   nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-  nnoremap <silent> ;jr   :call LanguageClient_textDocument_references()<CR>
+  nnoremap <silent> ;jr  :call LanguageClient_textDocument_references()<CR>
   nnoremap <silent> ;ft  :call LanguageClient_textDocument_formatting()<CR>
+  nnoremap <silent> ;ftr :call LanguageClient_textDocument_rangeFormatting()<CR>
   nnoremap <silent> ;mn  :call LanguageClient_contextMenu()<CR>
   nnoremap <silent> ;sy  :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <silent> ;sa  :call LanguageClient_textDocument_codeAction()<CR>

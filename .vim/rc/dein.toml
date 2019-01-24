@@ -109,37 +109,37 @@ repo = 'chrisbra/csv.vim'
 [[plugins]]
 repo = 'haya14busa/vim-poweryank'
 
-# [[plugins]]
-# repo = 'junegunn/fzf'
-# build = './install --all'
-# merged = 0
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --all'
+merged = 0
 
-# [[plugins]]
-# repo = 'junegunn/fzf.vim'
-# depends = 'fzf'
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
 
 # Translate-shell.vim is a plugin for translating text without leaving Vim.
-# [[plugins]]
-# repo = 'echuraev/translate-shell.vim'
-# build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
-# hook_add = '''
-#   let g:trans_directions_list = [
-#       \['en', 'ja'],
-#       \['ja', 'en'],
-#       \['', 'ja'],
-#       \['', ''],
-#   \]
-#   let g:trans_close_window_after_saving = 1
-#   let g:trans_save_only_unique = 1
-#   let g:trans_save_audio = 1
-#   let g:trans_save_raw_history = 1
-#   let g:trans_save_history = 3
-#   let g:trans_history_format = '%s;%t;%as;%at'
-#   let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
-#   " let g:trans_history_format = '%s;%t'
-#   " let g:trans_history_file = '~/trans_history/trans_history.csv'
-#   " let g:trans_bin = "/usr/bin/"
-# '''
+[[plugins]]
+repo = 'echuraev/translate-shell.vim'
+build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
+hook_add = '''
+  let g:trans_directions_list = [
+      \['en', 'ja'],
+      \['ja', 'en'],
+      \['', 'ja'],
+      \['', ''],
+  \]
+  let g:trans_close_window_after_saving = 1
+  let g:trans_save_only_unique = 1
+  let g:trans_save_raw_history = 1
+  let g:trans_save_history = 3
+  " let g:trans_save_audio = 1
+  " let g:trans_history_format = '%s;%t;%as;%at'
+  let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
+  " let g:trans_history_format = '%s;%t'
+  let g:trans_history_file = '~/trans_history/trans_history.csv'
+  " let g:trans_bin = "/usr/bin/"
+'''
 
 # [[plugins]]
 # repo = 'Shougo/neosnippet'
@@ -157,3 +157,8 @@ repo = 'haya14busa/vim-poweryank'
 # A comprehensive Vim utility functions for Vim plugins
 # [[plugins]]
 # repo = 'vim-jp/vital.vim'
+
+# # Highlights trailing whitespace in red and provides :FixWhitespace to fix it.
+# [[plugins]]
+# repo = 'bronson/vim-trailing-whitespace'
+# # on_cmd = ['FixWhitespace']

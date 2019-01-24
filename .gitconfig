@@ -51,7 +51,7 @@
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
   rev = https://{host}/{path}/commit/{commit}
-[gpg]
-	program = gpg2
-[commit]
-	gpgsign = false
+# [gpg]
+# 	program = gpg2
+# [commit]
+# 	gpgsign = true

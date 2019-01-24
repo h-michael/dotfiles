@@ -73,7 +73,7 @@ set lazyredraw
 
 " Enable folding.
 " set foldenable
-"" set foldmethod=expr
+" set foldmethod=expr
 " set foldmethod=marker
 " Show folding level.
 " set foldcolumn=1

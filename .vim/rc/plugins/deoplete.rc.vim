@@ -49,7 +49,7 @@ call deoplete#custom#source('_', 'converters', [
 
 call deoplete#custom#source('LanguageClient',
             \ 'min_pattern_length',
-            \ 2)
+            \ 1)
 
 " call deoplete#custom#option('sources', {
 "       \ 'rust': ['omni', 'syntax', 'LanguageClient'],
@@ -62,8 +62,8 @@ call deoplete#custom#source('LanguageClient',
 call deoplete#custom#source('omni', 'functions', {
       \ 'rust': ['LanguqgeClient', 'lsp#complete'],
       \ 'elm': ['elm#Complete'],
-      \ 'javascript': ['lsp#complete'],
-      \ 'javascript.jsx': ['lsp#complete'],
+      \ 'javascript': ['LanguqgeClient', 'lsp#complete'],
+      \ 'javascript.jsx': ['LanguqgeClient', 'lsp#complete'],
       \})
       " \ 'ruby':  'rubycomplete#Complete',
 
