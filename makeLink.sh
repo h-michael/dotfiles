@@ -45,6 +45,12 @@ _common_link () {
   ln -sf ~/Dropbox/dotfiles/.config/fish ~/.config/fish
   ln -sf ~/Dropbox/dotfiles/.config/translate-shell/ ~/.config/translate-shell
   ln -sf ~/Dropbox/dotfiles/.config/pip ~/.config/pip
+
+  if [ ! -d ~/.local/bin ]; then
+    mkdir -p ~/.local/bin
+  fi
+
+  ln -sf ~/Dropbox/dotfiles/.local/bin/yank ~/.local/bin/yank
 }
 
 if [ "$(uname)" == 'Darwin' ]; then
