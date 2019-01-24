@@ -1,6 +1,14 @@
 # blank greeeting message
 set fish_greeting
 
+# XDG Base Directory
+set -x XDG_CONFIG_HOME $HOME/.config
+set -x XDG_CACHE_HOME $HOME/.cache
+set -x XDG_DATA_HOME $HOME/.local/share
+set -x XDG_DATA_DIRS /usr/local/share/:/usr/share/
+set -x XDG_CONFIG_DIRS /etc/xdg
+set -x XDG_RUNTIME_DIR /run/user/1000
+
 # set langage version manager path
 set -x PATH $HOME/.rbenv/bin $PATH
 set -x PATH $HOME/.nodenv/bin $PATH
@@ -58,8 +66,6 @@ switch (uname)
   case FreeBSD NetBSD DragonFly
   case '*'
 end
-set -x XDG_CONFIG_HOME $HOME/.config
-set -x XDG_CACHE_HOME $HOME/.cache
 
 # https://wiki.archlinux.jp/index.php/Ccache
 # set -x PATH /usr/lib/ccache/bin $PATH
