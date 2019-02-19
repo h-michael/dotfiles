@@ -5,9 +5,6 @@ set fish_greeting
 set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_CACHE_HOME $HOME/.cache
 set -x XDG_DATA_HOME $HOME/.local/share
-set -x XDG_DATA_DIRS /usr/local/share/:/usr/share/
-set -x XDG_CONFIG_DIRS /etc/xdg
-set -x XDG_RUNTIME_DIR /run/user/1000
 
 # set langage version manager path
 set -x PATH $HOME/.rbenv/bin $PATH
@@ -50,21 +47,17 @@ set -x CLICOLOR true
 set -x LSCOLORS exfxcxdxbxegedabagacad
 set -x LS_COLORS 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
-# fzf - command-line fuzzy finder (https://github.com/junegunn/fzf)
-set -x FZF_DEFAULT_OPTS "--extended --ansi --multi"
-
 # available $INTERACTIVE_FILTER
 set -x INTERACTIVE_FILTER "fzf:peco:percol:gof:pick"
 
 [ -f ~/.secret ]; and source ~/.secret
 
-switch (uname)
-  case Linux
+if is_linux
     set -x BROWSER google-chrome-stable
-  case Darwin
+end
+
+if is_mac
     set -x BROWSER open
-  case FreeBSD NetBSD DragonFly
-  case '*'
 end
 
 # https://wiki.archlinux.jp/index.php/Ccache
@@ -77,7 +70,11 @@ end
 set -x PATH $PATH $HOME/.local/bin
 set -x PATH $PATH $HOME/.cargo/bin
 set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
-set -x LD_LIBRARY_PATH (rustc --print sysroot)/lib
+
+# for Rls
+# set -x LD_LIBRARY_PATH (rustc --print sysroot)/lib
+
+# for sccache
 # set -x RUSTC_WRAPPER sccache
 
 # For Enpass
@@ -96,7 +93,7 @@ if status --is-interactive
 
     set -x PATH $HOME/.nodenv/bin $PATH
     source (nodenv init -|psub)
-    set -x PATH $PATH (yarn global bin)
+    # set -x PATH $PATH (yarn global bin)
 
     set -x GOPATH $HOME/go
     set -x PATH $PATH $GOPATH/bin
@@ -128,7 +125,7 @@ if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
 end
 
 set -x GTAGSCONF "$HOME/.globalrc"
-# set -x GTAGSLIBPATH '/usr/lib/gtags'
+set -x GTAGSLIBPATH '/usr/lib/gtags'
 set -x GTAGSLABEL pygments
 
 
