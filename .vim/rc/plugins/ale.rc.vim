@@ -24,7 +24,7 @@ let g:ale_ruby_rubocop_executable = 'bundle'
 
 let g:ale_linters = {
 \   'ruby': ['rubocop'],
-\   'rust': ['rls', 'cargo'],
+\   'rust': ['cargo'],
 \   'javascript': ['eslint'],
 \   'javascript.jsx': ['eslint'],
 \   'jsx': ['eslint'],
@@ -41,7 +41,8 @@ nnoremap <silent> ;af :<C-u>ALEFix <CR>
 
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_rust_cargo_use_clippy = 1
-let g:ale_rust_rls_toolchain = 'stable'
+let g:ale_rust_rls_toolchain = 'nightly'
+" let g:ale_rust_rls_toolchain = 'stable'
 
 " let g:ale_fix_on_save = 1
 " let b:ale_set_balloons = 1

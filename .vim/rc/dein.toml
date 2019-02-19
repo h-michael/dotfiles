@@ -141,6 +141,12 @@ hook_add = '''
   " let g:trans_bin = "/usr/bin/"
 '''
 
+[[plugins]]
+repo = 'itchyny/vim-pdf'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+
 # [[plugins]]
 # repo = 'Shougo/neosnippet'
 

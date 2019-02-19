@@ -157,7 +157,7 @@ hook_source = '''
   let g:LanguageClient_diagnosticsEnable = 0
   let g:LanguageClient_selectionUI = 'fzf'
   let g:LanguageClient_serverCommands = {
-      \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+      \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
       \ 'c': ['clangd'],
       \ 'cpp': ['clangd'],
       \ 'dart': ['dart_language_server'],
@@ -170,6 +170,8 @@ hook_source = '''
       \ 'Dockerfile': ['docker-langserver', '--stdio']
       \ }
 
+      " \ 'rust': ['env', 'RUST_LOG=info', '/home/h-michael/ghq/github.com/h-michael/rls/target/release/rls'],
+      " \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'stable', 'rls'],
       " \ 'rust': ['ra_lsp_server'],
       " \ 'rust': ['env', 'RUST_LOG=gen_lsp_server=debug', 'ra_lsp_server'],
@@ -260,6 +262,9 @@ hook_source = '''
     end
   endfunction
   nnoremap <silent> ;tg  :call ToggleLspAutoHoverAndHilight()<CR>
+  function! HandleWindowProgress(params) abort
+      echomsg json_encode(a:params)
+  endfunction
 '''
 
 # utility comamnds of dein.vim with rich completion.
