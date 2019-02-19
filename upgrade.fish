@@ -14,6 +14,7 @@ if is_mac
 end
 
 rustup update
+rustup-toolchain-install-master -n master --force
 cargo install-update -a
 
 if is_linux
@@ -40,8 +41,8 @@ if is_linux
   cargo build --release
   echo $password | sudo -S rm /usr/local/bin/alacritty
   echo $password | sudo -S cp target/release/alacritty /usr/local/bin/
-  # echo $password | sudo -S mkdir -p /usr/local/share/man/man1
-  # gzip -c alacritty.man | sudo -S tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+  echo $password | sudo -S mkdir -p /usr/local/share/man/man1
+  gzip -c alacritty.man | sudo -S tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
 
   cd ~/ghq/github.com/fish-shell/fish-shell
   git checkout master
