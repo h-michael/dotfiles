@@ -12,3 +12,4 @@ docker.sh
 *.iml
 build-vim.sh
 rusty-tags.vi
+rls*.log
