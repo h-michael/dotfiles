@@ -6,9 +6,6 @@
     "all_targets": true,
     "build_on_save": true,
     "all_features": true,
-    "racer_completion": true,
-    "blacklist_crates": [
-      "csv"
-    ]
+    "racer_completion": true
   }
 }
