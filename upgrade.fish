@@ -15,10 +15,12 @@ end
 
 rustup update
 rustup-toolchain-install-master -n master --force
+rustup default nightly
 cargo install-update -a
+rustup default stable
 
 if is_linux
-  echo $password | sudo -S yay -Syu  --noconfirm
+  echo $password | sudo -S yay -Syu  --noconfirm --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade
   cd ~/ghq/github.com/h-michael/neovim
   git checkout master
   hub sync
