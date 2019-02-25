@@ -51,6 +51,7 @@ _common_link () {
   fi
 
   ln -sf ~/Dropbox/dotfiles/.local/bin/yank ~/.local/bin/yank
+  ln -sf ~/Dropbox/dotfiles/.local/bin/check_distribution.sh ~/.local/bin
 }
 
 if [ "$(uname)" == 'Darwin' ]; then
