@@ -49,10 +49,11 @@ set nomodeline
 set clipboard& clipboard+=unnamedplus
 if (!has('nvim') || $DISPLAY !=# '') && has('clipboard')
   if has('unnamedplus')
-     set clipboard& clipboard+=unnamedplus
+    set clipboard& clipboard+=unnamedplus
   else
-     set clipboard& clipboard+=unnamed
+    set clipboard& clipboard+=unnamed
   endif
+    set pumblend=30
 endif
 
 " Enable backspace delete indent and newline.

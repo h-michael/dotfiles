@@ -49,14 +49,6 @@ call denite#custom#option('_',
   \ )
     " \ 'post_action': 'suspend',
 
-let s:menus = {}
-let s:menus.vim = {
-  \ 'description': 'Vim',
-  \ }
-let s:menus.vim.file_candidates = [
-  \     ['    > Edit configuation file (init.vim)', '~/.config/nvim/init.vim']
-  \ ]
-call denite#custom#var('menu', 'menus', s:menus)
 
 call denite#custom#filter('matcher/ignore_globs', 'ignore_globs',
   \ [
