@@ -137,7 +137,7 @@ end
 
 if is_linux; and type powerline-rs > /dev/null
   function fish_prompt
-      powerline-rs --shell bare $status
+      powerline-rs --cwd-max-depth 3 --shell bare $status
   end
 end
 
