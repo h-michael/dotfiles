@@ -67,12 +67,15 @@ end
 # set -x PATH $PATH $HOME/bin
 # set -x PATH $PATH /opt/flutter/bin
 # set -x PATH $PATH $HOME/.pub-cache/bin
+set -x PATH $PATH /usr/local/bin
 set -x PATH $PATH $HOME/.local/bin
-set -x PATH $PATH $HOME/.cargo/bin
-set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 
+# for Rust
+set -x PATH $PATH $HOME/.cargo/bin
+
+set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 # for Rls
-# set -x LD_LIBRARY_PATH (rustc --print sysroot)/lib
+set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
 
 # for sccache
 # set -x RUSTC_WRAPPER sccache
@@ -100,7 +103,6 @@ if status --is-interactive
     set -x GOENV_ROOT $HOME/.goenv
     set -x PATH $GOENV_ROOT/bin $PATH
     source (goenv init -|psub)
-    # set -x PATH $PATH $GOPATH/src/chromium.googlesource.com/chromium/tools/depot_tools
 
     # Display
 
