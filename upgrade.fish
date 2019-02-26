@@ -7,7 +7,7 @@ function check_outdate
   set LOCAL (git rev-parse @)
   set REMOTE (git rev-parse "$UPSTREAM")
   set BASE (git merge-base @ "$UPSTREAM")
-  
+
   if [ $LOCAL = $REMOTE ]
     # echo "Up-to-date"
     false
@@ -103,9 +103,10 @@ if is_linux
   case "Ubuntu"
     echo $password | sudo apt update
     echo $password | sudo apt upgrade
-  case "*"
+  case "Arch Linux"
     echo $password | sudo -S yay -Syu  --noconfirm --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade
     upgrade_alacritty
+  case "*"
   end
   upgrade_nvim
   upgrade_tmux
