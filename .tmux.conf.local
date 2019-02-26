@@ -295,6 +295,9 @@ set -sg repeat-time 300
 
 # start with mouse mode enabled
 set -g mouse on
+set -g mouse-select-pane on
+set -g mouse-resize-pane on
+set -g mouse-select-window on
 
 # Explicit `Enter` key fires copying the selection
 # unbind -T copy-mode MouseDragEnd1Pane
@@ -348,3 +351,5 @@ bind -n M-y run-shell 'tmux save-buffer - | yank > #{pane_tty}'
 
 # transfer previously copied text (chosen from a menu) to attached terminal
 bind -n M-Y choose-buffer 'run-shell "tmux save-buffer -b \"%%%\" - | yank > #{pane_tty}"'
+
+setw -g aggressive-resize on
