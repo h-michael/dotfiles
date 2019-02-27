@@ -295,9 +295,6 @@ set -sg repeat-time 300
 
 # start with mouse mode enabled
 set -g mouse on
-set -g mouse-select-pane on
-set -g mouse-resize-pane on
-set -g mouse-select-window on
 
 # Explicit `Enter` key fires copying the selection
 # unbind -T copy-mode MouseDragEnd1Pane
