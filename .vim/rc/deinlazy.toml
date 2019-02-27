@@ -13,8 +13,8 @@ hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
 hook_add = '''
   nnoremap <silent> /    :<C-u>Denite           line -auto-resume <CR>
   nnoremap <silent> *    :<C-u>DeniteCursorWord line <CR>
-  xnoremap <silent> ;r   :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank <CR>
-  nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc <CR>
+  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank <CR>
+  " nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc <CR>
   nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique <CR>
   nnoremap <silent> ;mk  :<C-u>Denite           mark -auto-resume <CR>
 
@@ -30,9 +30,9 @@ hook_add = '''
   nnoremap <silent> ;dfr :<C-u>DeniteBufferDir  file/rec <CR>
   nnoremap <silent> ;pfr :<C-u>DeniteProjectDir file/rec <CR>
 
-  nnoremap <silent> ;d   :<C-u>Denite           directory <CR>
-  nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory <CR>
-  nnoremap <silent> ;pd  :<C-u>DeniteProjectDir directory <CR>
+  " nnoremap <silent> ;d   :<C-u>Denite           directory <CR>
+  " nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory <CR>
+  " nnoremap <silent> ;pd  :<C-u>DeniteProjectDir directory <CR>
 
   nnoremap <silent> ;dr  :<C-u>Denite           directory_rec <CR>
   nnoremap <silent> ;ddr :<C-u>DeniteBufferDir  directory_rec <CR>
@@ -45,6 +45,13 @@ hook_add = '''
   nnoremap <silent> ;ft  :<C-u>Denite           filetype <CR>
   nnoremap <silent> ;n   :<C-u>Denite -resume -cursor-pos=+1 -immediately<CR>
   nnoremap <silent> ;p   :<C-u>Denite -resume -cursor-pos=-1 -immediately<CR>
+
+  " for LanguageClient-nvim
+
+  nnoremap <silent> ;cm   :<C-u>Denite           contextMenu <CR>
+  nnoremap <silent> ;ds   :<C-u>Denite           documentSymbol <CR>
+  nnoremap <silent> ;ref  :<C-u>Denite           references <CR>
+  nnoremap <silent> ;ws   :<C-u>Denite           workspaceSymbol <CR>
 '''
 
 # Neovim/Vim buffer filtering plugin
@@ -52,6 +59,7 @@ hook_add = '''
 repo = 'lambdalisue/lista.nvim'
 on_cmd = ['Lista', 'ListaResume', 'ListaCursorWord']
 on_func  = ['lista#']
+depends = ['denite.nvim']
 hook_post_update = 'UpdateRemotePlugins'
 hook_add = '''
   nnoremap <silent> ;lt :<C-u>Lista<CR>
@@ -170,6 +178,8 @@ hook_source = '''
       \ 'Dockerfile': ['docker-langserver', '--stdio']
       \ }
 
+      " \ 'rust': ['ra_lsp_server'],
+      " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
       " \ 'rust': ['env', 'RUST_LOG=info', '/home/h-michael/ghq/github.com/h-michael/rls/target/release/rls'],
       " \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
       " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'stable', 'rls'],
@@ -198,7 +208,6 @@ hook_source = '''
   nnoremap <silent> ;jr  :call LanguageClient_textDocument_references()<CR>
   nnoremap <silent> ;ft  :call LanguageClient_textDocument_formatting()<CR>
   nnoremap <silent> ;ftr :call LanguageClient_textDocument_rangeFormatting()<CR>
-  nnoremap <silent> ;mn  :call LanguageClient_contextMenu()<CR>
   nnoremap <silent> ;sy  :call LanguageClient_textDocument_documentSymbol()<CR>
   nnoremap <silent> ;sa  :call LanguageClient_textDocument_codeAction()<CR>
 

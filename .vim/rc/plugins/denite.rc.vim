@@ -13,7 +13,7 @@ elseif executable('ag')
 endif
 
 call denite#custom#source('file/mru', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
-call denite#custom#source('file/rec,grep', 'matchers', ['matcher_cpsm'])
+call denite#custom#source('file/rec', 'grep', 'matchers', ['matcher_cpsm'])
 call denite#custom#source('grep', 'matchers', ['matcher_ignore_globs', 'matcher_cpsm'])
 call denite#custom#source('file/old', 'converters', ['converter_relative_word'])
 call denite#custom#source('mark', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
