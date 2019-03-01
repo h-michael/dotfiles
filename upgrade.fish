@@ -92,7 +92,7 @@ if is_mac
 end
 
 rustup update
-rustup-toolchain-install-master -n master --force
+# rustup-toolchain-install-master -n master --force
 rustup default nightly
 cargo install-update -a
 rustup default stable
