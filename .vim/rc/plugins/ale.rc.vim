@@ -25,9 +25,9 @@ let g:ale_ruby_rubocop_executable = 'bundle'
 let g:ale_linters = {
 \   'ruby': ['rubocop'],
 \   'rust': ['cargo'],
-\   'javascript': ['eslint'],
-\   'javascript.jsx': ['eslint'],
-\   'jsx': ['eslint'],
+\   'javascript': ['eslint', 'flow'],
+\   'javascript.jsx': ['eslint', 'flow'],
+\   'jsx': ['eslint', 'flow'],
 \   'haskell': ['hie', '--lsp'],
 \}
 let g:ale_fixers = {

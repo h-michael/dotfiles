@@ -19,7 +19,7 @@ build = 'env PY3=ON ./install.sh'
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
 hook_add = '''
-  let g:polyglot_disabled = ['rust', 'ruby']
+  let g:polyglot_disabled = ['rust', 'ruby', 'markdown']
 '''
 # vim plugin for direnv support
 [[plugins]]
@@ -146,6 +146,12 @@ repo = 'itchyny/vim-pdf'
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
+
+[[plugins]]
+repo = 'rcmdnk/vim-markdown'
+
+[[plugins]]
+repo = 'kana/vim-niceblock'
 
 [[plugins]]
 repo = 'lighttiger2505/gtags.vim'

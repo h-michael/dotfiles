@@ -7,10 +7,15 @@ function! s:check_back_space() abort "{{{
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
+
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ deoplete#manual_complete()
+
+" function! s:my_cr_function() abort
+"   return pumvisible() ? deoplete#close_popup()."\<CR>" : "\<CR>"
+" endfunction
 
 " <S-TAB>: completion back.
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
@@ -26,6 +31,8 @@ inoremap <expr><C-l>       deoplete#refresh()
 function! s:my_cr_function() abort
   return deoplete#cancel_popup() . "\<CR>"
 endfunction
+
+
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
 inoremap <expr> ' pumvisible() ? deoplete#close_popup() : "'"
@@ -33,6 +40,8 @@ inoremap <expr> ' pumvisible() ? deoplete#close_popup() : "'"
 call deoplete#custom#source('_', 'matchers', ['matcher_cpsm'])
 " call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 " call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+call deoplete#custom#source('_', 'min_pattern_length', 1)
+
 call deoplete#custom#source('_', 'sorters', [])
 call deoplete#custom#source('ghc', 'sorters', ['sorter_word'])
 
@@ -45,11 +54,10 @@ call deoplete#custom#source('_', 'converters', [
       \ 'converter_truncate_abbr',
       \ 'converter_truncate_menu',
       \ 'converter_auto_delimiter',
+      \ 'matcher_length'
       \ ])
 
-call deoplete#custom#source('LanguageClient',
-            \ 'min_pattern_length',
-            \ 1)
+call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
 " call deoplete#custom#option('sources', {
 "       \ 'rust': ['omni', 'syntax', 'LanguageClient'],
@@ -59,30 +67,39 @@ call deoplete#custom#source('LanguageClient',
 "       \ })
       " \ 'ruby': ['file', 'omni', 'tag']
 
-call deoplete#custom#source('omni', 'functions', {
-      \ 'rust': ['LanguqgeClient', 'lsp#complete'],
-      \ 'elm': ['elm#Complete'],
-      \ 'javascript': ['LanguqgeClient', 'lsp#complete'],
-      \ 'javascript.jsx': ['LanguqgeClient', 'lsp#complete'],
-      \})
-      " \ 'ruby':  'rubycomplete#Complete',
+" call deoplete#custom#source('omni', 'functions', {
+"       \ 'rust': ['LanguqgeClient', 'lsp#complete'],
+"       \ 'elm': ['elm#Complete'],
+"       \ 'javascript': ['LanguqgeClient', 'lsp#complete'],
+"       \ 'javascript.jsx': ['LanguqgeClient', 'lsp#complete'],
+"       \})
+"       \ 'ruby':  'rubycomplete#Complete',
 
-call deoplete#custom#option('omni_patterns', {
-      \ 'elm': '\.',
-      \ 'java': '[^. *\t]\.\w*',
-      \})
 
-call deoplete#custom#var('omni', 'input_patterns', {
-      \ 'elm': '[^ \t]+',
-      \ 'ocaml': '[^ ,;\t\[()\]]',
-      \ 'java': '[^. *\t]\.\w*',
-      \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
-      \ 'clang': '\.\w*|\.->\w*|\w+::\w*',
-      \})
-      " \ 'elm': ['[^ \t]+'],
-      " \ 'ocaml': ['[^ ,;\t\[()\]]', '.*'],
-      " \ 'ruby': '[^. *\t]\.\w*',
-      " \ 'ruby': ['[^. *\t]\.\w*', '[^. *\t]\.\w*\|\h\w*::', '[a-zA-Z_]\w*::'],
+" call deoplete#custom#source('tabnine', 'rank', 300)
+" call deoplete#custom#source('tabnine', 'min_pattern_length', 2)
+" call deoplete#custom#source('tabnine', 'is_volatile', v:false)
+" call deoplete#custom#source('tabnine', 'converters', [
+"       \ 'converter_remove_overlap',
+"       \ ])
+
+" call deoplete#custom#option('omni_patterns', {
+"       \ 'elm': '\.',
+"       \ 'java': '[^. *\t]\.\w*',
+"       \})
+
+" call deoplete#custom#var('omni', 'input_patterns', {
+"       \ 'elm': '[^ \t]+',
+"       \ 'ocaml': '[^ ,;\t\[()\]]',
+"       \ 'java': '[^. *\t]\.\w*',
+"       \ 'php': '\w+|[^. \t]->\w*|\w+::\w*',
+"       \ 'clang': '\.\w*|\.->\w*|\w+::\w*',
+"       \})
+"       \ 'elm': ['[^ \t]+'],
+"       \ 'ocaml': ['[^ ,;\t\[()\]]', '.*'],
+"       \ 'ruby': '[^. *\t]\.\w*',
+"       \ 'ruby': ['[^. *\t]\.\w*', '[^. *\t]\.\w*\|\h\w*::', '[a-zA-Z_]\w*::'],
+"
 
 call deoplete#custom#option('keyword_patterns', {
       \ '_': '[a-zA-Z_]\k*\(?',
@@ -94,15 +111,20 @@ let g:deoplete#tag#cache_limit_size = 5000000
 " inoremap <silent><expr> <C-t> deoplete#mappings#manual_complete('file')
 
 call deoplete#custom#option({
-      \ 'auto_complete_delay': 0,
+      \ 'auto_complete_delay': 10,
       \ 'camel_case': v:true,
       \ 'smart_case': v:true,
-      \ 'refresh_allways': v:true,
       \ 'async_timeout': 100,
       \ 'buffer_path': v:true,
+      \ 'skip_multibyte': v:true,
+      \ 'prev_completion_mode': 'length',
       \ })
+      " \ 'refresh_allways': v:true,
 
 " Ignore
+
+" call deoplete#custom#option('ignore_sources',
+"       \ {'_': ['around', 'buffer', 'tag', 'dictionary']})
 " let g:deoplete#ignore_sources.c =
 "       \ ['dictionary', 'member', 'omni', 'tag', 'syntax', 'file/include']
 " let g:deoplete#ignore_sources.cpp    = g:deoplete#ignore_sources.c

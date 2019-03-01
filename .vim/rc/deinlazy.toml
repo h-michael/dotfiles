@@ -314,6 +314,10 @@ on_ft = 'vim'
 repo = 'Shougo/neco-syntax'
 on_event = 'InsertEnter'
 
+[[plugins]]
+repo = 'ujihisa/neco-look'
+on_event = 'InsertEnter'
+
 # can edit vinari
 [[plugins]]
 repo = 'Shougo/vinarise.vim'
@@ -346,3 +350,7 @@ hook_add = '''
   map <Leader>ml  :MemoList<CR>
   map <Leader>mg  :MemoGrep<CR>
 '''
+
+[[plugins]]
+repo = 'thinca/vim-scouter'
+on_cmd = ['Scouter', 'Scouter!']
