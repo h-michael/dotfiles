@@ -11,9 +11,9 @@ depends = ['cpsm']
 hook_post_update = 'UpdateRemotePlugins'
 hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
 hook_add = '''
-  nnoremap <silent> /    :<C-u>Denite           line -auto-resume <CR>
+  nnoremap <silent> /    :<C-u>Denite           line -auto-resume -split=floating <CR>
   nnoremap <silent> *    :<C-u>DeniteCursorWord line <CR>
-  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank <CR>
+  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register -split=floating neoyank <CR>
   " nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc <CR>
   nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique <CR>
   nnoremap <silent> ;mk  :<C-u>Denite           mark -auto-resume <CR>
@@ -174,7 +174,7 @@ hook_source = '''
       \ 'javascript.jsx': [g:current_flow_path, 'lsp'],
       \ 'haskell': ['hie', '--lsp'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
-      \ 'go': ['go-langserver'],
+      \ 'go': ['gopls'],
       \ 'python': ['pyls'],
       \ 'Dockerfile': ['docker-langserver', '--stdio']
       \ }
