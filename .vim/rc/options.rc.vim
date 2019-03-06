@@ -53,7 +53,6 @@ if (!has('nvim') || $DISPLAY !=# '') && has('clipboard')
   else
     set clipboard& clipboard+=unnamed
   endif
-    set pumblend=30
 endif
 
 " Enable backspace delete indent and newline.
@@ -124,6 +123,10 @@ autocmd MyAutoCmd InsertLeave *
 " Update diff.
 autocmd MyAutoCmd InsertLeave * if &l:diff | diffupdate | endif
 
+if has('patch-8.1.0360')
+  set diffopt=internal,algorithm:patience,indent-heuristic
+endif
+
 " Make directory automatically.
 " --------------------------------------
 " http://vim-users.jp/2011/02/hack202/
@@ -176,7 +179,7 @@ set laststatus=2
 " Height of command line.
 set cmdheight=1
 " Not show command on statusline.
-set noshowcmd
+" set noshowcmd
 " Show title.
 set title
 " Title length.

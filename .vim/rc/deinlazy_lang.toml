@@ -21,22 +21,22 @@ repo = 'Shougo/echodoc.vim'
 on_source = ['deoplete.nvim']
 hook_add = 'let g:echodoc_enable_at_startup = 1'
 
-[[plugins]]
-repo = 'rust-lang/rust.vim'
-on_ft = ['rust']
-hook_source = '''
-  let g:rustfmt_autosave = 0
-  let g:rust_fold = 1
-'''
+# [[plugins]]
+# repo = 'rust-lang/rust.vim'
+# on_ft = ['rust']
+# hook_source = '''
+#   let g:rustfmt_autosave = 0
+#   let g:rust_fold = 1
+# '''
 
-[[plugins]]
-repo = 'dart-lang/dart-vim-plugin'
-on_ft = 'dart'
-hook_source = '''
-  let dart_html_in_string=v:vital_import_without_let
-  let dart_style_guide = 2
-  let dart_format_on_save = 1
-'''
+# [[plugins]]
+# repo = 'dart-lang/dart-vim-plugin'
+# on_ft = 'dart'
+# hook_source = '''
+#   let dart_html_in_string=v:vital_import_without_let
+#   let dart_style_guide = 2
+#   let dart_format_on_save = 1
+# '''
 
 [[plugins]]
 repo = 'machakann/vim-vimhelplint'
@@ -47,8 +47,8 @@ nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''
 
 # [[plugins]]
-# depends = 'deoplete.nvim'
 # repo = 'tbodt/deoplete-tabnine'
+# depends = 'deoplete.nvim'
 # build = './install.sh'
 
 # [[plugins]]

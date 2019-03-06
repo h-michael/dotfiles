@@ -10,7 +10,7 @@ if &compatible
   set nocompatible
 endif
 
-function! s:source_rc(path, ...) "abort {{{
+function! s:source_rc(path, ...) abort
   let l:use_global = get(a:000, 0, !has('vim_starting'))
   let l:abspath = resolve(expand('~/.vim/rc/' . a:path))
   if !l:use_global
@@ -31,32 +31,20 @@ function! s:source_rc(path, ...) "abort {{{
       call delete(l:tempfile)
     endif
   endtry
-endfunction"}}}
+endfunction
 
-" Set augroup.
+" Set augroup
 augroup MyAutoCmd
   autocmd!
   autocmd FileType,Syntax,BufNewFile,BufNew,BufRead *?
         \ call vimrc#on_filetype()
   autocmd CursorHold *? syntax sync minlines=300
 augroup END
+augroup filetypedetect
+augroup END
 
 if has('vim_starting')
   call s:source_rc('init.rc.vim')
-endif
-
-if has('nvim')
-  if IsMac()
-    let g:python_host_prog = '/usr/local/bin/python2'
-    let g:python3_host_prog = '/usr/local/bin/python3'
-  else
-    let g:python_host_prog = '/usr/bin/python2'
-    let g:python3_host_prog = '/usr/bin/python3'
-  endif
-
-  " Skip neovim module check
-  let g:python_host_skip_check = 1
-  let g:python3_host_skip_check = 1
 endif
 
 call s:source_rc('dein.rc.vim')
@@ -76,9 +64,6 @@ endif
 if !has('vim_starting')
   call dein#call_hook('source')
   call dein#call_hook('post_source')
-
-  syntax enable
-  filetype plugin indent on
 endif
 
 "---------------------------------------------------------------------------

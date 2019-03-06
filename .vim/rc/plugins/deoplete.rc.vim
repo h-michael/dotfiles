@@ -13,9 +13,9 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ deoplete#manual_complete()
 
-" function! s:my_cr_function() abort
-"   return pumvisible() ? deoplete#close_popup()."\<CR>" : "\<CR>"
-" endfunction
+function! s:my_cr_function() abort
+  return pumvisible() ? deoplete#close_popup()."\<CR>" : "\<CR>"
+endfunction
 
 " <S-TAB>: completion back.
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
@@ -27,11 +27,6 @@ inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
 inoremap <expr><C-g> deoplete#undo_completion()
 " <C-l>: redraw candidates
 inoremap <expr><C-l>       deoplete#refresh()
-
-function! s:my_cr_function() abort
-  return deoplete#cancel_popup() . "\<CR>"
-endfunction
-
 
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 

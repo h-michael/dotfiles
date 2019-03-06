@@ -75,6 +75,11 @@ hook_add = '''
         \ [';', 'pinkyless#stickyshift#enter(";")', 'expr noremap'],
         \]
 '''
+[[plugins]]
+repo = 'raghur/fruzzy'
+on_source = ['denite.nvim']
+hook_source = 'let g:fruzzy#sortonempty = 0'
+hook_post_update = 'call fruzzy#install()'
 
 # # denite.nvim source and kind to mark and list directories
 # [[plugins]]

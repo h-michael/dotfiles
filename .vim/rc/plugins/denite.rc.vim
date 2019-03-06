@@ -12,11 +12,14 @@ elseif executable('ag')
   call denite#custom#var('file/rec', 'command', ['ag', '--follow', '--nocolor', '--nogroup', '-g', ''])
 endif
 
-call denite#custom#source('file/mru', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
-call denite#custom#source('file/rec,grep', 'matchers', ['matcher_cpsm'])
-call denite#custom#source('grep', 'matchers', ['matcher_ignore_globs', 'matcher_cpsm'])
+" call denite#custom#source('file/mru', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
+" call denite#custom#source('file/rec,grep', 'matchers', ['matcher_cpsm'])
+" call denite#custom#source('grep', 'matchers', ['matcher_ignore_globs', 'matcher_cpsm'])
+" call denite#custom#source('file/mru', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
+call denite#custom#source('file/rec,grep', 'matchers', ['matcher/fruzzy'])
+call denite#custom#source('grep', 'matchers', ['matcher_ignore_globs', 'matcher/fruzzy'])
 call denite#custom#source('file/old', 'converters', ['converter_relative_word'])
-call denite#custom#source('mark', 'matchers', ['matcher_cpsm', 'matcher_project_files'])
+call denite#custom#source('mark', 'matchers', ['matcher/fruzzy', 'matcher_project_files'])
 
 call denite#custom#map('insert', '<C-a>', '<denite:move_caret_to_head>', 'noremap')
 call denite#custom#map('insert', '<C-e>', '<denite:move_caret_to_tail>', 'noremap')

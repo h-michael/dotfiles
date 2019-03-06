@@ -1,7 +1,4 @@
 [[plugins]]
-repo = 'vim-ruby/vim-ruby'
-
-[[plugins]]
 repo = 'Shougo/deoplete-clangx'
 
 # [[plugins]]

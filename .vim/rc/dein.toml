@@ -19,7 +19,7 @@ build = 'env PY3=ON ./install.sh'
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
 hook_add = '''
-  let g:polyglot_disabled = ['rust', 'ruby']
+  " let g:polyglot_disabled = ['rust', 'ruby']
 '''
 # vim plugin for direnv support
 [[plugins]]
