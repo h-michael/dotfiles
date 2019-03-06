@@ -337,8 +337,8 @@ unbind p
 bind -r C-h previous-window # select previous window
 bind -r C-l next-window     # select next window
 
-# set -g terminal-overrides 'xterm:colors=256'
-set -g terminal-overrides ',xterm-256color:Tc'
+set -ga terminal-overrides ",alacritty:Tc"
+# set -ga terminal-overrides ",xterm-termite:Tc"
 
 # copy with OSC 52(this needs yank script)
 if -b 'command -v yank > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | yank > #{pane_tty}"'
