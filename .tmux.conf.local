@@ -276,11 +276,14 @@ tmux_conf_copy_to_os_clipboard=true
 # -- user customizations -------------------------------------------------------
 # this is the place to override or undo settings
 
-if "[ -f /usr/bin/fish ]" "set-option -g default-shell /usr/bin/fish"
+if "[ -f /usr/bin/bash ]" "set-option -g default-shell /usr/bin/bash"
 if "[ -f /usr/bin/fish ]" "set-option -g default-command /usr/bin/fish"
 
-if "[ -f /usr/local/bin/fish ]" "set-option -g default-shell /usr/local/bin/fish"
+if "[ -f /usr/bin/bash ]" "set-option -g default-shell /usr/bin/bash"
 if "[ -f /usr/local/bin/fish ]" "set-option -g default-command /usr/local/bin/fish"
+
+# set-option -g default-shell "${SHELL}"
+# set -g default-command "${SHELL}"
 
 set-option -s escape-time 0
 
