@@ -65,7 +65,7 @@ function upgrade_fish
 end
 
 function upgrade_alacritty
-  cd ~/ghq/github.com/h-michael/alacritty
+  cd ~/ghq/github.com/jwilm/alacritty
 
   git checkout master
   git fetch origin
@@ -83,10 +83,9 @@ if is_mac
   nodenv update
 
   brew upgrade
-  brew reinstall neovim
-  brew reinstall tmux
   brew cleanup
-  brew prune
+  upgrade_nvim
+  upgrade_tmux
   upgrade_alacritty
   cd $HOME
 end
