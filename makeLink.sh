@@ -10,6 +10,7 @@ linux_link () {
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/powerline ~/.config/powerline
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/taffybar ~/.config/taffybar
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/conky ~/.config/conky
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/yay ~/.config/yay
 
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.xmonad ~/.xmonad
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.xinitrc ~/.xinitrc
@@ -68,6 +69,3 @@ else
   echo "Your platform ($(uname -a)) is not supported."
   exit 1
 fi
-
-#ln -sf ~/ghq/github.com/h-michael/dotfiles/. ~/.
-#ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/ ~/.config/
