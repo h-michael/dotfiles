@@ -5,8 +5,10 @@ linux_link () {
 
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/alacritty ~/.config/alacritty
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/fontconfig ~/.config/fontconfig
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/i3 ~/.config/i3
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/polybar ~/.config/polybar
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/gtk-2.0 ~/.config/gtk-2.0
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/gtk-3.0/ ~/.config/gtk-3.0
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/gtk-3.0 ~/.config/gtk-3.0
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/powerline ~/.config/powerline
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/taffybar ~/.config/taffybar
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/conky ~/.config/conky
