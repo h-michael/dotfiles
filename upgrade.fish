@@ -3,6 +3,8 @@
 read -s password
 
 function check_outdate
+  git checkout master
+  git fetch origin
   set UPSTREAM '@{u}'
   set LOCAL (git rev-parse @)
   set REMOTE (git rev-parse "$UPSTREAM")
@@ -25,10 +27,8 @@ end
 
 function upgrade_nvim
   cd ~/ghq/github.com/neovim/neovim
-  git checkout master
-  git fetch origin
   if check_outdate
-    git pull
+    hub sync
     rm -rf build
     make clean
     make CMAKE_BUILD_TYPE=Release
@@ -38,8 +38,6 @@ end
 
 function upgrade_tmux
   cd ~/ghq/github.com/tmux/tmux
-  git checkout master
-  git fetch origin
   if check_outdate
     hub sync
     sh autogen.sh
@@ -51,8 +49,6 @@ end
 
 function upgrade_fish
   cd ~/ghq/github.com/fish-shell/fish-shell
-  git checkout master
-  git fetch origin
   if check_outdate
     hub sync
     rm -rf build
