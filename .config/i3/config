@@ -18,7 +18,6 @@ font pango:monospace 11
 # exec --no-startup-id i3-msg 'exec ~/.config/i3/load_layout.sh'
 
 exec --no-startup-id alacritty
-exec --no-startup-id volumeicon
 exec --no-startup-id nm-applet
 exec --no-startup-id dropbox
 exec --no-startup-id devmon
