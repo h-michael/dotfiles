@@ -9,7 +9,7 @@ on_cmd = [
 on_func  = ['denite#']
 depends = ['cpsm']
 hook_post_update = 'UpdateRemotePlugins'
-hook_source = 'source ~/.vim/rc/plugins/denite.rc.vim'
+hook_source = 'source ~/.vim/rc/dein/plugins/denite.rc.vim'
 hook_add = '''
   nnoremap <silent> /    :<C-u>Denite           line -auto-resume -split=floating <CR>
   nnoremap <silent> *    :<C-u>DeniteCursorWord line <CR>

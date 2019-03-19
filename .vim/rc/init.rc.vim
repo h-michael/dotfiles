@@ -82,16 +82,11 @@ if s:dein_dir !=# '' || &runtimepath !~# '/dein.vim'
   if s:dein_dir ==# '' && &runtimepath !~# '/dein.vim'
     let s:dein_dir = expand('$CACHE/dein')
           \. '/repos/github.com/Shougo/dein.vim'
-    " let s:vimproc_dir = expand('$CACHE/dein')
-    "       \. '/repos/github.com/Shougo/vimproc.vim'
     if !isdirectory(s:dein_dir)
       execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
-      " execute '!git clone https://github.com/Shougo/vimproc.vim' s:vimproc_dir
-      " execute '!cd ' . s:vimproc_dir '&& make'
     endif
   endif
   execute 'set runtimepath^=' . substitute(fnamemodify(s:dein_dir, ':p') , '/$', '', '')
-  " execute 'set runtimepath^=' . substitute(fnamemodify(s:vimproc_dir, ':p') , '/$', '', '')
 endif
 
 " Disable packpath

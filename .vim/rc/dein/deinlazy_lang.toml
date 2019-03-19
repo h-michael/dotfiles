@@ -5,7 +5,7 @@ depends = 'context_filetype.vim'
 on_source = ['LanguageClient-neovim']
 on_event = ['InsertEnter']
 hook_source = '''
-  source ~/.vim/rc/plugins/deoplete.rc.vim
+  source ~/.vim/rc/dein/plugins/deoplete.rc.vim
   call deoplete#enable()
 '''
 hook_post_update = 'UpdateRemotePlugins'

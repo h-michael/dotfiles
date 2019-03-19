@@ -27,7 +27,7 @@ repo = 'direnv/direnv.vim'
 
 [[plugins]]
 repo = 'w0rp/ale'
-hook_add = 'source ~/.vim/rc/plugins/ale.rc.vim'
+hook_add = 'source ~/.vim/rc/dein/plugins/ale.rc.vim'
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
@@ -56,7 +56,7 @@ repo = 'vim-airline/vim-airline'
 # A collection of themes for vim-airline
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
-hook_add = 'source ~/.vim/rc/plugins/vim-airline.rc.vim'
+hook_add = 'source ~/.vim/rc/dein/plugins/vim-airline.rc.vim'
 depends = ['vim-airline']
 
 # commentary.vim: comment stuff out

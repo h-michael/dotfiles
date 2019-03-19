@@ -82,7 +82,7 @@ set commentstring=%s
 
 if exists('*FoldCCtext')
   " Use FoldCCtext().
-   set foldtext=FoldCCtext()
+  " set foldtext=FoldCCtext()
 endif
 
 " Use vimgrep.
