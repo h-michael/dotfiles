@@ -25,7 +25,7 @@ augroup MyAutoCmd
 
   autocmd FileType gitcommit,qfreplace setlocal nofoldenable
 
-  autocmd FileType python setlocal foldmethod=indent
+  " autocmd FileType python setlocal foldmethod=indent
 
   " Update filetype.
   autocmd BufWritePost * nested
