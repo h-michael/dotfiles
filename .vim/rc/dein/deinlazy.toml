@@ -152,6 +152,7 @@ rev = 'next'
 build = 'bash install.sh'
 on_ft = [
   'rust',
+  'ruby',
   'c',
   'cpp',
   'dart',
@@ -172,6 +173,7 @@ hook_source = '''
   let g:LanguageClient_selectionUI = 'fzf'
   let g:LanguageClient_serverCommands = {
       \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
+      \ 'ruby': ['solargraph', 'stdio'],
       \ 'c': ['clangd'],
       \ 'cpp': ['clangd'],
       \ 'dart': ['dart_language_server'],
