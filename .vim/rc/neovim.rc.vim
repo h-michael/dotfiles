@@ -14,17 +14,9 @@ if exists('&wildoptions')
   set wildoptions+=pum
 endif
 
-nnoremap <Leader>t    :<C-u>terminal<CR>
-nnoremap !            :<C-u>terminal<Space>
+" nnoremap <Leader>t    :<C-u>terminal<CR>
+" nnoremap !            :<C-u>terminal<Space>
 " let PYTHONPATH = expand('$HOME') . '/.pyenv/shims/python3'
-
-if IsMac()
-    let g:python_host_prog = '/usr/local/bin/python2'
-    let g:python3_host_prog = '/usr/local/bin/python3'
-else
-    let g:python_host_prog = '/usr/bin/python2'
-    let g:python3_host_prog = '/usr/bin/python3'
-endif
 
 let g:ruby_host_prog = expand('$HOME/.rbenv/shims/ruby')
 

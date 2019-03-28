@@ -21,13 +21,13 @@ repo = 'Shougo/echodoc.vim'
 on_source = ['deoplete.nvim']
 hook_add = 'let g:echodoc_enable_at_startup = 1'
 
-# [[plugins]]
-# repo = 'rust-lang/rust.vim'
-# on_ft = ['rust']
-# hook_source = '''
-#   let g:rustfmt_autosave = 0
-#   let g:rust_fold = 1
-# '''
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = ['rust']
+hook_source = '''
+  let g:rustfmt_autosave = 0
+  let g:rust_fold = 1
+'''
 
 # [[plugins]]
 # repo = 'dart-lang/dart-vim-plugin'
@@ -43,25 +43,39 @@ repo = 'machakann/vim-vimhelplint'
 on_ft = 'help'
 [plugins.ftplugin]
 help = '''
-nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
+  nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = ['go']
+hook_add = '''
+  let g:go_def_mode = 'gopls'
+  let g:go_def_mapping_enabled = 1
+  let g:go_gocode_propose_builtins = 1
+  let g:go_list_type = "quickfix"
+  let g:go_fmt_command = "goimports"
+  let g:go_highlight_types = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_operators = 1
+  let g:go_highlight_extra_types = 1
+
+  autocmd FileType go nmap <leader>r <Plug>(go-run)
+  autocmd FileType go nmap <leader>t <Plug>(go-test)
+  autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+  " autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+'''
+
+[[plugin]]
+repo = 'AndrewRadev/splitjoin.vim'
+on_ft = ['go']
 
 # [[plugins]]
 # repo = 'tbodt/deoplete-tabnine'
 # depends = 'deoplete.nvim'
 # build = './install.sh'
-
-# [[plugins]]
-# repo = 'racer-rust/vim-racer'
-# on_ft = ['rust']
-# hook_source = '''
-#   let g:racer_cmd = expand('$HOME/.cargo/bin/racer')
-#   let g:racer_experimental_completer = 1
-#   au FileType rust nmap gd <Plug>(rust-def)
-#   au FileType rust nmap gs <Plug>(rust-def-split)
-#   au FileType rust nmap gx <Plug>(rust-def-vertical)
-#   au FileType rust nmap <leader>gd <Plug>(rust-doc)
-# '''
 
 # [[plugins]]
 # repo = 'pbogut/deoplete-elm'

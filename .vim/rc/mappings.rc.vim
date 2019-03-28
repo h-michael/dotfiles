@@ -34,6 +34,10 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
+map <C-c>n :cnext<CR>
+map <C-c>p :cprevious<CR>
+nnoremap <leader>c :cclose<CR>
+
 " yank the word which is under cursor
 nnoremap yc vawy
 
