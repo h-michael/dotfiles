@@ -26,10 +26,6 @@ hook_add = '''
 repo = 'direnv/direnv.vim'
 
 [[plugins]]
-repo = 'w0rp/ale'
-hook_add = 'source ~/.vim/rc/dein/plugins/ale.rc.vim'
-
-[[plugins]]
 repo = 'editorconfig/editorconfig-vim'
 
 [[plugins]]
@@ -117,6 +113,20 @@ merged = 0
 [[plugins]]
 repo = 'junegunn/fzf.vim'
 depends = 'fzf'
+hook_add = '''
+  command! -bang -nargs=* Rg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
+  command! -bang -nargs=? -complete=dir Files
+    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+
+  nnoremap <silent> /    :Lines <CR>
+'''
 
 # Translate-shell.vim is a plugin for translating text without leaving Vim.
 [[plugins]]
@@ -146,9 +156,6 @@ repo = 'itchyny/vim-pdf'
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
-
-# [[plugins]]
-# repo = 'rcmdnk/vim-markdown'
 
 [[plugins]]
 repo = 'kana/vim-niceblock'
@@ -181,15 +188,6 @@ hook_add = '''
     " Keymap
     nmap <silent> [denite]<C-D> :Denite -buffer-name=gtags_completion gtags_completion<cr>
 '''
-
-# [[plugins]]
-# repo = 'Shougo/neosnippet'
-
-# [[plugins]]
-# repo = 'Shougo/neosnippet-snippets'
-
-# [[plugins]]
-# repo = 'styled-components/vim-styled-components'
 
 # Vim comment plugin: supported operator/non-operator mappings, repeatable by dot-command, 300+ filetypes
 # [[plugins]]
