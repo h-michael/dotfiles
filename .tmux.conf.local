@@ -341,7 +341,7 @@ set -ga terminal-overrides ",alacritty:Tc"
 # set -ga terminal-overrides ",xterm-termite:Tc"
 
 # copy with OSC 52(this needs yank script)
-if -b 'command -v yank > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | yank > #{pane_tty}"'
+if -b '! command -v xsel > /dev/null 2>&1 && command -v xclip > /dev/null 2>&1 && command -v yank > /dev/null 2>&1' 'bind y run -b "tmux save-buffer - | yank > #{pane_tty}"'
 
 # transfer copied text to attached terminal with yank
 bind -T copy-mode-vi y send-keys -X copy-pipe 'yank > #{pane_tty}'
