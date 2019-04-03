@@ -125,7 +125,7 @@ hook_add = '''
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
 
-  nnoremap <silent> /    :Lines <CR>
+  " nnoremap <silent> /    :Lines <CR>
 '''
 
 # Translate-shell.vim is a plugin for translating text without leaving Vim.
