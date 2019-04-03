@@ -34,6 +34,7 @@ mac_link () {
 _common_link () {
   ln -sf ~/ghq/github.com/h-michael/dotfiles/upgrade.fish ~/upgrade.fish
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.vim ~/.vim
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.minimal_vimrc ~/.minimal_vimrc
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.tmux.conf ~/.tmux.conf
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.tmux.conf.local ~/.tmux.conf.local
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.gitconfig ~/.gitconfig
