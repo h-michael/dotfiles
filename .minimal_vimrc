@@ -1,17 +1,9 @@
-" function! vimrc#on_filetype() abort "{{{
-"   if execute('filetype') =~# 'OFF'
-"     " Lazy loading
-"     silent! filetype plugin indent on
-"     syntax enable
-"     filetype detect
-"   endif
-" endfunction "}}}
-" 
-" if has('vim_starting') && empty(argv())
-"   syntax off
-" endif
-
 let $CACHE = expand('~/.cache')
+
+if has('nvim')
+  let g:python_host_prog = '/usr/bin/python2'
+  let g:python3_host_prog = '/usr/bin/python3'
+endif
 
 if !isdirectory(expand($CACHE))
   call mkdir(expand($CACHE), 'p')
@@ -20,34 +12,41 @@ endif
 let s:dein_dir = finddir('dein.vim', '.;')
 if s:dein_dir !=# '' || &runtimepath !~# '/dein.vim'
   if s:dein_dir ==# '' && &runtimepath !~# '/dein.vim'
-    let s:dein_dir = expand('$CACHE/dein')
-          \. '/repos/github.com/Shougo/dein.vim'
-    " let s:vimproc_dir = expand('$CACHE/dein')
-    "       \. '/repos/github.com/Shougo/vimproc.vim'
+    let s:dein_dir = expand('$CACHE/dein'). '/repos/github.com/Shougo/dein.vim'
     if !isdirectory(s:dein_dir)
       execute '!git clone https://github.com/Shougo/dein.vim' s:dein_dir
-      " execute '!git clone https://github.com/Shougo/vimproc.vim' s:vimproc_dir
-      " execute '!cd ' . s:vimproc_dir '&& make'
     endif
   endif
   execute 'set runtimepath^=' . substitute(fnamemodify(s:dein_dir, ':p') , '/$', '', '')
-  " execute 'set runtimepath^=' . substitute(fnamemodify(s:vimproc_dir, ':p') , '/$', '', '')
 endif
 
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 if dein#load_state(expand('~/.minimal_vim/dein'))
   call dein#begin(expand('~/.minimal_vim/dein'))
+  if !has('nvim')
+    call dein#add('roxma/nvim-yarp')
+    call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
   call dein#add('Shougo/dein.vim')
-  call dein#add('sheerun/vim-polyglot')
   call dein#end()
   call dein#save_state()
 endif
 
-" if !has('vim_starting')
-"   syntax enable
-"   filetype plugin indent on
-" endif
-" 
-" if !empty(argv())
-"   call vimrc#on_filetype()
-" endif
+if dein#load_state(s:dein_dir)
+    call dein#begin(s:dein_dir)
+
+    call dein#end()
+    call dein#save_state()
+endif
+
+if dein#check_install()
+  call dein#install()
+endif
+
+if !exists('g:syntax_on')
+  silent! syntax enable
+endif
+
+
+
+filetype plugin indent on

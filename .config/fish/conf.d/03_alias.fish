@@ -1,1 +1,2 @@
-alias nnvim "nvim -u ~/.minimal_vimrc"
+alias mnvim "nvim -u ~/.minimal_vimrc"
+alias mvim "vim -u ~/.minimal_vimrc"
