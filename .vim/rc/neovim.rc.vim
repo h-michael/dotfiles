@@ -8,12 +8,6 @@ if exists('&pumblend')
   set pumblend=20
 endif
 
-if exists('&wildoptions')
-  set wildmenu
-  set wildmode=full
-  set wildoptions+=pum
-endif
-
 " nnoremap <Leader>t    :<C-u>terminal<CR>
 " nnoremap !            :<C-u>terminal<Space>
 " let PYTHONPATH = expand('$HOME') . '/.pyenv/shims/python3'

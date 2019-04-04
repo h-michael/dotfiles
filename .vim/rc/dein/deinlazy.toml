@@ -50,6 +50,7 @@ hook_source = '''
   "     \ 'ruby': ['Gemfile']
   "     \ }
 
+  let g:LanguageClient_useFloatingHover = 0
   let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
   let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
   let g:LanguageClient_completionPreferTextEdit = 1
@@ -133,9 +134,16 @@ hook_source = '''
 '''
 
 [[plugins]]
+repo = 'ncm2/float-preview.nvim'
+depends = ['deoplete.nvim']
+on_source = 'deoplete.nvim'
+hook_add = '''
+  let g:float_preview#docked = 0
+
+'''
+
+[[plugins]]
 repo = 'Shougo/denite.nvim'
-# rev = 'd8b318434d7a30e0aa2def71113c0dc80d1682d2'
-# rev = 'ff064b106a1fa4e6150988f2d8ebd61770047229'
 on_cmd = [
   'Denite',
   'DeniteBufferDir',

@@ -247,9 +247,18 @@ set t_vb=
 set novisualbell
 set belloff=all
 
-" Display candidate supplement.
 set nowildmenu
-set wildmode=list:longest,full
+
+if exists('&wildoptions')
+  " Display candidates by popup menu.
+  set wildmenu
+  set wildmode=full
+  set wildoptions+=pum
+else
+  " Display candidate supplement.
+  set nowildmenu
+  set wildmode=list:longest,full
+endif
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
@@ -264,7 +273,7 @@ set history=1000
 " Display all the information of the tag by the supplement of the Insert mode.
 set showfulltag
 " Can supplement a tag in a command-line.
-set wildoptions=tagfile
+set wildoptions+=tagfile
 
 " Disable menu
 let g:did_install_default_menus = 1

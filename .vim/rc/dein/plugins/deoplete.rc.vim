@@ -48,6 +48,7 @@ call deoplete#custom#source('_', 'converters', [
       \ 'converter_remove_overlap',
       \ 'converter_truncate_abbr',
       \ 'converter_truncate_menu',
+      \ 'converter_truncate_info',
       \ 'converter_auto_delimiter',
       \ 'matcher_length'
       \ ])
@@ -113,6 +114,7 @@ call deoplete#custom#option({
       \ 'buffer_path': v:true,
       \ 'skip_multibyte': v:true,
       \ 'prev_completion_mode': 'length',
+      \ 'auto_preview': v:true,
       \ })
       " \ 'refresh_allways': v:true,
 
