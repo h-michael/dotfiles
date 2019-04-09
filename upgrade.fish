@@ -62,10 +62,8 @@ end
 
 function upgrade_alacritty
   cd ~/ghq/github.com/jwilm/alacritty
-
-  git checkout master
-  git fetch origin
   if check_outdate
+    hub sync
     cargo build --release
     echo $password | sudo -S rm /usr/local/bin/alacritty
     echo $password | sudo -S cp target/release/alacritty /usr/local/bin/
