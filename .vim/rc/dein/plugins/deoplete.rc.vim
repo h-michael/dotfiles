@@ -55,12 +55,12 @@ call deoplete#custom#source('_', 'converters', [
 
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
-" call deoplete#custom#option('sources', {
-"       \ 'rust': ['omni', 'syntax', 'LanguageClient'],
-"       \ 'c': ['buffer', 'tag', 'omni'],
-"       \ 'cpp': ['buffer', 'tag', 'omni'],
-"       \ 'elm': ['elm', 'member', 'omni', 'tag', 'syntax'],
-"       \ })
+call deoplete#custom#option('sources', {
+      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax'],
+      \ 'rust': ['omni', 'syntax', 'LanguageClient'],
+      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient'],
+      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient'],
+      \ })
       " \ 'ruby': ['file', 'omni', 'tag']
 
 " call deoplete#custom#source('omni', 'functions', {
@@ -135,3 +135,5 @@ call deoplete#custom#option({
 " call deoplete#enable_logging('DEBUG', $XDG_LOG_HOME.'/nvim/python/deoplete.log')
 " call deoplete#custom#option('profile', v:true)
 " call deoplete#custom#source('core', 'debug_enabled', 1)
+
+let g:necosyntax#min_keyword_length = 2

@@ -10,6 +10,16 @@ hook_source = '''
 '''
 hook_post_update = 'UpdateRemotePlugins'
 
+[[plugins]]
+repo = 'Shougo/neco-syntax'
+depends = 'deoplete.nvim'
+on_event = ['InsertEnter']
+
+# [[plugins]]
+# repo = 'ujihisa/neco-look'
+# depends = 'deoplete.nvim'
+# on_event = ['InsertEnter']
+
 # Include completion framework for neocomplete/deoplete
 [[plugins]]
 repo = 'Shougo/neoinclude.vim'
@@ -82,4 +92,3 @@ on_ft = ['go']
 
 # [[plugins]]
 # repo = 'zchee/deoplete-docker'
-
