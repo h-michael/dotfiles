@@ -26,7 +26,6 @@ hook_source = '''
   let g:LanguageClient_selectionUI = 'fzf'
   let g:LanguageClient_serverCommands = {
       \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
-      \ 'ruby': ['solargraph', 'stdio'],
       \ 'c': ['clangd'],
       \ 'cpp': ['clangd'],
       \ 'dart': ['dart_language_server'],
@@ -39,6 +38,7 @@ hook_source = '''
       \ 'Dockerfile': ['docker-langserver', '--stdio']
       \ }
 
+      " \ 'ruby': ['solargraph', 'stdio'],
       " \ 'rust': ['ra_lsp_server'],
       " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
       " \ 'rust': ['env', 'RUST_LOG=info', '/home/h-michael/ghq/github.com/h-michael/rls/target/release/rls'],

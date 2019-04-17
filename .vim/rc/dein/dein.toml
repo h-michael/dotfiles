@@ -189,6 +189,32 @@ hook_add = '''
     nmap <silent> [denite]<C-D> :Denite -buffer-name=gtags_completion gtags_completion<cr>
 '''
 
+[[plugins]]
+repo = 'sjl/gundo.vim'
+
+[[plugins]]
+repo = 'RRethy/vim-hexokinase'
+hook_add = '''
+  let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml']
+  let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
+  let g:Hexokinase_virtualText = '██████'
+'''
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+
+# [[plugins]]
+# repo = 'liuchengxu/eleline.vim'
+
+# [[plugins]]
+# repo = 'Shougo/neosnippet'
+
+# [[plugins]]
+# repo = 'Shougo/neosnippet-snippets'
+
+# [[plugins]]
+# repo = 'styled-components/vim-styled-components'
+
 # Vim comment plugin: supported operator/non-operator mappings, repeatable by dot-command, 300+ filetypes
 # [[plugins]]
 # repo = 'tyru/caw.vim'

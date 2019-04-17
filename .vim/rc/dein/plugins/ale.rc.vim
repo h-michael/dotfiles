@@ -7,6 +7,7 @@
 "   let g:ale_set_balloons_legacy_echo = 1
 "   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " endif
+let g:ale_disable_lsp = 1
 let g:ale_set_balloons_legacy_echo = 1
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " let g:ale_sign_column_always = 1
