@@ -253,7 +253,10 @@ if exists('&wildoptions')
   " Display candidates by popup menu.
   set wildmenu
   set wildmode=full
-  set wildoptions+=pum
+
+  if has('nvim')
+    set wildoptions+=pum
+  endif
 else
   " Display candidate supplement.
   set nowildmenu

@@ -26,4 +26,5 @@ if has('vim_starting') && empty(argv())
 endif
 
 " Share the histories
+let &shadafile = expand('$XDG_DATA_HOME/nvim/shada/main.shada')
 autocmd MyAutoCmd CursorHold * if exists(':rshada') | rshada | wshada | endif
