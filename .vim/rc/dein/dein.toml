@@ -103,9 +103,6 @@ repo = 'tpope/vim-repeat'
 repo = 'chrisbra/csv.vim'
 
 [[plugins]]
-repo = 'haya14busa/vim-poweryank'
-
-[[plugins]]
 repo = 'junegunn/fzf'
 build = './install --all'
 merged = 0
@@ -202,6 +199,12 @@ hook_add = '''
 
 [[plugins]]
 repo = 'liuchengxu/vista.vim'
+
+[[plugins]]
+repo = 'haya14busa/vim-poweryank'
+hook_source = '''
+  map <Leader>y <Plug>(operator-poweryank-osc52)
+'''
 
 # [[plugins]]
 # repo = 'liuchengxu/eleline.vim'

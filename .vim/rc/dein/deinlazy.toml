@@ -137,7 +137,7 @@ hook_source = '''
 repo = 'ncm2/float-preview.nvim'
 depends = ['deoplete.nvim']
 on_source = 'deoplete.nvim'
-on_if = '!has("nvim")'
+on_if = 'has("nvim")'
 hook_add = '''
   let g:float_preview#docked = 0
 
