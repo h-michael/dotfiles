@@ -6,10 +6,6 @@ set -x XDG_CONFIG_HOME $HOME/.config
 set -x XDG_CACHE_HOME $HOME/.cache
 set -x XDG_DATA_HOME $HOME/.local/share
 
-# set langage version manager path
-set -x PATH $HOME/.rbenv/bin $PATH
-set -x PATH $HOME/.nodenv/bin $PATH
-
 # LANGUAGE must be set by en_US
 
 set -x LANGUAGE en_US.UTF-8
@@ -33,6 +29,7 @@ set -x PAGER less
 set -x LESSCHARSET 'utf-8'
 set -x LESS '-R'
 set -x LESSOPEN '|lessfilter %s'
+
 # LESS man page colors (makes Man pages more readable).
 set -x LESS_TERMCAP_mb (printf "\033[01;31m")
 set -x LESS_TERMCAP_md (printf "\033[01;31m")
@@ -50,6 +47,10 @@ set -x LS_COLORS 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46
 # available $INTERACTIVE_FILTER
 set -x INTERACTIVE_FILTER "fzf:peco:percol:gof:pick"
 
+set -x GTAGSCONF "$HOME/.globalrc"
+set -x GTAGSLIBPATH '/usr/lib/gtags'
+set -x GTAGSLABEL pygments
+
 [ -f ~/.secret ]; and source ~/.secret
 
 if is_linux
@@ -60,84 +61,66 @@ if is_mac
     set -x BROWSER open
 end
 
-# https://wiki.archlinux.jp/index.php/Ccache
-# set -x PATH /usr/lib/ccache/bin $PATH
-# set -x PATH /usr/lib/colorgcc/bin $PATH
-
-# set -x PATH $PATH $HOME/bin
-# set -x PATH $PATH /opt/flutter/bin
-# set -x PATH $PATH $HOME/.pub-cache/bin
-set -x PATH $PATH /usr/local/bin
-set -x PATH $PATH $HOME/.local/bin
-
-# for Rust
-set -x PATH $PATH $HOME/.cargo/bin
-
-set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
-# for Rls
-set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
-
-# for sccache
-# set -x RUSTC_WRAPPER sccache
-
 # For Enpass
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 0
 
-eval (direnv hook fish)
 
-# eval (opam config env)
-# set -x OPAMKEEPBUILDDIR true
-# set -x OCAMLPARAM "_,bin-annot=1"
+if [ -z $TMUX ]
+  eval (ssh-agent -c)
+  eval (direnv hook fish)
+  # set langage version manager path
+  set -x PATH $HOME/.rbenv/bin $PATH
+  set -x PATH $HOME/.nodenv/bin $PATH
 
-if status --is-interactive
-    # xxenv
-    set -x PATH $HOME/.rbenv/bin $PATH
-    source (rbenv init -|psub)
+  set -x PATH $PATH /usr/local/bin
+  set -x PATH $PATH $HOME/.local/bin
 
-    set -x PATH $HOME/.nodenv/bin $PATH
-    source (nodenv init -|psub)
-    # set -x PATH $PATH (yarn global bin)
+  # for Rust
+  set -x PATH $PATH $HOME/.cargo/bin
 
-    set -x GOPATH $HOME/go
-    set -x PATH $PATH $GOPATH/bin
-    set -x GOENV_ROOT $HOME/.goenv
-    set -x PATH $GOENV_ROOT/bin $PATH
-    source (goenv init -|psub)
+  set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
+  # for Rls
+  set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
 
-    # Display
+  if status --is-interactive
+      # xxenv
+      set -x PATH $HOME/.rbenv/bin $PATH
+      source (rbenv init -|psub)
 
-    set -g theme_color_scheme gruvbox
-    set -g theme_display_docker_machine no
-    set -g theme_display_virtualenv no
-end
+      set -x PATH $HOME/.nodenv/bin $PATH
+      source (nodenv init -|psub)
+      # set -x PATH $PATH (yarn global bin)
 
-set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
-if [ -n $SSH_CONNECTION ]
-  set -x EDITOR nvim
-end
+      set -x GOPATH $HOME/go
+      set -x PATH $PATH $GOPATH/bin
+      set -x GOENV_ROOT $HOME/.goenv
+      set -x PATH $GOENV_ROOT/bin $PATH
+      source (goenv init -|psub)
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
-  source "$HOME/google-cloud-sdk/path.fish.inc"
-end
+      # Display
 
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
-  source "$HOME/google-cloud-sdk/completion.fish.inc"
-end
+      set -g theme_color_scheme gruvbox
+      set -g theme_display_docker_machine no
+      set -g theme_display_virtualenv no
+  end
 
-set -x GTAGSCONF "$HOME/.globalrc"
-set -x GTAGSLIBPATH '/usr/lib/gtags'
-set -x GTAGSLABEL pygments
+  set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
+  if [ -n $SSH_CONNECTION ]
+    set -x EDITOR nvim
+  end
 
+  # The next line updates PATH for the Google Cloud SDK.
+  if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
+    source "$HOME/google-cloud-sdk/path.fish.inc"
+  end
 
-if [ -f "/usr/local/sbin" ]
-  set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
-end
+  # The next line enables shell command completion for gcloud.
+  if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
+    source "$HOME/google-cloud-sdk/completion.fish.inc"
+  end
 
-if is_linux; and type powerline-rs > /dev/null
-  function fish_prompt
-      powerline-rs --cwd-max-depth 3 --shell bare $status
+  if [ -f "/usr/local/sbin" ]
+    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
   end
 end
 
