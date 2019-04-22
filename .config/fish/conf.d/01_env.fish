@@ -64,10 +64,7 @@ end
 # For Enpass
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 0
 
-
 if [ -z $TMUX ]
-  eval (ssh-agent -c)
-  eval (direnv hook fish)
   # set langage version manager path
   set -x PATH $HOME/.rbenv/bin $PATH
   set -x PATH $HOME/.nodenv/bin $PATH
@@ -82,46 +79,50 @@ if [ -z $TMUX ]
   # for Rls
   set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
 
-  if status --is-interactive
-      # xxenv
-      set -x PATH $HOME/.rbenv/bin $PATH
-      source (rbenv init -|psub)
+  eval (ssh-agent -c)
+end
 
-      set -x PATH $HOME/.nodenv/bin $PATH
-      source (nodenv init -|psub)
-      # set -x PATH $PATH (yarn global bin)
+eval (direnv hook fish)
 
-      set -x GOPATH $HOME/go
-      set -x PATH $PATH $GOPATH/bin
-      set -x GOENV_ROOT $HOME/.goenv
-      set -x PATH $GOENV_ROOT/bin $PATH
-      source (goenv init -|psub)
+if status --is-interactive
+    # xxenv
+    set -x PATH $HOME/.rbenv/bin $PATH
+    source (rbenv init -|psub)
 
-      # Display
+    set -x PATH $HOME/.nodenv/bin $PATH
+    source (nodenv init -|psub)
+    # set -x PATH $PATH (yarn global bin)
 
-      set -g theme_color_scheme gruvbox
-      set -g theme_display_docker_machine no
-      set -g theme_display_virtualenv no
-  end
+    set -x GOPATH $HOME/go
+    set -x PATH $PATH $GOPATH/bin
+    set -x GOENV_ROOT $HOME/.goenv
+    set -x PATH $GOENV_ROOT/bin $PATH
+    source (goenv init -|psub)
 
-  set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
-  if [ -n $SSH_CONNECTION ]
-    set -x EDITOR nvim
-  end
+    # Display
 
-  # The next line updates PATH for the Google Cloud SDK.
-  if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
-    source "$HOME/google-cloud-sdk/path.fish.inc"
-  end
+    set -g theme_color_scheme gruvbox
+    set -g theme_display_docker_machine no
+    set -g theme_display_virtualenv no
+end
 
-  # The next line enables shell command completion for gcloud.
-  if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
-    source "$HOME/google-cloud-sdk/completion.fish.inc"
-  end
+set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
+if [ -n $SSH_CONNECTION ]
+  set -x EDITOR nvim
+end
 
-  if [ -f "/usr/local/sbin" ]
-    set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
-  end
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
+  source "$HOME/google-cloud-sdk/path.fish.inc"
+end
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
+  source "$HOME/google-cloud-sdk/completion.fish.inc"
+end
+
+if [ -f "/usr/local/sbin" ]
+  set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 end
 
 function history-merge --on-event fish_preexec
