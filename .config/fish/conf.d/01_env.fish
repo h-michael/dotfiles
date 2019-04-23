@@ -44,7 +44,6 @@ set -x CLICOLOR true
 set -x LSCOLORS exfxcxdxbxegedabagacad
 set -x LS_COLORS 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
-# available $INTERACTIVE_FILTER
 set -x INTERACTIVE_FILTER "fzf:peco:percol:gof:pick"
 
 set -x GTAGSCONF "$HOME/.globalrc"
@@ -80,30 +79,28 @@ if [ -z $TMUX ]
   set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
 
   eval (ssh-agent -c)
+
+  # xenv
+  set -x PATH $HOME/.rbenv/bin $PATH
+  set -x PATH $HOME/.nodenv/bin $PATH
+  set -x GOPATH $HOME/go
+  set -x PATH $PATH $GOPATH/bin
+  set -x GOENV_ROOT $HOME/.goenv
+  set -x PATH $GOENV_ROOT/bin $PATH
+
+  # Display
+  set -g theme_color_scheme gruvbox
+  set -g theme_display_docker_machine no
+  set -g theme_display_virtualenv no
 end
 
 eval (direnv hook fish)
 
 if status --is-interactive
-    # xxenv
-    set -x PATH $HOME/.rbenv/bin $PATH
-    source (rbenv init -|psub)
-
-    set -x PATH $HOME/.nodenv/bin $PATH
-    source (nodenv init -|psub)
-    # set -x PATH $PATH (yarn global bin)
-
-    set -x GOPATH $HOME/go
-    set -x PATH $PATH $GOPATH/bin
-    set -x GOENV_ROOT $HOME/.goenv
-    set -x PATH $GOENV_ROOT/bin $PATH
-    source (goenv init -|psub)
-
-    # Display
-
-    set -g theme_color_scheme gruvbox
-    set -g theme_display_docker_machine no
-    set -g theme_display_virtualenv no
+  source (rbenv init -|psub)
+  source (nodenv init -|psub)
+  # set -x PATH $PATH (yarn global bin)
+  source (goenv init -|psub)
 end
 
 set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
