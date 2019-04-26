@@ -206,6 +206,9 @@ hook_source = '''
   map <Leader>y <Plug>(operator-poweryank-osc52)
 '''
 
+[[plugins]]
+repo = 'tpope/vim-abolish'
+
 # [[plugins]]
 # repo = 'liuchengxu/eleline.vim'
 
