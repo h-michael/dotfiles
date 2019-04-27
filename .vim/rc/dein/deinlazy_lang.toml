@@ -39,6 +39,9 @@ hook_source = '''
   let g:rust_fold = 1
 '''
 
+[[plugins]]
+repo = 'rhysd/rust-doc.vim'
+
 # [[plugins]]
 # repo = 'dart-lang/dart-vim-plugin'
 # on_ft = 'dart'
