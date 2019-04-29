@@ -187,7 +187,7 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'sjl/gundo.vim'
+repo = 'mbbill/undotree'
 
 [[plugins]]
 repo = 'RRethy/vim-hexokinase'

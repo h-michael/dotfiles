@@ -56,10 +56,10 @@ call deoplete#custom#source('_', 'converters', [
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
 call deoplete#custom#option('sources', {
-      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax'],
-      \ 'rust': ['omni', 'syntax', 'LanguageClient'],
-      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient'],
-      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient'],
+      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax', 'tabnine'],
+      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient', 'tabnine'],
+      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient', 'tabnine'],
+      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient', 'tabnine'],
       \ })
       " \ 'ruby': ['file', 'omni', 'tag']
 

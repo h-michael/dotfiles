@@ -134,6 +134,12 @@ hook_source = '''
 '''
 
 [[plugins]]
+repo = 'tbodt/deoplete-tabnine'
+build = './install.sh'
+depends = ['deoplete.nvim']
+on_source = 'deoplete.nvim'
+
+[[plugins]]
 repo = 'ncm2/float-preview.nvim'
 depends = ['deoplete.nvim']
 on_source = 'deoplete.nvim'
@@ -294,6 +300,11 @@ hook_source = '''
 repo = 'w0rp/ale'
 on_event = 'BufRead'
 hook_add = 'source ~/.vim/rc/dein/plugins/ale.rc.vim'
+
+[[plugins]]
+repo = 'wsdjeg/dein-ui.vim'
+hook_post_update = 'UpdateRemotePlugins'
+on_cmd = 'DeinUpdate'
 
 # utility comamnds of dein.vim with rich completion.
 [[plugins]]
