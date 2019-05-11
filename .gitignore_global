@@ -13,3 +13,4 @@ docker.sh
 build-vim.sh
 rusty-tags.vi
 rls*.log
+.mypy_cache/
