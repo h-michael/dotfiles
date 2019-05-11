@@ -209,6 +209,13 @@ hook_source = '''
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
+[[plugins]]
+repo = 'puremourning/vimspector'
+on_if = '!has("nvim")'
+hook_add = '''
+  let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+'''
+
 # [[plugins]]
 # repo = 'liuchengxu/eleline.vim'
 

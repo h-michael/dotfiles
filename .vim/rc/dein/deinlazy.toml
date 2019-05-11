@@ -2,7 +2,7 @@
 [[plugins]]
 repo = 'autozimu/LanguageClient-neovim'
 rev = 'next'
-build = 'bash install.sh'
+build = 'make release'
 on_ft = [
   'rust',
   'ruby',

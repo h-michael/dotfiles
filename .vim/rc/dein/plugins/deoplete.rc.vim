@@ -57,9 +57,9 @@ call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
 call deoplete#custom#option('sources', {
       \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax', 'tabnine'],
-      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient', 'tabnine'],
-      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient', 'tabnine'],
-      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient', 'tabnine'],
+      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient'],
+      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient'],
+      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient'],
       \ })
       " \ 'ruby': ['file', 'omni', 'tag']
 
