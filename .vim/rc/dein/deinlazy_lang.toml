@@ -15,11 +15,6 @@ repo = 'Shougo/neco-syntax'
 depends = 'deoplete.nvim'
 on_event = ['InsertEnter']
 
-# [[plugins]]
-# repo = 'ujihisa/neco-look'
-# depends = 'deoplete.nvim'
-# on_event = ['InsertEnter']
-
 # Include completion framework for neocomplete/deoplete
 [[plugins]]
 repo = 'Shougo/neoinclude.vim'
@@ -84,11 +79,6 @@ hook_add = '''
 [[plugin]]
 repo = 'AndrewRadev/splitjoin.vim'
 on_ft = ['go']
-
-# [[plugins]]
-# repo = 'tbodt/deoplete-tabnine'
-# depends = 'deoplete.nvim'
-# build = './install.sh'
 
 # [[plugins]]
 # repo = 'pbogut/deoplete-elm'

@@ -35,16 +35,6 @@ hook_add = '''
   au MyAutoCmd VimEnter * nested colorscheme monokai_pro
 '''
 
-# Molokai color scheme for Vim
-# [[plugins]]
-# repo = 'h-michael/molokai'
-# hook_post_update = 'Dein recache-runtimepath'
-# hook_add = '''
-#   let g:molokai_original = 1
-#   let g:rehash256 = 1
-#   au MyAutoCmd VimEnter * nested colorscheme molokai
-# '''
-
 # lean & mean status/tabline for vim that's light as air
 [[plugins]]
 repo = 'vim-airline/vim-airline'
@@ -216,27 +206,6 @@ hook_add = '''
   let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 '''
 
-# [[plugins]]
-# repo = 'liuchengxu/eleline.vim'
-
-# [[plugins]]
-# repo = 'Shougo/neosnippet'
-
-# [[plugins]]
-# repo = 'Shougo/neosnippet-snippets'
-
-# [[plugins]]
-# repo = 'styled-components/vim-styled-components'
-
-# Vim comment plugin: supported operator/non-operator mappings, repeatable by dot-command, 300+ filetypes
-# [[plugins]]
-# repo = 'tyru/caw.vim'
-
 # A comprehensive Vim utility functions for Vim plugins
-# [[plugins]]
-# repo = 'vim-jp/vital.vim'
-
-# # Highlights trailing whitespace in red and provides :FixWhitespace to fix it.
-# [[plugins]]
-# repo = 'bronson/vim-trailing-whitespace'
-# # on_cmd = ['FixWhitespace']
+[[plugins]]
+repo = 'vim-jp/vital.vim'

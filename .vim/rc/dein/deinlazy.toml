@@ -134,12 +134,6 @@ hook_source = '''
 '''
 
 [[plugins]]
-repo = 'tbodt/deoplete-tabnine'
-build = './install.sh'
-depends = ['deoplete.nvim']
-on_source = 'deoplete.nvim'
-
-[[plugins]]
 repo = 'ncm2/float-preview.nvim'
 depends = ['deoplete.nvim']
 on_source = 'deoplete.nvim'
@@ -162,9 +156,9 @@ depends = ['cpsm']
 hook_post_update = 'UpdateRemotePlugins'
 hook_source = 'source ~/.vim/rc/dein/plugins/denite.rc.vim'
 hook_add = '''
-  nnoremap <silent> /    :<C-u>Denite           line -auto-resume -split=floating<CR>
+  nnoremap <silent> /    :<C-u>Denite           line -auto-resume<CR>
   nnoremap <silent> *    :<C-u>DeniteCursorWord line<CR>
-  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register -split=floating neoyank<CR>
+  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank<CR>
   nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc<CR>
   nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique<CR>
   nnoremap <silent> ;mk  :<C-u>Denite           mark -auto-resume<CR>
@@ -232,69 +226,11 @@ on_source = ['denite.nvim']
 hook_source = 'let g:fruzzy#sortonempty = 0'
 hook_post_update = 'call fruzzy#install()'
 
-# # denite.nvim source and kind to mark and list directories
-# [[plugins]]
-# repo = 'kmnk/denite-dirmark'
-# on_cmd = ['Denite']
-# on_func  = ['denite#']
-# hook_post_update = 'UpdateRemotePlugins'
-
 # Asynchronously control git repositories in Neovim/Vim 8
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
 on_cmd = ['Gina']
 on_fn = ['gina#']
-
-# The dark powered file explorer implementation
-[[plugins]]
-repo = 'Shougo/defx.nvim'
-depends = ['denite.nvim']
-hook_post_update = 'UpdateRemotePlugins'
-hook_add = '''
-  nnoremap <silent> ;df :<C-u>Defx <CR>
-  nnoremap <silent> ;vf :<C-u>Defx -split=vertical <CR>
-  nnoremap <silent> ;sf :<C-u>Defx -split=horizontal <CR>
-'''
-hook_source = '''
-  autocmd MyAutoCmd FileType defx call s:defx_my_settings()
-  function! s:defx_my_settings() abort
-    " Define mappings
-    nnoremap <silent><buffer><expr> <CR>
-    \ defx#async_action('open')
-    nnoremap <silent><buffer><expr> l
-    \ defx#async_action('open')
-    nnoremap <silent><buffer><expr> E
-    \ defx#async_action('open', 'vsplit')
-    nnoremap <silent><buffer><expr> P
-    \ defx#async_action('open', 'pedit')
-    nnoremap <silent><buffer><expr> K
-    \ defx#async_action('new_directory')
-    nnoremap <silent><buffer><expr> N
-    \ defx#async_action('new_file')
-    nnoremap <silent><buffer><expr> d
-    \ defx#async_action('remove_trash')
-    nnoremap <silent><buffer><expr> r
-    \ defx#async_action('rename')
-    nnoremap <silent><buffer><expr> h
-    \ defx#async_action('cd', ['..'])
-    nnoremap <silent><buffer><expr> ~
-    \ defx#async_action('cd')
-    nnoremap <silent><buffer><expr> q
-    \ defx#async_action('quit')
-    nnoremap <silent><buffer><expr> <Space>
-    \ defx#async_action('toggle_select') . 'j'
-    nnoremap <silent><buffer><expr> *
-    \ defx#async_action('toggle_select_all')
-    nnoremap <silent><buffer><expr> j
-    \ line('.') == line('$') ? 'gg' : 'j'
-    nnoremap <silent><buffer><expr> k
-    \ line('.') == 1 ? 'G' : 'k'
-    nnoremap <silent><buffer><expr> <C-l>
-    \ defx#async_action('redraw')
-    nnoremap <silent><buffer><expr> <C-g>
-    \ defx#async_action('print')
-  endfunction
-'''
 
 [[plugins]]
 repo = 'w0rp/ale'
