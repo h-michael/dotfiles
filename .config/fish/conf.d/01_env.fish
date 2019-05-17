@@ -78,8 +78,6 @@ if [ -z $TMUX ]
   # for Rls
   set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
 
-  eval (ssh-agent -c)
-
   # xenv
   set -x PATH $HOME/.rbenv/bin $PATH
   set -x PATH $HOME/.nodenv/bin $PATH
