@@ -1,7 +1,11 @@
 " dein configurations.
 
 let g:dein#install_progress_type = 'title'
-let s:path = expand('$CACHE/dein')
+if has('nvim')
+  let s:path = expand('$CACHE/dein-nvim')
+else
+  let s:path = expand('$CACHE/dein-vim')
+endif
 
 if !dein#load_state(s:path)
   finish

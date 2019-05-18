@@ -137,10 +137,9 @@ hook_source = '''
 repo = 'ncm2/float-preview.nvim'
 depends = ['deoplete.nvim']
 on_source = 'deoplete.nvim'
-on_if = 'has("nvim")'
+if = 'has("nvim")'
 hook_add = '''
   let g:float_preview#docked = 0
-
 '''
 
 [[plugins]]
@@ -245,7 +244,7 @@ on_cmd = 'DeinUpdate'
 # utility comamnds of dein.vim with rich completion.
 [[plugins]]
 repo = 'haya14busa/dein-command.vim'
-hook_post_update = 'UpdateRemotePlugins'
+# hook_post_update = 'UpdateRemotePlugins'
 on_cmd = 'Dein'
 
 # Saves yank history includes unite.vim history/yank source.
@@ -267,7 +266,7 @@ on_cmd = 'BenchVimrc'
 [[plugins]]
 repo = 'Shougo/neomru.vim'
 on_source = ['unite.vim', 'denite.nvim']
-on_if = 1
+if = 1
 
 # The vim source for neocomplete/deoplete
 [[plugins]]
