@@ -11,10 +11,6 @@ if = '!has("nvim")'
 repo = 'roxma/nvim-yarp'
 if = '!has("nvim")'
 
-[[plugins]]
-repo = 'nixprime/cpsm'
-build = 'env PY3=ON ./install.sh'
-
 # A solid language pack for Vim.
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
@@ -101,6 +97,7 @@ merged = 0
 repo = 'junegunn/fzf.vim'
 depends = 'fzf'
 hook_add = '''
+  " override ripgrep command for preview
   command! -bang -nargs=* Rg
     \ call fzf#vim#grep(
     \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
@@ -108,11 +105,22 @@ hook_add = '''
     \           : fzf#vim#with_preview('right:50%:hidden', '?'),
     \   <bang>0)
 
+  command! -bang -nargs=* CurrentWordRg
+    \ call fzf#vim#grep(
+    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(expand('<cword>')), 1,
+    \   <bang>0 ? fzf#vim#with_preview('up:60%')
+    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \   <bang>0)
+
   command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-
-  " nnoremap <silent> /    :Lines <CR>
+  nnoremap <silent> /    :BLines <CR>
+  nnoremap <silent> ;cw  :CurrentWordRg <CR>
+  nnoremap <silent> ;rg  :Rg <CR>
+  nnoremap <silent> ;b   :Buffers <CR>
+  nnoremap <silent> ;f   :Files <CR>
+  nnoremap <silent> ;t   :Tags <CR>
 '''
 
 # Translate-shell.vim is a plugin for translating text without leaving Vim.
@@ -164,16 +172,6 @@ hook_add = '''
 repo = 'jsfaint/gen_tags.vim'
 hook_add = '''
     let g:gen_tags#gtags_auto_gen = 0
-'''
-
-[[plugins]]
-repo = 'ozelentok/denite-gtags'
-hook_add = '''
-    " Prefix key
-    nmap [denite] <Nop>
-    map <C-j> [denite]
-    " Keymap
-    nmap <silent> [denite]<C-D> :Denite -buffer-name=gtags_completion gtags_completion<cr>
 '''
 
 [[plugins]]
