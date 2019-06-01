@@ -142,89 +142,6 @@ hook_add = '''
   let g:float_preview#docked = 0
 '''
 
-[[plugins]]
-repo = 'Shougo/denite.nvim'
-on_cmd = [
-  'Denite',
-  'DeniteBufferDir',
-  'DeniteProjectDir',
-  'DeniteCursorWord'
-]
-on_func  = ['denite#']
-depends = ['cpsm']
-hook_post_update = 'UpdateRemotePlugins'
-hook_source = 'source ~/.vim/rc/dein/plugins/denite.rc.vim'
-hook_add = '''
-  nnoremap <silent> /    :<C-u>Denite           line -auto-resume<CR>
-  nnoremap <silent> *    :<C-u>DeniteCursorWord line<CR>
-  xnoremap <silent> ;rg  :<C-u>Denite           register -default-action=replace -buffer-name=register neoyank<CR>
-  nnoremap <silent> ;vrc :<C-u>Denite           file/rec: ~/.vim/rc<CR>
-  nnoremap <silent> ;ch  :<C-u>Denite           command_history -unique<CR>
-  nnoremap <silent> ;mk  :<C-u>Denite           mark -auto-resume<CR>
-
-  nnoremap <silent> ;b   :<C-u>Denite           buffer<CR>
-  nnoremap <silent> ;db  :<C-u>DeniteBufferDir  buffer<CR>
-  nnoremap <silent> ;pb  :<C-u>DeniteProjectDir buffer<CR>
-
-  nnoremap <silent> ;f   :<C-u>Denite           file<CR>
-  nnoremap <silent> ;df  :<C-u>DeniteBufferDir  file<CR>
-  nnoremap <silent> ;pf  :<C-u>DeniteProjectDir file<CR>
-
-  nnoremap <silent> ;fr  :<C-u>Denite           file/rec<CR>
-  nnoremap <silent> ;dfr :<C-u>DeniteBufferDir  file/rec<CR>
-  nnoremap <silent> ;pfr :<C-u>DeniteProjectDir file/rec<CR>
-
-  " nnoremap <silent> ;d   :<C-u>Denite           directory <CR>
-  " nnoremap <silent> ;dd  :<C-u>DeniteBufferDir  directory <CR>
-  " nnoremap <silent> ;pd  :<C-u>DeniteProjectDir directory <CR>
-
-  nnoremap <silent> ;dr  :<C-u>Denite           directory_rec<CR>
-  nnoremap <silent> ;ddr :<C-u>DeniteBufferDir  directory_rec<CR>
-  nnoremap <silent> ;pdr :<C-u>DeniteProjectDir directory_rec<CR>
-
-  nnoremap <silent> ;g   :<C-u>Denite           grep -no-empty<CR>
-  nnoremap <silent> ;cwg :<C-u>DeniteCursorWord grep -no-empty<CR>
-
-  nnoremap <silent> ;gh  :<C-u>Denite           ghq<CR>
-  nnoremap <silent> ;ft  :<C-u>Denite           filetype<CR>
-  nnoremap <silent> ;n   :<C-u>Denite -resume -cursor-pos=+1 -immediately<CR>
-  nnoremap <silent> ;p   :<C-u>Denite -resume -cursor-pos=-1 -immediately<CR>
-
-  " for LanguageClient-nvim
-
-  nnoremap <silent> ;cm   :<C-u>Denite           contextMenu<CR>
-  nnoremap <silent> ;ds   :<C-u>Denite           documentSymbol<CR>
-  nnoremap <silent> ;ref  :<C-u>Denite           references<CR>
-  nnoremap <silent> ;ws   :<C-u>Denite           workspaceSymbol<CR>
-'''
-
-# Neovim/Vim buffer filtering plugin
-[[plugins]]
-repo = 'lambdalisue/lista.nvim'
-on_cmd = ['Lista', 'ListaResume', 'ListaCursorWord']
-on_func  = ['lista#']
-depends = ['denite.nvim']
-hook_post_update = 'UpdateRemotePlugins'
-hook_add = '''
-  nnoremap <silent> ;lt :<C-u>Lista<CR>
-  nnoremap <silent> ;lcw :<C-u>ListaCursorWord<CR>
-  let g:lista#custom_mappings = [
-        \ ['<C-b>', '<Left>'],
-        \ ['<C-f>', '<Right>'],
-        \ ['<C-a>', '<Home>'],
-        \ ['<C-e>', '<End>'],
-        \ ['<C-d>', '<Del>'],
-        \ ['<C-P>', '<lista:select_previous_candidate>', 'noremap'],
-        \ ['<C-N>', '<lista:select_next_candidate>', 'noremap'],
-        \ [';', 'pinkyless#stickyshift#enter(";")', 'expr noremap'],
-        \]
-'''
-[[plugins]]
-repo = 'raghur/fruzzy'
-on_source = ['denite.nvim']
-hook_source = 'let g:fruzzy#sortonempty = 0'
-hook_post_update = 'call fruzzy#install()'
-
 # Asynchronously control git repositories in Neovim/Vim 8
 [[plugins]]
 repo = 'lambdalisue/gina.vim'
@@ -247,12 +164,6 @@ repo = 'haya14busa/dein-command.vim'
 # hook_post_update = 'UpdateRemotePlugins'
 on_cmd = 'Dein'
 
-# Saves yank history includes unite.vim history/yank source.
-[[plugins]]
-repo = 'Shougo/neoyank.vim'
-on_event = 'TextYankPost'
-on_source = ['denite.nvim']
-
 # Benchmarck
 [[plugins]]
 repo = 'tweekmonster/startuptime.vim'
@@ -261,12 +172,6 @@ on_cmd = 'StartupTime'
 [[plugins]]
 repo = 'mattn/benchvimrc-vim'
 on_cmd = 'BenchVimrc'
-
-# MRU plugin includes unite.vim MRU sources
-[[plugins]]
-repo = 'Shougo/neomru.vim'
-on_source = ['unite.vim', 'denite.nvim']
-if = 1
 
 # The vim source for neocomplete/deoplete
 [[plugins]]
