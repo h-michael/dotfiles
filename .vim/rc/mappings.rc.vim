@@ -62,10 +62,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <silent> <C-l> :<C-u>tabnext<CR>
 nnoremap <silent> <C-h> :<C-u>tabprevious<CR>
 
-" move to next/prev buffer by two space/bs pressing
-nmap <Space><Space> :bn<CR>
-nmap <BS><BS> :bp<CR>
-
 " autocmd MyAutoCmd BufReadPost * delmarks!
 " autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
 " autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
