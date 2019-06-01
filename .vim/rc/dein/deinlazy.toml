@@ -142,12 +142,6 @@ hook_add = '''
   let g:float_preview#docked = 0
 '''
 
-# Asynchronously control git repositories in Neovim/Vim 8
-[[plugins]]
-repo = 'lambdalisue/gina.vim'
-on_cmd = ['Gina']
-on_fn = ['gina#']
-
 [[plugins]]
 repo = 'w0rp/ale'
 on_event = 'BufRead'

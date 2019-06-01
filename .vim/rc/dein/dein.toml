@@ -131,6 +131,19 @@ hook_add = '''
   nnoremap <silent> ;t   :Tags <CR>
 '''
 
+# fugitive.vim: A Git wrapper so awesome, it should be illegal
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+
+# rhubarb.vim: GitHub extension for fugitive.vim
+[[plugins]]
+repo = 'tpope/vim-rhubarb'
+depends = ['vim-fugitive']
+
+# Vim and Neovim plugin to reveal the commit messages under the cursor
+[[plugins]]
+repo = 'rhysd/git-messenger.vim'
+
 # Translate-shell.vim is a plugin for translating text without leaving Vim.
 [[plugins]]
 repo = 'echuraev/translate-shell.vim'
