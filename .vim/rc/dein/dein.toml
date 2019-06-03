@@ -85,7 +85,7 @@ depends = ['context_filetype.vim']
 repo = 'tpope/vim-repeat'
 
 # A Filetype plugin for csv files
-[[plugis]]
+[[plugins]]
 repo = 'chrisbra/csv.vim'
 
 [[plugins]]
