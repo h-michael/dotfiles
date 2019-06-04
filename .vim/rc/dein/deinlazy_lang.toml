@@ -37,15 +37,6 @@ hook_source = '''
 [[plugins]]
 repo = 'rhysd/rust-doc.vim'
 
-# [[plugins]]
-# repo = 'dart-lang/dart-vim-plugin'
-# on_ft = 'dart'
-# hook_source = '''
-#   let dart_html_in_string=v:vital_import_without_let
-#   let dart_style_guide = 2
-#   let dart_format_on_save = 1
-# '''
-
 [[plugins]]
 repo = 'machakann/vim-vimhelplint'
 on_ft = 'help'
@@ -79,9 +70,6 @@ hook_add = '''
 [[plugin]]
 repo = 'AndrewRadev/splitjoin.vim'
 on_ft = ['go']
-
-# [[plugins]]
-# repo = 'pbogut/deoplete-elm'
 
 # [[plugins]]
 # repo = 'zchee/deoplete-docker'
