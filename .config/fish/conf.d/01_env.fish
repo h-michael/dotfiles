@@ -69,7 +69,10 @@ if [ -z $TMUX ]
   set -x PATH $HOME/.nodenv/bin $PATH
 
   set -x PATH $PATH /usr/local/bin
-  set -x PATH $PATH $HOME/.local/bin
+  set -x PATH $HOME/.local/bin $PATH
+
+  # for Haskell
+  set -x PATH $HOME/.cabal/bin $PATH
 
   # for Rust
   set -x PATH $PATH $HOME/.cargo/bin
