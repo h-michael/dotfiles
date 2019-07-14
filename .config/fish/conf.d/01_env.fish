@@ -7,7 +7,6 @@ set -x XDG_CACHE_HOME $HOME/.cache
 set -x XDG_DATA_HOME $HOME/.local/share
 
 # LANGUAGE must be set by en_US
-
 set -x LANGUAGE en_US.UTF-8
 set -x LANG $LANGUAGE
 set -x LC_ALL $LANGUAGE
@@ -65,8 +64,7 @@ set -x QT_AUTO_SCREEN_SCALE_FACTOR 0
 
 if [ -z $TMUX ]
   # set langage version manager path
-  set -x PATH $HOME/.rbenv/bin $PATH
-  set -x PATH $HOME/.nodenv/bin $PATH
+  set -x PATH $HOME/.anyenv/bin $PATH
 
   set -x PATH $PATH /usr/local/bin
   set -x PATH $HOME/.local/bin $PATH
@@ -80,14 +78,14 @@ if [ -z $TMUX ]
   set -x RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
   # for Rls
   set -x LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
+  # set -x RUST_LOG "rls=debug"
 
-  # xenv
-  set -x PATH $HOME/.rbenv/bin $PATH
-  set -x PATH $HOME/.nodenv/bin $PATH
+  # for Golang
   set -x GOPATH $HOME/go
   set -x PATH $PATH $GOPATH/bin
-  set -x GOENV_ROOT $HOME/.goenv
-  set -x PATH $GOENV_ROOT/bin $PATH
+
+  # Lua
+  set -x PATH $HOME/.luarocks/bin $PATH
 
   # Display
   set -g theme_color_scheme gruvbox
@@ -98,10 +96,8 @@ end
 eval (direnv hook fish)
 
 if status --is-interactive
-  source (rbenv init -|psub)
-  source (nodenv init -|psub)
-  # set -x PATH $PATH (yarn global bin)
-  source (goenv init -|psub)
+  anyenv init - --no-rehash fish | source
+  set -x PATH $PATH (yarn global bin)
 end
 
 set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
@@ -117,10 +113,6 @@ end
 # The next line enables shell command completion for gcloud.
 if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
   source "$HOME/google-cloud-sdk/completion.fish.inc"
-end
-
-if [ -f "/usr/local/sbin" ]
-  set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
 end
 
 function history-merge --on-event fish_preexec
