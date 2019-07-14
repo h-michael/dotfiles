@@ -209,3 +209,9 @@ hook_add = '''
 # A comprehensive Vim utility functions for Vim plugins
 [[plugins]]
 repo = 'vim-jp/vital.vim'
+
+# [[plugins]]
+# repo = 'bfredl/nvim-luvlsp'
+
+[[plugins]]
+repo = 'bfredl/nvim-luadev'
