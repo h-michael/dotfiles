@@ -77,7 +77,12 @@ let g:current_stylefmt_path = nrun#Which('stylefmt')
 let g:current_stylelint_path = nrun#Which('stylelint')
 
 " Load dein.
-let s:dein_dir = finddir('dein.vim', '.;')
+
+if has('nvim')
+  let s:dein_dir = finddir('dein.vim', '.;')
+else
+  let s:dein_dir = finddir('dein.vim', '.;')
+endif
 if s:dein_dir !=# '' || &runtimepath !~# '/dein.vim'
   if s:dein_dir ==# '' && &runtimepath !~# '/dein.vim'
     let s:dein_dir = expand('$CACHE/dein')
