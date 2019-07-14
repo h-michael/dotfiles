@@ -10,6 +10,7 @@ on_ft = [
   'cpp',
   'dart',
   'go',
+  'lua',
   'javascript',
   'javascript.jsx',
   'purescript',
@@ -26,16 +27,21 @@ hook_source = '''
   let g:LanguageClient_selectionUI = 'fzf'
   let g:LanguageClient_serverCommands = {
       \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
-      \ 'c': ['clangd'],
-      \ 'cpp': ['clangd'],
+      \ 'c': ['ccls', '--log-file=/tmp/cc.log'],
+      \ 'cpp': ['ccls', '--log-file=/tmp/cc.log'],
+      \ 'cuda': ['ccls', '--log-file=/tmp/cc.log'],
+      \ 'objc': ['ccls', '--log-file=/tmp/cc.log'],
       \ 'dart': ['dart_language_server'],
       \ 'go': ['gopls'],
       \ 'javascript': [g:current_flow_path, 'lsp'],
       \ 'javascript.jsx': [g:current_flow_path, 'lsp'],
+      \ 'typescript': ['typescript-language-server', '--stdio'],
       \ 'haskell': ['hie', '--lsp'],
+      \ 'lua': ['lua-lsp'],
       \ 'ocaml': ['ocaml-language-server', '--stdio'],
       \ 'python': ['pyls'],
-      \ 'Dockerfile': ['docker-langserver', '--stdio']
+      \ 'Dockerfile': ['docker-langserver', '--stdio'],
+      \ 'vim': ['vim-language-server', '--stdio']
       \ }
 
       " \ 'ruby': ['solargraph', 'stdio'],
@@ -43,12 +49,6 @@ hook_source = '''
       " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
       " \ 'rust': ['env', 'RUST_LOG=info', '/home/h-michael/ghq/github.com/h-michael/rls/target/release/rls'],
       " \ 'rust': ['env', 'RUST_LOG=gen_lsp_server=debug', 'ra_lsp_server'],
-
-  " let g:LanguageClient_rootMarkers = {
-  "     \ 'javascript': ['package.json'],
-  "     \ 'rust': ['Cargo.toml'],
-  "     \ 'ruby': ['Gemfile']
-  "     \ }
 
   let g:LanguageClient_useFloatingHover = 0
   let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
@@ -132,6 +132,15 @@ hook_source = '''
       echomsg json_encode(a:params)
   endfunction
 '''
+
+# [[plugins]]
+# repo = 'Shougo/deoplete-lsp'
+# on_ft = ['rust', 'lua']
+# hook_add = '''
+#   call lsp#server#add('rust', ['rustup', 'run', 'nightly', 'rls'])
+#   " call lsp#server#add('rust', ['rustup', 'run', 'nightly', 'rls', '^', '/home/h-michael/rls.log'])
+#   " call lsp#server#add('lua', ['lua-lsp'])
+# '''
 
 [[plugins]]
 repo = 'ncm2/float-preview.nvim'
