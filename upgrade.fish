@@ -73,9 +73,6 @@ function upgrade_alacritty
 end
 
 if is_mac
-  rbenv update
-  nodenv update
-
   brew upgrade
   brew cleanup
   upgrade_nvim
@@ -89,6 +86,7 @@ rustup update
 rustup default nightly
 cargo install-update -a
 rustup default stable
+anyenv update
 
 if is_linux
   set OS (check_distribution.sh)
