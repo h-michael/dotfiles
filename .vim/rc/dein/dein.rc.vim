@@ -24,7 +24,7 @@ if s:vimrc_local !=# ''
   " Load develop version plugins.
   call dein#local(fnamemodify(s:vimrc_local, ':h'),
         \ {'frozen': 1, 'merged': 0},
-        \ ['debug-client-nvim'])
+        \ ['debug-client-nvim', 'nvim-luvlsp'])
 endif
 
 if dein#tap('deoplete.nvim') && has('nvim')
