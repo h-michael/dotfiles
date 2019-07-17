@@ -12,7 +12,7 @@ endif
 " nnoremap !            :<C-u>terminal<Space>
 " let PYTHONPATH = expand('$HOME') . '/.pyenv/shims/python3'
 
-let g:ruby_host_prog = expand('$HOME/.rbenv/shims/ruby')
+let g:ruby_host_prog = expand('$HOME/.anyenv/envs/rbenv/shims/ruby')
 
 " Skip neovim module check
 let g:python_host_skip_check = 1
