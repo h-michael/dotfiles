@@ -87,6 +87,11 @@ if [ -z $TMUX ]
   # Lua
   set -x PATH $HOME/.luarocks/bin $PATH
 
+  if status --is-interactive
+    anyenv init - --no-rehash fish | source
+    set -x PATH $PATH (yarn global bin)
+  end
+
   # Display
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
@@ -94,11 +99,6 @@ if [ -z $TMUX ]
 end
 
 eval (direnv hook fish)
-
-if status --is-interactive
-  anyenv init - --no-rehash fish | source
-  set -x PATH $PATH (yarn global bin)
-end
 
 set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
 if [ -n $SSH_CONNECTION ]
