@@ -32,7 +32,7 @@ inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
 inoremap <expr> ' pumvisible() ? deoplete#close_popup() : "'"
 
-call deoplete#custom#source('_', 'matchers', ['matcher_cpsm'])
+" call deoplete#custom#source('_', 'matchers', ['matcher_cpsm'])
 " call deoplete#custom#source('_', 'matchers', ['matcher_full_fuzzy'])
 " call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
 call deoplete#custom#source('_', 'min_pattern_length', 1)
@@ -56,8 +56,8 @@ call deoplete#custom#source('_', 'converters', [
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
 call deoplete#custom#option('sources', {
-      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax', 'tabnine'],
-      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient'],
+      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax', 'tabnine', 'lsp'],
+      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient', 'lsp'],
       \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient'],
       \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient'],
       \ })
