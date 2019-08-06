@@ -2,6 +2,7 @@
   name = Hirokazu Hata
   email = h.hata.ai.t@gmail.com
   excludesfile = ~/.git_secret
+	signingkey = h-michael
 [include]
   path = .gitconfig.local
 [core]
@@ -51,7 +52,5 @@
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
   rev = https://{host}/{path}/commit/{commit}
-# [gpg]
-# 	program = gpg2
-# [commit]
-# 	gpgsign = true
+[gpg]
+	program = gpg
