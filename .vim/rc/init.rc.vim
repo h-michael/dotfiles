@@ -48,7 +48,7 @@ language message C
 " Use <Leader> in global plugin.
 " Use <LocalLeader> in filetype plugin.
 if !exists('g:mapleader')
-  let g:mapleader = ','
+  let g:mapleader = "\<Space>"
 endif
 if !exists('g:maplocalleader')
   let g:maplocalleader = 'm'
