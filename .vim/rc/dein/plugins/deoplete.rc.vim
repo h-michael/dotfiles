@@ -1,3 +1,4 @@
+
 "---------------------------------------------------------------------------
 " deoplete.nvim
 "
@@ -56,21 +57,8 @@ call deoplete#custom#source('_', 'converters', [
 call deoplete#custom#source('LanguageClient', 'min_pattern_length', 1)
 
 call deoplete#custom#option('sources', {
-      \ '_': ['omni', 'buffer', 'directory', 'file', 'LanguageClient', 'syntax', 'tabnine', 'lsp'],
-      \ 'rust': ['omni', 'buffer', 'syntax', 'LanguageClient', 'lsp'],
-      \ 'c': ['omni', 'buffer', 'tag', 'LanguageClient'],
-      \ 'cpp': ['omni', 'buffer', 'tag', 'LanguageClient'],
+      \ '_': ['omni', 'buffer', 'directory', 'file', 'syntax','LanguageClient', 'syntax', 'lsp'],
       \ })
-      " \ 'ruby': ['file', 'omni', 'tag']
-
-" call deoplete#custom#source('omni', 'functions', {
-"       \ 'rust': ['LanguqgeClient', 'lsp#complete'],
-"       \ 'elm': ['elm#Complete'],
-"       \ 'javascript': ['LanguqgeClient', 'lsp#complete'],
-"       \ 'javascript.jsx': ['LanguqgeClient', 'lsp#complete'],
-"       \})
-"       \ 'ruby':  'rubycomplete#Complete',
-
 
 " call deoplete#custom#source('tabnine', 'rank', 300)
 " call deoplete#custom#source('tabnine', 'min_pattern_length', 2)
@@ -132,7 +120,7 @@ call deoplete#custom#option({
 "       \ ['omni'] " file/include conflicting deoplete-jedi
 
 " debug:
-" call deoplete#enable_logging('DEBUG', $XDG_LOG_HOME.'/nvim/python/deoplete.log')
+" call deoplete#enable_logging('DEBUG', $HOME.'/.local/share/nvim/deoplete.log')
 " call deoplete#custom#option('profile', v:true)
 " call deoplete#custom#source('core', 'debug_enabled', 1)
 
