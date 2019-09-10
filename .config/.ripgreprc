@@ -1,0 +1,5 @@
+# Hidden files and directories can be searched
+--hidden
+
+# follow symlinks
+--follow
