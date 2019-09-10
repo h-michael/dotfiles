@@ -50,6 +50,7 @@ _common_link () {
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/fish ~/.config/fish
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/translate-shell/ ~/.config/translate-shell
   ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/pip ~/.config/pip
+  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/ripgreprc ~/.config/ripgreprc
 
   if [ ! -d ~/.local/bin ]; then
     mkdir -p ~/.local/bin
