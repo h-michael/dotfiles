@@ -181,6 +181,7 @@ repo = 'mbbill/undotree'
 
 [[plugins]]
 repo = 'RRethy/vim-hexokinase'
+build = 'make hexokinase'
 hook_add = '''
   let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml']
   let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
@@ -215,3 +216,12 @@ repo = 'vim-jp/vital.vim'
 
 [[plugins]]
 repo = 'bfredl/nvim-luadev'
+
+[[plugins]]
+repo = 'prabirshrestha/async.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/vim-lsp'
+hook_source = '''
+  source ~/.vim/rc/dein/plugins/vim-lsp.rc.vim
+'''

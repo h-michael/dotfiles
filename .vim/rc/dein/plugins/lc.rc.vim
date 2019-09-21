@@ -14,36 +14,36 @@ let g:LanguageClient_serverCommands = {
     \ 'javascript.jsx': [g:current_flow_path, 'lsp'],
     \ 'typescript': ['typescript-language-server', '--stdio'],
     \ 'haskell': ['hie', '--lsp'],
-    \ 'lua': ['lua-lsp'],
     \ 'ocaml': ['ocaml-language-server', '--stdio'],
     \ 'python': ['pyls'],
     \ 'Dockerfile': ['docker-langserver', '--stdio'],
-    \ 'vim': ['vim-language-server', '--stdio']
     \ }
 
+    " \ 'lua': ['lua-lsp'],
+    " \ 'vim': ['vim-language-server', '--stdio']
     " \ 'ruby': ['solargraph', 'stdio'],
     " \ 'rust': ['ra_lsp_server'],
     " \ 'rust': ['env', 'RUST_LOG=info', 'rustup', 'run', 'nightly', 'rls'],
     " \ 'rust': ['env', 'RUST_LOG=info', '/home/h-michael/ghq/github.com/h-michael/rls/target/release/rls'],
     " \ 'rust': ['env', 'RUST_LOG=gen_lsp_server=debug', 'ra_lsp_server'],
 
-let g:LanguageClient_useFloatingHover = 0
+let g:LanguageClient_useFloatingHover = 1
 let g:LanguageClient_loadSettings = 1 " Use an absolute configuration path if you want system-wide settings
 let g:LanguageClient_settingsPath = '~/.config/nvim/settings.json'
 let g:LanguageClient_completionPreferTextEdit = 1
 
 " set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
 
-nnoremap <silent> ;lh  :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> ;jd  :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> ;jt  :call LanguageClient_textDocument_typeDefinition()<CR>
-nnoremap <silent> ;ji  :call LanguageClient_textDocument_implementation()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-nnoremap <silent> ;jr  :call LanguageClient_textDocument_references()<CR>
-nnoremap <silent> ;ft  :call LanguageClient_textDocument_formatting()<CR>
-nnoremap <silent> ;ftr :call LanguageClient_textDocument_rangeFormatting()<CR>
-nnoremap <silent> ;sy  :call LanguageClient_textDocument_documentSymbol()<CR>
-nnoremap <silent> ;sa  :call LanguageClient_textDocument_codeAction()<CR>
+nnoremap <silent> ;lh   :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> ;ljd  :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> ;ljt  :call LanguageClient_textDocument_typeDefinition()<CR>
+nnoremap <silent> ;lji  :call LanguageClient_textDocument_implementation()<CR>
+nnoremap <silent> <F2>  :call LanguageClient_textDocument_rename()<CR>
+nnoremap <silent> ;lr   :call LanguageClient_textDocument_references()<CR>
+nnoremap <silent> ;lft  :call LanguageClient_textDocument_formatting()<CR>
+nnoremap <silent> ;lftr :call LanguageClient_textDocument_rangeFormatting()<CR>
+nnoremap <silent> ;lsy  :call LanguageClient_textDocument_documentSymbol()<CR>
+nnoremap <silent> ;lsa  :call LanguageClient_textDocument_codeAction()<CR>
 
 " let g:LanguageClient_loggingLevel='DEBUG'
 let g:LanguageClient_loggingLevel = 'INFO'

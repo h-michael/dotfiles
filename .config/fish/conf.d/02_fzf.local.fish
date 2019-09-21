@@ -30,7 +30,7 @@ end
 
 ## fkill - kill process
 function fkill
-  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -15
+  ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -9
 end
 
 ## select repository
