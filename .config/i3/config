@@ -56,6 +56,7 @@ floating_modifier $mod
 for_window [class="Thunar"] floating enable
 for_window [class="vlc"] floating enable
 for_window [class="Org.gnome.Documents"] floating enable
+for_window [class="Peek"] floating enable
 
 # start a terminal
 bindsym $mod+Shift+Return exec alacritty

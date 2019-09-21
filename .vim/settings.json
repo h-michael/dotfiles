@@ -1,9 +1,4 @@
 {
-  "initializationOptions": {
-    "cache": {
-      "directory": "/tmp/lsp"
-    }
-  },
   "rust": {
     "unstable_features": false,
     "full_docs": true,

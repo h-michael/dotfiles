@@ -14,3 +14,4 @@ build-vim.sh
 rusty-tags.vi
 rls*.log
 .mypy_cache/
+.ccls-cache/
