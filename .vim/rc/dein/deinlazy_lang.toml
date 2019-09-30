@@ -2,13 +2,17 @@
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
 depends = 'context_filetype.vim'
-on_source = ['LanguageClient-neovim']
 on_event = ['InsertEnter']
 hook_source = '''
   source ~/.vim/rc/dein/plugins/deoplete.rc.vim
   call deoplete#enable()
 '''
 hook_post_update = 'UpdateRemotePlugins'
+
+[[plugins]]
+repo = 'lighttiger2505/deoplete-vim-lsp'
+depends = 'deoplete.nvim'
+on_source = ['deoplete.nvim']
 
 [[plugins]]
 repo = 'Shougo/neco-syntax'
