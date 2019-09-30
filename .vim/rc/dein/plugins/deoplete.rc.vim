@@ -27,7 +27,7 @@ inoremap <expr><C-h> deoplete#smart_close_popup()."\<C-h>"
 
 inoremap <expr><C-g> deoplete#undo_completion()
 " <C-l>: redraw candidates
-inoremap <expr><C-l>       deoplete#refresh()
+inoremap <expr><C-l> deoplete#manual_complete()
 
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 
