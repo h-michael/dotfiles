@@ -5,46 +5,61 @@ let g:lsp_virtual_text_enabled = 0
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('~/.local/share/nvim/vim-lsp.log')
 
-" if executable('ccls')
-"     au User lsp_setup call lsp#register_server({
-"         \ 'name': 'ccls',
-"         \ 'cmd': {server_info->['ccls', '--log-file=/tmp/ccls.log']},
-"         \ 'whitelist': ['c', 'cpp'],
-"         \ })
-" endif
-
 if executable('clangd')
-    au User lsp_setup call lsp#register_server({
+  augroup LspClangd
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'clangd',
         \ 'cmd': {server_info->['clangd', '-background-index']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
+  augroup END
 endif
 
 if executable('gopls')
-    au User lsp_setup call lsp#register_server({
+  augroup LspGopls
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'gopls',
         \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
         \ 'whitelist': ['go'],
         \ })
     autocmd BufWritePre *.go LspDocumentFormatSync
+  augroup END
 endif
 
 if executable('rls')
-    au User lsp_setup call lsp#register_server({
+  augroup LspRust
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'rls',
         \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
         \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
         \ 'whitelist': ['rust'],
         \ })
+  augroup END
 endif
 
 if executable('lua-lsp')
-    au User lsp_setup call lsp#register_server({
+  augroup LspLua
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'lua-lsp',
         \ 'cmd': {server_info->['lua-lsp']},
         \ 'whitelist': ['lua'],
         \ })
+  augroup END
+endif
+
+if executable('npx')
+  augroup LspFlow
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'flow',
+        \ 'cmd': {server_info->['npx', 'flow', 'lsp']},
+        \ 'whitelist': ['javascript', 'javascript.jsx'],
+        \ })
+  augroup END
 endif
 
 nnoremap <silent> ;ljd :LspDefinition<CR>

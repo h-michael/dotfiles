@@ -21,7 +21,7 @@
 #   'Dockerfile'
 # ]
 # hook_post_update = 'UpdateRemotePlugins'
-# hook_source = 'source ~/.vim/rc/dein/plugins/lc.rc.vim'
+# hook_source = 'source ~/.vim/rc/dein/plugins/language-client.rc.vim'
 
 # [[plugins]]
 # repo = 'h-michael/deoplete-lsp'
