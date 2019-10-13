@@ -25,17 +25,6 @@ function check_outdate
   end
 end
 
-function upgrade_nvim
-  cd ~/ghq/github.com/neovim/neovim
-  if check_outdate
-    hub sync
-    rm -rf build
-    make clean
-    make CMAKE_BUILD_TYPE=Release
-    echo $password | sudo -S make install
-  end
-end
-
 function upgrade_tmux
   cd ~/ghq/github.com/tmux/tmux
   if check_outdate
@@ -75,7 +64,6 @@ end
 if is_mac
   brew upgrade
   brew cleanup
-  upgrade_nvim
   upgrade_tmux
   upgrade_alacritty
   cd $HOME
@@ -99,7 +87,6 @@ if is_linux
     upgrade_alacritty
   case "*"
   end
-  upgrade_nvim
   upgrade_tmux
   upgrade_fish
   cd $HOME
