@@ -18,9 +18,9 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 " let g:ale_echo_msg_error_str = 'E'
 " let g:ale_echo_msg_warning_str = 'W'
 
-let g:ale_javascript_eslint_executable = g:current_eslint_path
-let g:ale_javascript_flow_executable = g:current_flow_path
-let g:ale_javascript_prettier_executable = g:current_prettier_path
+let g:ale_javascript_eslint_executable = nrun#Which('eslint')
+let g:ale_javascript_flow_executable = nrun#Which('flow')
+let g:ale_javascript_prettier_executable = nrun#Which('flow')
 let g:ale_ruby_rubocop_executable = 'bundle'
 
 let g:ale_linters = {

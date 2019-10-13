@@ -13,6 +13,8 @@ if executable('clangd')
         \ 'cmd': {server_info->['clangd', '-background-index']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
+
+    autocmd FileType clangd setlocal omnifunc=lsp#complete
   augroup END
 endif
 
@@ -25,6 +27,7 @@ if executable('gopls')
         \ 'whitelist': ['go'],
         \ })
     autocmd BufWritePre *.go LspDocumentFormatSync
+    autocmd FileType go setlocal omnifunc=lsp#complete
   augroup END
 endif
 
@@ -37,6 +40,7 @@ if executable('rls')
         \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
         \ 'whitelist': ['rust'],
         \ })
+    autocmd FileType rust setlocal omnifunc=lsp#complete
   augroup END
 endif
 
@@ -48,17 +52,31 @@ if executable('lua-lsp')
         \ 'cmd': {server_info->['lua-lsp']},
         \ 'whitelist': ['lua'],
         \ })
+    autocmd FileType lua setlocal omnifunc=lsp#complete
   augroup END
 endif
 
-if executable('npx')
+if executable('pyls')
+  augroup LspLua
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'whitelist': ['python'],
+        \ })
+    autocmd FileType python setlocal omnifunc=lsp#complete
+  augroup END
+endif
+
+if executable(nrun#Which('flow'))
   augroup LspFlow
     autocmd!
     autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'flow',
-        \ 'cmd': {server_info->['npx', 'flow', 'lsp']},
+        \ 'cmd': {server_info->[nrun#Which('flow'), 'lsp']},
         \ 'whitelist': ['javascript', 'javascript.jsx'],
         \ })
+    autocmd FileType javascript,javascript.jsx setlocal omnifunc=lsp#complete
   augroup END
 endif
 

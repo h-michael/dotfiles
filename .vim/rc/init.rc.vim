@@ -29,8 +29,7 @@ if exists('&ambw')
 endif
 
 " Build encodings.
-let &fileencodings = join([
-      \ 'utf-8', 'ucs-bom', 'iso-2022-jp-3', 'euc-jp', 'cp932'])
+let &fileencodings = join(['utf-8', 'ucs-bom', 'iso-2022-jp-3', 'euc-jp', 'cp932'])
 
 " Setting of terminal encoding.
 if !has('gui_running') && IsWindows()
@@ -48,7 +47,7 @@ language message C
 " Use <Leader> in global plugin.
 " Use <LocalLeader> in filetype plugin.
 if !exists('g:mapleader')
-  let g:mapleader = "\<Space>"
+  let g:mapleader = ","
 endif
 if !exists('g:maplocalleader')
   let g:maplocalleader = 'm'
@@ -60,7 +59,7 @@ if IsWindows()
    set shellslash
 endif
 
-let $CACHE = expand('~/.cache')
+let $CACHE = expand($XDG_CACHE_HOME)
 
 if !isdirectory(expand($CACHE))
   call mkdir(expand($CACHE), 'p')
@@ -69,12 +68,6 @@ endif
 if filereadable(expand('~/.secret_vimrc'))
   execute 'source' expand('~/.secret_vimrc')
 endif
-
-let g:current_flow_path = nrun#Which('flow')
-let g:current_eslint_path = nrun#Which('eslint')
-let g:current_prettier_path = nrun#Which('prettier')
-let g:current_stylefmt_path = nrun#Which('stylefmt')
-let g:current_stylelint_path = nrun#Which('stylelint')
 
 " Load dein.
 
