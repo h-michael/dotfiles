@@ -13,11 +13,11 @@ endif
 
 call dein#begin(s:path, expand('<sfile>'))
 
-call dein#load_toml('~/.vim/rc/dein/dein.toml', {'lazy': 0})
-call dein#load_toml('~/.vim/rc/dein/dein_lang.toml', {'lazy': 0})
-call dein#load_toml('~/.vim/rc/dein/deinlazy.toml', {'lazy' : 1})
-call dein#load_toml('~/.vim/rc/dein/deinlazy_lang.toml', {'lazy' : 1})
-call dein#load_toml('~/.vim/rc/dein/deinft.toml')
+call dein#load_toml('~/.vim/rc/plugins/dein.toml', {'lazy': 0})
+call dein#load_toml('~/.vim/rc/plugins/dein_lang.toml', {'lazy': 0})
+call dein#load_toml('~/.vim/rc/plugins/deinlazy.toml', {'lazy' : 1})
+call dein#load_toml('~/.vim/rc/plugins/deinlazy_lang.toml', {'lazy' : 1})
+call dein#load_toml('~/.vim/rc/plugins/deinft.toml')
 
 let s:vimrc_local = '~/ghq/github.com/h-michael/'
 if s:vimrc_local !=# ''

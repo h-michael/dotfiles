@@ -8,10 +8,6 @@ if exists('&pumblend')
   set pumblend=20
 endif
 
-" nnoremap <Leader>t    :<C-u>terminal<CR>
-" nnoremap !            :<C-u>terminal<Space>
-" let PYTHONPATH = expand('$HOME') . '/.pyenv/shims/python3'
-
 let g:ruby_host_prog = expand('$HOME/.anyenv/envs/rbenv/shims/ruby')
 
 " Skip neovim module check
