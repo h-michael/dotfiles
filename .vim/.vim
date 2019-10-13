@@ -1,1 +1,0 @@
-/home/h-michael/.vim

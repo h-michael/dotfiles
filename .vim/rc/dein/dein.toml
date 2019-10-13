@@ -41,6 +41,10 @@ repo = 'vim-airline/vim-airline-themes'
 hook_add = 'source ~/.vim/rc/dein/plugins/vim-airline.rc.vim'
 depends = ['vim-airline']
 
+# "which" and "exec" functions targeted at local node project bin, with "which" fallback
+[[plugins]]
+repo = 'jaawerth/nrun.vim'
+
 # commentary.vim: comment stuff out
 [[plugins]]
 repo = 'tpope/vim-commentary'
@@ -126,6 +130,7 @@ hook_add = '''
   nnoremap <silent> ;cbd :CurrentBufferDir <CR>
   nnoremap <silent> ;pd  :ProjectDir <CR>
   nnoremap <silent> ;rg  :Rg <CR>
+  nnoremap <silent> ;gr  :Rg <CR>
   nnoremap <silent> ;b   :Buffers <CR>
   nnoremap <silent> ;f   :Files <CR>
   nnoremap <silent> ;t   :Tags <CR>
@@ -211,9 +216,6 @@ hook_add = '''
 [[plugins]]
 repo = 'vim-jp/vital.vim'
 
-# [[plugins]]
-# repo = 'bfredl/nvim-luvlsp'
-
 [[plugins]]
 repo = 'bfredl/nvim-luadev'
 
@@ -222,6 +224,6 @@ repo = 'prabirshrestha/async.vim'
 
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
-hook_source = '''
+hook_add = '''
   source ~/.vim/rc/dein/plugins/vim-lsp.rc.vim
 '''

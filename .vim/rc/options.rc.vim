@@ -80,11 +80,6 @@ set lazyredraw
 set fillchars=vert:\|
 set commentstring=%s
 
-if exists('*FoldCCtext')
-  " Use FoldCCtext().
-  " set foldtext=FoldCCtext()
-endif
-
 " Use vimgrep.
 " set grepprg=internal
 " Use grep.
@@ -97,7 +92,7 @@ set isfname-==
 set timeout timeoutlen=3000 ttimeoutlen=100
 
 " CursorHold time.
-set updatetime=1000
+" set updatetime=1000
 
 " Set swap directory.
 set directory-=.
@@ -144,14 +139,6 @@ endfunction
 " Use autofmt.
 set formatexpr=autofmt#japanese#formatexpr()
 
-" Use blowfish2
-" https://dgl.cx/2014/10/vim-blowfish
-" if has('cryptv')
-  " It seems 15ms overhead.
-  "  set cryptmethod=blowfish2
-" endif
-
-" If true Vim master, use English help file.
 set helplang& helplang=en,ja
 
 " Default home directory.
@@ -188,27 +175,17 @@ set titlelen=95
 let &g:titlestring="
       \ %{expand('%:p:~:.')}%(%m%r%w%)
       \ %<\(%{WidthPart(
-      \ fnamemodify(&filetype ==# 'vimfiler' ?
-      \ substitute(b:vimfiler.current_dir, '.\\zs/$', '', '') : getcwd(), ':~'),
-      \ &columns-len(expand('%:p:.:~')))}\) - VIM"
-" Disable tabline.
-" set showtabline=0
-" Set tabline
-set showtabline=2
+      \   fnamemodify(getcwd(), ':~'),
+      \   &columns-len(expand('%:p:.:~'))
+      \ )}\) - VIM"
 
-" Set statusline.
-let &g:statusline="%{winnr('$')>1?'['.winnr().'/'.winnr('$')"
-      \ . ".(winnr('#')==winnr()?'#':'').']':''}\ "
-      \ . "%{(&previewwindow?'[preview] ':'').expand('%:t')}"
-      \ . "\ %=%{(winnr('$')==1 || winnr('#')!=winnr()) ?
-      \ '['.(&filetype!=''?&filetype.',':'')"
-      \ . ".(&fenc!=''?&fenc:&enc).','.&ff.']' : ''}"
-      \ . "%m%{printf('%'.(len(line('$'))+2).'d/%d',line('.'),line('$'))}"
+set showtabline=2
 
 " Turn down a long line appointed in 'breakat'
 set linebreak
 set showbreak=\
 set breakat=\ \	;:,!?
+
 " Wrap conditions.
 set whichwrap+=h,l,<,>,[,],b,s,~
 if exists('+breakindent')
@@ -272,22 +249,21 @@ else
 endif
 
 " Increase history amount.
-set history=1000
+set history=10000
 " Display all the information of the tag by the supplement of the Insert mode.
 set showfulltag
 " Can supplement a tag in a command-line.
 set wildoptions+=tagfile
-
-" Disable menu
-let g:did_install_default_menus = 1
 
 " Completion setting.
 set completeopt=menuone
 if has('patch-7.4.775')
   set completeopt+=noinsert
 endif
+
 " Don't complete from other buffer.
 set complete=.
+
 " Set popup menu max height.
 set pumheight=20
 
@@ -299,26 +275,33 @@ set nostartofline
 
 " Splitting a window will put the new window below the current one.
 set splitbelow
+
 " Splitting a window will put the new window right the current one.
 set splitright
+
 " Set minimal width for current window.
 set winwidth=30
+
 " Set minimal height for current window.
 " set winheight=20
 set winheight=1
+
 " Set maximam maximam command line window.
 set cmdwinheight=5
+
 " No equal window size.
 set noequalalways
 
 " Adjust window size of preview and help.
 set previewheight=10
+
 set helpheight=12
 
 set ttyfast
 
 " When a line is long, do not omit it in @.
 set display=lastline
+
 " Display an invisible letter with hex format.
 "set display+=uhex
 
@@ -342,12 +325,4 @@ set conceallevel=2 concealcursor=niv
 
 set colorcolumn=79
 
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-"let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 15
-" augroup ProjectDrawer
-"   autocmd!
-"   autocmd VimEnter * :Vexplore
-" augroup END
+let g:netrw_browse_split = 4

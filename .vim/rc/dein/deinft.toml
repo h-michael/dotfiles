@@ -28,12 +28,14 @@ hook_add = '''
         \  'xml',
         \  'vim',
         \]
+
   " Update filetype.
   autocmd MyAutoCmd BufWritePost * nested
   \ if &l:filetype ==# '' || exists('b:ftdetect')
   \ |   unlet! b:ftdetect
   \ |   filetype detect
   \ | endif
+
   " Reload .vimrc automatically.
   autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim,dein*.toml source $MYVIMRC | redraw
 
@@ -45,7 +47,6 @@ hook_add = '''
 '''
 
 [ftplugin]
-
 _ = '''
   " Disable automatically insert comment.
   setl formatoptions-=r
@@ -61,23 +62,7 @@ _ = '''
   if &filetype !=# 'help'
     setlocal foldtext=FoldCCtext()
   endif
-  " if !&l:modifiable
-  "   setlocal nofoldenable
-  "   setlocal foldcolumn=0
-  "   setlocal colorcolumn=
-  " endif
 '''
-
-vim = '''
-  if line('$') > 1000
-    syntax sync minlines=200
-  endif
-  " setlocal foldmethod=indent
-  setlocal shiftwidth=2 softtabstop=2
-  setlocal iskeyword+=:,#
-'''
-
-toml = 'syntax sync minlines=2000'
 
 dart = '''
   let dart_html_in_string=v:vital_import_without_let
@@ -103,5 +88,4 @@ go = '''
       call go#cmd#Build(0)
     endif
   endfunction
-
 '''
