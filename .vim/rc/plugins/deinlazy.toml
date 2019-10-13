@@ -21,7 +21,7 @@
 #   'Dockerfile'
 # ]
 # hook_post_update = 'UpdateRemotePlugins'
-# hook_source = 'source ~/.vim/rc/dein/config/language-client.rc.vim'
+# hook_source = 'source ~/.vim/rc/plugins/config/language-client.rc.vim'
 
 # [[plugins]]
 # repo = 'h-michael/deoplete-lsp'
@@ -51,7 +51,7 @@ hook_add = '''
 [[plugins]]
 repo = 'w0rp/ale'
 on_event = 'BufRead'
-hook_add = 'source ~/.vim/rc/dein/config/ale.rc.vim'
+hook_add = 'source ~/.vim/rc/plugins/config/ale.rc.vim'
 
 # utility comamnds of dein.vim with rich completion.
 [[plugins]]

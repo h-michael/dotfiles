@@ -38,7 +38,7 @@ repo = 'vim-airline/vim-airline'
 # A collection of themes for vim-airline
 [[plugins]]
 repo = 'vim-airline/vim-airline-themes'
-hook_add = 'source ~/.vim/rc/dein/config/vim-airline.rc.vim'
+hook_add = 'source ~/.vim/rc/plugins/config/vim-airline.rc.vim'
 depends = ['vim-airline']
 
 # "which" and "exec" functions targeted at local node project bin, with "which" fallback
@@ -225,5 +225,5 @@ repo = 'prabirshrestha/async.vim'
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
 hook_add = '''
-  source ~/.vim/rc/dein/config/vim-lsp.rc.vim
+  source ~/.vim/rc/plugins/config/vim-lsp.rc.vim
 '''

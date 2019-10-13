@@ -4,7 +4,7 @@ repo = 'Shougo/deoplete.nvim'
 depends = 'context_filetype.vim'
 on_event = ['InsertEnter']
 hook_source = '''
-  source ~/.vim/rc/dein/config/deoplete.rc.vim
+  source ~/.vim/rc/plugins/config/deoplete.rc.vim
   call deoplete#enable()
 '''
 hook_post_update = 'UpdateRemotePlugins'
