@@ -1,10 +1,3 @@
-" Fast saving
-nmap <leader>w :w!<cr>
-
-" :W sudo saves the file 
-" (useful for handling the permission-denied error)
-command W w !sudo tee % > /dev/null
-
 " Remap VIM 0 to first non-blank character
 map 0 ^
 
@@ -59,9 +52,5 @@ nnoremap <C-l> <C-w>l
 nnoremap <C-h> <C-w>h
 
 " move tab
-nnoremap <silent> <C-l> :<C-u>tabnext<CR>
-nnoremap <silent> <C-h> :<C-u>tabprevious<CR>
-
-" autocmd MyAutoCmd BufReadPost * delmarks!
-" autocmd BufRead *.rs :setlocal tags=./rusty-tags.vi;/,$RUST_SRC_PATH/rusty-tags.vi
-" autocmd BufWritePost *.rs :silent! exec "!rusty-tags vi --quiet --start-dir=" . expand('%:p:h') . "&" | redraw!
+" nnoremap <silent> <C-l> :<C-u>tabnext<CR>
+" nnoremap <silent> <C-h> :<C-u>tabprevious<CR>
