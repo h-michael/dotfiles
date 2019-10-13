@@ -54,3 +54,5 @@
   rev = https://{host}/{path}/commit/{commit}
 [gpg]
 	program = gpg
+[commit]
+	gpgsign = true
