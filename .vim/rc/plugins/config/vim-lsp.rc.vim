@@ -57,7 +57,7 @@ if executable('lua-lsp')
 endif
 
 if executable('pyls')
-  augroup LspLua
+  augroup LspPython
     autocmd!
     autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'pyls',
