@@ -223,7 +223,13 @@ repo = 'bfredl/nvim-luadev'
 repo = 'prabirshrestha/async.vim'
 
 [[plugins]]
+repo = 'prabirshrestha/asyncomplete.vim'
+
+[[plugins]]
+repo = 'prabirshrestha/asyncomplete-lsp.vim'
+
+[[plugins]]
 repo = 'prabirshrestha/vim-lsp'
-hook_add = '''
+hook_source = '''
   source ~/.vim/rc/plugins/config/vim-lsp.rc.vim
 '''
