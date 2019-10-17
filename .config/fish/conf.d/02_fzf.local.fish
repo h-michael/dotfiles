@@ -1,6 +1,7 @@
 # fzf config
 
 set -x FZF_DEFAULT_COMMAND 'rg --files --hidden --follow --glob "!.git/*"'
+set -x FZF_DEFAULT_OPTS '--reverse'
 set -x FZF_CTRL_T_COMMAND 'rg --files --hidden --follow --glob "!.git/*"'
 set -x FZF_CTRL_T_OPTS '--preview "bat  --color=always --style=header,grid --line-range :100 {}"'
 
@@ -35,13 +36,13 @@ end
 
 ## select repository
 function frepo
-  set dir (ghq list ^ /dev/null | fzf-tmux --reverse +m)
+  set dir (ghq list ^ /dev/null | fzf-tmux +m)
   cd (ghq root)/$dir
 end
 
 ## remove repository
 function frmrepo
-  ghq list --full-path ^ /dev/null | fzf-tmux --multi --reverse | xargs rm -rf
+  ghq list --full-path ^ /dev/null | fzf-tmux --multi | xargs rm -rf
 end
 
 # fzf for git
@@ -51,15 +52,15 @@ function fgc
 end
 
 function fgdb
-  git branch ^ /dev/null | fzf-tmux --multi --reverse | xargs git branch -D
+  git branch ^ /dev/null | fzf-tmux --multi | xargs git branch -D
 end
 
 function fga
-  git status -s ^ /dev/null | grep -e '^ M ' | sed -e 's/^ M //' | fzf-tmux --multi --reverse | xargs git add; and git status -s
+  git status -s ^ /dev/null | grep -e '^ M ' | sed -e 's/^ M //' | fzf-tmux --multi | xargs git add; and git status -s
 end
 
 function fgr
-  git status -s ^ /dev/null | grep -e '^M ' | sed -e 's/^M //' | fzf-tmux --multi --reverse | xargs git reset; and git status -s
+  git status -s ^ /dev/null | grep -e '^M ' | sed -e 's/^M //' | fzf-tmux --multi | xargs git reset; and git status -s
 end
 
 function gitaddm
