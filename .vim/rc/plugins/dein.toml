@@ -136,14 +136,14 @@ hook_add = '''
   nnoremap <silent> ;t   :Tags <CR>
 '''
 
-# fugitive.vim: A Git wrapper so awesome, it should be illegal
-[[plugins]]
-repo = 'tpope/vim-fugitive'
+# # fugitive.vim: A Git wrapper so awesome, it should be illegal
+# [[plugins]]
+# repo = 'tpope/vim-fugitive'
 
-# rhubarb.vim: GitHub extension for fugitive.vim
-[[plugins]]
-repo = 'tpope/vim-rhubarb'
-depends = ['vim-fugitive']
+# # rhubarb.vim: GitHub extension for fugitive.vim
+# [[plugins]]
+# repo = 'tpope/vim-rhubarb'
+# depends = ['vim-fugitive']
 
 # Vim and Neovim plugin to reveal the commit messages under the cursor
 [[plugins]]
@@ -230,6 +230,6 @@ repo = 'prabirshrestha/asyncomplete-lsp.vim'
 
 [[plugins]]
 repo = 'prabirshrestha/vim-lsp'
-hook_source = '''
+hook_add = '''
   source ~/.vim/rc/plugins/config/vim-lsp.rc.vim
 '''
