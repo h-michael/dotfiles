@@ -73,7 +73,8 @@ bindsym $mod+p exec rofi -show run
 # installed.
 bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
-bindsym $mod+Shift+b exec google-chrome-stable
+bindsym $mod+Shift+b exec firefox-developer-edition
+# bindsym $mod+Shift+b exec google-chrome-stable
 bindsym $mod+Shift+d exec discord
 bindsym $mod+Shift+g exec gitter
 bindsym $mod+Shift+s exec slack
