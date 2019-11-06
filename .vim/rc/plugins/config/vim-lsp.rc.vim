@@ -5,6 +5,19 @@ let g:lsp_virtual_text_enabled = 0
 let g:lsp_log_verbose = 1
 let g:lsp_log_file = expand('~/.local/share/nvim/vim-lsp.log')
 
+if executable('solargraph')
+  augroup LspSolargraph
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+        \ 'name': 'solargraph',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'solargraph stdio']},
+        \ 'initialization_options': {"diagnostics": "true"},
+        \ 'whitelist': ['ruby'],
+        \ })
+    autocmd FileType solargraph setlocal omnifunc=lsp#complete
+  augroup END
+endif
+
 if executable('clangd')
   augroup LspClangd
     autocmd!
@@ -13,7 +26,6 @@ if executable('clangd')
         \ 'cmd': {server_info->['clangd', '-background-index']},
         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
         \ })
-
     autocmd FileType clangd setlocal omnifunc=lsp#complete
   augroup END
 endif
@@ -36,7 +48,7 @@ if executable('rls')
     autocmd!
     autocmd User lsp_setup call lsp#register_server({
         \ 'name': 'rls',
-        \ 'cmd': {server_info->['rustup', 'run', 'nightly', 'rls']},
+        \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
         \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
         \ 'whitelist': ['rust'],
         \ })
@@ -83,7 +95,7 @@ endif
 nnoremap <silent> ;ljd :LspDefinition<CR>
 nnoremap <silent> ;ljt :LspTypeDefinition<CR>
 nnoremap <silent> ;lji :LspImplementation<CR>
-nnoremap <silent> ;lh  :LspHover<CR>
+nnoremap ;lh  :LspHover<CR>
 nnoremap <silent> ;lr  :LspReferences<CR>
 nnoremap <silent> ;lsd :split \| :LspDefinition<CR>
 nnoremap <silent> ;lvd :vsplit \| :LspDefinition<CR>
