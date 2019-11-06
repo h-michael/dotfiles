@@ -153,7 +153,10 @@ set spelllang=en,cjk
 "
 
 " Show line number.
-"set number
+" set number
+" set numberwidth=2
+" set relativenumber
+
 " Show <TAB> and <CR>
 set list
 if IsWindows()
