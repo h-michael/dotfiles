@@ -11,8 +11,7 @@ nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR>:<C-u>call <SID>hier_clear()<CR
 " nnoremap <ESC><ESC> :nohlsearch<CR>:match<CR>
 
 " User yank register
-nnoremap PP "0p
-" nnoremap p "0p
+" nnoremap PP "0p
 
 "---------------------------------------------------------------------------
 " Spell checking:
@@ -49,7 +48,8 @@ inoremap <C-l> <Right>
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-nnoremap <C-h> <C-w>h
+
+nnoremap <C-h> <C-w>
 
 " move tab
 " nnoremap <silent> <C-l> :<C-u>tabnext<CR>
