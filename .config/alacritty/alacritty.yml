@@ -135,74 +135,109 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
 
-# Colors (Molokai like)
-colors:
-  # Default colors
-  primary:
-    background: '0x272822'
-    foreground: '0xbbbbbb'
+schemes:
+  molokai: &molokai
+    primary:
+      background: '0x272822'
+      foreground: '0xbbbbbb'
+    normal:
+      black:   '0x121212'
+      red:     '0xfa2573'
+      green:   '0x98e123'
+      yellow:  '0xdfd460'
+      blue:    '0x1080d0'
+      magenta: '0x8700ff'
+      cyan:    '0x43a8d0'
+      white:   '0xbbbbbb'
+    bright:
+      black:   '0x555555'
+      red:     '0xf6669d'
+      green:   '0xb1e05f'
+      yellow:  '0xfff26d'
+      blue:    '0x00afff'
+      magenta: '0xaf87ff'
+      cyan:    '0x51ceff'
+      white:   '0xffffff'
+    indexed_colors: []
+  monokai: &monokai
+    primary:
+      background: '0x272822'
+      foreground: '0xF8F8F2'
+    normal:
+     black:   '0x272822'
+     red:     '0xF92672'
+     green:   '0xA6E22E'
+     yellow:  '0xF4BF75'
+     blue:    '0x66D9EF'
+     magenta: '0xAE81FF'
+     cyan:    '0xA1EFE4'
+     white:   '0xF8F8F2'
+    bright:
+     black:   '0x75715E'
+     red:     '0xF92672'
+     green:   '0xA6E22E'
+     yellow:  '0xF4BF75'
+     blue:    '0x66D9EF'
+     magenta: '0xAE81FF'
+     cyan:    '0xA1EFE4'
+     white:   '0xF9F8F5'
+  monokai_pro: &monokai_pro
+    primary:
+      background: '0x2D2A2E'
+      foreground: '0xFCFCFA'
+    normal:
+      black:   '0x403E41'
+      red:     '0xFF6188'
+      green:   '0xA9DC76'
+      yellow:  '0xFFD866'
+      blue:    '0xFC9867'
+      magenta: '0xAB9DF2'
+      cyan:    '0x78DCE8'
+      white:   '0xFCFCFA'
+    bright:
+      black:   '0x727072'
+      red:     '0xFF6188'
+      green:   '0xA9DC76'
+      yellow:  '0xFFD866'
+      blue:    '0xFC9867'
+      magenta: '0xAB9DF2'
+      cyan:    '0x78DCE8'
+      white:   '0xFCFCFA'
+  jellybeans: &jellybeans
+    primary:
+      background: '0x171717'
+      foreground: '0xe4e4e4'
 
-    # Bright and dim foreground colors
-    #
-    # The dimmed foreground color is calculated automatically if it is not present.
-    # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
-    # is `false`, the normal foreground color will be used.
-    # dim_foreground: '0x9a9a9a'
-    # bright_foreground: '0xffffff'
+      # Bright and dim foreground colors
+      #
+      # The dimmed foreground color is calculated automatically if it is not present.
+      # If the bright foreground color is not set, or `draw_bold_text_with_bright_colors`
+      # is `false`, the normal foreground color will be used.
+      dim_foreground: '0x9a9a9a'
+      bright_foreground: '0xffffff'
+    cursor:
+      text: '0xffffff'
+      cursor: '0xffb473'
+    normal:
+      black:   '0xa3a3a3'
+      red:     '0xea8986'
+      green:   '0xa4c38c'
+      yellow:  '0xffc68d'
+      blue:    '0xa7cae3'
+      magenta: '0xe8cefb'
+      cyan:    '0x00a7a0'
+      white:   '0xe4e4e4'
+    bright:
+      black:   '0xc9c9c9'
+      red:     '0xffb2b0'
+      green:   '0xc8e3b9'
+      yellow:  '0xffe2af'
+      blue:    '0xbee0f8'
+      magenta: '0xfce3ff'
+      cyan:    '0x0cbeb7'
+      white:   '0xffffff'
 
-  # Cursor colors
-  #
-  # Colors which should be used to draw the terminal cursor. If these are unset,
-  # the cursor color will be the inverse of the cell color.
-  # cursor:
-  #  text: '0x000000'
-  #  cursor: '0xffffff'
-
-  # Normal colors
-  normal:
-    black:   '0x121212'
-    red:     '0xfa2573'
-    green:   '0x98e123'
-    yellow:  '0xdfd460'
-    blue:    '0x1080d0'
-    magenta: '0x8700ff'
-    cyan:    '0x43a8d0'
-    white:   '0xbbbbbb'
-
-  # Bright colors
-  bright:
-    black:   '0x555555'
-    red:     '0xf6669d'
-    green:   '0xb1e05f'
-    yellow:  '0xfff26d'
-    blue:    '0x00afff'
-    magenta: '0xaf87ff'
-    cyan:    '0x51ceff'
-    white:   '0xffffff'
-
-  # Dim colors
-  #
-  # If the dim colors are not set, they will be calculated automatically based
-  # on the `normal` colors.
-  # dim:
-  #  black:   '0x000000'
-  #  red:     '0x8c3336'
-  #  green:   '0x7a8530'
-  #  yellow:  '0x97822e'
-  #  blue:    '0x506d8f'
-  #  magenta: '0x80638e'
-  #  cyan:    '0x497e7a'
-  #  white:   '0x9a9a9a'
-
-  # Indexed Colors
-  #
-  # The indexed colors include all colors from 16 to 256.
-  # When these are not set, they're filled with sensible defaults.
-  #
-  # Example:
-  #   `- { index: 16, color: '0xff00ff' }`
-  #
-  indexed_colors: []
+colors: *jellybeans
 
 # Visual Bell
 #

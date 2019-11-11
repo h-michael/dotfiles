@@ -25,21 +25,32 @@ repo = 'direnv/direnv.vim'
 repo = 'editorconfig/editorconfig-vim'
 
 [[plugins]]
-repo = 'phanviet/vim-monokai-pro'
+repo = 'nanotech/jellybeans.vim'
 hook_post_update = 'Dein recache-runtimepath'
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme monokai_pro
+  au MyAutoCmd VimEnter * nested colorscheme jellybeans
 '''
 
-# lean & mean status/tabline for vim that's light as air
 [[plugins]]
-repo = 'vim-airline/vim-airline'
+repo = 'phanviet/vim-monokai-pro'
+hook_post_update = 'Dein recache-runtimepath'
+# hook_add = '''
+#   au MyAutoCmd VimEnter * nested colorscheme monokai_pro
+# '''
 
-# A collection of themes for vim-airline
 [[plugins]]
-repo = 'vim-airline/vim-airline-themes'
-hook_add = 'source ~/.vim/rc/plugins/config/vim-airline.rc.vim'
-depends = ['vim-airline']
+repo = 'itchyny/lightline.vim'
+hook_add = 'source ~/.vim/rc/plugins/config/lightline.rc.vim'
+
+# # lean & mean status/tabline for vim that's light as air
+# [[plugins]]
+# repo = 'vim-airline/vim-airline'
+# 
+# # A collection of themes for vim-airline
+# [[plugins]]
+# repo = 'vim-airline/vim-airline-themes'
+# hook_add = 'source ~/.vim/rc/plugins/config/vim-airline.rc.vim'
+# depends = ['vim-airline']
 
 # "which" and "exec" functions targeted at local node project bin, with "which" fallback
 [[plugins]]
@@ -196,11 +207,26 @@ hook_add = '''
 [[plugins]]
 repo = 'liuchengxu/vista.vim'
 
+# killring-alike plugin for neovim and vim 8 with no default mappings 
 [[plugins]]
-repo = 'haya14busa/vim-poweryank'
-hook_source = '''
-  map <Leader>y <Plug>(operator-poweryank-osc52)
+repo = 'bfredl/nvim-miniyank'
+hook_add = '''
+  map p <Plug>(miniyank-autoput)
+  map P <Plug>(miniyank-autoPut)
+  map <leader>p <Plug>(miniyank-startput)
+  map <leader>P <Plug>(miniyank-startPut)
+  map <leader>f <Plug>(miniyank-cycle)
+  map <leader>n <Plug>(miniyank-cycleback)
+  map <Leader>N <Plug>(miniyank-tochar)
+  map <Leader>l <Plug>(miniyank-toline)
+  map <Leader>b <Plug>(miniyank-toblock)
 '''
+
+# [[plugins]]
+# repo = 'haya14busa/vim-poweryank'
+# hook_source = '''
+#   map <Leader>y <Plug>(operator-poweryank-osc52)
+# '''
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
