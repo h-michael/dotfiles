@@ -1,13 +1,4 @@
 [[plugins]]
-repo = 'ncm2/float-preview.nvim'
-depends = ['deoplete.nvim']
-on_source = 'deoplete.nvim'
-if = 'has("nvim")'
-hook_add = '''
-  let g:float_preview#docked = 0
-'''
-
-[[plugins]]
 repo = 'w0rp/ale'
 on_event = 'BufRead'
 hook_add = 'source ~/.vim/rc/plugins/config/ale.rc.vim'
