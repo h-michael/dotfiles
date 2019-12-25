@@ -38,8 +38,7 @@
 [credential]
   # helper = osxkeychain
 [ghq]
-  # root = ~/.go/src
-  root = ~/ghq
+  root = ~/go/src
 [secrets]
   providers = git secrets --aws-provider
   patterns = [A-Z0-9]{20}
@@ -56,3 +55,5 @@
 	program = gpg
 [commit]
 	gpgsign = true
+[http]
+	cookiefile = ~/.gitcookies

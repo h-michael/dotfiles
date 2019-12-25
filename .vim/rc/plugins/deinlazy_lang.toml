@@ -1,38 +1,3 @@
-# Dark powered asynchronous completion framework for neovim/Vim8
-[[plugins]]
-repo = 'Shougo/deoplete.nvim'
-depends = 'context_filetype.vim'
-on_event = ['InsertEnter']
-hook_source = '''
-  source ~/.vim/rc/plugins/config/deoplete.rc.vim
-  call deoplete#enable()
-'''
-hook_post_update = 'UpdateRemotePlugins'
-
-[[plugins]]
-repo = 'lighttiger2505/deoplete-vim-lsp'
-depends = 'deoplete.nvim'
-on_source = ['deoplete.nvim']
-
-[[plugins]]
-repo = 'Shougo/neco-syntax'
-depends = 'deoplete.nvim'
-on_event = ['InsertEnter']
-
-# Include completion framework for neocomplete/deoplete
-[[plugins]]
-repo = 'Shougo/neoinclude.vim'
-on_source = ['deoplete.nvim']
-
-# Print documents in echo area.
-[[plugins]]
-repo = 'Shougo/echodoc.vim'
-on_source = ['deoplete.nvim']
-hook_add = '''
-  let g:echodoc_enable_at_startup = 1
-  let g:echodoc#type = 'floating'
-'''
-
 [[plugins]]
 repo = 'rust-lang/rust.vim'
 on_ft = ['rust']
