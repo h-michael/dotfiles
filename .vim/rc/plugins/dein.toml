@@ -17,6 +17,7 @@ repo = 'sheerun/vim-polyglot'
 hook_add = '''
   " let g:polyglot_disabled = ['rust', 'ruby']
 '''
+
 # vim plugin for direnv support
 [[plugins]]
 repo = 'direnv/direnv.vim'
@@ -32,25 +33,8 @@ hook_add = '''
 '''
 
 [[plugins]]
-repo = 'phanviet/vim-monokai-pro'
-hook_post_update = 'Dein recache-runtimepath'
-# hook_add = '''
-#   au MyAutoCmd VimEnter * nested colorscheme monokai_pro
-# '''
-
-[[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = 'source ~/.vim/rc/plugins/config/lightline.rc.vim'
-
-# # lean & mean status/tabline for vim that's light as air
-# [[plugins]]
-# repo = 'vim-airline/vim-airline'
-# 
-# # A collection of themes for vim-airline
-# [[plugins]]
-# repo = 'vim-airline/vim-airline-themes'
-# hook_add = 'source ~/.vim/rc/plugins/config/vim-airline.rc.vim'
-# depends = ['vim-airline']
 
 # "which" and "exec" functions targeted at local node project bin, with "which" fallback
 [[plugins]]
@@ -99,10 +83,6 @@ depends = ['context_filetype.vim']
 [[plugins]]
 repo = 'tpope/vim-repeat'
 
-# A Filetype plugin for csv files
-[[plugins]]
-repo = 'chrisbra/csv.vim'
-
 [[plugins]]
 repo = 'junegunn/fzf'
 build = './install --all'
@@ -136,15 +116,15 @@ hook_add = '''
   command! -bang -nargs=? -complete=dir Files
     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-  nnoremap <silent> /    :BLines <CR>
-  nnoremap <silent> ;cw  :CurrentWordRg <CR>
-  nnoremap <silent> ;cbd :CurrentBufferDir <CR>
-  nnoremap <silent> ;pd  :ProjectDir <CR>
-  nnoremap <silent> ;rg  :Rg <CR>
-  nnoremap <silent> ;gr  :Rg <CR>
-  nnoremap <silent> ;b   :Buffers <CR>
-  nnoremap <silent> ;f   :Files <CR>
-  nnoremap <silent> ;t   :Tags <CR>
+  nnoremap <silent> /           :BLines <CR>
+  nnoremap <silent> <Leader>cw  :CurrentWordRg <CR>
+  nnoremap <silent> <Leader>cbd :CurrentBufferDir <CR>
+  nnoremap <silent> <Leader>pd  :ProjectDir <CR>
+  nnoremap <silent> <Leader>rg  :Rg <CR>
+  nnoremap <silent> <Leader>gr  :Rg <CR>
+  nnoremap <silent> <Leader>b   :Buffers <CR>
+  nnoremap <silent> <Leader>f   :Files <CR>
+  nnoremap <silent> <Leader>t   :Tags <CR>
 '''
 
 # # fugitive.vim: A Git wrapper so awesome, it should be illegal
@@ -222,12 +202,6 @@ hook_add = '''
   map <Leader>b <Plug>(miniyank-toblock)
 '''
 
-# [[plugins]]
-# repo = 'haya14busa/vim-poweryank'
-# hook_source = '''
-#   map <Leader>y <Plug>(operator-poweryank-osc52)
-# '''
-
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
@@ -246,16 +220,8 @@ repo = 'vim-jp/vital.vim'
 repo = 'bfredl/nvim-luadev'
 
 [[plugins]]
-repo = 'prabirshrestha/async.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/asyncomplete-lsp.vim'
-
-[[plugins]]
-repo = 'prabirshrestha/vim-lsp'
-hook_add = '''
-  source ~/.vim/rc/plugins/config/vim-lsp.rc.vim
+repo = 'neovim/nvim-lsp'
+hook_post_update = 'Dein recache-runtimepath'
+hook_source = '''
+  source ~/.vim/rc/plugins/config/nvim-lsp.rc.vim
 '''
