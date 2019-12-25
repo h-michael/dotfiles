@@ -1,62 +1,63 @@
 #!/bin/sh
 
+DIR=$(cd $(dirname $0); pwd)
+
 linux_link () {
   _common_link
 
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/alacritty ~/.config/alacritty
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/fontconfig ~/.config/fontconfig
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/i3 ~/.config/i3
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/polybar ~/.config/polybar
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/sway ~/.config/sway
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/gtk-2.0 ~/.config/gtk-2.0
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/gtk-3.0 ~/.config/gtk-3.0
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/powerline ~/.config/powerline
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/taffybar ~/.config/taffybar
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/conky ~/.config/conky
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/yay ~/.config/yay
+  ln -sf $DIR/.config/alacritty ~/.config/alacritty
+  ln -sf $DIR/.config/fontconfig ~/.config/fontconfig
+  ln -sf $DIR/.config/i3 ~/.config/i3
+  ln -sf $DIR/.config/polybar ~/.config/polybar
+  ln -sf $DIR/.config/sway ~/.config/sway
+  ln -sf $DIR/.config/gtk-2.0 ~/.config/gtk-2.0
+  ln -sf $DIR/.config/gtk-3.0 ~/.config/gtk-3.0
+  ln -sf $DIR/.config/powerline ~/.config/powerline
+  ln -sf $DIR/.config/taffybar ~/.config/taffybar
+  ln -sf $DIR/.config/conky ~/.config/conky
+  ln -sf $DIR/.config/yay ~/.config/yay
 
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.xmonad ~/.xmonad
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.xinitrc ~/.xinitrc
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.Xmodmap ~/.Xmodmap
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.xprofile ~/.xprofile
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.xsession ~/.xsession
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.Xresources ~/.Xresources
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.stalonetrayrc ~/.stalonetrayrc
+  ln -sf $DIR/.xmonad ~/.xmonad
+  ln -sf $DIR/.xinitrc ~/.xinitrc
+  ln -sf $DIR/.Xmodmap ~/.Xmodmap
+  ln -sf $DIR/.xprofile ~/.xprofile
+  ln -sf $DIR/.xsession ~/.xsession
+  ln -sf $DIR/.Xresources ~/.Xresources
+  ln -sf $DIR/.stalonetrayrc ~/.stalonetrayrc
 }
 
 mac_link () {
   _common_link
 
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/alacritty_mac ~/.config/alacritty
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/karabiner ~/.config/karabiner
+  ln -sf $DIR/.config/alacritty_mac ~/.config/alacritty
+  ln -sf $DIR/.config/karabiner ~/.config/karabiner
 }
 
 _common_link () {
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/upgrade.fish ~/upgrade.fish
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.vim ~/.vim
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.tmux.conf ~/.tmux.conf
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.tmux.conf.local ~/.tmux.conf.local
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.gitconfig ~/.gitconfig
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.gitignore_global ~/.gitignore_global
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.globalrc ~/.globalrc
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.pryrc ~/.pryrc
+  ln -sf $DIR/.vim ~/.vim
+  ln -sf $DIR/.tmux.conf ~/.tmux.conf
+  ln -sf $DIR/.tmux.conf.local ~/.tmux.conf.local
+  ln -sf $DIR/.gitconfig ~/.gitconfig
+  ln -sf $DIR/.gitignore_global ~/.gitignore_global
+  ln -sf $DIR/.globalrc ~/.globalrc
+  ln -sf $DIR/.pryrc ~/.pryrc
 
   if [ ! -d ~/.config ]; then
     mkdir ~/.config
   fi
 
   ln -sf ~/.vim ~/.config/nvim
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/fish ~/.config/fish
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/translate-shell/ ~/.config/translate-shell
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/pip ~/.config/pip
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.config/ripgreprc ~/.config/ripgreprc
+  ln -sf $DIR/.config/fish ~/.config/fish
+  ln -sf $DIR/.config/translate-shell/ ~/.config/translate-shell
+  ln -sf $DIR/.config/pip ~/.config/pip
+  ln -sf $DIR/.config/ripgreprc ~/.config/ripgreprc
 
   if [ ! -d ~/.local/bin ]; then
     mkdir -p ~/.local/bin
   fi
 
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.local/bin/yank ~/.local/bin/yank
-  ln -sf ~/ghq/github.com/h-michael/dotfiles/.local/bin/check_distribution.sh ~/.local/bin
+  ln -sf $DIR/.local/bin/yank ~/.local/bin/yank
+  ln -sf $DIR/.local/bin/check_distribution.sh ~/.local/bin
 }
 
 if [ "$(uname)" == 'Darwin' ]; then
@@ -74,5 +75,5 @@ else
   exit 1
 fi
 
-cp ~/ghq/github.com/h-michael/dotfiles/.minimal_nvimrc $HOME/
-cp ~/ghq/github.com/h-michael/dotfiles/.minimal_vimrc $HOME/
+cp $DIR/.minimal_nvimrc $HOME/
+cp $DIR/.minimal_vimrc $HOME/
