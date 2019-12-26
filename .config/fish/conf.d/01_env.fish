@@ -61,6 +61,10 @@ end
 
 if is_mac
     set -x BROWSER open
+    set -g fish_user_paths "/usr/local/bin" $fish_user_paths
+    set -g fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
+    set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
+    set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
 end
 
 # For Enpass
