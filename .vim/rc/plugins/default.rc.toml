@@ -127,15 +127,6 @@ hook_add = '''
   nnoremap <silent> <Leader>t   :Tags <CR>
 '''
 
-# # fugitive.vim: A Git wrapper so awesome, it should be illegal
-# [[plugins]]
-# repo = 'tpope/vim-fugitive'
-
-# # rhubarb.vim: GitHub extension for fugitive.vim
-# [[plugins]]
-# repo = 'tpope/vim-rhubarb'
-# depends = ['vim-fugitive']
-
 # Vim and Neovim plugin to reveal the commit messages under the cursor
 [[plugins]]
 repo = 'rhysd/git-messenger.vim'
@@ -219,9 +210,20 @@ repo = 'vim-jp/vital.vim'
 [[plugins]]
 repo = 'bfredl/nvim-luadev'
 
+# Plugin for vim to enabling opening a file in a given line
+[[plugins]]
+repo = 'bogado/file-line'
+
 [[plugins]]
 repo = 'neovim/nvim-lsp'
-hook_post_update = 'Dein recache-runtimepath'
-hook_source = '''
+if = 'has("nvim")'
+hook_add = '''
   source ~/.vim/rc/plugins/config/nvim-lsp.rc.vim
+'''
+
+[[plugins]]
+repo = 'machakann/vim-vimhelplint'
+[plugins.ftplugin]
+help = '''
+  nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''

@@ -10,14 +10,6 @@ hook_source = '''
 repo = 'rhysd/rust-doc.vim'
 on_ft = 'help'
 
-[[plugins]]
-repo = 'machakann/vim-vimhelplint'
-on_ft = 'help'
-[plugins.ftplugin]
-help = '''
-  nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
-'''
-
 # [[plugins]]
 # repo = 'fatih/vim-go'
 # on_ft = ['go']
