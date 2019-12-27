@@ -15,7 +15,6 @@ call dein#begin(s:path, expand('<sfile>'))
 
 call dein#load_toml('~/.vim/rc/plugins/default.rc.toml', {'lazy': 0})
 call dein#load_toml('~/.vim/rc/plugins/lazy.rc.toml', {'lazy' : 1})
-call dein#load_toml('~/.vim/rc/plugins/lazy_lang.rc.toml', {'lazy' : 1})
 call dein#load_toml('~/.vim/rc/plugins/filetype.rc.toml')
 
 let s:vimrc_local = '~/go/src/github.com/h-michael/'

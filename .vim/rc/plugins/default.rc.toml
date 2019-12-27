@@ -29,12 +29,23 @@ repo = 'editorconfig/editorconfig-vim'
 repo = 'nanotech/jellybeans.vim'
 hook_post_update = 'Dein recache-runtimepath'
 hook_add = '''
-  au MyAutoCmd VimEnter * nested colorscheme jellybeans
+au MyAutoCmd VimEnter * nested colorscheme jellybeans
 '''
 
 [[plugins]]
 repo = 'itchyny/lightline.vim'
-hook_add = 'source ~/.vim/rc/plugins/config/lightline.rc.vim'
+hook_add = '''
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+'''
 
 # "which" and "exec" functions targeted at local node project bin, with "which" fallback
 [[plugins]]
@@ -44,7 +55,7 @@ repo = 'jaawerth/nrun.vim'
 [[plugins]]
 repo = 'tpope/vim-commentary'
 hook_add = '''
-  autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
+autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
 '''
 
 # Vim plugin, insert or delete brackets, parens, quotes in pair
@@ -55,11 +66,11 @@ repo = 'jiangmiao/auto-pairs'
 [[plugins]]
 repo = 'tpope/vim-surround'
 hook_add = '''
-  nmap s <Plug>Ysurround
-  nmap ss <Plug>Yssurround
-  let g:surround_{char2nr('e')} = "begin \r end"
-  let g:surround_{char2nr('d')} = "do \r end"
-  let g:surround_{char2nr("-")} = ":\r"
+nmap s <Plug>Ysurround
+nmap ss <Plug>Yssurround
+let g:surround_{char2nr('e')} = "begin \r end"
+let g:surround_{char2nr('d')} = "do \r end"
+let g:surround_{char2nr("-")} = ":\r"
 '''
 
 # Rest your pinkies.
@@ -92,39 +103,39 @@ merged = 0
 repo = 'junegunn/fzf.vim'
 depends = 'fzf'
 hook_add = '''
-  " override ripgrep command for preview
-  command! -bang -nargs=* Rg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \   <bang>0)
+" override ripgrep command for preview
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
-  command! -bang -nargs=* CurrentWordRg
-    \ call fzf#vim#grep(
-    \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(expand('<cword>')), 1,
-    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-    \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-    \   <bang>0)
+command! -bang -nargs=* CurrentWordRg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(expand('<cword>')), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
-  command! -bang -nargs=? -complete=dir CurrentBufferDir
-    \ call fzf#vim#files(expand('%:p:h'), fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=? -complete=dir CurrentBufferDir
+  \ call fzf#vim#files(expand('%:p:h'), fzf#vim#with_preview(), <bang>0)
 
-  command! -bang -nargs=? -complete=dir ProjectDir
-    \ call fzf#vim#files(getcwd(), fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=? -complete=dir ProjectDir
+  \ call fzf#vim#files(getcwd(), fzf#vim#with_preview(), <bang>0)
 
-  command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-  nnoremap <silent> /           :BLines <CR>
-  nnoremap <silent> <Leader>cw  :CurrentWordRg <CR>
-  nnoremap <silent> <Leader>cbd :CurrentBufferDir <CR>
-  nnoremap <silent> <Leader>pd  :ProjectDir <CR>
-  nnoremap <silent> <Leader>rg  :Rg <CR>
-  nnoremap <silent> <Leader>gr  :Rg <CR>
-  nnoremap <silent> <Leader>b   :Buffers <CR>
-  nnoremap <silent> <Leader>f   :Files <CR>
-  nnoremap <silent> <Leader>t   :Tags <CR>
+nnoremap <silent> /           :BLines <CR>
+nnoremap <silent> <Leader>cw  :CurrentWordRg <CR>
+nnoremap <silent> <Leader>cbd :CurrentBufferDir <CR>
+nnoremap <silent> <Leader>pd  :ProjectDir <CR>
+nnoremap <silent> <Leader>rg  :Rg <CR>
+nnoremap <silent> <Leader>gr  :Rg <CR>
+nnoremap <silent> <Leader>b   :Buffers <CR>
+nnoremap <silent> <Leader>f   :Files <CR>
+nnoremap <silent> <Leader>t   :Tags <CR>
 '''
 
 # Vim and Neovim plugin to reveal the commit messages under the cursor
@@ -136,22 +147,22 @@ repo = 'rhysd/git-messenger.vim'
 repo = 'echuraev/translate-shell.vim'
 build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
 hook_add = '''
-  let g:trans_directions_list = [
-      \['en', 'ja'],
-      \['ja', 'en'],
-      \['', 'ja'],
-      \['', ''],
-  \]
-  let g:trans_close_window_after_saving = 1
-  let g:trans_save_only_unique = 1
-  let g:trans_save_raw_history = 1
-  let g:trans_save_history = 3
-  " let g:trans_save_audio = 1
-  " let g:trans_history_format = '%s;%t;%as;%at'
-  let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
-  " let g:trans_history_format = '%s;%t'
-  let g:trans_history_file = '~/trans_history/trans_history.csv'
-  " let g:trans_bin = "/usr/bin/"
+let g:trans_directions_list = [
+    \['en', 'ja'],
+    \['ja', 'en'],
+    \['', 'ja'],
+    \['', ''],
+\]
+let g:trans_close_window_after_saving = 1
+let g:trans_save_only_unique = 1
+let g:trans_save_raw_history = 1
+let g:trans_save_history = 3
+" let g:trans_save_audio = 1
+" let g:trans_history_format = '%s;%t;%as;%at'
+let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
+" let g:trans_history_format = '%s;%t'
+let g:trans_history_file = '~/trans_history/trans_history.csv'
+" let g:trans_bin = "/usr/bin/"
 '''
 
 [[plugins]]
@@ -166,32 +177,26 @@ repo = 'kana/vim-niceblock'
 [[plugins]]
 repo = 'mbbill/undotree'
 
+# [[plugins]]
+# repo = 'RRethy/vim-hexokinase'
+# build = 'make hexokinase'
+# hook_add = '''
+# let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml', 'toml']
+# let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
+# let g:Hexokinase_virtualText = '██████'
+# '''
+
+# The fastest Neovim colorizer.
 [[plugins]]
-repo = 'RRethy/vim-hexokinase'
-build = 'make hexokinase'
+repo = 'norcalli/nvim-colorizer.lua'
+on_if = 'has("nvim-0.4")'
 hook_add = '''
-  let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml']
-  let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
-  let g:Hexokinase_virtualText = '██████'
+set termguicolors
+lua require'colorizer'.setup()
 '''
 
 [[plugins]]
 repo = 'liuchengxu/vista.vim'
-
-# killring-alike plugin for neovim and vim 8 with no default mappings 
-[[plugins]]
-repo = 'bfredl/nvim-miniyank'
-hook_add = '''
-  map p <Plug>(miniyank-autoput)
-  map P <Plug>(miniyank-autoPut)
-  map <leader>p <Plug>(miniyank-startput)
-  map <leader>P <Plug>(miniyank-startPut)
-  map <leader>f <Plug>(miniyank-cycle)
-  map <leader>n <Plug>(miniyank-cycleback)
-  map <Leader>N <Plug>(miniyank-tochar)
-  map <Leader>l <Plug>(miniyank-toline)
-  map <Leader>b <Plug>(miniyank-toblock)
-'''
 
 [[plugins]]
 repo = 'tpope/vim-abolish'
@@ -200,7 +205,7 @@ repo = 'tpope/vim-abolish'
 repo = 'puremourning/vimspector'
 on_if = '!has("nvim")'
 hook_add = '''
-  let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 '''
 
 # A comprehensive Vim utility functions for Vim plugins
@@ -215,15 +220,8 @@ repo = 'bfredl/nvim-luadev'
 repo = 'bogado/file-line'
 
 [[plugins]]
-repo = 'neovim/nvim-lsp'
-if = 'has("nvim")'
-hook_add = '''
-  source ~/.vim/rc/plugins/config/nvim-lsp.rc.vim
-'''
-
-[[plugins]]
 repo = 'machakann/vim-vimhelplint'
 [plugins.ftplugin]
 help = '''
-  nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
+nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''
