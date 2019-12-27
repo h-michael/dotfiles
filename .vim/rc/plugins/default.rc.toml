@@ -186,15 +186,6 @@ repo = 'mbbill/undotree'
 # let g:Hexokinase_virtualText = '██████'
 # '''
 
-# The fastest Neovim colorizer.
-[[plugins]]
-repo = 'norcalli/nvim-colorizer.lua'
-on_if = 'has("nvim-0.4")'
-hook_add = '''
-set termguicolors
-lua require'colorizer'.setup()
-'''
-
 [[plugins]]
 repo = 'liuchengxu/vista.vim'
 
