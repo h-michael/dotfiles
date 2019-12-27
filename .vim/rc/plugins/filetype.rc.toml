@@ -1,0 +1,64 @@
+hook_add = '''
+" Update filetype.
+autocmd MyAutoCmd BufWritePost * nested
+\ if &l:filetype ==# '' || exists('b:ftdetect')
+\ |   unlet! b:ftdetect
+\ |   filetype detect
+\ | endif
+
+" Reload .vimrc automatically.
+autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim,*.rc.toml source $MYVIMRC | redraw
+
+" Auto reload VimScript.
+autocmd MyAutoCmd BufWritePost,FileWritePost *.vim nested
+\ if &l:autoread > 0 | source <afile> |
+\   echo 'source ' . bufname('%') |
+\ endif
+'''
+
+[ftplugin]
+_ = '''
+" see :h fo-table
+" defalut: tcqj
+" disable automatically insert comment.
+setl formatoptions-=r
+setl formatoptions-=o
+
+" for multi-byte char
+setl formatoptions+=mMBl
+
+" disable auto wrap.
+if &l:textwidth != 70 && &filetype !=# 'help'
+  setlocal textwidth=0
+endif
+'''
+
+gitcommit = 'setlocal colorcolumn=50,72'
+
+help = '''
+setlocal iskeyword+=:
+setlocal iskeyword+=#
+setlocal iskeyword+=-
+setlocal nolist nonumber norelativenumber
+'''
+
+markdown = '''
+" http://mattn.kaoriya.net/software/vim/20140523124903.htm
+let g:markdown_fenced_languages = [
+      \  'coffee',
+      \  'css',
+      \  'erb=eruby',
+      \  'javascript',
+      \  'js=javascript',
+      \  'json=javascript',
+      \  'ruby',
+      \  'sass',
+      \  'xml',
+      \  'vim',
+      \]
+'''
+
+vim = '''
+let g:vimsyntax_noerror = 1
+" let g:vim_indent_cont = 0
+'''

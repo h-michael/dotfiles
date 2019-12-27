@@ -1,0 +1,198 @@
+[[plugins]]
+repo = 'w0rp/ale'
+on_event = 'BufRead'
+hook_add = '''
+" if has('nvim-0.3.2')
+"   let g:ale_virtualtext_cursor = 1
+"   let g:ale_echo_cursor= 0
+"   highlight! link ALEVirtualTextError ErrorMsg
+"   highlight! link ALEVirtualTextWarning WarningMsg
+" else
+"   let g:ale_set_balloons_legacy_echo = 1
+"   let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" endif
+let g:ale_disable_lsp = 0
+let g:ale_set_balloons_legacy_echo = 1
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" let g:ale_sign_column_always = 1
+" let g:ale_sign_error = 'E'
+" let g:ale_sign_warning = 'W'
+" let g:ale_sign_error = '✖'
+" let g:ale_sign_warning = '⚠'
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+
+let g:ale_javascript_eslint_executable = nrun#Which('eslint')
+let g:ale_javascript_flow_executable = nrun#Which('flow')
+let g:ale_javascript_prettier_executable = nrun#Which('flow')
+let g:ale_ruby_rubocop_executable = 'bundle'
+
+let g:ale_linters = {
+\   'ruby': ['rubocop'],
+\   'rust': ['cargo'],
+\   'javascript': ['eslint', 'flow'],
+\   'javascript.jsx': ['eslint', 'flow'],
+\   'jsx': ['eslint', 'flow'],
+\   'haskell': ['hie', '--lsp'],
+\}
+let g:ale_fixers = {
+\   'rust': 'rustfmt',
+\   'javascript': 'eslint',
+\   'javascript.jsx': 'eslint',
+\   'jsx': 'eslint',
+\}
+
+nnoremap <silent> <Leader>af :<C-u>ALEFix <CR>
+
+let g:ale_javascript_prettier_use_local_config = 1
+let g:ale_rust_cargo_use_clippy = 1
+let g:ale_rust_rls_toolchain = 'nightly'
+" let g:ale_rust_rls_toolchain = 'stable'
+
+" let g:ale_fix_on_save = 1
+" let b:ale_set_balloons = 1
+'''
+
+# utility comamnds of dein.vim with rich completion.
+[[plugins]]
+repo = 'haya14busa/dein-command.vim'
+on_cmd = 'Dein'
+
+# Benchmarck
+[[plugins]]
+repo = 'tweekmonster/startuptime.vim'
+on_cmd = 'StartupTime'
+
+# can edit vinari
+[[plugins]]
+repo = 'Shougo/vinarise.vim'
+on_cmd = 'Vinarise'
+hook_source = 'let g:vinarise_enable_auto_detect = 1'
+
+# A secure alternative to Vim modelines
+[[plugins]]
+repo = 'ciaranm/securemodelines'
+on_event = 'BufRead'
+
+# endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
+[[plugins]]
+repo = 'tpope/vim-endwise'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'majutsushi/tagbar'
+on_cmd = ['TabbarToggle', 'TagbarOpen']
+hook_add = '''
+nnoremap <silent> <Leader>tb :TagbarToggle<CR>
+'''
+
+# simple memo plugin for Vim.
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+on_cmd = ['MemoNew', 'MemoList', 'MemoGrep']
+hook_add = '''
+map <Leader>mn  :MemoNew<CR>
+map <Leader>ml  :MemoList<CR>
+map <Leader>mg  :MemoGrep<CR>
+'''
+
+# Vim plugin: Highlight columns in CSV and TSV files and run queries in SQL-like language
+[[plugins]]
+repo = 'mechatroner/rainbow_csv'
+on_ft = ['csv']
+
+[[plugins]]
+repo = 'rust-lang/rust.vim'
+on_ft = ['rust']
+hook_add = '''
+let g:rustfmt_autosave = 0
+let g:rust_fold = 1
+'''
+
+[[plugins]]
+repo = 'rhysd/rust-doc.vim'
+on_ft = 'help'
+
+[[plugins]]
+repo = 'neovim/nvim-lsp'
+on_if = 'has("nvim-0.5")'
+on_cmd = ['LspInstall', 'LspInstallInfo']
+on_ft = ['c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'javascript','typescript']
+hook_add = '''
+echom 'add'
+lua vim.lsp.set_log_level("debug")
+function! SetMyLspConfig() abort
+  setlocal omnifunc=v:lua.vim.lsp.omnifunc
+  nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+endfunction
+'''
+
+[plugins.ftplugin]
+c = '''
+call SetMyLspConfig()
+lua require'nvim_lsp'.clangd.setup{}
+'''
+
+cpp = '''
+lua require'nvim_lsp'.clangd.setup{}
+'''
+
+go = '''
+call SetMyLspConfig()
+lua << EOF
+  -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
+  require'nvim_lsp'.gopls.setup{
+    settings={
+      usePlaceholders=true;
+      linkTarget="pkg.go.dev";
+      completionDocumentation=true;
+      completeUnimported=true;
+      deepCompletion=true;
+      fuzzyMatching=true;
+    }
+  }
+EOF
+'''
+
+rust = '''
+echom 'hook ft'
+call SetMyLspConfig()
+lua << EOF
+  -- https://github.com/neovim/nvim-lsp#rls
+  require'nvim_lsp'.rls.setup{
+    cmd = {"rustup run nightly rls"};
+    settings={
+      enableMultiProjectSetup=true;
+      all_features=true;
+      all_targets=true;
+      full_docs=true;
+      jobs=2;
+      unstable_features=true;
+      wait_to_build=1500;
+    }
+  }
+EOF
+'''
+
+ruby = '''
+call SetMyLspConfig()
+lua require'nvim_lsp'.solargraph.setup{}
+'''
+
+typescript = '''
+call SetMyLspConfig()
+lua require'nvim_lsp'.tsserver.setup{}
+'''
+
+javascript = '''
+call SetMyLspConfig()
+lua << EOF
+  -- https://github.com/neovim/nvim-lsp#flow
+  require'nvim_lsp'.flow.setup{}
+EOF
+'''

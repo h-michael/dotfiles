@@ -1,0 +1,227 @@
+# Dark powered Vim/Neovim plugin manager
+[[plugins]]
+repo = 'Shougo/dein.vim'
+hook_post_update = 'UpdateRemotePlugins'
+
+[[plugins]]
+repo = 'roxma/vim-hug-neovim-rpc'
+if = '!has("nvim")'
+
+[[plugins]]
+repo = 'roxma/nvim-yarp'
+if = '!has("nvim")'
+
+# A solid language pack for Vim.
+[[plugins]]
+repo = 'sheerun/vim-polyglot'
+hook_add = '''
+  " let g:polyglot_disabled = ['rust', 'ruby']
+'''
+
+# vim plugin for direnv support
+[[plugins]]
+repo = 'direnv/direnv.vim'
+
+[[plugins]]
+repo = 'editorconfig/editorconfig-vim'
+
+[[plugins]]
+repo = 'nanotech/jellybeans.vim'
+hook_post_update = 'Dein recache-runtimepath'
+hook_add = '''
+au MyAutoCmd VimEnter * nested colorscheme jellybeans
+'''
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+hook_add = '''
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'fugitive#head'
+      \ },
+      \ }
+'''
+
+# "which" and "exec" functions targeted at local node project bin, with "which" fallback
+[[plugins]]
+repo = 'jaawerth/nrun.vim'
+
+# commentary.vim: comment stuff out
+[[plugins]]
+repo = 'tpope/vim-commentary'
+hook_add = '''
+autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
+'''
+
+# Vim plugin, insert or delete brackets, parens, quotes in pair
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+
+# surround.vim: quoting/parenthesizing made simple
+[[plugins]]
+repo = 'tpope/vim-surround'
+hook_add = '''
+nmap s <Plug>Ysurround
+nmap ss <Plug>Yssurround
+let g:surround_{char2nr('e')} = "begin \r end"
+let g:surround_{char2nr('d')} = "do \r end"
+let g:surround_{char2nr("-")} = ":\r"
+'''
+
+# Rest your pinkies.
+[[plugins]]
+repo = 'lambdalisue/pinkyless.vim'
+
+# vim-jp/autofmt
+[[plugins]]
+repo = 'vim-jp/autofmt'
+
+# Context filetype library for Vim script
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+# Vim constext filetype
+[[plugins]]
+repo = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+
+# repeat.vim: enable repeating supported plugin maps with "."
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+[[plugins]]
+repo = 'junegunn/fzf'
+build = './install --all'
+merged = 0
+
+[[plugins]]
+repo = 'junegunn/fzf.vim'
+depends = 'fzf'
+hook_add = '''
+" override ripgrep command for preview
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+command! -bang -nargs=* CurrentWordRg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(expand('<cword>')), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+
+command! -bang -nargs=? -complete=dir CurrentBufferDir
+  \ call fzf#vim#files(expand('%:p:h'), fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=? -complete=dir ProjectDir
+  \ call fzf#vim#files(getcwd(), fzf#vim#with_preview(), <bang>0)
+
+command! -bang -nargs=? -complete=dir Files
+  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+nnoremap <silent> /           :BLines <CR>
+nnoremap <silent> <Leader>cw  :CurrentWordRg <CR>
+nnoremap <silent> <Leader>cbd :CurrentBufferDir <CR>
+nnoremap <silent> <Leader>pd  :ProjectDir <CR>
+nnoremap <silent> <Leader>rg  :Rg <CR>
+nnoremap <silent> <Leader>gr  :Rg <CR>
+nnoremap <silent> <Leader>b   :Buffers <CR>
+nnoremap <silent> <Leader>f   :Files <CR>
+nnoremap <silent> <Leader>t   :Tags <CR>
+'''
+
+# Vim and Neovim plugin to reveal the commit messages under the cursor
+[[plugins]]
+repo = 'rhysd/git-messenger.vim'
+
+# Translate-shell.vim is a plugin for translating text without leaving Vim.
+[[plugins]]
+repo = 'echuraev/translate-shell.vim'
+build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
+hook_add = '''
+let g:trans_directions_list = [
+    \['en', 'ja'],
+    \['ja', 'en'],
+    \['', 'ja'],
+    \['', ''],
+\]
+let g:trans_close_window_after_saving = 1
+let g:trans_save_only_unique = 1
+let g:trans_save_raw_history = 1
+let g:trans_save_history = 3
+" let g:trans_save_audio = 1
+" let g:trans_history_format = '%s;%t;%as;%at'
+let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
+" let g:trans_history_format = '%s;%t'
+let g:trans_history_file = '~/trans_history/trans_history.csv'
+" let g:trans_bin = "/usr/bin/"
+'''
+
+[[plugins]]
+repo = 'itchyny/vim-pdf'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+
+[[plugins]]
+repo = 'kana/vim-niceblock'
+
+[[plugins]]
+repo = 'mbbill/undotree'
+
+# [[plugins]]
+# repo = 'RRethy/vim-hexokinase'
+# build = 'make hexokinase'
+# hook_add = '''
+# let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml', 'toml']
+# let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
+# let g:Hexokinase_virtualText = '██████'
+# '''
+
+# The fastest Neovim colorizer.
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+on_if = 'has("nvim-0.4")'
+hook_add = '''
+set termguicolors
+lua require'colorizer'.setup()
+'''
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+
+[[plugins]]
+repo = 'tpope/vim-abolish'
+
+[[plugins]]
+repo = 'puremourning/vimspector'
+on_if = '!has("nvim")'
+hook_add = '''
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+'''
+
+# A comprehensive Vim utility functions for Vim plugins
+[[plugins]]
+repo = 'vim-jp/vital.vim'
+
+[[plugins]]
+repo = 'bfredl/nvim-luadev'
+
+# Plugin for vim to enabling opening a file in a given line
+[[plugins]]
+repo = 'bogado/file-line'
+
+[[plugins]]
+repo = 'machakann/vim-vimhelplint'
+[plugins.ftplugin]
+help = '''
+nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
+'''

@@ -13,29 +13,23 @@ endif
 
 call dein#begin(s:path, expand('<sfile>'))
 
-call dein#load_toml('~/.vim/rc/plugins/dein.toml', {'lazy': 0})
-call dein#load_toml('~/.vim/rc/plugins/dein_lang.toml', {'lazy': 0})
-call dein#load_toml('~/.vim/rc/plugins/deinlazy.toml', {'lazy' : 1})
-call dein#load_toml('~/.vim/rc/plugins/deinlazy_lang.toml', {'lazy' : 1})
-call dein#load_toml('~/.vim/rc/plugins/deinft.toml')
+call dein#load_toml('~/.vim/rc/plugins/default.rc.toml', {'lazy': 0})
+call dein#load_toml('~/.vim/rc/plugins/lazy.rc.toml', {'lazy' : 1})
+call dein#load_toml('~/.vim/rc/plugins/filetype.rc.toml')
 
-let s:vimrc_local = '~/ghq/github.com/h-michael/'
+let s:vimrc_local = '~/go/src/github.com/h-michael/'
 if s:vimrc_local !=# ''
   " Load develop version plugins.
   call dein#local(fnamemodify(s:vimrc_local, ':h'),
         \ {'frozen': 1, 'merged': 0},
-        \ ['debug-client-nvim', 'nvim-luvlsp'])
+        \ [])
 endif
 
-if dein#tap('deoplete.nvim') && has('nvim')
-  call dein#disable('neocomplete.vim')
-endif
 call dein#end()
 
 call dein#save_state()
 
 if has('vim_starting') && dein#check_install()
-  " Installation check.
   call dein#install()
 endif
 
