@@ -1,91 +1,64 @@
 hook_add = '''
-  " Vim
-  let g:vimsyntax_noerror = 1
-  "let g:vim_indent_cont = 0
+" Update filetype.
+autocmd MyAutoCmd BufWritePost * nested
+\ if &l:filetype ==# '' || exists('b:ftdetect')
+\ |   unlet! b:ftdetect
+\ |   filetype detect
+\ | endif
 
-  " python.vim
-  let python_highlight_all = 1
+" Reload .vimrc automatically.
+autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim,*.rc.toml source $MYVIMRC | redraw
 
-  " elm
-  let g:elm_format_autosave = 1
-  let g:elm_detailed_complete = 1
-
-  " Rust
-  let g:rustfmt_autosave = 0
-  let g:rust_fold = 1
-
-  " Markdown
-  " http://mattn.kaoriya.net/software/vim/20140523124903.htm
-  let g:markdown_fenced_languages = [
-        \  'coffee',
-        \  'css',
-        \  'erb=eruby',
-        \  'javascript',
-        \  'js=javascript',
-        \  'json=javascript',
-        \  'ruby',
-        \  'sass',
-        \  'xml',
-        \  'vim',
-        \]
-
-  " Update filetype.
-  autocmd MyAutoCmd BufWritePost * nested
-  \ if &l:filetype ==# '' || exists('b:ftdetect')
-  \ |   unlet! b:ftdetect
-  \ |   filetype detect
-  \ | endif
-
-  " Reload .vimrc automatically.
-  autocmd MyAutoCmd BufWritePost .vimrc,vimrc,*.rc.vim,dein*.toml source $MYVIMRC | redraw
-
-  " Auto reload VimScript.
-  autocmd MyAutoCmd BufWritePost,FileWritePost *.vim nested
-  \ if &l:autoread > 0 | source <afile> |
-  \   echo 'source ' . bufname('%') |
-  \ endif
+" Auto reload VimScript.
+autocmd MyAutoCmd BufWritePost,FileWritePost *.vim nested
+\ if &l:autoread > 0 | source <afile> |
+\   echo 'source ' . bufname('%') |
+\ endif
 '''
 
 [ftplugin]
 _ = '''
-  " Disable automatically insert comment.
-  setl formatoptions-=r
-  setl formatoptions-=o
-  setl formatoptions+=mMBl
+" see :h fo-table
+" defalut: tcqj
+" disable automatically insert comment.
+setl formatoptions-=r
+setl formatoptions-=o
 
-  " Disable auto wrap.
-  if &l:textwidth != 70 && &filetype !=# 'help'
-    setlocal textwidth=0
-  endif
+" for multi-byte char
+setl formatoptions+=mMBl
 
-  " Use FoldCCtext().
-  if &filetype !=# 'help'
-    setlocal foldtext=FoldCCtext()
-  endif
+" disable auto wrap.
+if &l:textwidth != 70 && &filetype !=# 'help'
+  setlocal textwidth=0
+endif
 '''
 
-dart = '''
-  let dart_html_in_string=v:vital_import_without_let
-  let dart_style_guide = 2
-  let dart_format_on_save = 1
-'''
+gitcommit = 'setlocal colorcolumn=50,72'
 
 help = '''
-  setlocal iskeyword+=:
-  setlocal iskeyword+=#
-  setlocal iskeyword+=-
+setlocal iskeyword+=:
+setlocal iskeyword+=#
+setlocal iskeyword+=-
+setlocal nolist nonumber norelativenumber
 '''
 
-go = '''
-  set autowrite
+markdown = '''
+" http://mattn.kaoriya.net/software/vim/20140523124903.htm
+let g:markdown_fenced_languages = [
+      \  'coffee',
+      \  'css',
+      \  'erb=eruby',
+      \  'javascript',
+      \  'js=javascript',
+      \  'json=javascript',
+      \  'ruby',
+      \  'sass',
+      \  'xml',
+      \  'vim',
+      \]
+'''
 
-  " run :GoBuild or :GoTestCompile based on the go file
-  function! s:build_go_files()
-    let l:file = expand('%')
-    if l:file =~# '^\f\+_test\.go$'
-      call go#test#Test(0, 1)
-    elseif l:file =~# '^\f\+\.go$'
-      call go#cmd#Build(0)
-    endif
-  endfunction
+vim = '''
+let g:vimsyntax_noerror = 1
+" let g:vim_indent_cont = 0
 '''
