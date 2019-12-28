@@ -124,12 +124,12 @@ repo = 'rhysd/rust-doc.vim'
 on_ft = 'help'
 
 [[plugins]]
-repo = 'neovim/nvim-lsp'
+repo = 'h-michael/nvim-lsp'
+rev = 'json'
 on_if = 'has("nvim-0.5")'
 on_cmd = ['LspInstall', 'LspInstallInfo']
-on_ft = ['c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'javascript','typescript']
+on_ft = ['c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'javascript', 'typescript', 'json']
 hook_add = '''
-echom 'add'
 lua vim.lsp.set_log_level("debug")
 function! SetMyLspConfig() abort
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
@@ -157,34 +157,38 @@ call SetMyLspConfig()
 lua << EOF
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
   require'nvim_lsp'.gopls.setup{
-    settings={
-      usePlaceholders=true;
-      linkTarget="pkg.go.dev";
-      completionDocumentation=true;
-      completeUnimported=true;
-      deepCompletion=true;
-      fuzzyMatching=true;
-    }
+    settings = {
+      gopls = {
+        usePlaceholders=true;
+        linkTarget="pkg.go.dev";
+        completionDocumentation=true;
+        completeUnimported=true;
+        deepCompletion=true;
+        fuzzyMatching=true;
+      };
+    };
   }
 EOF
 '''
 
 rust = '''
-echom 'hook ft'
 call SetMyLspConfig()
 lua << EOF
   -- https://github.com/neovim/nvim-lsp#rls
   require'nvim_lsp'.rls.setup{
-    cmd = {"rustup run nightly rls"};
-    settings={
-      enableMultiProjectSetup=true;
-      all_features=true;
-      all_targets=true;
-      full_docs=true;
-      jobs=2;
-      unstable_features=true;
-      wait_to_build=1500;
-    }
+    cmd = {"rustup"};
+    cmd_args = {"run nightly rls"};
+    settings = {
+      rls = {
+        enableMultiProjectSetup = true;
+        all_features = true;
+        all_targets = true;
+        full_docs = true;
+        jobs = 2;
+        unstable_features = true;
+        wait_to_build = 1500;
+      };
+    };
   }
 EOF
 '''
@@ -194,15 +198,20 @@ call SetMyLspConfig()
 lua require'nvim_lsp'.solargraph.setup{}
 '''
 
-typescript = '''
-call SetMyLspConfig()
-lua require'nvim_lsp'.tsserver.setup{}
-'''
-
 javascript = '''
 call SetMyLspConfig()
 lua << EOF
   -- https://github.com/neovim/nvim-lsp#flow
   require'nvim_lsp'.flow.setup{}
 EOF
+'''
+
+typescript = '''
+call SetMyLspConfig()
+lua require'nvim_lsp'.tsserver.setup{}
+'''
+
+json = '''
+call SetMyLspConfig()
+lua require'nvim_lsp'.jsonls.setup{}
 '''
