@@ -142,29 +142,6 @@ nnoremap <silent> <Leader>t   :Tags <CR>
 [[plugins]]
 repo = 'rhysd/git-messenger.vim'
 
-# Translate-shell.vim is a plugin for translating text without leaving Vim.
-[[plugins]]
-repo = 'echuraev/translate-shell.vim'
-build = 'wget -O ~/.vim/trans git.io/trans && chmod +x ~/.vim/trans'
-hook_add = '''
-let g:trans_directions_list = [
-    \['en', 'ja'],
-    \['ja', 'en'],
-    \['', 'ja'],
-    \['', ''],
-\]
-let g:trans_close_window_after_saving = 1
-let g:trans_save_only_unique = 1
-let g:trans_save_raw_history = 1
-let g:trans_save_history = 3
-" let g:trans_save_audio = 1
-" let g:trans_history_format = '%s;%t;%as;%at'
-let g:trans_history_file = '~/.vim/trans_history/trans_history.csv'
-" let g:trans_history_format = '%s;%t'
-let g:trans_history_file = '~/trans_history/trans_history.csv'
-" let g:trans_bin = "/usr/bin/"
-'''
-
 [[plugins]]
 repo = 'itchyny/vim-pdf'
 
@@ -176,15 +153,6 @@ repo = 'kana/vim-niceblock'
 
 [[plugins]]
 repo = 'mbbill/undotree'
-
-# [[plugins]]
-# repo = 'RRethy/vim-hexokinase'
-# build = 'make hexokinase'
-# hook_add = '''
-# let g:Hexokinase_ftAutoload = ['scss', 'css', 'javascript', 'javascript.jsx', 'xml', 'toml']
-# let g:Hexokinase_refreshEvents = ['TextChanged', 'TextChangedI']
-# let g:Hexokinase_virtualText = '██████'
-# '''
 
 [[plugins]]
 repo = 'liuchengxu/vista.vim'

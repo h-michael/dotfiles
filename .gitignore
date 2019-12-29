@@ -3,7 +3,6 @@ application/*
 .config/powerline/*
 .config/gtk-3.0/bookmarks
 .config/fish/fish
-.config/fish/completions/*
 .config/fish/functions/*
 .config/fish/fishd*
 .config/fish/fish_variables
