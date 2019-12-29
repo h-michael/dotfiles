@@ -7,16 +7,16 @@ function check_outdate
   set BASE (git merge-base @ "$UPSTREAM")
 
   if [ $LOCAL = $REMOTE ]
-    # echo "Up-to-date"
+    echo "Up-to-date"
     false
   else if [ $LOCAL = $BASE ]
-    #echo "Need to pull"
+    echo "Need to pull"
     true
   else if [ $REMOTE = $BASE ]
-    # echo "Need to push"
+    echo "Need to push"
     false
   else
-    # echo "Diverged"
+    echo "Diverged"
     false
   end
 end
@@ -38,20 +38,23 @@ function neovim_ftest
   set -l LOG_DIR $HOME/.local/share/nvim/test/log
   set -l NVIM_LOG_FILE $HOME/.local/share/nvim/test/.nvimlog
   set -l NVIM_TEST_TRACE_LEVEL 2
-  set -l USE_LUACOV 1
-  set -l BUSTED_ARGS '--coverage'
+  # set -l BUSTED_ARGS '--coverage'
+  # set -l USE_LUACOV 1
   make functionaltest TEST_FILE=$TEST_FILE \
     BUSTED_PRG=(which -a busted) \
-    # BUSTED_ARGS='--coverage' \
-    # USE_LUACOV=1 \
     MIN_LOG_LEVEL=2 \
     LOG_DIR=$HOME/.local/share/nvim/test/log \
     NVIM_TEST_TRACE_LEVEL=2
+    # BUSTED_ARGS='--coverage' \
+    # USE_LUACOV=1 \
 end
 
-function upgrade_tmux
+function install_tmux
   cd (ghq root)/github.com/tmux/tmux
   if check_outdate
+    printf "input password"
+    read -s password
+
     hub sync
     sh autogen.sh
     ./configure
@@ -60,9 +63,12 @@ function upgrade_tmux
   end
 end
 
-function upgrade_fish
+function install_fish
   cd (ghq root)/github.com/fish-shell/fish-shell
   if check_outdate
+    printf "input password"
+    read -s password
+
     hub sync
     rm -rf build
     mkdir build
@@ -73,26 +79,32 @@ function upgrade_fish
   end
 end
 
-function upgrade_alacritty
+function install_alacritty
   cd (ghq root)/github.com/jwilm/alacritty
   if check_outdate
+    printf "input password"
+    read -s password
+
     hub sync
     cargo build --release
     echo $password | sudo -S rm /usr/local/bin/alacritty
     echo $password | sudo -S cp target/release/alacritty /usr/local/bin/
     echo $password | sudo -S mkdir -p /usr/local/share/man/man1
-    gzip -c alacritty.man | sudo -S tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+    echo $password; gzip -c extra/alacritty.man | sudo -S tee /usr/local/share/man/man1/alacritty.1.gz > /dev/null
+    mkdir -p $fish_complete_path[1]
+    cp extra/completions/alacritty.fish $fish_complete_path[1]/alacritty.fish
   end
 end
 
 function upgrade_all_dev_tools
+  printf "input password"
   read -s password
 
   if is_mac
     brew upgrade
     brew cleanup
-    upgrade_tmux
-    upgrade_alacritty
+    install_tmux
+    install_alacritty
     cd $HOME
   end
 
@@ -111,11 +123,11 @@ function upgrade_all_dev_tools
       echo $password | sudo apt upgrade
     case "Arch Linux"
       echo $password | sudo -S yay -Syu  --noconfirm --noanswerclean --noanswerdiff --noansweredit --noanswerupgrade
-      upgrade_alacritty
+      install_alacritty
     case "*"
     end
-    upgrade_tmux
-    upgrade_fish
+    install_tmux
+    install_fish
     cd $HOME
   end
 
