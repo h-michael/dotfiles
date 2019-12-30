@@ -1,2 +1,5 @@
 abbr -a mnvim "nvim -u ~/.minimal_nvimrc"
 abbr -a mvim "vim -u ~/.minimal_vimrc"
+abbr -a nvim-lsp_log "nvim $LSP_LOG_PATH"
+abbr -a rm-lsp_log "rm $LSP_LOG_PATH"
+abbr -a cd-dein_cache "cd $DEIN_CACHE_PATH"
