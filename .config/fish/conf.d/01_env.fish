@@ -70,6 +70,32 @@ end
 # For Enpass
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 0
 
+eval (direnv hook fish)
+
+set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
+if [ -n $SSH_CONNECTION ]
+  set -x EDITOR nvim
+end
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
+  source "$HOME/google-cloud-sdk/path.fish.inc"
+end
+
+# The next line enables shell command completion for gcloud.
+if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
+  source "$HOME/google-cloud-sdk/completion.fish.inc"
+end
+
+function history-merge --on-event fish_preexec
+  history --save
+  history --merge
+end
+
+set -x DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
+set -x NVIM_SHARED_PATH $HOME/.local/share/nvim
+set -x LSP_LOG_PATH $NVIM_SHARED_PATH/vim-lsp.log
+
 if [ -z $TMUX ]
   # set langage version manager path
   set -x PATH $HOME/.anyenv/bin $PATH
@@ -95,6 +121,14 @@ if [ -z $TMUX ]
   # Lua
   set -x PATH $HOME/.luarocks/bin $PATH
 
+  set -x LUA_LSP_DIR $GOPATH/src/github.com/sumneko/lua-language-server
+  if is_linux
+    set -x LUA_LSP_BIN $LUA_LSP_DIR/bin/Linux/lua-language-server
+  end
+  if is_mac
+    set -x LUA_LSP_BIN $LUA_LSP_DIR/bin/macOS/lua-language-server
+  end
+
   if status --is-interactive
     anyenv init - --no-rehash fish | source
     set -x PATH $PATH (yarn global bin)
@@ -104,26 +138,4 @@ if [ -z $TMUX ]
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
-end
-
-eval (direnv hook fish)
-
-set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
-if [ -n $SSH_CONNECTION ]
-  set -x EDITOR nvim
-end
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
-  source "$HOME/google-cloud-sdk/path.fish.inc"
-end
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
-  source "$HOME/google-cloud-sdk/completion.fish.inc"
-end
-
-function history-merge --on-event fish_preexec
-  history --save
-  history --merge
 end
