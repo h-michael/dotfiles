@@ -1,5 +1,7 @@
 " dein configurations.
 
+let g:dein#auto_recache = 1
+
 let g:dein#install_progress_type = 'title'
 if has('nvim')
   let s:path = expand('$CACHE/dein-nvim')
