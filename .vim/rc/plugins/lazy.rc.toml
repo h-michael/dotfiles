@@ -124,21 +124,61 @@ repo = 'rhysd/rust-doc.vim'
 on_ft = 'help'
 
 [[plugins]]
-repo = 'h-michael/nvim-lsp'
-rev = 'json'
+repo = 'neovim/nvim-lsp'
+# repo = 'h-michael/nvim-lsp'
+# rev = ''
 on_if = 'has("nvim-0.5")'
 on_cmd = ['LspInstall', 'LspInstallInfo']
-on_ft = ['c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'javascript', 'typescript', 'json']
+on_ft = [
+  'c', 'cpp', 'go', 'rust' , 'python', 'ruby',
+  'lua', 'javascript', 'typescript',
+  'json', 'yaml', 'yaml.docker-compose'
+]
 hook_add = '''
-lua vim.lsp.set_log_level("debug")
+
+lua << EOF
+  vim.lsp.set_log_level("debug")
+  vim.api.nvim_set_var("enable_nvim_lsp_diagnostics", true)
+
+  vim.lsp.callbacks['textDocument/publishDiagnostics'] = function(_, _, result)
+    if vim.api.nvim_get_var('enable_nvim_lsp_diagnostics') then
+      local util = vim.lsp.util
+
+      if not result then return end
+      local uri = result.uri
+      local bufnr = vim.uri_to_bufnr(uri)
+      if not bufnr then
+        err_message("LSP.publishDiagnostics: Couldn't find buffer for ", uri)
+        return
+      end
+      util.buf_clear_diagnostics(bufnr)
+      util.buf_diagnostics_save_positions(bufnr, result.diagnostics)
+      util.buf_diagnostics_underline(bufnr, result.diagnostics)
+      util.buf_diagnostics_virtual_text(bufnr, result.diagnostics)
+    end
+  end
+EOF
+
+function! ToggleDiagnosics() abort
+lua << EOF
+  if vim.api.nvim_get_var("enable_nvim_lsp_diagnostics") then
+    vim.lsp.util.buf_clear_diagnostics()
+    diagnostic_ns = vim.api.nvim_create_namespace("vim_lsp_diagnostics")
+  end
+  vim.api.nvim_set_var("enable_nvim_lsp_diagnostics", not vim.api.nvim_get_var("enable_nvim_lsp_diagnostics"))
+EOF
+endfunction
+
 function! SetMyLspConfig() abort
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
-  nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
-  nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-  nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-  nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-  nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-  nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent> <c-]>      <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <silent> <c-k>      <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <silent> K          <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <silent> gd         <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <silent> gD         <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <silent> 1gD        <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <silent><Leader>rf  <cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>
+  nnoremap <silent><Leader>fmt <cmd>lua vim.lsp.buf.formatting()<CR>
 endfunction
 '''
 
@@ -157,15 +197,13 @@ call SetMyLspConfig()
 lua << EOF
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
   require'nvim_lsp'.gopls.setup{
-    settings = {
-      gopls = {
-        usePlaceholders=true;
-        linkTarget="pkg.go.dev";
-        completionDocumentation=true;
-        completeUnimported=true;
-        deepCompletion=true;
-        fuzzyMatching=true;
-      };
+    init_options = {
+      usePlaceholders=true;
+      linkTarget="pkg.go.dev";
+      completionDocumentation=true;
+      completeUnimported=true;
+      deepCompletion=true;
+      fuzzyMatching=true;
     };
   }
 EOF
@@ -176,8 +214,7 @@ call SetMyLspConfig()
 lua << EOF
   -- https://github.com/neovim/nvim-lsp#rls
   require'nvim_lsp'.rls.setup{
-    cmd = {"rustup"};
-    cmd_args = {"run nightly rls"};
+    cmd = {"rustup", "run", "nightly", "rls"};
     settings = {
       rls = {
         enableMultiProjectSetup = true;
@@ -198,6 +235,23 @@ call SetMyLspConfig()
 lua require'nvim_lsp'.solargraph.setup{}
 '''
 
+lua = '''
+call SetMyLspConfig()
+lua << EOF
+  local os_getenv = vim.loop.os_getenv;
+  require'nvim_lsp'.sumneko_lua.setup{
+    cmd = {os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua'};
+    settings = {
+      lua = {
+        diagnostics = {
+          enable = false
+        };
+      };
+    };
+  }
+EOF
+'''
+
 javascript = '''
 call SetMyLspConfig()
 lua << EOF
@@ -212,6 +266,16 @@ lua require'nvim_lsp'.tsserver.setup{}
 '''
 
 json = '''
-call SetMyLspConfig()
-lua require'nvim_lsp'.jsonls.setup{}
+" call SetMyLspConfig()
+" lua require'nvim_lsp'.jsonls.setup{}
 '''
+
+yaml = '''
+" call SetMyLspConfig()
+" lua require'nvim_lsp'.yamlls.setup{}
+'''
+
+# "yaml.docker-compose" = '''
+# call SetMyLspConfig()
+# lua require'nvim_lsp'.yamlls.setup{}
+# '''
