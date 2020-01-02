@@ -196,9 +196,7 @@ endif
 '''
 
 cpp = '''
-if exists('g:my_cpp_lsp_loaded')
-    finish
-else
+if !exists('g:my_cpp_lsp_loaded')
 let g:my_cpp_lsp_loaded = 1
 
 lua require'nvim_lsp'.clangd.setup{}
@@ -206,9 +204,7 @@ endif
 '''
 
 go = '''
-if exists('g:my_go_lsp_loaded')
-    finish
-else
+if !exists('g:my_go_lsp_loaded')
 let g:my_go_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -229,9 +225,7 @@ endif
 '''
 
 rust = '''
-if exists('g:my_rust_lsp_loaded')
-    finish
-else
+if !exists('g:my_rust_lsp_loaded')
 let g:my_rust_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -256,9 +250,7 @@ endif
 '''
 
 ruby = '''
-if exists('g:my_ruby_lsp_loaded')
-    finish
-else
+if !exists('g:my_ruby_lsp_loaded')
 let g:my_ruby_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -267,9 +259,7 @@ endif
 '''
 
 lua = '''
-if exists('g:my_lua_lsp_loaded')
-    finish
-else
+if !exists('g:my_lua_lsp_loaded')
 let g:my_lua_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -290,9 +280,7 @@ endif
 '''
 
 javascript = '''
-if exists('g:my_javascript_lsp_loaded')
-    finish
-else
+if !exists('g:my_javascript_lsp_loaded')
 let g:my_javascript_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -304,9 +292,7 @@ endif
 '''
 
 typescript = '''
-if exists('g:my_typescript_lsp_loaded')
-    finish
-else
+if !exists('g:my_typescript_lsp_loaded')
 let g:my_typescript_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -315,9 +301,7 @@ endif
 '''
 
 json = '''
-if exists('g:my_json_lsp_loaded')
-    finish
-endif
+if !exists('g:my_json_lsp_loaded')
 let g:my_json_lsp_loaded = 1
 
 " call SetMyLspConfig()
@@ -325,9 +309,7 @@ let g:my_json_lsp_loaded = 1
 '''
 
 yaml = '''
-if exists('g:my_yaml_lsp_loaded')
-    finish
-endif
+if !exists('g:my_yaml_lsp_loaded')
 let g:my_yaml_lsp_loaded = 1
 
 " call SetMyLspConfig()
