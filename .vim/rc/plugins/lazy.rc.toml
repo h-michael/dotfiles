@@ -187,26 +187,28 @@ endfunction
 c = '''
 if exists('g:my_c_lsp_loaded')
     finish
-endif
+else
 let g:my_c_lsp_loaded = 1
 
 call SetMyLspConfig()
 lua require'nvim_lsp'.clangd.setup{}
+endif
 '''
 
 cpp = '''
 if exists('g:my_cpp_lsp_loaded')
     finish
-endif
+else
 let g:my_cpp_lsp_loaded = 1
 
 lua require'nvim_lsp'.clangd.setup{}
+endif
 '''
 
 go = '''
 if exists('g:my_go_lsp_loaded')
     finish
-endif
+else
 let g:my_go_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -223,12 +225,13 @@ lua << EOF
     };
   }
 EOF
+endif
 '''
 
 rust = '''
 if exists('g:my_rust_lsp_loaded')
     finish
-endif
+else
 let g:my_rust_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -249,22 +252,24 @@ lua << EOF
     };
   }
 EOF
+endif
 '''
 
 ruby = '''
 if exists('g:my_ruby_lsp_loaded')
     finish
-endif
+else
 let g:my_ruby_lsp_loaded = 1
 
 call SetMyLspConfig()
 lua require'nvim_lsp'.solargraph.setup{}
+endif
 '''
 
 lua = '''
 if exists('g:my_lua_lsp_loaded')
     finish
-endif
+else
 let g:my_lua_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -281,12 +286,13 @@ lua << EOF
     };
   }
 EOF
+endif
 '''
 
 javascript = '''
 if exists('g:my_javascript_lsp_loaded')
     finish
-endif
+else
 let g:my_javascript_lsp_loaded = 1
 
 call SetMyLspConfig()
@@ -294,16 +300,18 @@ lua << EOF
   -- https://github.com/neovim/nvim-lsp#flow
   require'nvim_lsp'.flow.setup{}
 EOF
+endif
 '''
 
 typescript = '''
 if exists('g:my_typescript_lsp_loaded')
     finish
-endif
+else
 let g:my_typescript_lsp_loaded = 1
 
 call SetMyLspConfig()
 lua require'nvim_lsp'.tsserver.setup{}
+endif
 '''
 
 json = '''
