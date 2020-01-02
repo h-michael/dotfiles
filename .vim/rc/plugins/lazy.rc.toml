@@ -155,6 +155,7 @@ lua << EOF
       util.buf_diagnostics_save_positions(bufnr, result.diagnostics)
       util.buf_diagnostics_underline(bufnr, result.diagnostics)
       util.buf_diagnostics_virtual_text(bufnr, result.diagnostics)
+      -- util.set_loclist(result.diagnostics)
     end
   end
 EOF
@@ -184,15 +185,30 @@ endfunction
 
 [plugins.ftplugin]
 c = '''
+if exists('g:my_c_lsp_loaded')
+    finish
+endif
+let g:my_c_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua require'nvim_lsp'.clangd.setup{}
 '''
 
 cpp = '''
+if exists('g:my_cpp_lsp_loaded')
+    finish
+endif
+let g:my_cpp_lsp_loaded = 1
+
 lua require'nvim_lsp'.clangd.setup{}
 '''
 
 go = '''
+if exists('g:my_go_lsp_loaded')
+    finish
+endif
+let g:my_go_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua << EOF
   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
@@ -210,6 +226,11 @@ EOF
 '''
 
 rust = '''
+if exists('g:my_rust_lsp_loaded')
+    finish
+endif
+let g:my_rust_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua << EOF
   -- https://github.com/neovim/nvim-lsp#rls
@@ -231,11 +252,21 @@ EOF
 '''
 
 ruby = '''
+if exists('g:my_ruby_lsp_loaded')
+    finish
+endif
+let g:my_ruby_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua require'nvim_lsp'.solargraph.setup{}
 '''
 
 lua = '''
+if exists('g:my_lua_lsp_loaded')
+    finish
+endif
+let g:my_lua_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua << EOF
   local os_getenv = vim.loop.os_getenv;
@@ -253,6 +284,11 @@ EOF
 '''
 
 javascript = '''
+if exists('g:my_javascript_lsp_loaded')
+    finish
+endif
+let g:my_javascript_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua << EOF
   -- https://github.com/neovim/nvim-lsp#flow
@@ -261,16 +297,31 @@ EOF
 '''
 
 typescript = '''
+if exists('g:my_typescript_lsp_loaded')
+    finish
+endif
+let g:my_typescript_lsp_loaded = 1
+
 call SetMyLspConfig()
 lua require'nvim_lsp'.tsserver.setup{}
 '''
 
 json = '''
+if exists('g:my_json_lsp_loaded')
+    finish
+endif
+let g:my_json_lsp_loaded = 1
+
 " call SetMyLspConfig()
 " lua require'nvim_lsp'.jsonls.setup{}
 '''
 
 yaml = '''
+if exists('g:my_yaml_lsp_loaded')
+    finish
+endif
+let g:my_yaml_lsp_loaded = 1
+
 " call SetMyLspConfig()
 " lua require'nvim_lsp'.yamlls.setup{}
 '''
