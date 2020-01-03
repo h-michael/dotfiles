@@ -137,6 +137,9 @@ nnoremap <silent> <Leader>b   :Buffers <CR>
 nnoremap <silent> <Leader>f   :Files <CR>
 nnoremap <silent> <Leader>t   :Tags <CR>
 '''
+# Open URI with your favorite browser from your most favorite editor
+[[plugins]]
+repo = 'tyru/open-browser.vim'
 
 # Vim and Neovim plugin to reveal the commit messages under the cursor
 [[plugins]]
@@ -144,9 +147,6 @@ repo = 'rhysd/git-messenger.vim'
 
 [[plugins]]
 repo = 'itchyny/vim-pdf'
-
-[[plugins]]
-repo = 'tyru/open-browser.vim'
 
 [[plugins]]
 repo = 'kana/vim-niceblock'

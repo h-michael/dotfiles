@@ -15,15 +15,15 @@ endif
 
 let s:default_toml = '~/.vim/rc/plugins/default.rc.toml'
 let s:lazy_toml = '~/.vim/rc/plugins/lazy.rc.toml'
-let s:filetype_toml = '~/.vim/rc/plugins/filetype.rc.toml'
+let s:ftplugin_toml = '~/.vim/rc/plugins/ftplugin.rc.toml'
 
 call dein#begin(s:path, [
-      \ expand('<sfile>'), s:default_toml, s:lazy_toml, s:filetype_toml
+      \ expand('<sfile>'), s:default_toml, s:lazy_toml, s:ftplugin_toml
       \ ])
 
 call dein#load_toml(s:default_toml, {'lazy': 0})
 call dein#load_toml(s:lazy_toml, {'lazy' : 1})
-call dein#load_toml(s:filetype_toml)
+call dein#load_toml(s:ftplugin_toml)
 
 let s:vimrc_local = '~/go/src/github.com/h-michael/'
 if s:vimrc_local !=# ''
