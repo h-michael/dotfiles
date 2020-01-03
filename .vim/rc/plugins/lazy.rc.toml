@@ -96,6 +96,12 @@ map <Leader>ml  :MemoList<CR>
 map <Leader>mg  :MemoGrep<CR>
 '''
 
+# Open GitHub URL of current file, etc. from Vim editor (supported GitHub Enterprise) 
+[[plugins]]
+repo = 'tyru/open-browser-github.vim'
+depends = 'open-browser-github.vim'
+on_cmd = ['OpenGithubFile', 'OpenGithubIssue', 'OpenGithubPullReq']
+
 # The fastest Neovim colorizer.
 [[plugins]]
 repo = 'norcalli/nvim-colorizer.lua'
@@ -124,6 +130,12 @@ repo = 'rhysd/rust-doc.vim'
 on_ft = 'help'
 
 [[plugins]]
+repo = 'h-michael/vim-go'
+rev = "nvim"
+on_ft = ['go']
+hook_add = 'source ~/.vim/rc/plugins/config/vim-go.rc.vim'
+
+[[plugins]]
 repo = 'neovim/nvim-lsp'
 # repo = 'h-michael/nvim-lsp'
 # rev = ''
@@ -135,7 +147,6 @@ on_ft = [
   'json', 'yaml', 'yaml.docker-compose'
 ]
 hook_add = '''
-
 lua << EOF
   vim.lsp.set_log_level("debug")
   vim.api.nvim_set_var("enable_nvim_lsp_diagnostics", true)
@@ -154,7 +165,7 @@ lua << EOF
       util.buf_clear_diagnostics(bufnr)
       util.buf_diagnostics_save_positions(bufnr, result.diagnostics)
       util.buf_diagnostics_underline(bufnr, result.diagnostics)
-      util.buf_diagnostics_virtual_text(bufnr, result.diagnostics)
+      -- util.buf_diagnostics_virtual_text(bufnr, result.diagnostics)
       -- util.set_loclist(result.diagnostics)
     end
   end
@@ -207,20 +218,20 @@ go = '''
 if !exists('g:my_go_lsp_loaded')
 let g:my_go_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua << EOF
-  -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
-  require'nvim_lsp'.gopls.setup{
-    init_options = {
-      usePlaceholders=true;
-      linkTarget="pkg.go.dev";
-      completionDocumentation=true;
-      completeUnimported=true;
-      deepCompletion=true;
-      fuzzyMatching=true;
-    };
-  }
-EOF
+" call SetMyLspConfig()
+" lua << EOF
+"   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
+"   require'nvim_lsp'.gopls.setup{
+"     init_options = {
+"       usePlaceholders=true;
+"       linkTarget="pkg.go.dev";
+"       completionDocumentation=true;
+"       completeUnimported=true;
+"       deepCompletion=true;
+"       fuzzyMatching=true;
+"     };
+"   }
+" EOF
 endif
 '''
 
@@ -306,6 +317,7 @@ let g:my_json_lsp_loaded = 1
 
 " call SetMyLspConfig()
 " lua require'nvim_lsp'.jsonls.setup{}
+endif
 '''
 
 yaml = '''
@@ -314,6 +326,7 @@ let g:my_yaml_lsp_loaded = 1
 
 " call SetMyLspConfig()
 " lua require'nvim_lsp'.yamlls.setup{}
+endif
 '''
 
 # "yaml.docker-compose" = '''
