@@ -47,7 +47,6 @@ nnoremap <silent> <Leader>af :<C-u>ALEFix <CR>
 let g:ale_javascript_prettier_use_local_config = 1
 let g:ale_rust_cargo_use_clippy = 1
 let g:ale_rust_rls_toolchain = 'nightly'
-" let g:ale_rust_rls_toolchain = 'stable'
 
 " let g:ale_fix_on_save = 1
 " let b:ale_set_balloons = 1
@@ -143,8 +142,8 @@ on_if = 'has("nvim-0.5")'
 on_cmd = ['LspInstall', 'LspInstallInfo']
 on_ft = [
   'c', 'cpp', 'go', 'rust' , 'python', 'ruby',
-  'lua', 'javascript', 'typescript',
-  'json', 'yaml', 'yaml.docker-compose'
+  'lua', 'javascript', 'typescript', 'graphql',
+  'json', 'yaml', 'yaml.docker-compose', 'terraform'
 ]
 hook_add = '''
 lua << EOF
@@ -169,6 +168,10 @@ lua << EOF
       -- util.set_loclist(result.diagnostics)
     end
   end
+
+  -- vim.lsp.callbacks['textDocument/documentSymbol'] = function(_, _, result)
+  --   vim.api.nvim_command("echo ('"..vim.inspect(result).."')")
+  -- end
 EOF
 
 function! ToggleDiagnosics() abort
@@ -187,6 +190,7 @@ function! SetMyLspConfig() abort
   nnoremap <silent> <c-k>      <cmd>lua vim.lsp.buf.signature_help()<CR>
   nnoremap <silent> K          <cmd>lua vim.lsp.buf.hover()<CR>
   nnoremap <silent> gd         <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <silent> g0         <cmd>lua vim.lsp.buf.document_symbol()<CR>
   nnoremap <silent> gD         <cmd>lua vim.lsp.buf.implementation()<CR>
   nnoremap <silent> 1gD        <cmd>lua vim.lsp.buf.type_definition()<CR>
   nnoremap <silent><Leader>rf  <cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>
@@ -199,39 +203,42 @@ c = '''
 if exists('g:my_c_lsp_loaded')
     finish
 else
-let g:my_c_lsp_loaded = 1
+  let g:my_c_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua require'nvim_lsp'.clangd.setup{}
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.clangd.setup{}
 endif
 '''
 
 cpp = '''
 if !exists('g:my_cpp_lsp_loaded')
-let g:my_cpp_lsp_loaded = 1
+  let g:my_cpp_lsp_loaded = 1
 
-lua require'nvim_lsp'.clangd.setup{}
+  lua require'nvim_lsp'.clangd.setup{}
 endif
 '''
 
 go = '''
 if !exists('g:my_go_lsp_loaded')
-let g:my_go_lsp_loaded = 1
+  let g:my_go_lsp_loaded = 1
+  "let g:use_gopls = 1
 
-" call SetMyLspConfig()
-" lua << EOF
-"   -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
-"   require'nvim_lsp'.gopls.setup{
-"     init_options = {
-"       usePlaceholders=true;
-"       linkTarget="pkg.go.dev";
-"       completionDocumentation=true;
-"       completeUnimported=true;
-"       deepCompletion=true;
-"       fuzzyMatching=true;
-"     };
-"   }
-" EOF
+  if !exists('g:use_gopls')
+    call SetMyLspConfig()
+    lua << EOF
+      -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
+      require'nvim_lsp'.gopls.setup{
+        init_options = {
+          usePlaceholders=true;
+          linkTarget="pkg.go.dev";
+          completionDocumentation=true;
+          completeUnimported=true;
+          deepCompletion=true;
+          fuzzyMatching=true;
+        };
+      }
+EOF
+  endif
 endif
 '''
 
@@ -240,92 +247,109 @@ if !exists('g:my_rust_lsp_loaded')
 let g:my_rust_lsp_loaded = 1
 
 call SetMyLspConfig()
-lua << EOF
-  -- https://github.com/neovim/nvim-lsp#rls
-  require'nvim_lsp'.rls.setup{
-    cmd = {"rustup", "run", "nightly", "rls"};
-    settings = {
-      rls = {
-        enableMultiProjectSetup = true;
-        all_features = true;
-        all_targets = true;
-        full_docs = true;
-        jobs = 2;
-        unstable_features = true;
-        wait_to_build = 1500;
-      };
-    };
-  }
+" let g:use_rust_analyzer = 1
+
+  if !exists('g:use_rust_analyzer')
+    lua << EOF
+      -- https://github.com/neovim/nvim-lsp#rls
+      require'nvim_lsp'.rls.setup{
+        cmd = {"rustup", "run", "nightly", "rls"};
+        settings = {
+          rust = {
+            all_features = true;
+            all_targets = true;
+            full_docs = true;
+            jobs = 2;
+            unstable_features = true;
+            wait_to_build = 1500;
+          };
+        };
+      }
 EOF
+  else
+    lua require'nvim_lsp'.rust_analyzer.setup{}
+  endif
 endif
 '''
 
 ruby = '''
 if !exists('g:my_ruby_lsp_loaded')
-let g:my_ruby_lsp_loaded = 1
+  let g:my_ruby_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua require'nvim_lsp'.solargraph.setup{}
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.solargraph.setup{}
 endif
 '''
 
 lua = '''
 if !exists('g:my_lua_lsp_loaded')
-let g:my_lua_lsp_loaded = 1
+  let g:my_lua_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua << EOF
-  local os_getenv = vim.loop.os_getenv;
-  require'nvim_lsp'.sumneko_lua.setup{
-    cmd = {os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua'};
-    settings = {
-      lua = {
-        diagnostics = {
-          enable = false
+  call SetMyLspConfig()
+  lua << EOF
+    local os_getenv = vim.loop.os_getenv;
+    require'nvim_lsp'.sumneko_lua.setup{
+      cmd = {os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua'};
+      settings = {
+        lua = {
+          diagnostics = {
+            enable = false
+          };
         };
       };
-    };
-  }
+    }
 EOF
 endif
 '''
 
 javascript = '''
 if !exists('g:my_javascript_lsp_loaded')
-let g:my_javascript_lsp_loaded = 1
+  let g:my_javascript_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua << EOF
-  -- https://github.com/neovim/nvim-lsp#flow
-  require'nvim_lsp'.flow.setup{}
+  call SetMyLspConfig()
+  lua << EOF
+    -- https://github.com/neovim/nvim-lsp#flow
+    require'nvim_lsp'.apollols.setup{}
 EOF
 endif
 '''
 
 typescript = '''
 if !exists('g:my_typescript_lsp_loaded')
-let g:my_typescript_lsp_loaded = 1
+  let g:my_typescript_lsp_loaded = 1
 
-call SetMyLspConfig()
-lua require'nvim_lsp'.tsserver.setup{}
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.tsserver.setup{}
+endif
+'''
+
+graphql = '''
+if !exists('g:my_javascript_lsp_loaded')
+  let g:my_javascript_lsp_loaded = 1
+
+  call SetMyLspConfig()
+  lua << EOF
+    -- https://github.com/neovim/nvim-lsp#flow
+    require'nvim_lsp'.apollols.setup{}
+EOF
 endif
 '''
 
 json = '''
 if !exists('g:my_json_lsp_loaded')
-let g:my_json_lsp_loaded = 1
+  let g:my_json_lsp_loaded = 1
 
-" call SetMyLspConfig()
-" lua require'nvim_lsp'.jsonls.setup{}
+  " call SetMyLspConfig()
+  " lua require'nvim_lsp'.jsonls.setup{}
 endif
 '''
 
 yaml = '''
 if !exists('g:my_yaml_lsp_loaded')
-let g:my_yaml_lsp_loaded = 1
+  let g:my_yaml_lsp_loaded = 1
 
-" call SetMyLspConfig()
-" lua require'nvim_lsp'.yamlls.setup{}
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.yamlls.setup{}
 endif
 '''
 
@@ -333,3 +357,12 @@ endif
 # call SetMyLspConfig()
 # lua require'nvim_lsp'.yamlls.setup{}
 # '''
+
+terraform = '''
+if !exists('g:my_terraform_lsp_loaded')
+  let g:my_terraform_lsp_loaded = 1
+
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.terrafomls.setup{}
+endif
+'''
