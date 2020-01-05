@@ -42,7 +42,8 @@ let g:lightline = {
       \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head'
+      \   'gitbranch': 'fugitive#head',
+      \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
 '''
@@ -184,3 +185,38 @@ repo = 'machakann/vim-vimhelplint'
 help = '''
 nnoremap <silent><buffer> ,r  :<C-u>VimhelpLint!<CR>
 '''
+
+[[plugins]]
+repo = 'liuchengxu/vista.vim'
+hook_add = '''
+let g:vista_echo_cursor_strategy = 'floating_win'
+let g:vista_close_on_jump = 1
+let g:vista_default_executive = 'nvim_lsp'
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+'''
+
+
+#[[plugins]]
+#repo = 'prabirshrestha/async.vim'
+#
+#[[plugins]]
+#repo = 'prabirshrestha/vim-lsp'
+#hook_add = '''
+#let g:lsp_log_file = expand('~/vim-lsp.log')
+#if executable('ra_lsp_server')
+#    au User lsp_setup call lsp#register_server({
+#        \ 'name': 'ra_lsp_server',
+#        \ 'cmd': {server_info->['ra_lsp_server']},
+#        \ 'whitelist': ['rust'],
+#        \ })
+#" if executable('rls')
+#"     au User lsp_setup call lsp#register_server({
+#"         \ 'name': 'rls',
+#"         \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+#"         \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+#"         \ 'whitelist': ['rust'],
+#"         \ })
+#" endif
+#'''
