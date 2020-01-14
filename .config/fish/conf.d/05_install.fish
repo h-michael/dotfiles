@@ -80,7 +80,7 @@ function install_fish
 end
 
 function install_alacritty
-  cd (ghq root)/github.com/jwilm/alacritty
+  cd (ghq root)/github.com/alacritty/alacritty
   if check_outdate
     printf "input password"
     read -s password
