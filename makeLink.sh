@@ -9,6 +9,7 @@ linux_link () {
   ln -sf $DIR/.config/fontconfig ~/.config/fontconfig
   ln -sf $DIR/.config/i3 ~/.config/i3
   ln -sf $DIR/.config/polybar ~/.config/polybar
+  ln -sf $DIR/.config/rofi ~/.config/rofi
   ln -sf $DIR/.config/sway ~/.config/sway
   ln -sf $DIR/.config/gtk-2.0 ~/.config/gtk-2.0
   ln -sf $DIR/.config/gtk-3.0 ~/.config/gtk-3.0
