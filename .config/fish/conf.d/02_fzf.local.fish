@@ -67,6 +67,10 @@ function gitaddm
   git status -s | grep -v 'M ' | sed -e 's/^\?\? //' | xargs git add
 end
 
+function fpl
+  pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'
+end
+
 function reposize
   set dirs (ghq list -p)
   for dir in $dirs
