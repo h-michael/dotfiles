@@ -1,5 +1,16 @@
+! Caps_lock => Control_L
 remove lock = Caps_Lock
 
 keycode 66 = Control_L
 
 add control = Control_L
+
+! Swap Control_R and Alt_R
+remove control = Control_R
+remove mod1 = Alt_R
+
+keycode 105 = Alt_R
+keycode 108 = Control_R
+
+add control = Control_R
+add mod1 = Alt_R
