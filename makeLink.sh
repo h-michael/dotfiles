@@ -21,6 +21,7 @@ linux_link () {
   ln -sf $DIR/.xmonad ~/.xmonad
   ln -sf $DIR/.xinitrc ~/.xinitrc
   ln -sf $DIR/.Xmodmap ~/.Xmodmap
+  ln -sf $DIR/.Xmodmap_default ~/.Xmodmap_default
   ln -sf $DIR/.xprofile ~/.xprofile
   ln -sf $DIR/.xsession ~/.xsession
   ln -sf $DIR/.Xresources ~/.Xresources
