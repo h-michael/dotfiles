@@ -49,6 +49,10 @@ _common_link () {
   fi
 
   ln -sf ~/.vim ~/.config/nvim
+  ln -sf $DIR/.util.zsh ~/.util.zsh
+  ln -sf $DIR/.zshenv ~/.zshenv
+  ln -sf $DIR/.zshrc ~/.zshrc
+  ln -sf $DIR/.zsh ~/.config/zsh
   ln -sf $DIR/.config/fish ~/.config/fish
   ln -sf $DIR/.config/translate-shell/ ~/.config/translate-shell
   ln -sf $DIR/.config/pip ~/.config/pip
