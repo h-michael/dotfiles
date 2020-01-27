@@ -18,9 +18,9 @@ hook_add = '''
   " let g:polyglot_disabled = ['rust', 'ruby']
 '''
 
-# vim plugin for direnv support
-[[plugins]]
-repo = 'direnv/direnv.vim'
+## vim plugin for direnv support
+#[[plugins]]
+#repo = 'direnv/direnv.vim'
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
@@ -138,6 +138,7 @@ nnoremap <silent> <Leader>b   :Buffers <CR>
 nnoremap <silent> <Leader>f   :Files <CR>
 nnoremap <silent> <Leader>t   :Tags <CR>
 '''
+
 # Open URI with your favorite browser from your most favorite editor
 [[plugins]]
 repo = 'tyru/open-browser.vim'
