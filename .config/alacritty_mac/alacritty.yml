@@ -238,7 +238,7 @@ schemes:
       white:   '0xFCFCFA'
   jellybeans: &jellybeans
     primary:
-      background: '0x171717'
+      background: '0x161616'
       foreground: '0xe4e4e4'
 
       # Bright and dim foreground colors
@@ -249,27 +249,31 @@ schemes:
       dim_foreground: '0x9a9a9a'
       bright_foreground: '0xffffff'
     cursor:
-      text: '0xffffff'
-      cursor: '0xffb473'
+      text: '0xfeffff'
+      cursor: '0xffb472'
     normal:
       black:   '0xa3a3a3'
-      red:     '0xea8986'
-      green:   '0xa4c38c'
-      yellow:  '0xffc68d'
-      blue:    '0xa7cae3'
-      magenta: '0xe8cefb'
-      cyan:    '0x00a7a0'
+      red:     '0xe98885'
+      green:   '0xa3c38b'
+      yellow:  '0xfacf7a'
+      blue:    '0x8197bf'
+      magenta: '0xe7cdfb'
+      cyan:    '0x00a69f'
       white:   '0xe4e4e4'
     bright:
-      black:   '0xc9c9c9'
+      black:   '0xc8c8c8'
       red:     '0xffb2b0'
-      green:   '0xc8e3b9'
-      yellow:  '0xffe2af'
-      blue:    '0xbee0f8'
-      magenta: '0xfce3ff'
-      cyan:    '0x0cbeb7'
-      white:   '0xffffff'
+      green:   '0x99ad6a'
+      yellow:  '0xffb964'
+      blue:    '0x8fbfdc'
+      magenta: '0xfce2ff'
+      cyan:    '0xc6b6ee'
+      white:   '0xfeffff'
 
+    # Selection colors
+    selection:
+      text: '0x5963a2'
+      background: '0xf6f6f6'
 colors: *jellybeans
 
   # Indexed Colors
