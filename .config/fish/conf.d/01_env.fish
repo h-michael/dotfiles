@@ -124,6 +124,7 @@ if [ -z $TMUX ]
   set -x LUA_LSP_DIR $GOPATH/src/github.com/sumneko/lua-language-server
   if is_linux
     set -x LUA_LSP_BIN $LUA_LSP_DIR/bin/Linux/lua-language-server
+    set -x PATH $HOME/google-cloud-sdk/bin $PATH
   end
   if is_mac
     set -x LUA_LSP_BIN $LUA_LSP_DIR/bin/macOS/lua-language-server
