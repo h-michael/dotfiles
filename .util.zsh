@@ -1,13 +1,12 @@
-autoload -Uz colors; colors
+autoload -Uz colors && colors
 export PATH=~/bin:$PATH
-export PATH=$PATH:/usr/local/go/bin
 
-has() {
+function has() {
     type "${1:?too few arguments}" &>/dev/null
 }
 
 # reload resets Completion function
-reload() {
+function reload() {
     local f
     f=(~/.zsh/Completion/*(.))
     unfunction $f:t 2>/dev/null
@@ -15,49 +14,49 @@ reload() {
 }
 
 # is_login_shell returns true if current shell is first shell
-is_login_shell() {
+function is_login_shell() {
     [[ $SHLVL == 1 ]]
 }
 
 # is_git_repo returns true if cwd is in git repository
-is_git_repo() {
+function is_git_repo() {
     git rev-parse --is-inside-work-tree &>/dev/null
     return $status
 }
 
 # is_screen_running returns true if GNU screen is running
-is_screen_running() {
+function is_screen_running() {
     [[ -n $STY ]]
 }
 
 # is_tmux_runnning returns true if tmux is running
-is_tmux_runnning() {
+function is_tmux_runnning() {
     [[ -n $TMUX ]]
 }
 
 # is_screen_or_tmux_running returns true if GNU screen or tmux is running
-is_screen_or_tmux_running() {
+function is_screen_or_tmux_running() {
     is_screen_running || is_tmux_runnning
 }
 
 # shell_has_started_interactively returns true if the current shell is
 # running from command line
-shell_has_started_interactively() {
+function shell_has_started_interactively() {
     [[ -n $PS1 ]]
 }
 
 # is_ssh_running returns true if the ssh deamon is available
-is_ssh_running() {
+function is_ssh_running() {
     [[ -n $SSH_CLIENT ]]
 }
 
 # ostype returns the lowercase OS name
-ostype() {
+function ostype() {
     echo ${(L):-$(uname)}
 }
 
 # os_detect export the PLATFORM variable as you see fit
-os_detect() {
+function os_detect() {
     export PLATFORM
     case "$(ostype)" in
         *'linux'*)  PLATFORM='linux'   ;;
@@ -68,7 +67,7 @@ os_detect() {
 }
 
 # is_osx returns true if running OS is Macintosh
-is_osx() {
+function is_osx() {
     # os_detect
     if [[ $PLATFORM == "osx" ]]; then
         return 0
@@ -79,7 +78,7 @@ is_osx() {
 alias is_mac=is_osx
 
 # is_linux returns true if running OS is GNU/Linux
-is_linux() {
+function is_linux() {
     # os_detect
     if [[ $PLATFORM == "linux" ]]; then
         return 0
@@ -89,7 +88,7 @@ is_linux() {
 }
 
 # is_bsd returns true if running OS is FreeBSD
-is_bsd() {
+function is_bsd() {
     # os_detect
     if [[ $PLATFORM == "bsd" ]]; then
         return 0
@@ -99,11 +98,15 @@ is_bsd() {
 }
 
 # get_os returns OS name of the platform that is running
-get_os() {
+function get_os() {
     local os
     for os in osx linux bsd; do
         if is_$os; then
             echo $os
         fi
     done
+}
+
+function pp_paths() {
+  echo "$(tr ':' '\n' <<< \"$PATH\")"
 }

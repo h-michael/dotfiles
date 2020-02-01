@@ -130,6 +130,6 @@ on_ft = 'help'
 
 [[plugins]]
 repo = 'h-michael/vim-go'
-rev = "nvim"
+rev = 'nvim'
 on_ft = ['go', 'gomod']
 hook_add = 'source ~/.vim/rc/plugins/config/vim-go.rc.vim'
