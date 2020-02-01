@@ -1,6 +1,8 @@
 #!/bin/zsh
 
-# alias ls='ls --color'
+if is_linux; then
+  alias ls='ls --color'
+fi
 alias mnvim="nvim -u ~/.minimal_nvimrc"
 alias mvim="vim -u ~/.minimal_vimrc"
 alias nvim-lsp_log="nvim $LSP_LOG_PATH"

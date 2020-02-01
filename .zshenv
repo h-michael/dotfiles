@@ -6,13 +6,12 @@ typeset -gx -U path
 path=( \
     "$path[@]" \
     /usr/local/bin(N-/) \
-    ~/bin(N-/) \
     )
-
 # NOTE: set fpath before compinit
 typeset -gx -U fpath
 fpath=( \
     ~/.zsh/(N-/) \
+    /usr/share/zsh/site-functions(N-/) \
     /usr/local/share/zsh/site-functions(N-/) \
     $fpath \
     )
@@ -130,8 +129,6 @@ if [ -z $TMUX ]; then
     export PATH="/usr/local/bin":$PATH
     export PATH="/usr/local/sbin":$PATH
     export PATH="/usr/local/opt/gettext/bin":$PATH
-    export LDFLAGS="-L/usr/local/opt/gettext/lib"
-    export CPPFLAGS="-I/usr/local/opt/gettext/include"
     export PATH=$HOME/google-cloud-sdk/bin:$PATH
   elif then;
     export PATH=$HOME/google-cloud-sdk/bin:$PATH
@@ -162,18 +159,27 @@ if [ -z $TMUX ]; then
   # export RUST_LOG "rls=debug"
 
   # Golang
-  export PATH=$GOENV_ROOT/bin:$PATH
   export GOENV_DISABLE_GOPATH=1
   export GO111MODULE=on
   export GOPATH=$HOME/go
   export PATH=$GOPATH/bin:$PATH
 
-  export PATH=$PATH:$(yarn global bin)
-  export PATH=$HOME/.local/bin:$PATH
+  if [[ ! -f $HOME/.asdf/asdf.sh ]]; then
+    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+    cd $HOME/.asdf
+    git checkout "$(git describe --abbrev=0 --tags)"
+  fi
+
+  # set package version manager path
+  . $HOME/.asdf/asdf.sh
+  . $HOME/.asdf/completions/asdf.bash
 
   # set langage version manager path
-  export PATH=$HOME/.anyenv/bin:$PATH
-  eval "$(anyenv init - --no-rehash)"
+  # export PATH=$HOME/.anyenv/bin:$PATH
+  # eval "$(anyenv init - --no-rehash)"
+
+  export PATH=$PATH:$(yarn global bin)
+  export PATH=$HOME/.local/bin:$PATH
 
   eval "$(direnv hook zsh)"
 fi
