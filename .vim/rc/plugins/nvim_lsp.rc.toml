@@ -145,6 +145,15 @@ if !exists('g:my_ruby_lsp_loaded')
 endif
 '''
 
+python = '''
+if !exists('g:my_python_lsp_loaded')
+  let g:my_python_lsp_loaded = 1
+
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.pyls.setup{}
+endif
+'''
+
 lua = '''
 if !exists('g:my_lua_lsp_loaded')
   let g:my_lua_lsp_loaded = 1

@@ -1,7 +1,7 @@
 let g:go_gocode_propose_builtins = 1
 
 " https:"github.com/fatih/vim-go/wiki/Tutorial#vimrc-improvements
-autocmd FileType go nmap <Leader>b  <Plug>(go-build)
+autocmd FileType go nmap <Leader><Leader>b  <Plug>(go-build)
 autocmd FileType go nmap <Leader>r  <Plug>(go-run)
 
 map <C-n> :cnext<CR>
@@ -22,7 +22,7 @@ function! s:build_go_files()
   endif
 endfunction
 
-autocmd FileType go nmap <Leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <Leader><Leader>b :<C-u>call <SID>build_go_files()<CR>
 
 " https:"github.com/fatih/vim-go/wiki/Tutorial#vimrc-improvements-2
 autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
@@ -46,8 +46,7 @@ autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
 "" let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 
 " https://github.com/fatih/vim-go/wiki/Tutorial#vimrc-improvements-5
-" let g:go_def_mode = 'gopls'
-let g:go_def_mode = 'gocode'
+let g:go_def_mode = 'gopls'
 let g:go_def_mapping_enabled = 1
 
 autocmd Filetype go command! -bang A  call go#alternate#Switch(<bang>0, 'edit')
