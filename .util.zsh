@@ -66,6 +66,8 @@ function os_detect() {
     esac
 }
 
+os_detect
+
 # is_osx returns true if running OS is Macintosh
 function is_osx() {
     # os_detect
