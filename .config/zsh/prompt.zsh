@@ -22,5 +22,7 @@ ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
 
 MODE_INDICATOR="%{$fg_bold[red]%}<%{$reset_color%} "
 
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=white'
+
 PROMPT="${user_host}${_current_dir}\$(git_prompt_info)\$(vi_mode_prompt_info)%(?.%{$fg[green]%}.%{$fg[red]%})%B$%b "
 RPROMPT="%{$fg[white]%}%{$fg[yellow]%}%D %T%{$fg[white]%}%{$reset_color%}"
