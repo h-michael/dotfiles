@@ -4,19 +4,15 @@ source ~/.util.zsh
 
 typeset -gx -U path
 path=( \
+    "$path[@]" \
     /usr/local/bin(N-/) \
     ~/bin(N-/) \
-    ~/.zplug/bin(N-/) \
-    ~/.tmux/bin(N-/) \
-    "$path[@]" \
     )
 
 # NOTE: set fpath before compinit
 typeset -gx -U fpath
 fpath=( \
-    ~/.zsh/Completion(N-/) \
-    ~/.zsh/functions(N-/) \
-    ~/.zsh/plugins/zsh-completions(N-/) \
+    ~/.zsh/(N-/) \
     /usr/local/share/zsh/site-functions(N-/) \
     $fpath \
     )
@@ -131,47 +127,53 @@ export LSP_LOG_PATH=$NVIM_SHARED_PATH/vim-lsp.log
 
 if [ -z $TMUX ]; then
   if is_mac; then
-    export PATH "/usr/local/opt/gettext/bin":$PATH
+    export PATH="/usr/local/bin":$PATH
+    export PATH="/usr/local/sbin":$PATH
+    export PATH="/usr/local/opt/gettext/bin":$PATH
+    export LDFLAGS="-L/usr/local/opt/gettext/lib"
+    export CPPFLAGS="-I/usr/local/opt/gettext/include"
+    export PATH=$HOME/google-cloud-sdk/bin:$PATH
+  elif then;
+    export PATH=$HOME/google-cloud-sdk/bin:$PATH
   fi
-
-  # set langage version manager path
-  export PATH=$HOME/.anyenv/bin:$PATH
 
   export PATH=$PATH:/usr/local/bin
   export PATH=$HOME/.local/bin:$PATH
+
+  # for Lua
+  export LUA_LSP_DIR=$GOPATH/src/github.com/sumneko/lua-language-server
+  export PATH=$HOME/.luarocks/bin:$PATH
+  if is_linux; then
+    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/Linux/lua-language-server
+  fi
+  if is_mac; then
+    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/macOS/lua-language-server
+  fi
 
   # for Haskell
   export PATH=$HOME/.cabal/bin:$PATH
 
   # for Rust
   export PATH=$HOME/.cargo/bin:$PATH
+  export RUST_SRC_PATH="$(rustc --print sysroot)"/lib/rustlib/src/rust/src
 
-  export RUST_SRC_PATH=$(rustc --print=sysroot)/lib/rustlib/src/rust/src
   # for Rls
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(rustc --print=sysroot)/lib
-  # export RUST_LOG="rls=debug"
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$(rustc --print sysroot)"/lib
+  # export RUST_LOG "rls=debug"
 
-  # for Golang
+  # Golang
+  export PATH=$GOENV_ROOT/bin:$PATH
+  export GOENV_DISABLE_GOPATH=1
+  export GO111MODULE=on
   export GOPATH=$HOME/go
-  export PATH=$PATH:$GOPATH/bin
-
-  # Lua
-  export PATH=$HOME/.luarocks/bin:$PATH
-
-  export LUA_LSP_DIR=$GOPATH/src/github.com/sumneko/lua-language-server
-  if is_linux; then
-    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/Linux/lua-language-server
-    export PATH=$HOME/google-cloud-sdk/bin:$PATH
-  fi
-  if is_mac; then
-    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/macOS/lua-language-server
-    export PATH=$HOME/google-cloud-sdk/bin:$PATH
-  fi
-
-  eval "$(anyenv init - --no-rehash)"
-  eval "$(direnv hook zsh)"
+  export PATH=$GOPATH/bin:$PATH
 
   export PATH=$PATH:$(yarn global bin)
-fi
+  export PATH=$HOME/.local/bin:$PATH
 
-export DOTPATH=${0:A:h}
+  # set langage version manager path
+  export PATH=$HOME/.anyenv/bin:$PATH
+  eval "$(anyenv init - --no-rehash)"
+
+  eval "$(direnv hook zsh)"
+fi

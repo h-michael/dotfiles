@@ -30,3 +30,5 @@ zinit light zsh-users/zsh-autosuggestions
 for config (~/.zsh/*.zsh); do
   source $config
 done
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
