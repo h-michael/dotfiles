@@ -98,8 +98,8 @@ fi
 
 if is_mac; then
   export BROWSER=open
-  export LDFLAGS "-L/usr/local/opt/gettext/lib"
-  export CPPFLAGS "-I/usr/local/opt/gettext/include"
+  export LDFLAGS="-L/usr/local/opt/gettext/lib"
+  export CPPFLAGS="-I/usr/local/opt/gettext/include"
 fi
 
 # For Enpass
