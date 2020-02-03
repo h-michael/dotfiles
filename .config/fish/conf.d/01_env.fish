@@ -97,9 +97,6 @@ set -x NVIM_SHARED_PATH $HOME/.local/share/nvim
 set -x LSP_LOG_PATH $NVIM_SHARED_PATH/vim-lsp.log
 
 if [ -z $TMUX ]
-  # set langage version manager path
-  set -x PATH $HOME/.anyenv/bin $PATH
-
   set -x PATH $PATH /usr/local/bin
   set -x PATH $HOME/.local/bin $PATH
 
@@ -131,9 +128,10 @@ if [ -z $TMUX ]
   end
 
   if status --is-interactive
-    anyenv init - --no-rehash fish | source
     set -x PATH $PATH (yarn global bin)
   end
+
+  source ~/.asdf/asdf.fish
 
   # Display
   set -g theme_color_scheme gruvbox
