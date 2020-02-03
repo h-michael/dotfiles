@@ -56,15 +56,15 @@ set -x GTAGSLABEL pygments
 [ -f ~/.secret ]; and source ~/.secret
 
 if is_linux
-    set -x BROWSER google-chrome-stable
+  set -x BROWSER google-chrome-stable
 end
 
 if is_mac
-    set -x BROWSER open
-    set -g fish_user_paths "/usr/local/bin" $fish_user_paths
-    set -g fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
-    set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
-    set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
+  set -x BROWSER open
+  set -g fish_user_paths "/usr/local/bin" $fish_user_paths
+  set -g fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
+  set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
+  set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
 end
 
 # For Enpass
@@ -97,9 +97,6 @@ set -x NVIM_SHARED_PATH $HOME/.local/share/nvim
 set -x LSP_LOG_PATH $NVIM_SHARED_PATH/vim-lsp.log
 
 if [ -z $TMUX ]
-  # set langage version manager path
-  set -x PATH $HOME/.anyenv/bin $PATH
-
   set -x PATH $PATH /usr/local/bin
   set -x PATH $HOME/.local/bin $PATH
 
@@ -131,9 +128,10 @@ if [ -z $TMUX ]
   end
 
   if status --is-interactive
-    anyenv init - --no-rehash fish | source
     set -x PATH $PATH (yarn global bin)
   end
+
+  source ~/.asdf/asdf.fish
 
   # Display
   set -g theme_color_scheme gruvbox
