@@ -15,3 +15,7 @@ function is_mac
       return 1
   end
 end
+
+function pp_path
+  echo $PATH | tr ' ' '\n'
+end
