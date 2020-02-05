@@ -162,12 +162,12 @@ repo = 'liuchengxu/vista.vim'
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
-[[plugins]]
-repo = 'puremourning/vimspector'
-on_if = '!has("nvim")'
-hook_add = '''
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-'''
+# [[plugins]]
+# repo = 'puremourning/vimspector'
+# on_if = '!has("nvim")'
+# hook_add = '''
+# let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+# '''
 
 # A comprehensive Vim utility functions for Vim plugins
 [[plugins]]
