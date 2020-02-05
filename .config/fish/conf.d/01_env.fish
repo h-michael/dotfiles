@@ -127,11 +127,11 @@ if [ -z $TMUX ]
     set -x LUA_LSP_BIN $LUA_LSP_DIR/bin/macOS/lua-language-server
   end
 
+  source ~/.asdf/asdf.fish
+
   if status --is-interactive
     set -x PATH $PATH (yarn global bin)
   end
-
-  source ~/.asdf/asdf.fish
 
   # Display
   set -g theme_color_scheme gruvbox
