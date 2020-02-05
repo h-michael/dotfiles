@@ -54,7 +54,7 @@ function neovim_ftest {
 function install_tmux {
   cd $(ghq root)/github.com/tmux/tmux
   if check_outdate; then
-    printf "input password"
+    printf "input password\n"
     read -s password
 
     hub sync
@@ -68,7 +68,7 @@ function install_tmux {
 function install_alacritty {
   cd $(ghq root)/github.com/alacritty/alacritty
   if check_outdate; then
-    printf "input password"
+    printf "input password\n"
     read -s password
 
     hub sync
