@@ -38,6 +38,10 @@ lua << EOF
   -- end
 EOF
 
+function! LanguageClientStatus() abort
+  echo luaeval("vim.inspect(vim.lsp.get_client_by_id(1))")
+endfunction
+
 function! ToggleDiagnosics() abort
 lua << EOF
   if vim.api.nvim_get_var("enable_nvim_lsp_diagnostics") then
@@ -212,8 +216,8 @@ json = '''
 if !exists('g:my_json_lsp_loaded')
   let g:my_json_lsp_loaded = 1
 
-  " call SetMyLspConfig()
-  " lua require'nvim_lsp'.jsonls.setup{}
+  call SetMyLspConfig()
+  lua require'nvim_lsp'.jsonls.setup{}
 endif
 '''
 
