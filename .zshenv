@@ -137,16 +137,6 @@ if [ -z $TMUX ]; then
   export PATH=$PATH:/usr/local/bin
   export PATH=$HOME/.local/bin:$PATH
 
-  # for Lua
-  export LUA_LSP_DIR=$GOPATH/src/github.com/sumneko/lua-language-server
-  export PATH=$HOME/.luarocks/bin:$PATH
-  if is_linux; then
-    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/Linux/lua-language-server
-  fi
-  if is_mac; then
-    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/macOS/lua-language-server
-  fi
-
   # for Haskell
   export PATH=$HOME/.cabal/bin:$PATH
 
@@ -163,6 +153,16 @@ if [ -z $TMUX ]; then
   export GO111MODULE=on
   export GOPATH=$HOME/go
   export PATH=$GOPATH/bin:$PATH
+
+  # for Lua
+  export LUA_LSP_DIR=$GOPATH/src/github.com/sumneko/lua-language-server
+  export PATH=$HOME/.luarocks/bin:$PATH
+  if is_linux; then
+    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/Linux/lua-language-server
+  fi
+  if is_mac; then
+    export LUA_LSP_BIN=$LUA_LSP_DIR/bin/macOS/lua-language-server
+  fi
 
   if [[ ! -f $HOME/.asdf/asdf.sh ]]; then
     git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
