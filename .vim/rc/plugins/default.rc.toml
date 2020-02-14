@@ -198,6 +198,14 @@ function! NearestMethodOrFunction() abort
 endfunction
 '''
 
+[[plugins]]
+repo = 'mattn/vim-goimports'
+
+[[plugins]]
+repo = 'mattn/vim-goaddtags'
+
+[[plugins]]
+repo = 'mattn/vim-gorename'
 
 #[[plugins]]
 #repo = 'prabirshrestha/async.vim'
