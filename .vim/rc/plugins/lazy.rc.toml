@@ -128,8 +128,8 @@ let g:rust_fold = 1
 repo = 'rhysd/rust-doc.vim'
 on_ft = 'help'
 
-[[plugins]]
-repo = 'h-michael/vim-go'
-rev = 'nvim'
-on_ft = ['go', 'gomod']
-hook_add = 'source ~/.vim/rc/plugins/config/vim-go.rc.vim'
+# [[plugins]]
+# repo = 'h-michael/vim-go'
+# rev = 'nvim'
+# on_ft = ['go', 'gomod']
+# hook_add = 'source ~/.vim/rc/plugins/config/vim-go.rc.vim'

@@ -62,6 +62,7 @@ end
 if is_mac
   set -x BROWSER open
   set -g fish_user_paths "/usr/local/bin" $fish_user_paths
+  set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
   set -g fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
   set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
   set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
@@ -69,8 +70,6 @@ end
 
 # For Enpass
 set -x QT_AUTO_SCREEN_SCALE_FACTOR 0
-
-eval (direnv hook fish)
 
 set -x SSH_KEY_PATH $HOME/.ssh/id_rsa
 if [ -n $SSH_CONNECTION ]
@@ -137,4 +136,8 @@ if [ -z $TMUX ]
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
+
+  source ~/.asdf/asdf.fish
+  eval (direnv hook fish)
 end
+

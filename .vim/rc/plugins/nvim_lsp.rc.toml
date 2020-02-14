@@ -89,7 +89,7 @@ endif
 go = '''
 if !exists('g:my_go_lsp_loaded')
   let g:my_go_lsp_loaded = 1
-  "let g:use_gopls = 1
+  let g:use_gopls = 1
 
   if exists('g:use_gopls')
     call SetMyLspConfig()
