@@ -22,7 +22,7 @@ end
 
 # ssh to ec2 instance
 function fsec2
-  set IP (lsec2 $argv | fzf-tmux | awk -F "\t" '{print $2}')
+  set IP (lsec2 $argv | fzf | awk -F "\t" '{print $2}')
   if [ $status -eq 0 -a "$IP" != "" ]
       echo ">>> SSH to $IP"
       ssh $IP
@@ -36,31 +36,31 @@ end
 
 ## select repository
 function frepo
-  set dir (ghq list ^ /dev/null | fzf-tmux +m)
+  set dir (ghq list ^ /dev/null | fzf +m)
   cd (ghq root)/$dir
 end
 
 ## remove repository
 function frmrepo
-  ghq list --full-path ^ /dev/null | fzf-tmux --multi | xargs rm -rf
+  ghq list --full-path ^ /dev/null | fzf --multi | xargs rm -rf
 end
 
 # fzf for git
 
 function fgc
-  git branch ^ /dev/null | fzf-tmux --reverse | xargs git checkout
+  git branch ^ /dev/null | fzf --reverse | xargs git checkout
 end
 
 function fgdb
-  git branch ^ /dev/null | fzf-tmux --multi | xargs git branch -D
+  git branch ^ /dev/null | fzf --multi | xargs git branch -D
 end
 
 function fga
-  git status -s ^ /dev/null | grep -e '^ M ' | sed -e 's/^ M //' | fzf-tmux --multi | xargs git add; and git status -s
+  git status -s ^ /dev/null | grep -e '^ M ' | sed -e 's/^ M //' | fzf --multi | xargs git add; and git status -s
 end
 
 function fgr
-  git status -s ^ /dev/null | grep -e '^M ' | sed -e 's/^M //' | fzf-tmux --multi | xargs git reset; and git status -s
+  git status -s ^ /dev/null | grep -e '^M ' | sed -e 's/^M //' | fzf --multi | xargs git reset; and git status -s
 end
 
 function gitaddm
