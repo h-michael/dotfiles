@@ -74,14 +74,11 @@ end
 function install_tmux
   cd (ghq root)/github.com/tmux/tmux
   if check_outdate
-    printf "input password"
-    read -s password
-
     hub sync
     sh autogen.sh
-    ./configure
+    ./configure --prefix=$HOME/.local
     make
-    echo $password | sudo -S make install
+    make install
   end
 end
 
