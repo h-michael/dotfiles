@@ -43,7 +43,7 @@ function check_outdate
   end
 end
 
-function neovim_install
+function install_neovim
   cd (ghq root)/github.com/h-michael/neovim
   make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
 end
