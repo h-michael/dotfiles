@@ -18,9 +18,9 @@ hook_add = '''
   " let g:polyglot_disabled = ['rust', 'ruby']
 '''
 
-## vim plugin for direnv support
-#[[plugins]]
-#repo = 'direnv/direnv.vim'
+# vim plugin for direnv support
+[[plugins]]
+repo = 'direnv/direnv.vim'
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
@@ -67,8 +67,8 @@ repo = 'jiangmiao/auto-pairs'
 [[plugins]]
 repo = 'tpope/vim-surround'
 hook_add = '''
-nmap s <Plug>Ysurround
-nmap ss <Plug>Yssurround
+nnoremap s <Plug>Ysurround
+nnoremap ss <Plug>Yssurround
 let g:surround_{char2nr('e')} = "begin \r end"
 let g:surround_{char2nr('d')} = "do \r end"
 let g:surround_{char2nr("-")} = ":\r"
@@ -162,16 +162,16 @@ repo = 'liuchengxu/vista.vim'
 [[plugins]]
 repo = 'tpope/vim-abolish'
 
-# [[plugins]]
-# repo = 'puremourning/vimspector'
-# on_if = '!has("nvim")'
-# hook_add = '''
-# let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-# '''
+#[[plugins]]
+#repo = 'puremourning/vimspector'
+#on_if = '!has("nvim")'
+#hook_add = '''
+#let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+#'''
 
-# A comprehensive Vim utility functions for Vim plugins
-[[plugins]]
-repo = 'vim-jp/vital.vim'
+## A comprehensive Vim utility functions for Vim plugins
+#[[plugins]]
+#repo = 'vim-jp/vital.vim'
 
 [[plugins]]
 repo = 'bfredl/nvim-luadev'
@@ -197,15 +197,6 @@ function! NearestMethodOrFunction() abort
   return get(b:, 'vista_nearest_method_or_function', '')
 endfunction
 '''
-
-[[plugins]]
-repo = 'mattn/vim-goimports'
-
-[[plugins]]
-repo = 'mattn/vim-goaddtags'
-
-[[plugins]]
-repo = 'mattn/vim-gorename'
 
 #[[plugins]]
 #repo = 'prabirshrestha/async.vim'
