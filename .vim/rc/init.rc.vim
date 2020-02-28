@@ -22,6 +22,7 @@ if has('vim_starting') && &encoding !=# 'utf-8'
   else
     set encoding=utf-8
   endif
+  scriptencoding utf-8
 endif
 
 if exists('&ambw')
