@@ -111,6 +111,7 @@ if [ -z $TMUX ]
   # set -x RUST_LOG "rls=debug"
 
   # for Golang
+  set -x GO111MODULE on
   set -x GOPATH $HOME/go
   set -x PATH $PATH $GOPATH/bin
 
