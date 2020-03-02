@@ -1,6 +1,6 @@
 [[plugins]]
 repo = 'w0rp/ale'
-# on_event = 'BufRead'
+on_event = 'BufRead'
 hook_add = '''
 " if has('nvim-0.3.2')
 "   let g:ale_virtualtext_cursor = 1
