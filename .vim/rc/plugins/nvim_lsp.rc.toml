@@ -252,11 +252,11 @@ endif
 '''
 
 [[plugins]]
-repo = 'h-michael/nvim-lsp-contrib'
+repo = 'h-michael/lsp-contrib.nvim'
 on_source = ['nvim-lsp']
 hook_source = '''
 lua << EOF
-  local contrib = require'nvim_lsp_contrib'
+  local contrib = require'lsp_contrib'
   contrib.util.set_default_diagnostics_highlight()
   contrib.autocmd.set_signature_help_autocmd(500)
   vim.lsp.callbacks['textDocument/signatureHelp'] = contrib.callbacks.signature_help
