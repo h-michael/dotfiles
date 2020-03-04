@@ -258,7 +258,7 @@ hook_source = '''
 lua << EOF
   lsp_contrib = require'lsp_contrib'
   lsp_contrib.util.set_default_diagnostics_highlight()
-  lsp_contrib.set_signature_help_autocmd(500)
-  lsp_contrib.set_publish_diagnostics_autocmd(500)
+  lsp_contrib.set_signature_help_autocmd(100)
+  lsp_contrib.set_publish_diagnostics_autocmd(100)
 EOF
 '''

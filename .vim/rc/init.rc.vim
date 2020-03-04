@@ -25,9 +25,9 @@ if has('vim_starting') && &encoding !=# 'utf-8'
   scriptencoding utf-8
 endif
 
-if exists('&ambw')
-  set ambw=double
-endif
+"if exists('&ambw')
+"  set ambw=double
+"endif
 
 " Build encodings.
 let &fileencodings = join(['utf-8', 'ucs-bom', 'iso-2022-jp-3', 'euc-jp', 'cp932'])
