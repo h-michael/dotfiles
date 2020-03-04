@@ -1,6 +1,6 @@
 [[plugins]]
 repo = 'w0rp/ale'
-on_event = 'BufRead'
+# on_event = 'BufRead'
 hook_add = '''
 " if has('nvim-0.3.2')
 "   let g:ale_virtualtext_cursor = 1
@@ -102,14 +102,14 @@ depends = 'open-browser-github.vim'
 on_cmd = ['OpenGithubFile', 'OpenGithubIssue', 'OpenGithubPullReq']
 
 # The fastest Neovim colorizer.
-[[plugins]]
-repo = 'norcalli/nvim-colorizer.lua'
-on_cmd = ['ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers']
-on_if = 'has("nvim-0.4")'
-hook_source = '''
-set termguicolors
-lua require'colorizer'.setup()
-'''
+#[[plugins]]
+#repo = 'norcalli/nvim-colorizer.lua'
+#on_cmd = ['ColorizerAttachToBuffer', 'ColorizerDetachFromBuffer', 'ColorizerReloadAllBuffers']
+#on_if = 'has("nvim-0.4")'
+#hook_source = '''
+#set termguicolors
+#lua require'colorizer'.setup()
+#'''
 
 # Vim plugin: Highlight columns in CSV and TSV files and run queries in SQL-like language
 [[plugins]]

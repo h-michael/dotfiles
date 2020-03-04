@@ -29,6 +29,7 @@ repo = 'editorconfig/editorconfig-vim'
 repo = 'nanotech/jellybeans.vim'
 hook_post_update = 'Dein recache-runtimepath'
 hook_add = '''
+set background=dark
 au MyAutoCmd VimEnter * nested colorscheme jellybeans
 '''
 
