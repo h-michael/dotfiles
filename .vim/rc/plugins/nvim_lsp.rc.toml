@@ -256,6 +256,7 @@ repo = 'h-michael/lsp-contrib.nvim'
 on_source = ['nvim-lsp']
 hook_source = '''
 lua << EOF
+  vim.g["lsp_publish_diagnostics_virtualtext"] = false
   lsp_contrib = require'lsp_contrib'
   lsp_contrib.util.set_default_diagnostics_highlight()
   lsp_contrib.set_signature_help_autocmd(100)
