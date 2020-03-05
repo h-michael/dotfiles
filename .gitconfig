@@ -18,10 +18,11 @@
 [pull]
   # from 1.7.9
   # rebase = true
-[url "ssh://git@github.com"]
-  # insteadOf = git://git@github.com
-[url "ssh://github.com"]
-  # insteadOf = https://github.com
+[url "git@github.com:"]
+	pushInsteadOf = git://github.com/
+	pushInsteadOf = https://github.com/
+[url "git://github.com/"]
+	insteadOf = https://github.com/
 [github]
   user = h-michael
 [filter "lfs"]
