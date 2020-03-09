@@ -6,7 +6,7 @@ on_if = 'has("nvim-0.5")'
 on_cmd = ['LspInstall', 'LspInstallInfo']
 on_ft = [
   'c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'php',
-  'lua', 'javascript', 'typescript', 'graphql',
+  'lua', 'javascript', 'typescript',
   'json', 'yaml', 'yaml.docker-compose', 'terraform, dart, vue'
 ]
 hook_add = '''
@@ -167,8 +167,7 @@ if !exists('g:my_javascript_lsp_loaded')
   let g:my_javascript_lsp_loaded = 1
 
   lua << EOF
-    -- https://github.com/neovim/nvim-lsp#flow
-    require'nvim_lsp'.apollols.setup{}
+    require'nvim_lsp'.tsserver.setup{}
 EOF
   autocmd Filetype javascript call SetMyLspConfig()
 endif
@@ -180,15 +179,6 @@ if !exists('g:my_typescript_lsp_loaded')
 
   lua require'nvim_lsp'.tsserver.setup{}
   autocmd Filetype typescript call SetMyLspConfig()
-endif
-'''
-
-graphql = '''
-if !exists('g:my_graphql_lsp_loaded')
-  let g:my_graphql_lsp_loaded = 1
-
-  lua require'nvim_lsp'.apollols.setup{}
-  autocmd Filetype graphql call SetMyLspConfig()
 endif
 '''
 
@@ -252,14 +242,14 @@ endif
 '''
 
 [[plugins]]
-repo = 'h-michael/lsp-contrib.nvim'
+repo = 'h-michael/lsp-ext.nvim'
 on_source = ['nvim-lsp']
 hook_source = '''
 lua << EOF
   vim.g["lsp_publish_diagnostics_virtualtext"] = false
-  lsp_contrib = require'lsp_contrib'
-  lsp_contrib.util.set_default_diagnostics_highlight()
-  lsp_contrib.set_signature_help_autocmd(100)
-  lsp_contrib.set_publish_diagnostics_autocmd(100)
+  lsp_ext = require'lsp_ext'
+  lsp_ext.util.set_default_diagnostics_highlight()
+  lsp_ext.set_signature_help_autocmd(100)
+  lsp_ext.set_publish_diagnostics_autocmd(100)
 EOF
 '''
