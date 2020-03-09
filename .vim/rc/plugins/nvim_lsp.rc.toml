@@ -248,7 +248,6 @@ hook_source = '''
 lua << EOF
   vim.g["lsp_publish_diagnostics_virtualtext"] = false
   lsp_ext = require'lsp_ext'
-  lsp_ext.util.set_default_diagnostics_highlight()
   lsp_ext.set_signature_help_autocmd(100)
   lsp_ext.set_publish_diagnostics_autocmd(100)
 EOF
