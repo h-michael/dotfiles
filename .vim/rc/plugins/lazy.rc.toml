@@ -132,14 +132,6 @@ on_ft = 'help'
 repo = 'mattn/vim-goimports'
 on_ft = ['go', 'gomod']
 
-[[plugins]]
-repo = 'mattn/vim-goaddtags'
-on_ft = ['go', 'gomod']
-
-[[plugins]]
-repo = 'mattn/vim-gorename'
-on_ft = ['go', 'gomod']
-
 #[[plugins]]
 #repo = 'h-michael/vim-go'
 #rev = 'nvim'
