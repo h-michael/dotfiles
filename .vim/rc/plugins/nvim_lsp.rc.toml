@@ -60,17 +60,7 @@ if !exists('g:my_go_lsp_loaded')
 
   lua << EOF
     -- https://github.com/golang/tools/blob/master/gopls/doc/settings.md#settings
-    local nvim_lsp = require'nvim_lsp'
-    nvim_lsp.util.default_config = function()
-      return {
-        log_level = vim.lsp.protocol.MessageType.Log;
-        message_level = vim.lsp.protocol.MessageType.Log;
-        settings = vim.empty_dict();
-        init_options = vim.empty_dict();
-        callbacks = {};
-      }
-    end
-    nvim_lsp.gopls.setup{
+    require'nvim_lsp'.gopls.setup{
       init_options = {
         usePlaceholders=true;
         linkTarget="pkg.go.dev";
