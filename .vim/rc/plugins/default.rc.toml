@@ -18,10 +18,6 @@ hook_add = '''
   " let g:polyglot_disabled = ['rust', 'ruby']
 '''
 
-# vim plugin for direnv support
-[[plugins]]
-repo = 'direnv/direnv.vim'
-
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
 
@@ -39,14 +35,19 @@ hook_add = '''
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
       \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
+      \   'left': [ [ 'mode', 'winnr', 'bufnum', 'paste' ],
+      \             [ 'relativepath', 'readonly', 'modified' ] ],
+      \   'right': [ [ 'lineinfo' ],
+      \              [ 'percent' ],
+      \              [ 'fileformat', 'fileencoding', 'filetype' ] ]
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'fugitive#head',
-      \   'method': 'NearestMethodOrFunction'
       \ },
       \ }
+let g:lightline.inactive = {
+      \ 'left': [ [ 'filename' ] ],
+      \ 'right': [ [ 'lineinfo' ],
+      \            [ 'percent' ] ] }
 '''
 
 # "which" and "exec" functions targeted at local node project bin, with "which" fallback
