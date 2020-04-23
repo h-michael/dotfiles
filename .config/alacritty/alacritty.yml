@@ -97,19 +97,19 @@ font:
     #   - (macOS) Menlo
     #   - (Linux) monospace
     #   - (Windows) Consolas
-    family: Ricty
+    family: Cica
     style: Regular
     hintstyle: true
     antialias: true
 
   # The bold font face
   bold:
-    family: Ricty
+    family: Cica
     style: Bold
 
   # The italic font face
   italic:
-    family: Ricty
+    family: Cica
     style: Italic
 
   # Point size of the font
