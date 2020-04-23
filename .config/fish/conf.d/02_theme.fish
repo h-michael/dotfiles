@@ -6,7 +6,6 @@ function kubectl_status
   set -l config $KUBECONFIG
   [ -z "$config" ]; and set -l config "$HOME/.kube/config"
   if [ ! -f $config ]
-    echo (set_color red)$KUBECTL_PROMPT_ICON" "(set_color white)"no config"
     return
   end
 
