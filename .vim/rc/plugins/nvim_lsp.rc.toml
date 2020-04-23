@@ -6,7 +6,7 @@ on_if = 'has("nvim-0.5")'
 on_cmd = ['LspInstall', 'LspInstallInfo']
 on_ft = [
   'c', 'cpp', 'go', 'rust' , 'python', 'ruby', 'php',
-  'lua', 'javascript', 'typescript',
+  'javascript', 'typescript', 'typescriptreact','ada',
   'json', 'yaml', 'yaml.docker-compose', 'terraform, dart, vue'
 ]
 hook_add = '''
@@ -116,7 +116,7 @@ endif
 python = '''
 if !exists('g:my_python_lsp_loaded')
   let g:my_python_lsp_loaded = 1
-  " let g:use_pyls_ms = 1
+  let g:use_pyls_ms = 1
 
   if exists('g:use_pyls_ms')
     lua << EOF
@@ -166,6 +166,15 @@ endif
 typescript = '''
 if !exists('g:my_typescript_lsp_loaded')
   let g:my_typescript_lsp_loaded = 1
+
+  lua require'nvim_lsp'.tsserver.setup{}
+  autocmd Filetype typescript call SetMyLspConfig()
+endif
+'''
+
+typescriptreact = '''
+if !exists('g:my_typescriptreact_lsp_loaded')
+  let g:my_typescriptreact_lsp_loaded = 1
 
   lua require'nvim_lsp'.tsserver.setup{}
   autocmd Filetype typescript call SetMyLspConfig()
@@ -230,6 +239,15 @@ if !exists('g:my_php_lsp_loaded')
   autocmd Filetype php call SetMyLspConfig()
 endif
 '''
+
+"ada = '''
+"if !exists('g:my_ada_lsp_loaded')
+"  let g:my_ada_lsp_loaded = 1
+"
+"  lua require'nvim_lsp'.als.setup{}
+"  autocmd Filetype ada call SetMyLspConfig()
+"endif
+"'''
 
 [[plugins]]
 repo = 'h-michael/lsp-ext.nvim'
