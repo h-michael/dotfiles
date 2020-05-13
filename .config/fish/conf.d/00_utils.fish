@@ -45,13 +45,17 @@ end
 
 function install_neovim
   cd (ghq root)/github.com/h-michael/neovim
-  make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
+  make install \
+    CMAKE_EXTRA_FLAGS="-DCMAKE_EXPORT_COMPILE_COMMANDS=1" \
+    CMAKE_BUILD_TYPE=RelWithDebInfo \
+    CMAKE_INSTALL_PREFIX=$HOME/.local
+  cp ./build/compile_commands.json .
 end
 
 function neovim_clean_install
   cd (ghq root)/github.com/h-michael/neovim
   make clean
-  make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
+  install_neovim
 end
 
 function neovim_ftest
@@ -62,7 +66,8 @@ function neovim_ftest
   set -l NVIM_TEST_TRACE_LEVEL 2
   # set -l BUSTED_ARGS '--coverage'
   # set -l USE_LUACOV 1
-  make functionaltest TEST_FILE=$TEST_FILE \
+  make functionaltest \
+    TEST_FILE=$TEST_FILE \
     BUSTED_PRG=(which -a busted) \
     MIN_LOG_LEVEL=2 \
     LOG_DIR=$HOME/.local/share/nvim/test/log \
