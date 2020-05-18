@@ -65,21 +65,6 @@ autocmd FileType ocaml setlocal commentstring=(*\ %s\ *)
 [[plugins]]
 repo = 'jiangmiao/auto-pairs'
 
-# surround.vim: quoting/parenthesizing made simple
-[[plugins]]
-repo = 'tpope/vim-surround'
-hook_add = '''
-nnoremap s <Plug>Ysurround
-nnoremap ss <Plug>Yssurround
-let g:surround_{char2nr('e')} = "begin \r end"
-let g:surround_{char2nr('d')} = "do \r end"
-let g:surround_{char2nr("-")} = ":\r"
-'''
-
-# Rest your pinkies.
-[[plugins]]
-repo = 'lambdalisue/pinkyless.vim'
-
 # vim-jp/autofmt
 [[plugins]]
 repo = 'vim-jp/autofmt'
@@ -92,10 +77,6 @@ repo = 'Shougo/context_filetype.vim'
 [[plugins]]
 repo = 'osyo-manga/vim-precious'
 depends = ['context_filetype.vim']
-
-# repeat.vim: enable repeating supported plugin maps with "."
-[[plugins]]
-repo = 'tpope/vim-repeat'
 
 [[plugins]]
 repo = 'junegunn/fzf'
@@ -153,27 +134,7 @@ repo = 'rhysd/git-messenger.vim'
 repo = 'itchyny/vim-pdf'
 
 [[plugins]]
-repo = 'kana/vim-niceblock'
-
-[[plugins]]
 repo = 'mbbill/undotree'
-
-[[plugins]]
-repo = 'liuchengxu/vista.vim'
-
-[[plugins]]
-repo = 'tpope/vim-abolish'
-
-#[[plugins]]
-#repo = 'puremourning/vimspector'
-#on_if = '!has("nvim")'
-#hook_add = '''
-#let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-#'''
-
-## A comprehensive Vim utility functions for Vim plugins
-#[[plugins]]
-#repo = 'vim-jp/vital.vim'
 
 [[plugins]]
 repo = 'bfredl/nvim-luadev'
@@ -205,26 +166,3 @@ repo = 'mattn/vim-goaddtags'
 
 [[plugins]]
 repo = 'mattn/vim-gorename'
-
-#[[plugins]]
-#repo = 'prabirshrestha/async.vim'
-#
-#[[plugins]]
-#repo = 'prabirshrestha/vim-lsp'
-#hook_add = '''
-#let g:lsp_log_file = expand('~/vim-lsp.log')
-#if executable('ra_lsp_server')
-#    au User lsp_setup call lsp#register_server({
-#        \ 'name': 'ra_lsp_server',
-#        \ 'cmd': {server_info->['ra_lsp_server']},
-#        \ 'whitelist': ['rust'],
-#        \ })
-#" if executable('rls')
-#"     au User lsp_setup call lsp#register_server({
-#"         \ 'name': 'rls',
-#"         \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
-#"         \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
-#"         \ 'whitelist': ['rust'],
-#"         \ })
-#" endif
-#'''

@@ -16,13 +16,13 @@ EOF
 
 function! SetMyLspConfig() abort
   setlocal omnifunc=v:lua.vim.lsp.omnifunc
-  nnoremap <buffer><silent> <c-]>      <cmd>lua vim.lsp.buf.definition()<CR>
-  nnoremap <buffer><silent> <c-k>      <cmd>lua vim.lsp.buf.signature_help()<CR>
-  nnoremap <buffer><silent> K          <cmd>lua vim.lsp.buf.hover()<CR>
-  nnoremap <buffer><silent> gd         <cmd>lua vim.lsp.buf.declaration()<CR>
-  nnoremap <buffer><silent> g0         <cmd>lua vim.lsp.buf.document_symbol()<CR>
-  nnoremap <buffer><silent> gD         <cmd>lua vim.lsp.buf.implementation()<CR>
-  nnoremap <buffer><silent> 1gD        <cmd>lua vim.lsp.buf.type_definition()<CR>
+  nnoremap <buffer><silent><c-]>      <cmd>lua vim.lsp.buf.definition()<CR>
+  nnoremap <buffer><silent><c-k>      <cmd>lua vim.lsp.buf.signature_help()<CR>
+  nnoremap <buffer><silent>K          <cmd>lua vim.lsp.buf.hover()<CR>
+  nnoremap <buffer><silent><Leader>gde <cmd>lua vim.lsp.buf.declaration()<CR>
+  nnoremap <buffer><silent><Leader>gdo <cmd>lua vim.lsp.buf.document_symbol()<CR>
+  nnoremap <buffer><silent><Leader>gi  <cmd>lua vim.lsp.buf.implementation()<CR>
+  nnoremap <buffer><silent><Leader>td  <cmd>lua vim.lsp.buf.type_definition()<CR>
   nnoremap <buffer><silent><Leader>rf  <cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>
   nnoremap <buffer><silent><Leader>fmt <cmd>lua vim.lsp.buf.formatting()<CR>
   nnoremap <buffer><silent><Leader>rn  <cmd>lua vim.lsp.buf.rename()<CR>
@@ -49,7 +49,9 @@ cpp = '''
 if !exists('g:my_cpp_lsp_loaded')
   let g:my_cpp_lsp_loaded = 1
 
-  lua require'nvim_lsp'.clangd.setup{}
+  lua require'nvim_lsp'.clangd.setup{
+      cmd = {"clangd", "--background-index"};
+  }
   autocmd Filetype cpp call SetMyLspConfig()
 endif
 '''
@@ -140,9 +142,10 @@ if !exists('g:my_lua_lsp_loaded')
     require'nvim_lsp'.sumneko_lua.setup{
       cmd = {os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua'};
       settings = {
-        lua = {
+        Lua = {
           diagnostics = {
-            enable = false
+            enable = true;
+            global = {"vim"};
           };
         };
       };
@@ -177,7 +180,7 @@ if !exists('g:my_typescriptreact_lsp_loaded')
   let g:my_typescriptreact_lsp_loaded = 1
 
   lua require'nvim_lsp'.tsserver.setup{}
-  autocmd Filetype typescript call SetMyLspConfig()
+  autocmd Filetype typescriptreact call SetMyLspConfig()
 endif
 '''
 
@@ -217,8 +220,8 @@ dart = '''
 if !exists('g:my_dart_lsp_loaded')
   let g:my_dart_lsp_loaded = 1
 
-  call SetMyLspConfig()
   lua require'nvim_lsp'.dartls.setup{}
+  autocmd Filetype dart call SetMyLspConfig()
 endif
 '''
 
