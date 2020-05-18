@@ -1,0 +1,61 @@
+# repeat.vim: enable repeating supported plugin maps with "."
+[[plugins]]
+repo = 'tpope/vim-repeat'
+
+# Vim plugin: Make blockwise Visual mode more useful 
+[[plugins]]
+repo = 'kana/vim-niceblock'
+
+# abolish.vim: easily search for, substitute, and abbreviate multiple variants of a word 
+[[plugins]]
+repo = 'tpope/vim-abolish'
+
+[[plugins]]
+repo = 'puremourning/vimspector'
+on_if = '!has("nvim")'
+hook_add = '''
+let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+'''
+
+# A comprehensive Vim utility functions for Vim plugins
+[[plugins]]
+repo = 'vim-jp/vital.vim'
+
+
+# A async completion framework aims to provide completion to neovim's built in LSP written in Lua 
+[[plugins]]
+repo = 'haorenW1025/completion-nvim'
+hook_add = '''
+  " Use <Tab> and <S-Tab> to navigate through popup menu
+  inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+  inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+  " Set completeopt to have a better completion experience
+  set completeopt=menuone,noinsert,noselect
+
+  " Avoid showing message extra message when using completion
+  set shortmess+=c
+
+  let g:completion_enable_auto_hover = 0
+  let g:completion_enable_auto_signature = 0
+
+  autocmd BufEnter * lua require'completion'.on_attach()
+'''
+
+[[plugins]]
+repo = 'haorenW1025/diagnostic-nvim'
+
+# surround.vim: quoting/parenthesizing made simple
+[[plugins]]
+repo = 'tpope/vim-surround'
+hook_add = '''
+nnoremap s <Plug>Ysurround
+nnoremap ss <Plug>Yssurround
+let g:surround_{char2nr('e')} = "begin \r end"
+let g:surround_{char2nr('d')} = "do \r end"
+let g:surround_{char2nr("-")} = ":\r"
+'''
+
+# Rest your pinkies.
+[[plugins]]
+repo = 'lambdalisue/pinkyless.vim'
