@@ -1,7 +1,7 @@
 # Dark powered Vim/Neovim plugin manager
 [[plugins]]
 repo = 'Shougo/dein.vim'
-hook_post_update = 'UpdateRemotePlugins'
+# hook_post_update = 'UpdateRemotePlugins'
 
 [[plugins]]
 repo = 'roxma/vim-hug-neovim-rpc'
