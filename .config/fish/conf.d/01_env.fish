@@ -142,3 +142,8 @@ if [ -z $TMUX ]
   eval (direnv hook fish)
 end
 
+if is_mac
+  source ~/.asdf/asdf.fish
+end
+
+
