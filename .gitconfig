@@ -19,10 +19,8 @@
   # from 1.7.9
   # rebase = true
 [url "git@github.com:"]
-	pushInsteadOf = git://github.com/
-	pushInsteadOf = https://github.com/
-[url "git://github.com/"]
 	insteadOf = https://github.com/
+	insteadOf = git://github.com/
 [github]
   user = h-michael
 [filter "lfs"]
