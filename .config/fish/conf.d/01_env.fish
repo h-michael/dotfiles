@@ -93,7 +93,7 @@ end
 
 set -x DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
 set -x NVIM_SHARED_PATH $HOME/.local/share/nvim
-set -x LSP_LOG_PATH $NVIM_SHARED_PATH/vim-lsp.log
+set -x LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
 
 if [ -z $TMUX ]
   set -x PATH $PATH /usr/local/bin
