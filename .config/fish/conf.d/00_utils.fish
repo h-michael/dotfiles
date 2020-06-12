@@ -46,24 +46,86 @@ end
 function install_neovim
   cd (ghq root)/github.com/h-michael/neovim
 
+  set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
-  set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1"
+  set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
+      set LOG_DIR "$HOME/.local/share/nvim/logs"
+      # set CMAKE_FLAGS "$CMAKE_FLAGS -DPREFER_LUA=ON"
       set CMAKE_BUILD_TYPE "Debug"
       set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DMIN_LOG_LEVEL=0"
+      # set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_ASAN_UBSAN=ON -DSANITIZE_RECOVER_ALL=1"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_MASAN=ON"
+      set UBSAN_OPTIONS "print_stacktrace=1 log_path=$LOG_DIR/ubsan"
+      set ASAN_OPTIONS "halt_on_error=0:detect_leaks=1:log_path=$HOME/logs/asan"
+      set TSAN_OPTIONS "log_path=$LOG_DIR/tsan"
     end
   end
 
-  echo $CMAKE_BUILD_TYPE
-  echo $CMAKE_EXTRA_FLAGS
+  set CMAKE_FLAGS "$CMAKE_FLAGS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
 
-  make install -j 4\
-    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS" \
-    CMAKE_BUILD_TYPE="$CMAKE_BUILD_TYPE" \
-    CMAKE_INSTALL_PREFIX=$HOME/.local
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+
+  CC=clang make -j 4 \
+    CMAKE_FLAGS="$CMAKE_FLAGS" \
+    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS"
+  CC=clang make install -j 4 \
+    CMAKE_FLAGS="$CMAKE_FLAGS" \
+    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS"
   cp ./build/compile_commands.json .
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+end
+
+function build_neovim
+  cd (ghq root)/github.com/h-michael/neovim
+
+  set CMAKE_FLAGS ""
+  set CMAKE_BUILD_TYPE "RelWithDebInfo"
+  set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+
+  if [ $argv ]
+    if [ $argv[1] = "d" ]
+      set LOG_DIR "$HOME/.local/share/nvim/logs"
+      # set CMAKE_FLAGS "$CMAKE_FLAGS -DPREFER_LUA=ON"
+      set CMAKE_BUILD_TYPE "Debug"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DMIN_LOG_LEVEL=0"
+      # set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_ASAN_UBSAN=ON -DSANITIZE_RECOVER_ALL=1"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_MASAN=ON"
+      set UBSAN_OPTIONS "print_stacktrace=1 log_path=$LOG_DIR/ubsan"
+      set ASAN_OPTIONS "halt_on_error=0:detect_leaks=1:log_path=$HOME/logs/asan"
+      set TSAN_OPTIONS "log_path=$LOG_DIR/tsan"
+    end
+  end
+
+  set CMAKE_FLAGS "$CMAKE_FLAGS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+
+  CC=clang make nvim -j 4 \
+    CMAKE_FLAGS="$CMAKE_FLAGS" \
+    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS" \
+  cp ./build/compile_commands.json .
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
 end
 
 function clean_install_neovim
@@ -97,7 +159,7 @@ function install_tmux
     hub sync
     sh autogen.sh
     ./configure --prefix=$HOME/.local
-    make
+    make -j 4
     make install
   end
 end
@@ -113,8 +175,9 @@ function install_fish
     mkdir build
     cd build
     cmake ..
-    make CMAKE_BUILD_TYPE=Release
+    make -j 4 CMAKE_BUILD_TYPE=Release
     echo $password | sudo -S make install
+    fish -c fish_update_completions
   end
 end
 
@@ -189,4 +252,32 @@ function upgrade_all_dev_tools
   end
 
   fish -c fish_update_completions
+end
+
+function gcop -d "git checkout pull request"
+  set PR_NUMBER ""
+  set BRANCH_NAME ""
+  set REMOTE "upstream"
+
+  if count $argv > /dev/null
+  else
+    echo 'pull request number and branch name must be given'
+    return
+  end
+
+  set PR_NUMBER $argv[1]
+
+  if count $argv[2] > /dev/null
+    set BRANCH_NAME $argv[2]
+  else
+    echo 'branch name must be given'
+    return
+  end
+
+  if count $argv[3] > /dev/null
+    set REMOTE $argv[3]
+  end
+
+  git fetch $REMOTE pull/$PR_NUMBER/head:$BRANCH_NAME
+  git checkout $BRANCH_NAME
 end
