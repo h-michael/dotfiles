@@ -165,19 +165,23 @@ function install_tmux
 end
 
 function install_fish
-  cd (ghq root)/github.com/fish-shell/fish-shell
-  if check_outdate
-    printf "input password"
-    read -s password
+  if is_mac
+    echo "use brew install fish"
+  else
+    cd (ghq root)/github.com/fish-shell/fish-shell
+    if check_outdate
+      printf "input password"
+      read -s password
 
-    hub sync
-    rm -rf build
-    mkdir build
-    cd build
-    cmake ..
-    make -j 4 CMAKE_BUILD_TYPE=Release
-    echo $password | sudo -S make install
-    fish -c fish_update_completions
+      hub sync
+      rm -rf build
+      mkdir build
+      cd build
+      cmake ..
+      make -j 4 CMAKE_BUILD_TYPE=Release
+      echo $password | sudo -S make install
+      fish -c fish_update_completions
+    end
   end
 end
 

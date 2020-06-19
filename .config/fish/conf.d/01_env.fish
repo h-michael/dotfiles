@@ -64,6 +64,7 @@ if is_mac
   set -g fish_user_paths "/usr/local/bin" $fish_user_paths
   set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
   set -g fish_user_paths "/usr/local/opt/gettext/bin" $fish_user_paths
+  set -g fish_user_paths "/usr/local/opt/llvm/bin" $fish_user_paths
   set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
   set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
 end
@@ -133,6 +134,12 @@ if [ -z $TMUX ]
     set -x PATH $PATH (yarn global bin)
   end
 
+
+  # kubernetes
+  if [ -d "$HOME/.krew/bin" ]
+    set -gx PATH $PATH $HOME/.krew/bin
+  end
+
   # Display
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
@@ -145,5 +152,3 @@ end
 if is_mac
   source ~/.asdf/asdf.fish
 end
-
-
