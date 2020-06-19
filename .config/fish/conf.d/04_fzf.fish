@@ -86,3 +86,8 @@ function lsize
     echo "$dir: $dir_size"
   end
 end
+
+# switch gcloud configurations
+function fga
+  gcloud config configurations list | fzf | awk '{print $1}' | xargs gcloud config configurations activate
+end
