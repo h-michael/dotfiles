@@ -13,6 +13,7 @@ fpath=( \
     ~/.zsh/(N-/) \
     /usr/share/zsh/site-functions(N-/) \
     /usr/local/share/zsh/site-functions(N-/) \
+    $HOME/.asdf/completions \
     $fpath \
     )
 
@@ -172,11 +173,6 @@ if [ -z $TMUX ]; then
 
   # set package version manager path
   . $HOME/.asdf/asdf.sh
-  . $HOME/.asdf/completions/asdf.bash
-
-  # set langage version manager path
-  # export PATH=$HOME/.anyenv/bin:$PATH
-  # eval "$(anyenv init - --no-rehash)"
 
   export PATH=$PATH:$(yarn global bin)
   export PATH=$HOME/.local/bin:$PATH
