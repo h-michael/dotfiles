@@ -18,9 +18,14 @@ function kubectl_status
   set -l ns (kubectl config view -o "jsonpath={.contexts[?(@.name==\"$ctx\")].context.namespace}")
   [ -z $ns ]; and set -l ns 'default'
 
-  echo (set_color cyan)$KUBECTL_PROMPT_ICON" "(set_color white)"($ctx$KUBECTL_PROMPT_SEPARATOR$ns)"
+  # echo (set_color cyan)$KUBECTL_PROMPT_ICON" "(set_color white)"$ctx$KUBECTL_PROMPT_SEPARATOR$ns"
+  echo $ctx$KUBECTL_PROMPT_SEPARATOR$ns
+end
+
+function gcloud_active_config
+  cat $XDG_CONFIG_HOME/gcloud/active_config
 end
 
 function fish_right_prompt
-  echo (kubectl_status)
+  echo (gcloud_active_config)" | "(kubectl_status)
 end
