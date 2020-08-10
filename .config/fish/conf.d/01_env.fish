@@ -145,10 +145,13 @@ if [ -z $TMUX ]
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
 
-  source ~/.asdf/asdf.fish
-  eval (direnv hook fish)
+  if not is_mac
+    source ~/.asdf/asdf.fish
+    eval (direnv hook fish)
+  end
 end
 
 if is_mac
   source ~/.asdf/asdf.fish
+  eval (direnv hook fish)
 end
