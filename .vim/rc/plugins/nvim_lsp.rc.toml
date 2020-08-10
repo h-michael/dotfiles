@@ -197,7 +197,24 @@ yaml = '''
 if !exists('g:my_yaml_lsp_loaded')
   let g:my_yaml_lsp_loaded = 1
 
-  lua require'nvim_lsp'.yamlls.setup{}
+  lua << EOF
+  require'nvim_lsp'.yamlls.setup{
+    settings = {
+      yaml = {
+        schemas = {
+          ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
+          ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
+          ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
+          ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
+          ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
+          ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
+          ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
+          ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}'
+        }
+      }
+    }
+  }
+EOF
   autocmd Filetype yaml call SetMyLspConfig()
 endif
 '''
@@ -211,7 +228,7 @@ terraform = '''
 if !exists('g:my_terraform_lsp_loaded')
   let g:my_terraform_lsp_loaded = 1
 
-  lua require'nvim_lsp'.terrafomls.setup{}
+  lua require'nvim_lsp'.terraformls.setup{}
   autocmd Filetype terraform call SetMyLspConfig()
 endif
 '''
