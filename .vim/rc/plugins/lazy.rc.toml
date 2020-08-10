@@ -33,7 +33,7 @@ let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
 \   'javascript.jsx': ['eslint', 'flow'],
 \   'jsx': ['eslint', 'flow'],
-\   'haskell': ['hie', '--lsp'],
+\   'haskell': ['hie'],
 \}
 let g:ale_fixers = {
 \   'rust': 'rustfmt',
