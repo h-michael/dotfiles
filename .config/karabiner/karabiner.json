@@ -15,6 +15,90 @@
                 },
                 "rules": [
                     {
+                          "description": "Hide window",
+                          "manipulators": [
+                              {
+                                  "from": {
+                                      "key_code": "h",
+                                      "modifiers": {
+                                          "mandatory": [
+                                              "left_option"
+                                          ],
+                                          "optional": [
+                                              "any"
+                                          ]
+                                      }
+                                  },
+                                  "to": [
+                                      {
+                                          "key_code": "h",
+                                          "modifiers": [
+                                              "left_command"
+                                          ]
+                                      }
+                                  ],
+                                  "type": "basic"
+                              }
+                          ]
+
+                    },
+                    {
+                          "description": "Prev desktop",
+                          "manipulators": [
+                              {
+                                  "from": {
+                                      "key_code": "h",
+                                      "modifiers": {
+                                          "mandatory": [
+                                              "left_command"
+                                          ],
+                                          "optional": [
+                                              "any"
+                                          ]
+                                      }
+                                  },
+                                  "to": [
+                                      {
+                                          "key_code": "left_arrow",
+                                          "modifiers": [
+                                              "left_control"
+                                          ]
+                                      }
+                                  ],
+                                  "type": "basic"
+                              }
+                          ]
+
+                    },
+                    {
+                          "description": "Next desktop",
+                          "manipulators": [
+                              {
+                                  "from": {
+                                      "key_code": "l",
+                                      "modifiers": {
+                                          "mandatory": [
+                                              "left_command"
+                                          ],
+                                          "optional": [
+                                              "any"
+                                          ]
+                                      }
+                                  },
+                                  "to": [
+                                      {
+                                          "key_code": "right_arrow",
+                                          "modifiers": [
+                                              "left_control"
+                                          ]
+                                      }
+                                  ],
+                                  "type": "basic"
+                              }
+                          ]
+
+                    },
+                    {
                         "description": "Change IME to Japanese kana",
                         "manipulators": [
                             {
