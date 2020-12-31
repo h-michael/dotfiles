@@ -91,3 +91,15 @@ end
 function fga
   gcloud config configurations list | fzf | awk '{print $1}' | xargs gcloud config configurations activate
 end
+
+function _fk
+  kubectl get pods -o go-template --template="{{range .items}}{{\$item := .}}{{range .spec.containers}}{{\$item.metadata.name}}{{`"\t"`}}{{.name}}{{`"\n"`}}{{end}}{{end}}" | sort | fzf
+end
+
+function fke
+  eval (_fk | awk '{print "kubectl exec -it " $1 " --container " $2 " -- /bin/sh"}')
+end
+
+function fkl
+  eval (_fk | awk '{print "kubectl logs -f " $1 " --container " $2}')
+end
