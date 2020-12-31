@@ -72,10 +72,8 @@ function install_neovim
   echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
   echo "======================================================================"
 
-  CC=clang make -j 4 \
-    CMAKE_FLAGS="$CMAKE_FLAGS" \
-    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS"
-  CC=clang make install -j 4 \
+  make install -j 4 \
+    CMAKE_INSTALL_PREFIX=$HOME/.local \
     CMAKE_FLAGS="$CMAKE_FLAGS" \
     CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS"
   cp ./build/compile_commands.json .
@@ -116,7 +114,8 @@ function build_neovim
   echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
   echo "======================================================================"
 
-  CC=clang make nvim -j 4 \
+  # CC=clang make nvim -j 4 \
+  make nvim -j 4 \
     CMAKE_FLAGS="$CMAKE_FLAGS" \
     CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS" \
   cp ./build/compile_commands.json .
