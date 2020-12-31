@@ -15,11 +15,15 @@ if = '!has("nvim")'
 [[plugins]]
 repo = 'sheerun/vim-polyglot'
 hook_add = '''
-  let g:polyglot_disabled = ['rust', 'ruby', 'ada']
+  let g:polyglot_disabled = ['rust', 'ruby', 'ada', 'csv']
 '''
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
+
+# Vim plugin: Highlight columns in CSV and TSV files and run queries in SQL-like language
+[[plugins]]
+repo = 'mechatroner/rainbow_csv'
 
 [[plugins]]
 repo = 'nanotech/jellybeans.vim'
