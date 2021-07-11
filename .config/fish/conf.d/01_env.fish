@@ -76,8 +76,12 @@ if [ -z $TMUX ]
     set -x EDITOR nvim
   end
 
+  #if [ -d "$HOME/google-cloud-sdk/bin" ]
+  #  set -gx PATH "$HOME/google-cloud-sdk/bin" $PATH
+  #end
+
   # The next line updates PATH for the Google Cloud SDK.
-  if [ -d "$HOME/google-cloud-sdk/path.fish.inc" ]
+  if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
     source "$HOME/google-cloud-sdk/path.fish.inc"
   end
 
@@ -86,20 +90,17 @@ if [ -z $TMUX ]
     source "$HOME/google-cloud-sdk/completion.fish.inc"
   end
 
-  function history-merge --on-event fish_preexec
-    history --save
-    history --merge
-  end
-
   # Nvim
   set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
   set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
   set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
 
-  source ~/.asdf/asdf.fish
-  direnv hook fish | source
-
   set -gx PATH /usr/local/bin $PATH
+  source ~/.asdf/asdf.fish
+
+  #direnv hook fish | source
+  eval (direnv hook fish)
+
 
   # for Haskell
   set -gx PATH $HOME/.cabal/bin $PATH
@@ -143,4 +144,6 @@ if [ -z $TMUX ]
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
+
+  set -gx PATH /usr/local/opt/gettext/bin $PATH
 end
