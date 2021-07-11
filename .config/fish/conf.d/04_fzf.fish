@@ -5,6 +5,10 @@ set -x FZF_DEFAULT_OPTS '--reverse'
 set -x FZF_CTRL_T_COMMAND 'rg --files --hidden --follow --glob "!.git/*"'
 set -x FZF_CTRL_T_OPTS '--preview "bat  --color=always --style=header,grid --line-range :100 {}"'
 
+function fdh
+  history | fzf | read -l item; and history delete --prefix "$item"
+end
+
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
@@ -12,13 +16,6 @@ function fe
   set file (fzf --query="$1" --select-1 --exit-0)
   [ -n $file ]; and nvim $file
 end
-
-## fd - cd to selected directory
-# function fd
-#   set dir (find {1:-*} -path '*/\.*' -prune \
-#                   -o -type d -print 2> /dev/null | fzf +m); and
-#   cd $dir
-# end
 
 # ssh to ec2 instance
 function fsec2
@@ -36,31 +33,31 @@ end
 
 ## select repository
 function frepo
-  set dir (ghq list ^ /dev/null | fzf +m)
+  set dir (ghq list | fzf +m)
   cd (ghq root)/$dir
 end
 
 ## remove repository
 function frmrepo
-  ghq list --full-path ^ /dev/null | fzf --multi | xargs rm -rf
+  ghq list --full-path | fzf --multi | xargs rm -rf
 end
 
 # fzf for git
 
 function fgc
-  git branch ^ /dev/null | fzf --reverse | xargs git checkout
+  git branch | fzf --reverse | xargs git checkout
 end
 
 function fgdb
-  git branch ^ /dev/null | fzf --multi | xargs git branch -D
+  git branch | fzf --multi | xargs git branch -D
 end
 
 function fga
-  git status -s ^ /dev/null | grep -e '^ M ' | sed -e 's/^ M //' | fzf --multi | xargs git add; and git status -s
+  git status -s | grep -e '^ M ' | sed -e 's/^ M //' | fzf --multi | xargs git add; and git status -s
 end
 
 function fgr
-  git status -s ^ /dev/null | grep -e '^M ' | sed -e 's/^M //' | fzf --multi | xargs git reset; and git status -s
+  git status -s | grep -e '^M ' | sed -e 's/^M //' | fzf --multi | xargs git reset; and git status -s
 end
 
 function gitaddm
@@ -89,7 +86,7 @@ end
 
 # switch gcloud configurations
 function fga
-  gcloud config configurations list | fzf | awk '{print $1}' | xargs gcloud config configurations activate
+  gcloud config configurations list --format="table[no-heading] (name,is_active,name,properties.core.account,properties.core.project)" | fzf | awk '{print $1}' | xargs gcloud config configurations activate
 end
 
 function _fk
