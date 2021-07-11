@@ -26,3 +26,4 @@ tags
 .netrwhist
 .vim/autoload/plug.vim
 .vim/plugged/*
+.config/karabiner/automatic_backups/*
