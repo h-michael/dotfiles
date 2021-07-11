@@ -147,6 +147,7 @@ let t:cwd = getcwd()
 " Spell check
 set spelllang=en,cjk
 
+set nofixeol
 
 "---------------------------------------------------------------------------
 " View:
