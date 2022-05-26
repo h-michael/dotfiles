@@ -2,6 +2,9 @@ if [ -z $TMUX ]
   # blank greeeting message
   set fish_greeting
 
+  eval (ssh-agent -c)
+  ssh-add -K
+
   # XDG Base Directory
   set -gx XDG_CONFIG_HOME $HOME/.config
   set -gx XDG_CACHE_HOME $HOME/.cache
@@ -66,6 +69,7 @@ if [ -z $TMUX ]
     set -gx PATH "/usr/local/opt/gettext/bin" $PATH
     set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
     set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
+    set -gx PATH "/usr/local/opt/findutils/libexec/gnubin" $PATH
   end
 
   # For Enpass
@@ -127,6 +131,10 @@ if [ -z $TMUX ]
   else if is_mac
     set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/macOS/lua-language-server
   end
+
+  # Python
+  set -gx PATH $HOME/.poetry/bin $PATH
+  set -gx PATH /usr/local/opt/python@3.8/bin $PATH
 
   # Yarn
   if status --is-interactive
