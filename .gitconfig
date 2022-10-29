@@ -7,16 +7,15 @@
 [core]
   excludesfile = ~/.gitignore_global
   editor = /usr/local/bin/nvim
+  pager = delta
 [push]
   default = current
 [branch]
   autosetuprebase = always
 [merge]
-  # from 1.7.6
-  # ff = false
+  ff = true
 [pull]
-  # from 1.7.9
-  # rebase = true
+  rebase = true
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
@@ -42,7 +41,6 @@
 	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-
 [web]
   # browser = google-chrome
 [browse-remote "github.com"]
@@ -52,6 +50,11 @@
 [gpg]
 	program = gpg
 [commit]
-	gpgsign = true
+  #gpgsign = true
 [http]
 	cookiefile = ~/.gitcookies
+[delta]
+    features = side-by-side line-numbers decorations
+    whitespace-error-style = 22 reverse
+[init]
+	defaultBranch = main

@@ -15,3 +15,4 @@ rusty-tags.vi
 rls*.log
 .mypy_cache/
 .ccls-cache/
+.tool-versions
