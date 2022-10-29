@@ -13,11 +13,9 @@
 [branch]
   autosetuprebase = always
 [merge]
-  # from 1.7.6
-  # ff = false
+  ff = true
 [pull]
-  # from 1.7.9
-  # rebase = true
+  rebase = true
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 	insteadOf = git://github.com/
