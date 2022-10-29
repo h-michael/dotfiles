@@ -100,3 +100,7 @@ end
 function fkl
   eval (_fk | awk '{print "kubectl logs -f " $1 " --container " $2}')
 end
+
+function fgssh
+  eval (gcloud compute instances list --format="table[no-heading] (name,zone,status)" | fzf | awk '{printf "gcloud compute ssh \"%s\" --zone \"%s\" --tunnel-through-iap", $1, $2}')
+end
