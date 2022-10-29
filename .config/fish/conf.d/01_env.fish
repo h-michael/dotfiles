@@ -125,11 +125,10 @@ if [ -z $TMUX ]
   # Lua
   set -gx PATH $HOME/.luarocks/bin $PATH
   set -gx LUA_LSP_DIR $GOPATH/src/github.com/sumneko/lua-language-server
+  set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/lua-language-server
+
   if is_linux
-    set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/Linux/lua-language-server
     set -gx PATH $HOME/google-cloud-sdk/bin $PATH
-  else if is_mac
-    set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/macOS/lua-language-server
   end
 
   # Python
@@ -154,4 +153,7 @@ if [ -z $TMUX ]
   set -g theme_display_virtualenv no
 
   set -gx PATH /usr/local/opt/gettext/bin $PATH
+
+  set -gx DENO_INSTALL $HOME/.deno
+  set -gx PATH $DENO_INSTALL/bin $PATH
 end
