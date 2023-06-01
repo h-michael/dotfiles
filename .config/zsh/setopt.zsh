@@ -1,3 +1,5 @@
+setopt auto_cd
+setopt auto_pushd
 # Do not print the directory stack after pushd or popd.
 #setopt pushd_silent
 # Replace 'cd -' with 'cd +'
@@ -150,10 +152,8 @@ setopt always_last_prompt
 setopt auto_menu
 setopt auto_param_keys
 setopt auto_param_slash
-setopt auto_pushd
 setopt complete_in_word
 setopt globdots
 setopt interactive_comments
 setopt list_types
 setopt magic_equal_subst
-
