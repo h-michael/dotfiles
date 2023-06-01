@@ -6,6 +6,9 @@ application/*
 .config/fish/functions/*
 .config/fish/fishd*
 .config/fish/fish_variables
+.config/zsh/.zsh_sessions/*
+.config/zsh/.zcompdump*
+.config/zsh/.zsh_history
 .config/assets/*
 .xmonad/xmonad.errors
 .xmonad/xmonad.hi
@@ -17,6 +20,7 @@ application/*
 .vim/trans_history
 .vim/.trans_raw_history
 .vim/trans
+.vim/plugin/packer_compiled.lua
 .config/nvim/trans_history
 .config/nvim/.trans_raw_history
 GPATH
@@ -26,4 +30,5 @@ tags
 .netrwhist
 .vim/autoload/plug.vim
 .vim/plugged/*
+.vim/plugin/*
 .config/karabiner/automatic_backups/*
