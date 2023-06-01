@@ -13,6 +13,8 @@ docker.sh
 build-vim.sh
 rusty-tags.vi
 rls*.log
+.cache/
 .mypy_cache/
 .ccls-cache/
 .tool-versions
+compile_commands.json
