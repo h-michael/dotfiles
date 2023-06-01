@@ -1,7 +1,5 @@
 #!/bin/zsh
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--reverse'
 export FZF_CTRL_T_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
@@ -15,12 +13,12 @@ function fe() {
   [ -n $file ] && nvim $file
 }
 
-## fd - cd to selected directory
-# function fd {
-#   local dir=$(find {1:-*} -path '*/\.*' -prune \
-#                   -o -type d -print 2> /dev/null | fzf +m)
-#   cd $dir
-# }
+# fd - cd to selected directory
+function fd {
+  local dir=$(find {1:-*} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m)
+  cd $dir
+}
 
 # ssh to ec2 instance
 function fsec2() {
@@ -88,4 +86,42 @@ function lsize() {
     local dir_size=$(du -sm $dir)
     echo "$dir: $dir_size"
   done
+}
+
+# switch gcloud configurations
+function fga {
+  gcloud config configurations list --format="table[no-heading] (name,is_active,name,properties.core.account,properties.core.project)" | fzf | awk '{print $1}' | xargs gcloud config configurations activate
+}
+
+function _fk {
+  kubectl get pods -o go-template --template="{{range .items}}{{\$item := .}}{{range .spec.containers}}{{\$item.metadata.name}}{{\"\t\"}}{{.name}}{{\"\n\"}}{{end}}{{end}}" | sort | fzf
+}
+
+function fke {
+  eval "$(_fk | awk '{print "kubectl exec -it " $1 " --container " $2 " -- /bin/sh"}')"
+}
+
+function fkl {
+  eval "$(_fk | awk '{print "kubectl logs -f " $1 " --container " $2}')"
+}
+
+function fgssh {
+  eval "$(gcloud compute instances list --format="table[no-heading] (name,zone,status)" | fzf | awk '{printf "gcloud compute ssh \"%s\" --zone \"%s\" --tunnel-through-iap", $1, $2}')"
+}
+
+function fawsv {
+  aws-vault exec `aws-vault list | sed '1,2d' | fzf --prompt="Select profile" | awk '{print $1}'`
+}
+
+function fec2ssm {
+  aws ec2 describe-instances | jq -r '.Reservations[].Instances[] | [.InstanceId, .KeyName] | @tsv' | fzf | awk '{print $1}' | xargs aws ssm start-session --target
+}
+
+function fecse {
+  CLUSTER_ARN=`aws ecs list-clusters | jq -r '.clusterArns[]' | fzf`
+  SERVICE_ARN=`aws ecs list-services --cluster $CLUSTER_ARN | jq -r '.serviceArns[]' | fzf`
+  SERVICE_NAME=`aws ecs describe-services --cluster $CLUSTER_ARN --services $SERVICE_ARN | jq -r '.services[] | .serviceName'`
+  TASK_ARN=`aws ecs list-tasks --cluster $CLUSTER_ARN --service-name $SERVICE_NAME | jq -r '.taskArns[]' | fzf`
+  CONTAINER_NAME=`aws ecs describe-tasks --cluster $CLUSTER_ARN --tasks $TASK_ARN | jq -r '.tasks[] | .containers[] | .name' | fzf`
+  aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
 }
