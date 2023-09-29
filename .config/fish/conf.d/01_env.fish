@@ -86,10 +86,6 @@ if [ -z $TMUX ]
     set -x EDITOR nvim
   end
 
-  #if [ -d "$HOME/google-cloud-sdk/bin" ]
-  #  set -gx PATH "$HOME/google-cloud-sdk/bin" $PATH
-  #end
-
   # The next line updates PATH for the Google Cloud SDK.
   if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
     source "$HOME/google-cloud-sdk/path.fish.inc"
