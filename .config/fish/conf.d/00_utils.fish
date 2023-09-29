@@ -49,7 +49,7 @@ function check_outdate
 end
 
 function install_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
 
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
@@ -91,7 +91,7 @@ function install_neovim
 end
 
 function build_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
 
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
@@ -133,7 +133,7 @@ function build_neovim
 end
 
 function clean_install_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
   rm -rf ./build
   make clean
   install_neovim $argv
