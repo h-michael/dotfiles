@@ -104,3 +104,27 @@ end
 function fgssh
   eval (gcloud compute instances list --format="table[no-heading] (name,zone,status)" | fzf | awk '{printf "gcloud compute ssh \"%s\" --zone \"%s\" --tunnel-through-iap", $1, $2}')
 end
+
+function fav -d "Select AWS profile"
+  aws-vault exec (aws-vault list | sed '1,2d' | fzf --prompt="Select profile" | awk '{print $1}')
+end
+
+function fec2ssm -d "Select EC2 instance and start SSM session"
+  aws ec2 describe-instances | jq -r '.Reservations[].Instances[] | [.InstanceId, .KeyName] | @tsv' | fzf | awk '{print $1}' | xargs aws ssm start-session --target
+end
+
+function fecse -d "Select ECS container and execute command"
+  set CLUSTER_ARN (aws ecs list-clusters | jq -r '.clusterArns[]' | fzf --prompt="Select cluster")
+  set TASK_ARN (aws ecs list-tasks --cluster $CLUSTER_ARN | jq -r '.taskArns[]' | fzf --prompt="Select task")
+  set CONTAINER_NAME (aws ecs describe-tasks --cluster $CLUSTER_ARN --tasks $TASK_ARN | jq -r '.tasks[] | .containers[] | .name' | fzf --prompt="Select container")
+  aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
+end
+
+function fecse -d "Select ECS container and execute command"
+  set CLUSTER_ARN (aws ecs list-clusters | jq -r '.clusterArns[]' | fzf)
+  set SERVICE_ARN (aws ecs list-services --cluster $CLUSTER_ARN | jq -r '.serviceArns[]' | fzf)
+  set SERVICE_NAME (aws ecs describe-services --cluster $CLUSTER_ARN --services $SERVICE_ARN | jq -r '.services[] | .serviceName')
+  set TASK_ARN (aws ecs list-tasks --cluster $CLUSTER_ARN --service-name $SERVICE_NAME | jq -r '.taskArns[]' | fzf)
+  set CONTAINER_NAME (aws ecs describe-tasks --cluster $CLUSTER_ARN --tasks $TASK_ARN | jq -r '.tasks[] | .containers[] | .name' | fzf)
+  aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
+end
