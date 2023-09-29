@@ -54,6 +54,10 @@ function install_neovim
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+  if is_mac
+    set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+    set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  end
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
@@ -96,6 +100,10 @@ function build_neovim
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+  if is_mac
+    set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+    set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  end
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
