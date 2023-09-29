@@ -24,12 +24,12 @@ function check_outdate {
 }
 
 function neovim_install {
-  cd $(ghq root)/github.com/h-michael/neovim
+  cd $(ghq root)/github.com/neovim/neovim
   make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
 }
 
 function neovim_clean_install {
-  cd $(ghq root)/github.com/h-michael/neovim
+  cd $(ghq root)/github.com/neovim/neovim
   make clean
   make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
 }

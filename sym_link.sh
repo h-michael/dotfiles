@@ -36,23 +36,20 @@ mac_link () {
 }
 
 _common_link () {
-  ln -sf $DIR/.vim ~/.vim
-  ln -sf $DIR/.tmux.conf ~/.tmux.conf
-  ln -sf $DIR/.tmux.conf.local ~/.tmux.conf.local
-  ln -sf $DIR/.gitconfig ~/.gitconfig
-  ln -sf $DIR/.gitignore_global ~/.gitignore_global
-  ln -sf $DIR/.globalrc ~/.globalrc
-  ln -sf $DIR/.pryrc ~/.pryrc
-
   if [ ! -d ~/.config ]; then
     mkdir ~/.config
   fi
 
-  ln -sf ~/.vim ~/.config/nvim
+  ln -sf $DIR/.vim ~/.vim
+  ln -sf $DIR/.tmux.conf ~/.tmux.conf
+  ln -sf $DIR/.tmux.conf.local ~/.tmux.conf.local
+  ln -sf $DIR/.globalrc ~/.globalrc
+  ln -sf $DIR/.pryrc ~/.pryrc
   ln -sf $DIR/.util.zsh ~/.util.zsh
   ln -sf $DIR/.zshenv ~/.zshenv
-  ln -sf $DIR/.zshrc ~/.zshrc
   ln -sf $DIR/.zsh ~/.config/zsh
+  ln -sf ~/.vim ~/.config/nvim
+  ln -sf $DIR/.config/git ~/.config/git
   ln -sf $DIR/.config/fish ~/.config/fish
   ln -sf $DIR/.config/translate-shell/ ~/.config/translate-shell
   ln -sf $DIR/.config/pip ~/.config/pip

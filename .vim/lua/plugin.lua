@@ -8,21 +8,44 @@ require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
   -- A solid language pack for Vim.
-  use 'sheerun/vim-polyglot'
+  use {
+    'sheerun/vim-polyglot',
+    setup = function()
+      vim.g.polyglot_disabled = { 'sensible', 'rust' }
+    end,
+  }
+
+  use {
+    'rust-lang/rust.vim',
+    setup = function()
+      vim.g.rustfmt_emit_files = 1
+      --vim.g.rustfmt_autosave = 1
+    end,
+  }
 
   use 'editorconfig/editorconfig-vim'
 
   use 'mechatroner/rainbow_csv'
 
+  --use 'williamboman/mason-lspconfig.nvim'
+  --use {
+  --  'williamboman/mason.nvim',
+  --  config = function()
+  --    require("mason").setup()
+  --  end
+  --}
+
   use {
     'nanotech/jellybeans.vim',
-    config = function()
+    opt = true,
+    setup = function()
       vim.opt.background = 'dark'
       vim.api.nvim_command [[colorscheme jellybeans]]
     end,
   }
   use {
     'nvim-lualine/lualine.nvim',
+    event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
     requires = { 'nanotech/jellybeans.vim', 'nvim-lua/lsp-status.nvim' },
     config = function()
       require('lualine').setup {
@@ -70,11 +93,11 @@ require('packer').startup(function(use)
   use 'tpope/vim-commentary'
   use 'jiangmiao/auto-pairs'
 
-  use {
-    'junegunn/fzf',
-    run = './install --all',
-    opt = true,
-  }
+  -- use {
+  --   'junegunn/fzf',
+  --   run = './install --all',
+  --   opt = true,
+  -- }
   use {
     'ibhagwan/fzf-lua',
     config = function()
@@ -197,12 +220,27 @@ require('packer').startup(function(use)
     ft = { 'go', 'gomod' },
   }
 
+  use { 'github/copilot.vim' }
+
   use {
     'hrsh7th/nvim-cmp',
-    requires = { 'hrsh7th/cmp-nvim-lsp', 'hrsh7th/cmp-buffer', 'hrsh7th/cmp-path', 'hrsh7th/cmp-cmdline', 'hrsh7th/cmp-vsnip', 'hrsh7th/vim-vsnip' },
+    requires = {
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-path' },
+      { 'hrsh7th/cmp-cmdline' },
+      { 'hrsh7th/cmp-vsnip' },
+      { 'hrsh7th/vim-vsnip' },
+      -- { 'hrsh7th/cmp-nvim-lsp', event = { "InsertEnter" } },
+      -- { 'hrsh7th/cmp-buffer', event = { "InsertEnter" } },
+      -- { 'hrsh7th/cmp-path', event = { "InsertEnter" } },
+      -- { 'hrsh7th/cmp-cmdline', event = { "InsertEnter" } },
+      -- { 'hrsh7th/cmp-vsnip', event = { "InsertEnter" } },
+      -- { 'hrsh7th/vim-vsnip', event = { "InsertEnter" } },
+    },
     config = function()
       local cmp = require'cmp'
-      cmp.setup({
+      require'cmp'.setup({
         snippet = {
           -- REQUIRED - you must specify a snippet engine
           expand = function(args)
@@ -281,41 +319,41 @@ require('packer').startup(function(use)
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
-        init_options = {
-          usePlaceholders=true;
-          linkTarget="pkg.go.dev";
-          completionDocumentation=true;
-          completeUnimported=true;
-          deepCompletion=true;
-          matcher="CaseSensitive";
-          symbolMatcher="CaseSensitive";
-        };
+        -- init_options = {
+        --   usePlaceholders=true;
+        --   linkTarget="pkg.go.dev";
+        --   completionDocumentation=true;
+        --   completeUnimported=true;
+        --   deepCompletion=true;
+        --   matcher="CaseSensitive";
+        --   symbolMatcher="CaseSensitive";
+        -- };
       }
       require('lspconfig')['solargraph'].setup{
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
       }
-      require('lspconfig')['sumneko_lua'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-        cmd = { os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua' },
-        settings = {
-          Lua = {
-            diagnostics = {
-              global = {"vim"};
-            },
-            workspace = {
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
-            },
-            telemetry = {
-              enable = false,
-            },
-          };
-        };
-      }
+      -- require('lspconfig')['lua_ls'].setup{
+      --   on_attach = on_attach,
+      --   flags = lsp_flags,
+      --   capabilities = capabilities,
+      --   cmd = { os_getenv('LUA_LSP_BIN'), "-E", os_getenv('LUA_LSP_DIR')..'/main.lua' },
+      --   settings = {
+      --     Lua = {
+      --       diagnostics = {
+      --         global = {"vim"};
+      --       },
+      --       workspace = {
+      --         -- Make the server aware of Neovim runtime files
+      --         library = vim.api.nvim_get_runtime_file("", true),
+      --       },
+      --       telemetry = {
+      --         enable = false,
+      --       },
+      --     };
+      --   };
+      -- }
       require('lspconfig')['tsserver'].setup{
         on_attach = on_attach,
         flags = lsp_flags,

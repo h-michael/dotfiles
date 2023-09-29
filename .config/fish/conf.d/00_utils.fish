@@ -49,11 +49,15 @@ function check_outdate
 end
 
 function install_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
 
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+  if is_mac
+    set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+    set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  end
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
@@ -91,11 +95,15 @@ function install_neovim
 end
 
 function build_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
 
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+  if is_mac
+    set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+    set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  end
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
@@ -133,7 +141,7 @@ function build_neovim
 end
 
 function clean_install_neovim
-  cd (ghq root)/github.com/h-michael/neovim
+  cd (ghq root)/github.com/neovim/neovim
   rm -rf ./build
   make clean
   install_neovim $argv

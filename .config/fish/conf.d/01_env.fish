@@ -2,8 +2,14 @@ if [ -z $TMUX ]
   # blank greeeting message
   set fish_greeting
 
+  set -gxp PATH /opt/homebrew/bin/
+
   eval (ssh-agent -c)
-  ssh-add -K
+  if is_mac
+      ssh-add --apple-use-keychain
+  else
+    ssh-add -K
+  end
 
   # XDG Base Directory
   set -gx XDG_CONFIG_HOME $HOME/.config
@@ -65,11 +71,12 @@ if [ -z $TMUX ]
     set -gx BROWSER google-chrome-stable
   else if is_mac
     set -gx BROWSER open
-    set -gx PATH "/usr/local/opt/llvm/bin" $PATH
-    set -gx PATH "/usr/local/opt/gettext/bin" $PATH
-    set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
-    set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
-    set -gx PATH "/usr/local/opt/findutils/libexec/gnubin" $PATH
+    set -gxp PATH "$(brew --prefix)/bin"
+    set -gxp PATH "$(brew --prefix)/sbin"
+    set -gxp PATH "$(brew --prefix)/libexec"
+    set -gxp LDFLAGS "-L$(brew --prefix)/lib"
+    set -gxp CPPFLAGS "-I$(brew --prefix)/include"
+    set -gxp CPPFLAGS "-I$(brew --prefix)/include/boost"
   end
 
   # For Enpass
@@ -79,10 +86,6 @@ if [ -z $TMUX ]
   if [ -n $SSH_CONNECTION ]
     set -x EDITOR nvim
   end
-
-  #if [ -d "$HOME/google-cloud-sdk/bin" ]
-  #  set -gx PATH "$HOME/google-cloud-sdk/bin" $PATH
-  #end
 
   # The next line updates PATH for the Google Cloud SDK.
   if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
@@ -101,10 +104,11 @@ if [ -z $TMUX ]
 
   set -gx PATH /usr/local/bin $PATH
   source ~/.asdf/asdf.fish
-
-  #direnv hook fish | source
-  eval (direnv hook fish)
-
+  #if is_mac
+  #  source (brew --prefix asdf)/libexec/asdf.fish
+  #else if is_linux
+  #  source ~/.asdf/asdf.fish
+  #end
 
   # for Haskell
   set -gx PATH $HOME/.cabal/bin $PATH
@@ -118,9 +122,11 @@ if [ -z $TMUX ]
   # set -x RUST_LOG "rls=debug"
 
   # for Golang
-  set -gx GO111MODULE on
-  set -gx GOPATH $HOME/go
-  set -gx PATH $HOME/go/bin $PATH
+  set -gx GOROOT /opt/homebrew/opt/go/libexec/
+  #set -gx GO111MODULE on
+  #set -gx GOPATH $HOME/go
+  #set -gx PATH $HOME/go/bin $PATH
+  #. $HOME/.asdf/plugins/golang/set-env.fish
 
   # Lua
   set -gx PATH $HOME/.luarocks/bin $PATH
@@ -135,10 +141,10 @@ if [ -z $TMUX ]
   set -gx PATH $HOME/.poetry/bin $PATH
   set -gx PATH /usr/local/opt/python@3.8/bin $PATH
 
-  # Yarn
-  if status --is-interactive
-    set -gx PATH $PATH (yarn global bin)
-  end
+  ## Yarn
+  #if status --is-interactive
+  #  set -gx PATH $PATH (yarn global bin)
+  #end
 
   # Kubernetes
   if [ -d "$HOME/.krew/bin" ]
@@ -152,8 +158,10 @@ if [ -z $TMUX ]
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
 
-  set -gx PATH /usr/local/opt/gettext/bin $PATH
+  # set -gx PATH /usr/local/opt/gettext/bin $PATH
 
   set -gx DENO_INSTALL $HOME/.deno
   set -gx PATH $DENO_INSTALL/bin $PATH
 end
+
+direnv hook fish | source
