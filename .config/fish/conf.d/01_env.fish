@@ -68,12 +68,14 @@ if [ -z $TMUX ]
   if is_linux
     set -gx BROWSER google-chrome-stable
   else if is_mac
-    set -gx BROWSER open
-    set -gx PATH "/usr/local/opt/llvm/bin" $PATH
-    set -gx PATH "/usr/local/opt/gettext/bin" $PATH
-    set -gx LDFLAGS "-L/usr/local/opt/gettext/lib"
-    set -gx CPPFLAGS "-I/usr/local/opt/gettext/include"
-    set -gx PATH "/usr/local/opt/findutils/libexec/gnubin" $PATH
+    set -gxp BROWSER open
+    set -gxp PATH /opt/homebrew/bin
+    set -gxp PATH "$(brew --prefix)/bin"
+    set -gxp PATH "$(brew --prefix)/sbin"
+    set -gxp PATH "$(brew --prefix)/libexec"
+    set -gxp LDFLAGS "-L$(brew --prefix)/lib"
+    set -gxp CPPFLAGS "-I$(brew --prefix)/include"
+    set -gxp CPPFLAGS "-I$(brew --prefix)/include/boost"
   end
 
   # For Enpass
@@ -103,18 +105,17 @@ if [ -z $TMUX ]
   set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
   set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
 
-  set -gx PATH /usr/local/bin $PATH
+  if [ -d "/usr/local/bin" ]
+    set -gxp PATH /usr/local/bin
+  end
+
   source ~/.asdf/asdf.fish
 
-  #direnv hook fish | source
-  eval (direnv hook fish)
-
-
   # for Haskell
-  set -gx PATH $HOME/.cabal/bin $PATH
+  set -gxp PATH $HOME/.cabal/bin
 
   # for Rust
-  set -gx PATH $HOME/.cargo/bin $PATH
+  set -gxp PATH $HOME/.cargo/bin
   set -gx RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
 
   # for Rls
@@ -122,42 +123,38 @@ if [ -z $TMUX ]
   # set -x RUST_LOG "rls=debug"
 
   # for Golang
-  set -gx GO111MODULE on
-  set -gx GOPATH $HOME/go
-  set -gx PATH $HOME/go/bin $PATH
+  if is_mac
+    set -gx GOROOT /opt/homebrew/opt/go/libexec/
+  end
 
   # Lua
-  set -gx PATH $HOME/.luarocks/bin $PATH
+  if [ -d "$HOME/.luarocks/bin" ]
+    set -gxp PATH $HOME/.luarocks/bin
+  end
   set -gx LUA_LSP_DIR $GOPATH/src/github.com/sumneko/lua-language-server
   set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/lua-language-server
 
-  if is_linux
-    set -gx PATH $HOME/google-cloud-sdk/bin $PATH
-  end
-
   # Python
-  set -gx PATH $HOME/.poetry/bin $PATH
-  set -gx PATH /usr/local/opt/python@3.8/bin $PATH
-
-  # Yarn
-  if status --is-interactive
-    set -gx PATH $PATH (yarn global bin)
+  if [ -d "$HOME/.poetry/bin" ]
+    set -gxp PATH $HOME/.poetry/bin
   end
 
   # Kubernetes
   if [ -d "$HOME/.krew/bin" ]
-    set -gx PATH $PATH $HOME/.krew/bin
+    set -gxp PATH $HOME/.krew/bin
   end
-
-  set -gx PATH $HOME/.local/bin $PATH
 
   # Display
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
 
-  set -gx PATH /usr/local/opt/gettext/bin $PATH
+  # set -gx PATH /usr/local/opt/gettext/bin $PATH
 
   set -gx DENO_INSTALL $HOME/.deno
-  set -gx PATH $DENO_INSTALL/bin $PATH
+  set -gxp PATH $DENO_INSTALL/bin
+
+  set -gxp PATH $HOME/.local/bin
 end
+
+direnv hook fish | source
