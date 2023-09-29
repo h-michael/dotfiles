@@ -3,7 +3,11 @@ if [ -z $TMUX ]
   set fish_greeting
 
   eval (ssh-agent -c)
-  ssh-add -K
+  if is_mac
+      ssh-add --apple-use-keychain
+  else
+    ssh-add -K
+  end
 
   # XDG Base Directory
   set -gx XDG_CONFIG_HOME $HOME/.config
