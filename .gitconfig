@@ -16,9 +16,6 @@
   ff = true
 [pull]
   rebase = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-	insteadOf = git://github.com/
 [github]
   user = h-michael
 [filter "lfs"]
@@ -41,8 +38,6 @@
 	patterns = (\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\\s*(:|=>|=)\\s*(\"|')?[0-9]{4}\\-?[0-9]{4}\\-?[0-9]{4}(\"|')?
 	allowed = AKIAIOSFODNN7EXAMPLE
 	allowed = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
-[web]
-  # browser = google-chrome
 [browse-remote "github.com"]
   top = https://{host}/{path}
   ref = https://{host}/{path}/tree/{short_ref}
@@ -50,7 +45,7 @@
 [gpg]
 	program = gpg
 [commit]
-  #gpgsign = true
+	gpgsign = false
 [http]
 	cookiefile = ~/.gitcookies
 [delta]
