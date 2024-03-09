@@ -16,9 +16,6 @@
   ff = true
 [pull]
   rebase = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
-	insteadOf = git://github.com/
 [github]
   user = h-michael
 [filter "lfs"]
@@ -50,7 +47,7 @@
 [gpg]
 	program = gpg
 [commit]
-  #gpgsign = true
+  gpgsign = false
 [http]
 	cookiefile = ~/.gitcookies
 [delta]
