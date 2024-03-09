@@ -294,8 +294,14 @@ require('packer').startup(function(use)
         flags = lsp_flags,
         capabilities = capabilities,
         settings = {
-          ["rust-analyzer"] = {}
-        }
+          ['rust-analyzer'] = {
+            cargo = {
+              buildScripts = {
+                enable = true,
+              }
+            }
+          }
+        },
       }
       require('lspconfig')['gopls'].setup{
         on_attach = on_attach,
@@ -308,11 +314,6 @@ require('packer').startup(function(use)
         capabilities = capabilities,
       }
       require('lspconfig')['tsserver'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['solargraph'].setup{
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -341,7 +342,8 @@ require('packer').startup(function(use)
               ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
               ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
               ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
-              ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}'
+              ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
+              ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
             }
           }
         },
@@ -351,6 +353,16 @@ require('packer').startup(function(use)
         flags = lsp_flags,
         capabilities = capabilities,
       }
+    end,
+  }
+
+  use {
+    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
+    config = function()
+      require("lsp_lines").setup()
+      vim.diagnostic.config({
+        virtual_text = false,
+      })
     end,
   }
 end)
