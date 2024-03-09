@@ -1,0 +1,290 @@
+live_config_reload = true
+
+[env]
+TERM = "alacritty"
+
+[window]
+dynamic_padding = false
+decorations = "full"
+startup_mode = "Maximized"
+dynamic_title = true
+opacity = 1
+
+  [window.dimensions]
+  columns = 80
+  lines = 24
+
+  [window.padding]
+  x = 1
+  y = 0
+
+[scrolling]
+history = 10_000
+multiplier = 3
+
+[font]
+size = 14
+
+  [font.normal]
+  family = "Ricty"
+  style = "Regular"
+  # hintstyle = true
+  # antialias = true
+
+  [font.bold]
+  family = "Ricty"
+  style = "Bold"
+
+  [font.italic]
+  family = "Ricty"
+  style = "Regular"
+
+  [font.offset]
+  x = 0
+  y = 0
+
+  [font.glyph_offset]
+  x = 0
+  y = 0
+
+#[schemes.molokai]
+#indexed_colors = [ ]
+#
+#  [schemes.molokai.primary]
+#  background = "0x272822"
+#  foreground = "0xbbbbbb"
+#
+#  [schemes.molokai.normal]
+#  black = "0x121212"
+#  red = "0xfa2573"
+#  green = "0x98e123"
+#  yellow = "0xdfd460"
+#  blue = "0x1080d0"
+#  magenta = "0x8700ff"
+#  cyan = "0x43a8d0"
+#  white = "0xbbbbbb"
+#
+#  [schemes.molokai.bright]
+#  black = "0x555555"
+#  red = "0xf6669d"
+#  green = "0xb1e05f"
+#  yellow = "0xfff26d"
+#  blue = "0x00afff"
+#  magenta = "0xaf87ff"
+#  cyan = "0x51ceff"
+#  white = "0xffffff"
+#
+#[schemes.monokai.primary]
+#background = "0x272822"
+#foreground = "0xF8F8F2"
+#
+#[schemes.monokai.normal]
+#black = "0x272822"
+#red = "0xF92672"
+#green = "0xA6E22E"
+#yellow = "0xF4BF75"
+#blue = "0x66D9EF"
+#magenta = "0xAE81FF"
+#cyan = "0xA1EFE4"
+#white = "0xF8F8F2"
+#
+#[schemes.monokai.bright]
+#black = "0x75715E"
+#red = "0xF92672"
+#green = "0xA6E22E"
+#yellow = "0xF4BF75"
+#blue = "0x66D9EF"
+#magenta = "0xAE81FF"
+#cyan = "0xA1EFE4"
+#white = "0xF9F8F5"
+#
+#[schemes.monokai_pro.primary]
+#background = "0x2D2A2E"
+#foreground = "0xFCFCFA"
+#
+#[schemes.monokai_pro.normal]
+#black = "0x403E41"
+#red = "0xFF6188"
+#green = "0xA9DC76"
+#yellow = "0xFFD866"
+#blue = "0xFC9867"
+#magenta = "0xAB9DF2"
+#cyan = "0x78DCE8"
+#white = "0xFCFCFA"
+#
+#[schemes.monokai_pro.bright]
+#black = "0x727072"
+#red = "0xFF6188"
+#green = "0xA9DC76"
+#yellow = "0xFFD866"
+#blue = "0xFC9867"
+#magenta = "0xAB9DF2"
+#cyan = "0x78DCE8"
+#white = "0xFCFCFA"
+#
+#[schemes.jellybeans.primary]
+#background = "0x161616"
+#foreground = "0xe4e4e4"
+#dim_foreground = "0x9a9a9a"
+#bright_foreground = "0xffffff"
+#
+#[schemes.jellybeans.cursor]
+#text = "0xfeffff"
+#cursor = "0xffb472"
+#
+#[schemes.jellybeans.normal]
+#black = "0xa3a3a3"
+#red = "0xe98885"
+#green = "0xa3c38b"
+#yellow = "0xfacf7a"
+#blue = "0x8197bf"
+#magenta = "0xe7cdfb"
+#cyan = "0x00a69f"
+#white = "0xe4e4e4"
+#
+#[schemes.jellybeans.bright]
+#black = "0xc8c8c8"
+#red = "0xffb2b0"
+#green = "0x99ad6a"
+#yellow = "0xffb964"
+#blue = "0x8fbfdc"
+#magenta = "0xfce2ff"
+#cyan = "0xc6b6ee"
+#white = "0xfeffff"
+#
+#[schemes.jellybeans.selection]
+#text = "0x5963a2"
+#background = "0xf6f6f6"
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.primary]
+background = "0x161616"
+foreground = "0xe4e4e4"
+dim_foreground = "0x9a9a9a"
+bright_foreground = "0xffffff"
+
+[colors.cursor]
+text = "0xfeffff"
+cursor = "0xffb472"
+
+[colors.normal]
+black = "0xa3a3a3"
+red = "0xe98885"
+green = "0xa3c38b"
+yellow = "0xfacf7a"
+blue = "0x8197bf"
+magenta = "0xe7cdfb"
+cyan = "0x00a69f"
+white = "0xe4e4e4"
+
+[colors.bright]
+black = "0xc8c8c8"
+red = "0xffb2b0"
+green = "0x99ad6a"
+yellow = "0xffb964"
+blue = "0x8fbfdc"
+magenta = "0xfce2ff"
+cyan = "0xc6b6ee"
+white = "0xfeffff"
+
+[colors.selection]
+text = "0x5963a2"
+background = "0xf6f6f6"
+
+[bell]
+animation = "EaseOutExpo"
+duration = 0
+color = "0xffffff"
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+save_to_clipboard = true
+
+[cursor]
+style = "Block"
+unfocused_hollow = true
+
+
+[mouse]
+hide_when_typing = false
+
+  [[mouse.bindings]]
+  mouse = "Middle"
+  action = "PasteSelection"
+
+  #[mouse.double_click]
+  #threshold = 300
+
+  #[mouse.triple_click]
+  #threshold = 300
+
+  #[mouse.hints]
+  #launcher = "open"
+  #modifiers = "None"
+
+[keyboard]
+
+  [[keyboard.bindings]]
+  key = "V"
+  mods = "Command"
+  action = "Paste"
+
+    [[keyboard.bindings]]
+    key = "C"
+    mods = "Command"
+    action = "Copy"
+
+    [[keyboard.bindings]]
+    key = "Paste"
+    action = "Paste"
+
+    [[keyboard.bindings]]
+    key = "Copy"
+    action = "Copy"
+
+    [[keyboard.bindings]]
+    key = "Q"
+    mods = "Command"
+    action = "Quit"
+
+    [[keyboard.bindings]]
+    key = "W"
+    mods = "Command"
+    action = "Quit"
+
+    [[keyboard.bindings]]
+    key = "Home"
+    chars = "\u001bOH"
+    mode = "AppCursor"
+
+    [[keyboard.bindings]]
+    key = "Home"
+    chars = "\u001b[H"
+    mode = "~AppCursor"
+
+    [[keyboard.bindings]]
+    key = "End"
+    chars = "\u001bOF"
+    mode = "AppCursor"
+
+    [[keyboard.bindings]]
+    key = "End"
+    chars = "\u001b[F"
+    mode = "~AppCursor"
+
+    [[keyboard.bindings]]
+    key = "Key0"
+    mods = "Command"
+    action = "ResetFontSize"
+
+    [[keyboard.bindings]]
+    key = "Equals"
+    mods = "Command"
+    action = "IncreaseFontSize"
+
+    [[keyboard.bindings]]
+    key = "Minus"
+    mods = "Command"
+    action = "DecreaseFontSize"

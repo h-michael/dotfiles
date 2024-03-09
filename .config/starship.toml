@@ -1,0 +1,144 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# Inserts a blank line between shell prompts
+add_newline = false
+
+format = """
+$username\
+$hostname\
+$localip\
+$shlvl\
+$singularity\
+$directory\
+$vcsh\
+$fossil_branch\
+$git_branch\
+$git_commit\
+$git_state\
+$git_metrics\
+$git_status\
+$hg_branch\
+$pijul_channel\
+$package\
+$c\
+$cmake\
+$cobol\
+$daml\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$fennel\
+$golang\
+$guix_shell\
+$haskell\
+$haxe\
+$helm\
+$java\
+$julia\
+$kotlin\
+$gradle\
+$lua\
+$nim\
+$nodejs\
+$ocaml\
+$opa\
+$perl\
+$php\
+$pulumi\
+$purescript\
+$python\
+$raku\
+$rlang\
+$red\
+$ruby\
+$rust\
+$scala\
+$solidity\
+$swift\
+$terraform\
+$vlang\
+$vagrant\
+$zig\
+$buf\
+$nix_shell\
+$conda\
+$meson\
+$spack\
+$memory_usage\
+$env_var\
+$crystal\
+$custom\
+$sudo\
+$cmd_duration\
+$jobs\
+$battery\
+$time\
+$status\
+$os\
+$container\
+$shell\
+$fill\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$kubernetes\
+$docker_context\
+$line_break\
+$character"""
+
+[fill]
+symbol = ''
+
+# Replace the '❯' symbol in the prompt with '➜'
+[character] # The name of the module we are configuring is 'character'
+success_symbol = '[>](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
+error_symbol = '[>](bold red)'
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[aws]
+disabled = false
+symbol = '☁️ AWS '
+format = '[$symbol($profile )(\($region\) )(\[$duration\] )]($style) '
+
+[directory]
+disabled = false
+truncate_to_repo = false
+
+[docker_context]
+disabled = true
+
+[gcloud]
+symbol = '☁️ GC '
+format = '[$symbol$project\($region\)]($style) '
+
+[git_branch]
+disabled = false
+format = 'on [$symbol$branch]($style) '
+
+[git_status]
+disabled = false
+format = '([\[$conflicted$deleted$renamed$modified$staged$untracked\]]($style) )'
+
+[golang]
+disabled = true
+
+[kubernetes]
+disabled = false
+
+symbol = '☸  '
+format ='[$symbol$context(\($namespace\))]($style)'
+
+[ruby]
+disabled = true
+format = '[$symbol($version )]($style)'
+
+[rust]
+disabled = true
