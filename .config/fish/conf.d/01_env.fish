@@ -94,6 +94,11 @@ if [ -z $TMUX ]
     source "$HOME/google-cloud-sdk/completion.fish.inc"
   end
 
+  function history-merge --on-event fish_preexec
+    history --save
+    history --merge
+  end
+
   # Nvim
   set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
   set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim

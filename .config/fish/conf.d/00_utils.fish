@@ -289,3 +289,37 @@ function gcop -d "git checkout pull request"
   git fetch $REMOTE pull/$PR_NUMBER/head:$BRANCH_NAME
   git checkout $BRANCH_NAME
 end
+
+function build-mdb
+  cmake .. -DCMAKE_{C_COMPILER=clang,CXX_COMPILER=clang++} \
+     -DCMAKE_C{,XX}_FLAGS='-O2 -march=native -mtune=native -Wno-unused-command-line-argument -fdebug-macro' \
+     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+     -DWITH_DBUG_TRACE=OFF \
+     -DCONC_WITH_{UNITTEST,SSL}=OFF \
+     -DWITH_EMBEDDED_SERVER=OFF \
+     -DWITH_UNIT_TESTS=OFF \
+     -DCMAKE_BUILD_TYPE=Debug \
+     -DPLUGIN_{ARCHIVE,TOKUDB,MROONGA,OQGRAPH,ROCKSDB,CONNECT,SPIDER}=NO \
+     -DWITH_SAFEMALLOC=OFF \
+     -DWITH_{ZLIB,SSL}=system \
+     && cmake --build . --config Debug -j 8
+end
+
+function build-mariadb
+  cmake .. -DPLUGIN_{ARCHIVE,TOKUDB,MROONGA,OQGRAPH,ROCKSDB,CONNECT,COLUMNSTORE}=NO \
+    -DCMAKE_BUILD_TYPE=Debug \
+    -DPLUGIN_PERFSCHEMA=NO \
+    -DWITH_DBUG_TRACE=OFF \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+    -DMYSQL_MAINTAINER_MODE=OFF
+  cmake --build . --config Debug -j 7
+end
+
+function mariadb-git-bisect
+  set CORE (grep ^cpu\\scores /proc/cpuinfo | uniq |  awk '{print $4}')
+
+  cd build && rm -f CMakeCache.txt && \
+    cmake .. -DPLUGIN_{ARCHIVE,TOKUDB,MROONGA,OQGRAPH,CONNECT}=NO -DCMAKE_BUILD_TYPE=Debug -DMYSQL_MAINTAINER_MODE=OFF && \
+    cmake --build . --config Debug -j $CORE && \
+    ./mysql-test/mtr $1
+end
