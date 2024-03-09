@@ -1,26 +1,35 @@
 #!/bin/zsh
 
-if [[ ! -f $HOME/.asdf/asdf.sh ]]; then
-  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
-  cd $HOME/.asdf
-  git checkout "$(git describe --abbrev=0 --tags)"
-fi
+#if [[ -f /opt/homebrew/bin/fish ]]; then
+#  exec /opt/homebrew/bin/fish
+#else
+#  exec /usr/local/bin/fish
+#fi
+# zmodload zsh/zprof && zprof
 
-# set package version manager path
-. $HOME/.asdf/asdf.sh
+# to avoid overwritten PATH via /usr/libexec/path_helper
+# refs. https://github.com/Homebrew/homebrew-core/pull/32074#issuecomment-421381869
+#unsetopt GLOBAL_RCS
+#
+#if [ -x /usr/libexec/path_helper ]; then
+#    eval `/usr/libexec/path_helper -s`
+#else
+#  echo "[warn] no path_helper"
+#fi
 
-
-# XDG Base Directory
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_CACHE_HOME=$HOME/.cache
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CONFIG_DIRS=/etc/xdg
-export XDG_DATA_DIRS=/usr/local/share:/usr/share
-
-ZDOTDIR=$XDG_CONFIG_HOME/zsh
-source $ZDOTDIR/util.zsh
+#autoload -Uz is-at-least
+#autoload -Uz run-help
+#autoload -Uz run-help-git
+#autoload -Uz add-zsh-hook
+#autoload -Uz colors && colors
 
 if [ -z $TMUX ]; then
+  #if [[ ! -f $HOME/.asdf/asdf.sh ]]; then
+  #  git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf
+  #  cd $HOME/.asdf
+  #  git checkout "$(git describe --abbrev=0 --tags)"
+  #fi
+
   typeset -U path PATH
   if is_linux; then
     path=(
@@ -108,14 +117,6 @@ if [ -z $TMUX ]; then
   export GTAGSLIBPATH='/usr/lib/gtags'
   export GTAGSLABEL=pygments
 
-  # For Enpass
-  export QT_AUTO_SCREEN_SCALE_FACTOR=0
-
-  export SSH_KEY_PATH=$HOME/.ssh/id_rsa
-  if [ -n $SSH_CONNECTION ]; then
-    export EDITOR=nvim
-  fi
-
   if is_linux; then
     export BROWSER=google-chrome-stable
   fi
@@ -123,6 +124,14 @@ if [ -z $TMUX ]; then
     export BROWSER=open
     export LDFLAGS="-L$(brew --prefix)/lib "$LDFLAGS
     export CPPFLAGS="-I$(brew --prefix)/include "$CPPFLAGS
+  fi
+
+  # For Enpass
+  export QT_AUTO_SCREEN_SCALE_FACTOR=0
+
+  export SSH_KEY_PATH=$HOME/.ssh/id_rsa
+  if [ -n $SSH_CONNECTION ]; then
+    export EDITOR=nvim
   fi
 
   export NVIM_SHARED_PATH=$HOME/.local/share/nvim
@@ -137,10 +146,16 @@ if [ -z $TMUX ]; then
     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"$(rustc --print sysroot)"/lib
   fi
 
+  . "$HOME/.cargo/env"
+
   # Golang
   export GOPATH=$HOME/go
 
-  eval "$(direnv hook zsh)"
+  # set package version manager path
+  ASDF_FORCE_PREPEND=yes . "$HOME/.asdf/asdf.sh"
 
-  [ -f $ZDOTDIR/local/zsh.zsh ] && . $ZDOTDIR/local/zsh.zsh
+  [ -f $ZDOTDIR/.secret.zsh ] && source $ZDOTDIR/.secret.zsh
 fi
+
+#eval "$($HOME/.local/share/rtx/bin/rtx activate zsh)"
+eval "$(direnv hook zsh)"

@@ -9,6 +9,8 @@ application/*
 .config/zsh/.zsh_sessions/*
 .config/zsh/.zcompdump*
 .config/zsh/.zsh_history
+.config/zsh/.secret.zsh
+.config/zsh/local/*
 .config/assets/*
 .xmonad/xmonad.errors
 .xmonad/xmonad.hi

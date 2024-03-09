@@ -19,3 +19,7 @@ function is_mac {
      ;;
   esac
 }
+
+function pp_path {
+  tr ':' '\n' <<< "$PATH"
+}
