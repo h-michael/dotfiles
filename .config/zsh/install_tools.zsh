@@ -24,12 +24,12 @@ function check_outdate {
 }
 
 function neovim_install {
-  cd $(ghq root)/github.com/h-michael/neovim
+  cd $(ghq root)/github.com/neovim/neovim
   make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
 }
 
 function neovim_clean_install {
-  cd $(ghq root)/github.com/h-michael/neovim
+  cd $(ghq root)/github.com/neovim/neovim
   make clean
   make install CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_INSTALL_PREFIX=$HOME/.local
 }
@@ -53,13 +53,25 @@ function neovim_ftest {
 
 function install_tmux {
   cd $(ghq root)/github.com/tmux/tmux
+  printf "input password\n"
+  read -s password
+
+  hub sync
+  sh autogen.sh
+  ./configure --enable-utf8proc --enable-sixel
+  make
+  echo $password | sudo -S make install
+}
+
+function install_latest_tmux {
+  cd $(ghq root)/github.com/tmux/tmux
   if check_outdate; then
     printf "input password\n"
     read -s password
 
     hub sync
     sh autogen.sh
-    ./configure
+    ./configure --enable-utf8proc --enable-sixel
     make
     echo $password | sudo -S make install
   fi

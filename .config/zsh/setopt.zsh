@@ -12,7 +12,7 @@ setopt pushd_ignore_dups
 setopt pushd_to_home
 
 # Check spell command
-setopt correct
+# setopt correct
 
 # Check spell all
 # setopt correct_all

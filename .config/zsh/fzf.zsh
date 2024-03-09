@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+export INTERACTIVE_FILTER="fzf:peco:percol:gof:pick"
 export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS='--reverse'
 export FZF_CTRL_T_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
@@ -118,6 +119,7 @@ function fec2ssm {
 }
 
 function fecse {
+  set -e
   CLUSTER_ARN=`aws ecs list-clusters | jq -r '.clusterArns[]' | fzf`
   SERVICE_ARN=`aws ecs list-services --cluster $CLUSTER_ARN | jq -r '.serviceArns[]' | fzf`
   SERVICE_NAME=`aws ecs describe-services --cluster $CLUSTER_ARN --services $SERVICE_ARN | jq -r '.services[] | .serviceName'`
