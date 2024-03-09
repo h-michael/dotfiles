@@ -5,54 +5,48 @@ DIR=$(cd $(dirname $0); pwd)
 linux_link () {
   _common_link
 
-  ln -sf $DIR/.config/alacritty ~/.config/alacritty
-  ln -sf $DIR/.config/fontconfig ~/.config/fontconfig
-  ln -sf $DIR/.config/i3 ~/.config/i3
-  ln -sf $DIR/.config/polybar ~/.config/polybar
-  ln -sf $DIR/.config/rofi ~/.config/rofi
-  ln -sf $DIR/.config/sway ~/.config/sway
-  ln -sf $DIR/.config/gtk-2.0 ~/.config/gtk-2.0
-  ln -sf $DIR/.config/gtk-3.0 ~/.config/gtk-3.0
-  ln -sf $DIR/.config/powerline ~/.config/powerline
-  ln -sf $DIR/.config/taffybar ~/.config/taffybar
-  ln -sf $DIR/.config/conky ~/.config/conky
-  ln -sf $DIR/.config/yay ~/.config/yay
+  ln -sf $DIR/.config/arch/alacritty ~/.config/alacritty
+  ln -sf $DIR/.config/arch/fontconfig ~/.config/fontconfig
+  ln -sf $DIR/.config/arch/i3 ~/.config/i3
+  ln -sf $DIR/.config/arch/polybar ~/.config/polybar
+  ln -sf $DIR/.config/arch/rofi ~/.config/rofi
+  ln -sf $DIR/.config/arch/sway ~/.config/sway
+  ln -sf $DIR/.config/arch/gtk-2.0 ~/.config/gtk-2.0
+  ln -sf $DIR/.config/arch/gtk-3.0 ~/.config/gtk-3.0
+  ln -sf $DIR/.config/arch/conky ~/.config/conky
 
-  ln -sf $DIR/.xmonad ~/.xmonad
-  ln -sf $DIR/.xinitrc ~/.xinitrc
-  ln -sf $DIR/.Xmodmap ~/.Xmodmap
-  ln -sf $DIR/.Xmodmap_default ~/.Xmodmap_default
-  ln -sf $DIR/.xprofile ~/.xprofile
-  ln -sf $DIR/.xsession ~/.xsession
-  ln -sf $DIR/.Xresources ~/.Xresources
-  ln -sf $DIR/.stalonetrayrc ~/.stalonetrayrc
+  ln -sf $DIR/.config/arch/xmonad ~/.xmonad
+  ln -sf $DIR/.config/arch/xinitrc ~/.xinitrc
+  ln -sf $DIR/.config/arch/Xmodmap ~/.Xmodmap
+  ln -sf $DIR/.config/arch/Xmodmap_default ~/.Xmodmap_default
+  ln -sf $DIR/.config/arch/xprofile ~/.xprofile
+  ln -sf $DIR/.config/arch/xsession ~/.xsession
+  ln -sf $DIR/.config/arch/Xresources ~/.Xresources
+  ln -sf $DIR/.config/arch/stalonetrayrc ~/.stalonetrayrc
 }
 
 mac_link () {
   _common_link
 
-  ln -sf $DIR/.config/alacritty_mac ~/.config/alacritty
-  ln -sf $DIR/.config/karabiner ~/.config/karabiner
+  ln -sf $DIR/.config/mac/alacritty ~/.config/alacritty
+  ln -sf $DIR/.config/mac/karabiner ~/.config/karabiner
 }
 
 _common_link () {
-  ln -sf $DIR/.vim ~/.vim
-  ln -sf $DIR/.tmux.conf ~/.tmux.conf
-  ln -sf $DIR/.tmux.conf.local ~/.tmux.conf.local
-  ln -sf $DIR/.gitconfig ~/.gitconfig
-  ln -sf $DIR/.gitignore_global ~/.gitignore_global
-  ln -sf $DIR/.globalrc ~/.globalrc
-  ln -sf $DIR/.pryrc ~/.pryrc
-
   if [ ! -d ~/.config ]; then
     mkdir ~/.config
   fi
 
+  ln -sf $DIR/.vim ~/.vim
   ln -sf ~/.vim ~/.config/nvim
+  ln -sf $DIR/.tmux.conf ~/.tmux.conf
+  ln -sf $DIR/.tmux.conf.local ~/.tmux.conf.local
+  ln -sf $DIR/.globalrc ~/.globalrc
+  ln -sf $DIR/.pryrc ~/.pryrc
   ln -sf $DIR/.util.zsh ~/.util.zsh
   ln -sf $DIR/.zshenv ~/.zshenv
-  ln -sf $DIR/.zshrc ~/.zshrc
   ln -sf $DIR/.zsh ~/.config/zsh
+  ln -sf $DIR/.config/git ~/.config/git
   ln -sf $DIR/.config/fish ~/.config/fish
   ln -sf $DIR/.config/translate-shell/ ~/.config/translate-shell
   ln -sf $DIR/.config/pip ~/.config/pip
