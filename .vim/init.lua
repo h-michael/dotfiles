@@ -1,9 +1,5 @@
-vim = vim
-local opt = vim.opt
-local api = vim.api
-
-require('vim_extension')
+require("config.lazy")
 require('option')
 require('keymap')
-require('plugin')
+require('vim_extension')
 require('autocmd')

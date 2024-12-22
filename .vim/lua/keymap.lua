@@ -1,7 +1,5 @@
 local api = vim.api
 
-vim.g.mapleader = ";"
-
 --vim.api.nvim_set_keymap('n', '<Esc><Esc>', ':<C-u>nohlsearch<CR>:<C-u>call <SID>hier_clear()<CR>', { noremap = true, silent = true })
 --vim.api.nvim_set_keymap('', '<leader>ss', ':setlocal', 'spell!' '<CR>')
 

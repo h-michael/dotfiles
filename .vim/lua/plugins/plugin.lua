@@ -1,52 +1,33 @@
--- This file can be loaded by calling `lua require('plugins')` from your init.vim
-
--- Only required if you have packer configured as `opt`
-vim.cmd [[packadd packer.nvim]]
-
-require('packer').startup(function(use)
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
-
-  -- A solid language pack for Vim.
-  use {
-    'sheerun/vim-polyglot',
-    setup = function()
-      vim.g.polyglot_disabled = { 'sensible', 'rust' }
+return {
+  {
+    'nanotech/jellybeans.vim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.opt.background = 'dark'
+      vim.cmd [[colorscheme jellybeans]]
     end,
-  }
-
-  use {
+  },
+  {
     'rust-lang/rust.vim',
+    ft = 'rust',
     setup = function()
       vim.g.rustfmt_emit_files = 1
-      --vim.g.rustfmt_autosave = 1
+      vim.g.rustfmt_autosave = 1
     end,
-  }
-
-  use 'editorconfig/editorconfig-vim'
-
-  use 'mechatroner/rainbow_csv'
-
-  --use 'williamboman/mason-lspconfig.nvim'
-  --use {
-  --  'williamboman/mason.nvim',
-  --  config = function()
-  --    require("mason").setup()
-  --  end
-  --}
-
-  use {
-    'nanotech/jellybeans.vim',
-    opt = true,
-    setup = function()
-      vim.opt.background = 'dark'
-      vim.api.nvim_command [[colorscheme jellybeans]]
-    end,
-  }
-  use {
+  },
+  {
+    'rhysd/rust-doc.vim',
+    ft = { 'help' },
+  },
+  {
+    'mechatroner/rainbow_csv',
+    ft = 'csv',
+  },
+  {
     'nvim-lualine/lualine.nvim',
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
-    requires = { 'nanotech/jellybeans.vim', 'nvim-lua/lsp-status.nvim' },
+    dependencies = { 'nanotech/jellybeans.vim', 'nvim-lua/lsp-status.nvim' },
     config = function()
       require('lualine').setup {
         options = {
@@ -88,17 +69,108 @@ require('packer').startup(function(use)
         extensions = {}
       }
     end,
-  }
-
-  use 'tpope/vim-commentary'
-  use 'jiangmiao/auto-pairs'
-
-  -- use {
-  --   'junegunn/fzf',
-  --   run = './install --all',
-  --   opt = true,
-  -- }
-  use {
+  },
+  { 'tpope/vim-commentary' },
+  { 'jiangmiao/auto-pairs' },
+  { 'bfredl/nvim-luadev' },
+  --  Plugin for vim to enabling opening a file in a given line
+  {'bogado/file-line' },
+  -- Vim and Neovim plugin to reveal the commit messages under the cursor
+  {
+    'rhysd/git-messenger.vim',
+    cmd = { 'GitMessenger', 'GitMessengerClose' }
+  },
+  -- Benchmarck
+  {
+    'tweekmonster/startuptime.vim',
+    cmd = { 'StartupTime' },
+  },
+  -- Edit vinari
+  {
+    'Shougo/vinarise.vim',
+    cmd = { 'Vinarise' },
+  },
+  -- endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
+  {
+    'tpope/vim-endwise',
+    ft = { 'ruby' },
+  },
+  {
+    'preservim/tagbar',
+    cmd = { 'TabbarToggle', 'TagbarOpen' },
+    config = function()
+      vim.api.nvim_set_keymap('n' ,'<Leader>tb', ':TagbarToggle<CR>', { noremap = true, silent = true })
+    end,
+  },
+  -- simple memo plugin for Vim.
+  {
+    'glidenote/memolist.vim',
+    cmd = { 'MemoNew', 'MemoList', 'MemoGrep' },
+    config = function()
+      vim.api.nvim_set_keymap('n' ,'<Leader>mn', ':MemoNew<CR>', { noremap = false, silent = false })
+      vim.api.nvim_set_keymap('n' ,'<Leader>ml', ':MemoList<CR>', { noremap = false, silent = false })
+      vim.api.nvim_set_keymap('n' ,'<Leader>mg', ':MemoGrep<CR>', { noremap = false, silent = false })
+    end,
+  },
+  -- Open GitHub URL of current file, etc. from Vim editor (supported GitHub Enterprise)
+  {
+    'tyru/open-browser-github.vim',
+    dependencies = { 'tyru/open-browser.vim' },
+    cmd = { 'OpenGithubFile', 'OpenGithubIssue', 'OpenGithubPullReq' },
+  },
+  {
+    'mattn/vim-goimports',
+    ft = { 'go', 'gomod' },
+  },
+  {
+    'mattn/vim-goaddtags',
+    ft = { 'go', 'gomod' },
+  },
+  {
+    'mattn/vim-gorename',
+    ft = { 'go', 'gomod' },
+  },
+  {
+    'github/copilot.vim',
+    enabled = true,
+  },
+  {
+    'hrsh7th/nvim-cmp',
+    dependencies = {
+      { 'hrsh7th/cmp-nvim-lsp' },
+      { 'hrsh7th/cmp-buffer' },
+      { 'hrsh7th/cmp-path' },
+      { 'hrsh7th/cmp-cmdline' },
+      { 'hrsh7th/cmp-vsnip' },
+      { 'hrsh7th/vim-vsnip' },
+    },
+    config = function()
+      local cmp = require'cmp'
+      require'cmp'.setup({
+        snippet = {
+          -- REQUIRED - you must specify a snippet engine
+          expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+          end,
+        },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        }),
+        sources = cmp.config.sources({
+          { name = 'nvim_lsp' },
+          { name = 'buffer' },
+          { name = 'path' },
+          { name = 'vsnip' },
+          { name = 'cmdline' },
+        })
+      })
+    end,
+  },
+  {
     'ibhagwan/fzf-lua',
     config = function()
       local api = vim.api
@@ -145,128 +217,17 @@ require('packer').startup(function(use)
       vim.api.nvim_set_keymap('n', '<Leader>f', "<cmd>lua require('fzf-lua').files()<CR>", opt)
       vim.api.nvim_set_keymap('n', '<Leader>t', "<cmd>lua require('fzf-lua').tags()<CR>", opt)
     end,
-  }
-  use 'bfredl/nvim-luadev'
-
-  --  Plugin for vim to enabling opening a file in a given line
-  use 'bogado/file-line'
-
-  -- Vim and Neovim plugin to reveal the commit messages under the cursor
-  use {
-    'rhysd/git-messenger.vim',
-    cmd = { 'GitMessenger', 'GitMessengerClose' }
-  }
-  -- Benchmarck
-  use {
-    'tweekmonster/startuptime.vim',
-    cmd = { 'StartupTime' },
-  }
-
-  -- Edit vinari
-  use {
-    'Shougo/vinarise.vim',
-    cmd = { 'Vinarise' },
-  }
-
-  -- endwise.vim: wisely add "end" in ruby, endfunction/endif/more in vim script, etc
-  use {
-    'tpope/vim-endwise',
-    ft = { 'ruby' },
-  }
-
-  use {
-    'preservim/tagbar',
-    cmd = { 'TabbarToggle', 'TagbarOpen' },
-    config = function()
-      vim.api.nvim_set_keymap('n' ,'<Leader>tb', ':TagbarToggle<CR>', { noremap = true, silent = true })
-    end,
-  }
-
-  -- simple memo plugin for Vim.
-  use {
-    'glidenote/memolist.vim',
-    cmd = { 'MemoNew', 'MemoList', 'MemoGrep' },
-    config = function()
-      vim.api.nvim_set_keymap('n' ,'<Leader>mn', ':MemoNew<CR>', { noremap = false, silent = false })
-      vim.api.nvim_set_keymap('n' ,'<Leader>ml', ':MemoList<CR>', { noremap = false, silent = false })
-      vim.api.nvim_set_keymap('n' ,'<Leader>mg', ':MemoGrep<CR>', { noremap = false, silent = false })
-    end,
-  }
-
-  -- Open GitHub URL of current file, etc. from Vim editor (supported GitHub Enterprise)
-  use {
-    'tyru/open-browser-github.vim',
-    requires = { 'tyru/open-browser.vim' },
-    cmd = { 'OpenGithubFile', 'OpenGithubIssue', 'OpenGithubPullReq' },
-  }
-
-  use {
-    'rhysd/rust-doc.vim',
-    ft = { 'help' },
-  }
-
-  use {
-    'mattn/vim-goimports',
-    ft = { 'go', 'gomod' },
-  }
-
-  use {
-    'mattn/vim-goaddtags',
-    ft = { 'go', 'gomod' },
-  }
-
-  use {
-    'mattn/vim-gorename',
-    ft = { 'go', 'gomod' },
-  }
-
-  use { 'github/copilot.vim' }
-
-  use {
-    'hrsh7th/nvim-cmp',
-    requires = {
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-cmdline' },
-      { 'hrsh7th/cmp-vsnip' },
-      { 'hrsh7th/vim-vsnip' },
-    },
-    config = function()
-      local cmp = require'cmp'
-      require'cmp'.setup({
-        snippet = {
-          -- REQUIRED - you must specify a snippet engine
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<C-Space>'] = cmp.mapping.complete(),
-          ['<C-e>'] = cmp.mapping.abort(),
-          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-        }),
-        sources = cmp.config.sources({
-          { name = 'nvim_lsp' },
-          { name = 'buffer' },
-          { name = 'path' },
-          { name = 'vsnip' },
-          { name = 'cmdline' },
-        })
-      })
-    end,
-  }
-
-  use {
+  },
+  {
     'neovim/nvim-lspconfig',
     config = function()
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
       local os_getenv = vim.loop.os_getenv
 
-      local on_attach = function(_client, _bufnr)
+      local on_attach = function(_client, bufnr)
         local opts = { noremap = true, silent = true }
+        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+
         vim.api.nvim_set_keymap('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
         vim.api.nvim_set_keymap('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
         vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -277,6 +238,7 @@ require('packer').startup(function(use)
         vim.api.nvim_set_keymap('n', '<Leader>grf', '<cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>', opts)
         vim.api.nvim_set_keymap('n', '<Leader>fmt', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
         vim.api.nvim_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+        -- vim.api.nvim_set_keymap('n', '<Leader>gdh', '<cmd>lua vim.lsp.buf.document_highlight()<CR>', opts)
       end
 
       local lsp_flags = {
@@ -286,21 +248,39 @@ require('packer').startup(function(use)
       require('lspconfig')['clangd'].setup{
         on_attach = on_attach,
         flags = lsp_flags,
+        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
         capabilities = capabilities,
         cmd = {"clangd", "--background-index"},
       }
-      require('lspconfig')['rust_analyzer'].setup{
+      require'lspconfig'.rust_analyzer.setup{
         on_attach = on_attach,
         flags = lsp_flags,
-        capabilities = capabilities,
+        capabilities = vim.tbl_deep_extend(
+          'force',
+          require('cmp_nvim_lsp').default_capabilities(),
+          {
+            snippetTextEdit = true,
+            codeActionGroup = true,
+            hoverActions = true,
+            serverStatusNotification = true,
+          }
+        ),
         settings = {
           ['rust-analyzer'] = {
             cargo = {
               buildScripts = {
                 enable = true,
-              }
-            }
-          }
+              },
+              targetDir = true,
+            },
+            check = {
+              command = "clippy",
+              --command = "check",
+              --extraArgs = {
+              --  "--target-dir=target/ra",
+              --},
+            },
+          },
         },
       }
       require('lspconfig')['gopls'].setup{
@@ -308,12 +288,12 @@ require('packer').startup(function(use)
         flags = lsp_flags,
         capabilities = capabilities,
       }
-      require('lspconfig')['solargraph'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['tsserver'].setup{
+      --require('lspconfig')['solargraph'].setup{
+      --  on_attach = on_attach,
+      --  flags = lsp_flags,
+      --  capabilities = capabilities,
+      --}
+      require('lspconfig')['ts_ls'].setup{
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
@@ -353,16 +333,11 @@ require('packer').startup(function(use)
         flags = lsp_flags,
         capabilities = capabilities,
       }
+      require('lspconfig')['buf_ls'].setup{
+        on_attach = on_attach,
+        flags = lsp_flags,
+        capabilities = capabilities,
+      }
     end,
   }
-
-  use {
-    'https://git.sr.ht/~whynothugo/lsp_lines.nvim',
-    config = function()
-      require("lsp_lines").setup()
-      vim.diagnostic.config({
-        virtual_text = false,
-      })
-    end,
-  }
-end)
+}
