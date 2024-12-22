@@ -11,6 +11,8 @@ application/*
 .config/zsh/.zsh_history
 .config/zsh/.secret.zsh
 .config/zsh/local/*
+.config/fish/conf.local.d/*
+!.config/fish/conf.local.d/.gitkeep
 .config/assets/*
 .xmonad/xmonad.errors
 .xmonad/xmonad.hi
