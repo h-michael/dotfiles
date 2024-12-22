@@ -105,8 +105,6 @@ if [ -z $TMUX ]
     set -gxp PATH /usr/local/bin
   end
 
-  source ~/.asdf/asdf.fish
-
   # for Haskell
   set -gxp PATH $HOME/.cabal/bin
 
