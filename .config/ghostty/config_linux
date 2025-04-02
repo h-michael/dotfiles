@@ -1,0 +1,2 @@
+initial-command = /usr/local/bin/fish --login --interactive
+command = /usr/local/bin/fish --login --interactive

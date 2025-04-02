@@ -1,0 +1,16 @@
+config-file = ?config_mac
+config-file = ?config_linux
+
+shell-integration = fish
+
+theme = Jellybeans
+
+font-family = Cica
+font-family = PlemolJP Console
+font-size = 14
+
+# https://ghostty.org/docs/config/reference#cursor-style
+shell-integration-features = no-cursor
+cursor-style = block
+
+fullscreen = true
