@@ -5,6 +5,7 @@ DIR=$(cd $(dirname $0); pwd)
 linux_link () {
   _common_link
 
+  ln -sf $DIR/.config/ghostty/config_linux ~/.config/ghostty/config_linux
   ln -sf $DIR/.config/arch/alacritty ~/.config/alacritty
   ln -sf $DIR/.config/arch/fontconfig ~/.config/fontconfig
   ln -sf $DIR/.config/arch/i3 ~/.config/i3
@@ -28,6 +29,7 @@ linux_link () {
 mac_link () {
   _common_link
 
+  ln -sf $DIR/.config/ghostty/config_mac ~/.config/ghostty/config_mac
   ln -sf $DIR/.config/mac/alacritty ~/.config/alacritty
   ln -sf $DIR/.config/mac/karabiner ~/.config/karabiner
 }
@@ -46,6 +48,10 @@ _common_link () {
   ln -sf $DIR/.util.zsh ~/.util.zsh
   ln -sf $DIR/.zshenv ~/.zshenv
   ln -sf $DIR/.zsh ~/.config/zsh
+  if [ ! -d ~/.config/ghostty ]; then
+    mkdir ~/.config/ghostty
+    ln -sf $DIR/.config/ghostty/config ~/.config/ghostty/config
+  fi
   ln -sf $DIR/.config/git ~/.config/git
   ln -sf $DIR/.config/fish ~/.config/fish
   ln -sf $DIR/.config/translate-shell/ ~/.config/translate-shell

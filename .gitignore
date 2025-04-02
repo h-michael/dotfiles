@@ -13,6 +13,7 @@ application/*
 .config/zsh/local/*
 .config/fish/conf.local.d/*
 !.config/fish/conf.local.d/.gitkeep
+.config/ghostty/themes/*
 .config/assets/*
 .xmonad/xmonad.errors
 .xmonad/xmonad.hi
