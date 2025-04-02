@@ -1,7 +1,6 @@
-if [ -z $TMUX ]
-  # blank greeeting message
-  set fish_greeting
+/opt/homebrew/bin/brew shellenv | source
 
+if [ -z $TMUX ]
   eval (ssh-agent -c)
   if is_mac
       ssh-add --apple-use-keychain
@@ -69,19 +68,20 @@ if [ -z $TMUX ]
     set -gx BROWSER google-chrome-stable
   else if is_mac
     set -gxp BROWSER open
-    set -gxp PATH /opt/homebrew/bin
-    set -gxp PATH "$(brew --prefix)/bin"
-    set -gxp PATH "$(brew --prefix)/sbin"
-    set -gxp PATH "$(brew --prefix)/libexec"
-    set -gxp LDFLAGS "-L$(brew --prefix)/lib"
-    set -gxp CPPFLAGS "-I$(brew --prefix)/include"
-    set -gxp CPPFLAGS "-I$(brew --prefix)/include/boost"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/lib"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/c++"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/opt/llvm/include"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include/boost"
   end
 
   # For Enpass
   set -gx QT_AUTO_SCREEN_SCALE_FACTOR 0
 
   set -gx SSH_KEY_PATH $HOME/.ssh/id_rsa
+
   if [ -n $SSH_CONNECTION ]
     set -x EDITOR nvim
   end
@@ -96,59 +96,26 @@ if [ -z $TMUX ]
     source "$HOME/google-cloud-sdk/completion.fish.inc"
   end
 
+  # https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth
+  set -gx CLOUDSDK_PYTHON_SITEPACKAGES 1
+
   # Nvim
   set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
   set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
   set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
 
-  if [ -d "/usr/local/bin" ]
-    set -gxp PATH /usr/local/bin
-  end
-
-  # for Haskell
-  set -gxp PATH $HOME/.cabal/bin
-
-  # for Rust
-  set -gxp PATH $HOME/.cargo/bin
-  set -gx RUST_SRC_PATH (rustc --print sysroot)/lib/rustlib/src/rust/src
-
-  # for Rls
-  set -gx LD_LIBRARY_PATH $LD_LIBRARY_PATH (rustc --print sysroot)/lib
-  # set -x RUST_LOG "rls=debug"
-
   # for Golang
   if is_mac
-    set -gx GOROOT /opt/homebrew/opt/go/libexec/
+    set -gx GOROOT $HOMEBREW_PREFIX/opt/go/libexec/
   end
 
-  # Lua
-  if [ -d "$HOME/.luarocks/bin" ]
-    set -gxp PATH $HOME/.luarocks/bin
-  end
-  set -gx LUA_LSP_DIR $GOPATH/src/github.com/sumneko/lua-language-server
-  set -gx LUA_LSP_BIN $LUA_LSP_DIR/bin/lua-language-server
-
-  # Python
-  if [ -d "$HOME/.poetry/bin" ]
-    set -gxp PATH $HOME/.poetry/bin
-  end
-
-  # Kubernetes
-  if [ -d "$HOME/.krew/bin" ]
-    set -gxp PATH $HOME/.krew/bin
-  end
+  # CMake
+  set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
 
   # Display
   set -g theme_color_scheme gruvbox
   set -g theme_display_docker_machine no
   set -g theme_display_virtualenv no
 
-  # set -gx PATH /usr/local/opt/gettext/bin $PATH
-
   set -gx DENO_INSTALL $HOME/.deno
-  set -gxp PATH $DENO_INSTALL/bin
-
-  set -gxp PATH $HOME/.local/bin
 end
-
-direnv hook fish | source

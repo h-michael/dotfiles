@@ -170,7 +170,7 @@ function install_tmux
   if check_outdate
     hub sync
     sh autogen.sh
-    ./configure --prefix=$HOME/.local --enable-utf8proc
+    ./configure --prefix=$HOME/.local --enable-utf8proc --enable-sixel
     make -j 4
     make install
   end
