@@ -1,4 +1,8 @@
-/opt/homebrew/bin/brew shellenv | source
+# "/opt/homebrew/bin/brew shellenv | source" doesn't use fish_add_path.
+# So add Homebrew paths manually.
+if is_mac
+  set --global --export HOMEBREW_PREFIX "/opt/homebrew";
+end
 
 if [ -z $TMUX ]
   eval (ssh-agent -c)
