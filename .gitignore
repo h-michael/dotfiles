@@ -13,6 +13,8 @@ application/*
 .config/zsh/local/*
 .config/fish/conf.local.d/*
 !.config/fish/conf.local.d/.gitkeep
+.config/mac/karabiner/*
+!.config/mac/karabiner/karabiner.json
 .config/ghostty/themes/*
 .config/assets/*
 .xmonad/xmonad.errors
