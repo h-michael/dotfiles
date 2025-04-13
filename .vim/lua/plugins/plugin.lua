@@ -21,10 +21,6 @@ return {
     ft = { 'help' },
   },
   {
-    'mechatroner/rainbow_csv',
-    ft = 'csv',
-  },
-  {
     'nvim-lualine/lualine.nvim',
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
     dependencies = { 'nanotech/jellybeans.vim', 'nvim-lua/lsp-status.nvim' },
@@ -70,7 +66,6 @@ return {
       }
     end,
   },
-  { 'tpope/vim-commentary' },
   { 'jiangmiao/auto-pairs' },
   { 'bfredl/nvim-luadev' },
   --  Plugin for vim to enabling opening a file in a given line
@@ -161,6 +156,7 @@ return {
           ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
         }),
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = 'nvim_lsp' },
           { name = 'buffer' },
           { name = 'path' },
@@ -173,6 +169,8 @@ return {
   {
     'ibhagwan/fzf-lua',
     config = function()
+      require('fzf-lua').register_ui_select()
+
       local api = vim.api
       api.nvim_create_user_command(
         'Rg',
@@ -206,7 +204,7 @@ return {
         end,
         { bang = true, nargs = '?' }
       )
-      opt = { noremap = true, silent = true }
+      local opt = { noremap = true, silent = true }
       vim.api.nvim_set_keymap('n', '/', "<cmd>lua require('fzf-lua').blines({ winopts = { preview = { hidden = 'hidden' } } })<CR>", opt)
       vim.api.nvim_set_keymap('n', '<Leader>cw', "<cmd>lua require('fzf-lua').grep_cword()<CR>", opt)
       vim.api.nvim_set_keymap('n', '<Leader>cbd', ":CurrentBufferDir <CR>", opt)
@@ -219,125 +217,18 @@ return {
     end,
   },
   {
-    'neovim/nvim-lspconfig',
-    config = function()
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-      local os_getenv = vim.loop.os_getenv
-
-      local on_attach = function(_client, bufnr)
-        local opts = { noremap = true, silent = true }
-        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
-
-        vim.api.nvim_set_keymap('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gde', '<cmd>lua vim.lsp.buf.declaration()', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gdc', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>grf', '<cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>fmt', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        -- vim.api.nvim_set_keymap('n', '<Leader>gdh', '<cmd>lua vim.lsp.buf.document_highlight()<CR>', opts)
-      end
-
-      local lsp_flags = {
-        debounce_text_changes = 150,
-      }
-
-      require('lspconfig')['clangd'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-        capabilities = capabilities,
-        cmd = {"clangd", "--background-index"},
-      }
-      require'lspconfig'.rust_analyzer.setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = vim.tbl_deep_extend(
-          'force',
-          require('cmp_nvim_lsp').default_capabilities(),
-          {
-            snippetTextEdit = true,
-            codeActionGroup = true,
-            hoverActions = true,
-            serverStatusNotification = true,
-          }
-        ),
-        settings = {
-          ['rust-analyzer'] = {
-            cargo = {
-              buildScripts = {
-                enable = true,
-              },
-              targetDir = true,
-            },
-            check = {
-              command = "clippy",
-              --command = "check",
-              --extraArgs = {
-              --  "--target-dir=target/ra",
-              --},
-            },
-          },
-        },
-      }
-      require('lspconfig')['gopls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      --require('lspconfig')['solargraph'].setup{
-      --  on_attach = on_attach,
-      --  flags = lsp_flags,
-      --  capabilities = capabilities,
-      --}
-      require('lspconfig')['ts_ls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['pyright'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['jsonls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['yamlls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-        settings = {
-          yaml = {
-            schemas = {
-              ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
-              ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-              ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
-              ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
-              ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
-              ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
-              ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
-              ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
-              ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
-            }
-          }
-        },
-      }
-      require('lspconfig')['terraformls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['buf_ls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-    end,
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {
+    },
+    keys = {
+      --{
+      --  "<leader>?",
+      --  function()
+      --    require("which-key").show({ global = false })
+      --  end,
+      --  desc = "Buffer Local Keymaps (which-key)",
+      --},
+    },
   }
 }
