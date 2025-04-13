@@ -242,7 +242,7 @@ opt.display = 'lastline'
 opt.conceallevel = 2
 opt.concealcursor = 'niv'
 
-opt.colorcolumn = '79'
+--opt.colorcolumn = '79'
 
 api.nvim_set_var('netrw_browse_split', 4)
 
@@ -260,3 +260,13 @@ api.nvim_set_var('loaded_python3_provider', false)
 api.nvim_set_var('loaded_node_provider', false)
 api.nvim_set_var('loaded_ruby_provider', false)
 api.nvim_set_var('loaded_ruby_provider', false)
+
+vim.diagnostic.config{
+  virtual_text = {
+    -- virt_text_pos = 'eol'
+    virt_text_pos = 'eol_right_align'
+    -- virt_text_pos = 'overlay'
+    -- virt_text_pos = 'right_align'
+    -- virt_text_pos = 'inline'
+  },
+}
