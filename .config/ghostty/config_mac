@@ -1,2 +1,3 @@
 initial-command = /opt/homebrew/bin/fish --login --interactive
 command = /opt/homebrew/bin/fish --login --interactive
+macos-option-as-alt = true
