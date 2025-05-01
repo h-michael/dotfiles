@@ -34,6 +34,7 @@ return {
         cmd = {"clangd", "--background-index"},
       }
       require'lspconfig'.rust_analyzer.setup{
+        cmd = { "rust-analyzer", "--verbose" },
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = vim.tbl_deep_extend(
@@ -53,17 +54,10 @@ return {
                 enable = true,
               },
               targetDir = "target/rust_analyzer",
+              features = "all",
             },
             check = {
               command = "clippy",
-              extraArgs = {
-                "--all-targets",
-                "--all-features",
-              },
-              --command = "check",
-              --extraArgs = {
-              --  "--target-dir=target/rust_analyzer",
-              --},
             },
           },
         },
@@ -99,6 +93,12 @@ return {
         capabilities = capabilities,
         settings = {
           yaml = {
+            format = {
+              enable = true,
+            },
+            schemaStore = {
+              enable = true,
+            },
             schemas = {
               ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
               ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
@@ -110,6 +110,9 @@ return {
               ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
               ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
               ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '**/*.docker-compose.{yml,yaml}',
+              ['https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/tags/3.1.1/schemas/v3.1/schema.yaml'] = '**/openapi.{yml,yaml}',
+              ['https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/tags/3.1.1/schemas/v3.0/schema.yaml'] = '**/openapi.{yml,yaml}',
+              ['https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/tags/3.1.1/schemas/v2.0/schema.json'] = '**/openapi.{yml,yaml}',
             }
           }
         },
