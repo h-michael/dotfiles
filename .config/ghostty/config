@@ -12,5 +12,4 @@ font-size = 14
 # https://ghostty.org/docs/config/reference#cursor-style
 shell-integration-features = no-cursor
 cursor-style = block
-
-fullscreen = true
+clipboard-paste-bracketed-safe = true

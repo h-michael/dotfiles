@@ -1,2 +1,4 @@
-initial-command = /usr/local/bin/fish --login --interactive
-command = /usr/local/bin/fish --login --interactive
+initial-command = /usr/bin/fish --login --interactive
+command = /usr/bin/fish --login --interactive
+
+fullscreen = false
