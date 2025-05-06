@@ -1,12 +1,17 @@
 [Unit]
-Description=fcitx5
+Description=Fcitx5 Input Method Framework
+Documentation=man:fcitx5(1)
 After=hyprland-session.target
+Wants=hyprland-session.target
 PartOf=hyprland-session.target
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/fcitx5 -d
+Type=dbus
+BusName=org.fcitx.Fcitx5
+ExecStart=/usr/bin/fcitx5
 Restart=on-failure
+RestartSec=3
+Slice=session.slice
 
 [Install]
 WantedBy=hyprland-session.target
