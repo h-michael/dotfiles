@@ -8,6 +8,7 @@ for conf in "$__fish_config_dir"/conf.local.d/*.fish
     source $conf
 end
 
+
 {{ if eq .chezmoi.os "darwin" }}
   # "/opt/homebrew/bin/brew shellenv | source" doesn't use fish_add_path.
   # So add Homebrew paths manually.
@@ -55,6 +56,14 @@ fish_add_path -m $HOME/.local/bin
 # "eval ($HOME/.local/bin/mise activate fish --shims)" add shims to PATH without using fish_add_path
 # So add shims to PATH manually
 fish_add_path -m $XDG_DATA_HOME/mise/shims
+
+# https://aquaproj.github.io/docs/install#linux-macos
+fish_add_path -m $XDG_DATA_HOME/aquaproj-aqua/bin
+set -gx AQUA_GLOBAL_CONFIG $XDG_CONFIG_HOME/aquaproj-aqua/aqua.yaml
+
+# https://aquaproj.github.io/docs/reference/nodejs-support/#set-up
+set -gx NPM_CONFIG_PREFIX $XDG_DATA_HOME/npm-global
+fish_add_path -m $NPM_CONFIG_PREFIX/bin
 
 # should execute the end of the config.fish
 if ! command -v starship &> /dev/null; then
