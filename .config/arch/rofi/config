@@ -1,7 +1,0 @@
-rofi.modi:  run,window,drun,ssh
-rofi.sidebar-mode:  true
-rofi.hide-scrollbar: true
-rofi.kb-cancel: Escape
-rofi.theme: /usr/share/rofi/themes/Arc-Dark.rasi
-# rofi.kb-mode-previous: Control+p
-# rofi.kb-mode-next: Control+n

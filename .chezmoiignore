@@ -1,0 +1,51 @@
+# disallow all
+.config/*
+
+# allow directory
+!.config/fish/
+# disallow all files in the directories
+.config/fish/**
+# allow specific files in the directories
+!.config/fish/config.fish
+!.config/fish/conf.d/**
+!.config/fish/completions
+!.config/fish/functions
+!.config/gh/config.yml
+!.config/ghostty
+!.config/git
+!.config/mise
+!.config/nvim
+!.config/pip
+!.config/ripgreprc
+!.config/starship.toml
+
+# Linux specific
+{{ if eq .chezmoi.os "linux" }}
+!.config/fontconfig
+!.config/gtk-2.0
+!.config/gtk-3.0
+!.config/hypr
+!.config/rofi
+
+# disallow all files in the directories
+!.config/systemd/
+!.config/systemd/user/
+# disallow all files in the directories
+.config/systemd/user/**
+# allow specific files in the directories
+!.config/systemd/user/*.service
+!.config/systemd/user/*.target
+!.config/systemd/user/*.path
+
+!.config/waybar
+!.config/xremap
+
+# MacOS specific
+{{ else if eq .chezmoi.os "darwin" }}
+!.config/karabiner
+{{ end }}
+
+.local/*
+!.local/bin/
+.local/bin/**
+!.local/bin/yank

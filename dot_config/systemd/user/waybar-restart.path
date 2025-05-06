@@ -1,0 +1,10 @@
+[Unit]
+Description=Watch for Waybar config changes
+
+[Path]
+PathChanged=%h/.config/waybar/
+PathChanged=%h/.config/waybar/config.jsonc
+PathChanged=%h/.config/waybar/style.css
+
+[Install]
+WantedBy=hyprland-session.target

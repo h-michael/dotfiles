@@ -1,0 +1,64 @@
+# blank greeeting message
+set fish_greeting
+
+set -gx SHELL "$__fish_bin_dir"/fish
+
+# load configuration files that are ignored by git
+for conf in "$__fish_config_dir"/conf.local.d/*.fish
+    source $conf
+end
+
+{{ if eq .chezmoi.os "darwin" }}
+  # "/opt/homebrew/bin/brew shellenv | source" doesn't use fish_add_path.
+  # So add Homebrew paths manually.
+  fish_add_path -m $HOMEBREW_PREFIX/bin
+  fish_add_path -m $HOMEBREW_PREFIX/sbin
+  fish_add_path -m $HOMEBREW_PREFIX/libexec
+  fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
+{{ end }}
+
+# Haskell
+fish_add_path -m $HOME/.cabal/bin
+
+# Rust
+fish_add_path -m $HOME/.cargo/bin
+
+# Deno
+if [ -d "$HOME/.deno/bin" ]
+  fish_add_path -m $HOME/.deno/bin
+end
+
+# Lua
+if [ -d "$HOME/.luarocks/bin" ]
+  fish_add_path -m $HOME/.luarocks/bin
+end
+
+# Python
+if [ -d "$HOME/.poetry/bin" ]
+  fish_add_path -m $HOME/.poetry/bin
+end
+
+# Kubernetes
+if [ -d "$HOME/.krew/bin" ]
+  fish_add_path -m $HOME/.krew/bin
+end
+
+if [ -d "/usr/local/opt/gettext/bin" ]
+  fish_add_path -m /usr/local/opt/gettext/bin
+end
+
+fish_add_path -m $HOME/.local/bin
+
+# Why I use "shims" instead of "mise activate"
+# https://mise.jdx.dev/dev-tools/shims.html#shims-vs-path
+# https://mise.jdx.dev/dev-tools/shims.html#hook-on-cd
+# "eval ($HOME/.local/bin/mise activate fish --shims)" add shims to PATH without using fish_add_path
+# So add shims to PATH manually
+fish_add_path -m $XDG_DATA_HOME/mise/shims
+
+# should execute the end of the config.fish
+if ! command -v starship &> /dev/null; then
+  curl -sS https://starship.rs/install.sh | sh
+end
+
+starship init fish | source

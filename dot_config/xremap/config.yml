@@ -1,0 +1,11 @@
+modmap:
+  - name: CapsLock to Ctrl_L
+    remap:
+      CapsLock: Ctrl_L
+  - name: Alt_L to Super_L
+    remap:
+      Alt_L: Super_L
+  - name: Super_L to Alt_L
+    remap:
+      Super_L: Alt_L
+keymap:

@@ -1,0 +1,121 @@
+* {
+  font-family: "Cica", "Symbols Nerd Font Mono", "Font Awesome 6 Free", sans-serif;
+  font-size: 14px;
+  border: none;
+  padding: 0;
+  margin: 0;
+  min-height: 0;
+}
+
+window#waybar {
+  background: rgba(24, 24, 28, 0.95);
+  color: rgba(255, 255, 255, 1.0);
+  border-radius: 0;
+  padding: 4px 10px;
+}
+
+#workspaces button {
+  padding: 0 8px;
+  margin: 0 4px;
+  border-radius: 6px;
+  background: rgba(59, 63, 76, 1.0);
+  color: rgba(192, 192, 192, 1.0);
+}
+
+#workspaces button.active {
+  background: rgba(97, 175, 239, 1.0);
+  color: rgba(30, 30, 46, 1.0);
+  font-weight: bold;
+}
+
+#workspaces button.urgent {
+  background: rgba(224, 108, 117, 1.0);
+  color: rgba(255, 255, 255, 1.0);
+}
+
+#workspaces button:hover {
+  background: rgba(92, 99, 112, 1.0);
+  color: rgba(255, 255, 255, 1.0);
+}
+
+#systemd-failed-units,
+#clock,
+#battery,
+#cpu,
+#memory,
+#temperature,
+#custom-network,
+#pulseaudio,
+#custom-bluetooth,
+#custom-power,
+#tray {
+  padding: 0 6px;
+  margin: 0 2px;
+  background: rgba(30, 30, 30, 0.5);
+  color: rgba(230, 230, 230, 1.0);
+  border-radius: 6px;
+}
+
+#systemd-failed-units.warning {
+  background: rgba(255, 85, 85, 0.8);
+  color: rgba(255, 255, 255, 1.0);
+  font-weight: bold;
+}
+
+#systemd-failed-units.ok {
+  background: rgba(98, 255, 145, 0.2);
+  color: rgba(150, 255, 150, 1.0);
+}
+
+#battery.charging {
+  background: rgba(152, 195, 121, 1.0);
+  color: rgba(30, 30, 46, 1.0);
+}
+
+#battery.warning {
+  background: rgba(229, 192, 123, 1.0);
+  color: rgba(30, 30, 46, 1.0);
+}
+
+#battery.critical {
+  background: rgba(224, 108, 117, 1.0);
+  color: rgba(255, 255, 255, 1.0);
+}
+
+#cpu {
+  color: rgba(255, 184, 108, 1.0);
+}
+
+#memory {
+  color: rgba(189, 147, 249, 1.0);
+}
+
+#clock {
+  color: rgba(220, 223, 228, 1.0);
+}
+
+#temperature {
+  color: rgba(255, 85, 85, 1.0);
+}
+
+#custom-network {
+  color: rgba(139, 233, 253, 1.0);
+}
+
+#pulseaudio {
+  color: rgba(241, 250, 140, 1.0);
+}
+
+#custom-bluetooth {
+  color: rgba(97, 175, 239, 1.0);
+}
+
+#custom-power {
+  color: rgba(255, 100, 100, 1.0);
+}
+
+#custom-bluetooth:hover,
+#custom-network:hover,
+#custom-power:hover {
+  background: rgba(100, 100, 120, 0.3);
+}
