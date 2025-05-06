@@ -1,6 +1,7 @@
 [Unit]
 Description=Waybar
 After=hyprland-session.target
+Wants=hyprland-session.target
 PartOf=hyprland-session.target
 
 [Service]
@@ -8,6 +9,7 @@ Type=simple
 KillMode=process
 ExecStart=/usr/bin/waybar -c %h/.config/waybar/config.jsonc -s %h/.config/waybar/style.css
 Restart=on-failure
+Slice=session.slice
 
 [Install]
 WantedBy=hyprland-session.target
