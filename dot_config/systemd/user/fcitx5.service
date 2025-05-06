@@ -1,0 +1,12 @@
+[Unit]
+Description=fcitx5
+After=hyprland-session.target
+PartOf=hyprland-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/fcitx5 -d
+Restart=on-failure
+
+[Install]
+WantedBy=hyprland-session.target

@@ -1,0 +1,242 @@
+function history-merge --on-event fish_preexec
+  history --save
+  history --merge
+end
+
+function pp_path
+  echo $PATH | tr ' ' '\n'
+end
+
+function check_outdate
+  git checkout master
+  git fetch origin
+  set UPSTREAM '@{u}'
+  set LOCAL (git rev-parse @)
+  set REMOTE (git rev-parse "$UPSTREAM")
+  set BASE (git merge-base @ "$UPSTREAM")
+
+  if [ $LOCAL = $REMOTE ]
+    echo "Up-to-date"
+    false
+  else if [ $LOCAL = $BASE ]
+    echo "Need to pull"
+    true
+  else if [ $REMOTE = $BASE ]
+    echo "Need to push"
+    false
+  else
+    echo "Diverged"
+    false
+  end
+end
+
+function install_neovim
+  cd (ghq root)/github.com/neovim/neovim
+
+  set CMAKE_FLAGS ""
+  set CMAKE_BUILD_TYPE "RelWithDebInfo"
+  set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+
+  {{ if eq .chezmoi.os "darwin" }}
+  set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+  set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  {{ end }}
+
+
+  if [ $argv ]
+    if [ $argv[1] = "d" ]
+      set LOG_DIR "$HOME/.local/share/nvim/logs"
+      # set CMAKE_FLAGS "$CMAKE_FLAGS -DPREFER_LUA=ON"
+      set CMAKE_BUILD_TYPE "Debug"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DMIN_LOG_LEVEL=0"
+      # set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_ASAN_UBSAN=ON -DSANITIZE_RECOVER_ALL=1"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_MASAN=ON"
+      set UBSAN_OPTIONS "print_stacktrace=1 log_path=$LOG_DIR/ubsan"
+      set ASAN_OPTIONS "halt_on_error=0:detect_leaks=1:log_path=$HOME/logs/asan"
+      set TSAN_OPTIONS "log_path=$LOG_DIR/tsan"
+    end
+  end
+
+  set CMAKE_FLAGS "$CMAKE_FLAGS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+
+  make install -j 4 \
+    CMAKE_INSTALL_PREFIX=$HOME/.local \
+    CMAKE_FLAGS="$CMAKE_FLAGS" \
+    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS"
+  cp ./build/compile_commands.json .
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+end
+
+function build_neovim
+  cd (ghq root)/github.com/neovim/neovim
+
+  set CMAKE_FLAGS ""
+  set CMAKE_BUILD_TYPE "RelWithDebInfo"
+  set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
+  {{ if eq .chezmoi.os "darwin" }}
+  set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+  set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
+  {{ end }}
+
+  if [ $argv ]
+    if [ $argv[1] = "d" ]
+      set LOG_DIR "$HOME/.local/share/nvim/logs"
+      # set CMAKE_FLAGS "$CMAKE_FLAGS -DPREFER_LUA=ON"
+      set CMAKE_BUILD_TYPE "Debug"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DMIN_LOG_LEVEL=0"
+      # set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_ASAN_UBSAN=ON -DSANITIZE_RECOVER_ALL=1"
+      set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCLANG_MASAN=ON"
+      set UBSAN_OPTIONS "print_stacktrace=1 log_path=$LOG_DIR/ubsan"
+      set ASAN_OPTIONS "halt_on_error=0:detect_leaks=1:log_path=$HOME/logs/asan"
+      set TSAN_OPTIONS "log_path=$LOG_DIR/tsan"
+    end
+  end
+
+  set CMAKE_FLAGS "$CMAKE_FLAGS -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+
+  # CC=clang make nvim -j 4 \
+  make nvim -j 4 \
+    CMAKE_FLAGS="$CMAKE_FLAGS" \
+    CMAKE_EXTRA_FLAGS="$CMAKE_EXTRA_FLAGS" \
+  cp ./build/compile_commands.json .
+
+  echo "======================================================================"
+  echo "CMAKE_FLAGS=\"$CMAKE_FLAGS\""
+  echo "CMAKE_BUILD_TYPE=\"$CMAKE_BUILD_TYPE\""
+  echo "CMAKE_EXTRA_FLAGS=\"$CMAKE_EXTRA_FLAGS\""
+  echo "======================================================================"
+end
+
+function clean_install_neovim
+  cd (ghq root)/github.com/neovim/neovim
+  rm -rf ./build
+  make clean
+  install_neovim $argv
+end
+
+function neovim_ftest
+  set -l TEST_FILE $argv[1]
+  set -l MIN_LOG_LEVEL 2
+  set -l LOG_DIR $HOME/.local/share/nvim/test/log
+  set -l NVIM_LOG_FILE $HOME/.local/share/nvim/test/.nvimlog
+  set -l NVIM_TEST_TRACE_LEVEL 2
+  # set -l BUSTED_ARGS '--coverage'
+  # set -l USE_LUACOV 1
+  make functionaltest \
+    TEST_FILE=$TEST_FILE \
+    BUSTED_PRG=(which -a busted) \
+    MIN_LOG_LEVEL=2 \
+    LOG_DIR=$HOME/.local/share/nvim/test/log \
+    NVIM_TEST_TRACE_LEVEL=2
+    # BUSTED_ARGS='--coverage' \
+    # USE_LUACOV=1 \
+end
+
+function install_tmux
+  cd (ghq root)/github.com/tmux/tmux
+  if check_outdate
+    hub sync
+    sh autogen.sh
+    ./configure --prefix=$HOME/.local --enable-utf8proc --enable-sixel
+    make -j 4
+    make install
+  end
+end
+
+function gcop -d "git checkout pull request"
+  set PR_NUMBER ""
+  set BRANCH_NAME ""
+  set REMOTE "upstream"
+
+  if count $argv > /dev/null
+  else
+    echo 'pull request number and branch name must be given'
+    return
+  end
+
+  set PR_NUMBER $argv[1]
+
+  if count $argv[2] > /dev/null
+    set BRANCH_NAME $argv[2]
+  else
+    echo 'branch name must be given'
+    return
+  end
+
+  if count $argv[3] > /dev/null
+    set REMOTE $argv[3]
+  end
+
+  git fetch $REMOTE pull/$PR_NUMBER/head:$BRANCH_NAME
+  git checkout $BRANCH_NAME
+end
+
+function init_ssh_agent --description 'Ensure single ssh-agent instance and load keys'
+  # Location to store environment file (safely cleared per session)
+  set -l AGENT_ENV $XDG_RUNTIME_DIR/ssh-agent-env.fish
+
+  # Load existing environment file if present
+  if test -f $AGENT_ENV
+    source $AGENT_ENV
+  end
+
+  # Restart agent if not running
+  if not set -q SSH_AGENT_PID; or not kill -0 $SSH_AGENT_PID > /dev/null 2>&1
+    ssh-agent -c | sed \
+      -e '/^echo /d' \
+      -e 's/^setenv/set -gx/' \
+      -e 's/;//g' > $AGENT_ENV
+
+    source $AGENT_ENV
+  end
+
+  # Add key only once if none are registered
+  if not ssh-add -l > /dev/null 2>&1
+    {{ if eq .chezmoi.os "darwin" }}
+    ssh-add --apple-use-keychain
+    {{ else }}
+    ssh-add
+    {{ end }}
+  end
+end
+
+function yank_clipboard --description 'copy stdin to tmux & system clipboard'
+  set -l buf (cat)
+
+  if set -q TMUX
+    printf '%s' "$buf" | tmux load-buffer -
+  end
+
+  {{ if eq .chezmoi.os "darwin" }}
+  printf '%s' "$buf" | pbcopy
+  {{ else }}
+  # Wayland
+  if test -n "$WAYLAND_DISPLAY" -a (type -q wl-copy)
+    printf '%s' "$buf" | wl-copy --foreground --type text/plain
+  # X11
+  else if test -n "$DISPLAY"
+    if type -q xsel
+      printf '%s' "$buf" | xsel -i -b
+    else if type -q xclip
+      printf '%s' "$buf" | xclip -sel clip
+    end
+  end
+  {{ end }}
+end

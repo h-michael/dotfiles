@@ -1,4 +1,0 @@
-initial-command = /usr/bin/fish --login --interactive
-command = /usr/bin/fish --login --interactive
-
-fullscreen = false

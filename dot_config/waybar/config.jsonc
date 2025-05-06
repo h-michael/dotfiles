@@ -1,0 +1,106 @@
+{
+  "height": 24,
+  "layer": "top",
+  "position": "top",
+  "tray": {
+    "spacing": 5
+  },
+  "modules-left": [ "hyprland/workspaces" ],
+  "modules-center": [ "hyprland/window" ],
+  "modules-right": [
+    "wlr/taskbar",
+    "tray",
+    "systemd-failed-units",
+    "pulseaudio",
+    "cpu",
+    "memory",
+    "temperature",
+    "battery",
+    "clock",
+    "custom/power"
+  ],
+  "battery": {
+    "format": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "󰂄 {capacity}%",
+    "format-alt": "{capacity}% {icon}",
+    "format-icons": [ "󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹" ]
+  },
+  "clock": {
+    "format": "{:%H:%M}",
+    "format-alt": "{:%A, %B %d, %Y %R}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "mode-mon-col": 3,
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#ffead3'><b>{}</b></span>",
+        "days": "<span color='#ecc6d9'><b>{}</b></span>",
+        "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+        "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+        "today": "<span color='#ff6699'><b><u>{}</u></b></span>"
+      }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "tz_up",
+      "on-scroll-down": "tz_down",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
+    }
+  },
+  "cpu": {
+    "format": "󰍛 {usage}%",
+    "tooltip": true,
+    "tooltip-format": "CPU Usage: {usage}%",
+    "interval": 5
+  },
+  "memory": {
+    "format": "󰍛 {used:0.1f}G",
+    "tooltip": true,
+    "tooltip-format": "Used: {used:0.1f}G / Total: {total:0.1f}G",
+    "interval": 5
+  },
+  "custom/network": {
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": true,
+    "interval": 10,
+    "exec": "~/.config/waybar/script/network_status.sh",
+    "on-click": "~/.config/waybar/script/network_select.sh"
+  },
+  "custom/bluetooth": {
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": true,
+    "interval": 10,
+    "exec": "~/.config/waybar/script/bluetooth_status.sh",
+    "on-click": "~/.config/waybar/script/bluetooth_select.sh"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰖁 muted",
+    "format-icons": {
+      "default": [ "󰕿", "󰖀", "󰕾" ]
+    }
+  },
+  "systemd-failed-units": {
+    "hide-on-ok": false,
+    "format": " {nr_failed}",
+    "format-ok": "󰄬",
+    "system": true,
+    "user": true
+  },
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": true,
+    "tooltip-format": "Power Menu",
+    "on-click": "~/.config/waybar/script/power_menu.sh"
+  },
+  "hyprland/workspaces": {
+    "format": "{name}",
+    "on-click": "activate",
+    "sort-by-number": true
+  }
+}

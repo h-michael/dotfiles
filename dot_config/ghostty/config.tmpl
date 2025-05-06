@@ -1,0 +1,23 @@
+shell-integration = fish
+
+theme = Jellybeans
+
+font-family = Cica
+font-family = PlemolJP Console
+font-size = 14
+
+# https://ghostty.org/docs/config/reference#cursor-style
+shell-integration-features = no-cursor
+cursor-style = block
+clipboard-paste-bracketed-safe = true
+
+{{ if eq .chezmoi.os "linux" }}
+initial-command = /usr/bin/fish --login --interactive
+command = /usr/bin/fish --login --interactive
+fullscreen = false
+{{ else if eq .chezmoi.os "darwin" }}
+initial-command = /opt/homebrew/bin/fish --login --interactive
+command = /opt/homebrew/bin/fish --login --interactive
+macos-option-as-alt = true
+fullscreen = true
+{{ end }}
