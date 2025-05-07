@@ -15,6 +15,7 @@
 !.config/git
 !.config/mise
 !.config/nvim
+.config/nvim/lazy-lock.json
 !.config/pip
 !.config/ripgreprc
 !.config/starship.toml
