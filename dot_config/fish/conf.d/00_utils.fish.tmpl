@@ -190,7 +190,11 @@ end
 
 function init_ssh_agent --description 'Ensure single ssh-agent instance and load keys'
   # Location to store environment file (safely cleared per session)
+  {{ if eq .chezmoi.os "darwin" }}
+  set -l AGENT_ENV $TMPDIR/ssh-agent-env.fish
+  {{ else if eq .chezmoi.os "linux" }}
   set -l AGENT_ENV $XDG_RUNTIME_DIR/ssh-agent-env.fish
+  {{ end }}
 
   # Load existing environment file if present
   if test -f $AGENT_ENV
@@ -211,7 +215,7 @@ function init_ssh_agent --description 'Ensure single ssh-agent instance and load
   if not ssh-add -l > /dev/null 2>&1
     {{ if eq .chezmoi.os "darwin" }}
     ssh-add --apple-use-keychain
-    {{ else }}
+    {{ else if eq .chezmoi.os "linux" }}
     ssh-add
     {{ end }}
   end
@@ -226,7 +230,7 @@ function yank_clipboard --description 'copy stdin to tmux & system clipboard'
 
   {{ if eq .chezmoi.os "darwin" }}
   printf '%s' "$buf" | pbcopy
-  {{ else }}
+  {{ else if eq .chezmoi.os "linux" }}
   # Wayland
   if test -n "$WAYLAND_DISPLAY" -a (type -q wl-copy)
     printf '%s' "$buf" | wl-copy --foreground --type text/plain
