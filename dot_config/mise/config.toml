@@ -1,6 +1,0 @@
-[tools]
-lua = "5.1"
-lua-language-server = "latest"
-node = "latest"
-rust-analyzer = "latest"
-usage = "latest"
