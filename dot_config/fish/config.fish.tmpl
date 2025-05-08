@@ -19,10 +19,20 @@ end
 {{ end }}
 
 # Haskell
-fish_add_path -m $HOME/.cabal/bin
+if [ -d "$HOME/.cabal/bin" ]
+  fish_add_path -m $HOME/.cabal/bin
+end
 
 # Rust
-fish_add_path -m $HOME/.cargo/bin
+if [ -d "$HOME/.cargo/bin" ]
+  fish_add_path -m $HOME/.cargo/bin
+end
+
+# Go
+if [ -d "$HOME/go/bin" ]
+  fish_add_path -m $HOME/go/bin
+end
+
 
 # Deno
 if [ -d "$HOME/.deno/bin" ]
