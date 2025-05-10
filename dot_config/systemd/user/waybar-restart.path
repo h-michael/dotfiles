@@ -7,4 +7,4 @@ PathChanged=%h/.config/waybar/config.jsonc
 PathChanged=%h/.config/waybar/style.css
 
 [Install]
-WantedBy=hyprland-session.target
+WantedBy=graphical-session.target

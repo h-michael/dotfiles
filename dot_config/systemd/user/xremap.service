@@ -1,14 +1,10 @@
 [Unit]
 Description=xremap
-After=hyprland-session.target
 
 [Service]
-ExecStart=/usr/bin/xremap --watch %h/.config/xremap/config.yml
+ExecStart=/usr/bin/xremap --watch=config %h/.config/xremap/config.yml
 Restart=on-failure
-#Environment=DISPLAY=:0
-#Environment=WAYLAND_DISPLAY=wayland-1
-#Environment=XDG_RUNTIME_DIR=/run/user/%U
 Slice=session.slice
 
 [Install]
-WantedBy=hyprland-session.target
+WantedBy=default.target
