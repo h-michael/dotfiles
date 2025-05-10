@@ -77,7 +77,7 @@ fish_add_path -m $NPM_CONFIG_PREFIX/bin
 
 # should execute the end of the config.fish
 if ! command -v starship &> /dev/null; then
-  curl -sS https://starship.rs/install.sh | sh
+  curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
 end
 
 starship init fish | source
