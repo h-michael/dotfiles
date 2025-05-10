@@ -26,41 +26,40 @@ function fsec2
   end
 end
 
-## fkill - kill process
-function fkill
+function fkill -d "Kill selected process"
   ps -ef | sed 1d | fzf -m | awk '{print $2}' | xargs kill -9
 end
 
-## select repository
-function frepo
+function frepo -d "cd to selected git repository"
   set dir (ghq list | fzf +m)
   cd (ghq root)/$dir
 end
 
-## remove repository
-function frmrepo
+function frmrepo -d "Remove selected git repository"
   ghq list --full-path | fzf --multi | xargs rm -rf
 end
 
-# fzf for git
-
-function fgc
+function fgc -d "git checkout selected branch"
   git branch | fzf --reverse | xargs git checkout
 end
 
-function fgdb
+function fgdb -d "git delete selected branch"
   git branch | fzf --multi | xargs git branch -D
 end
 
-function fga
+function fga -d "git add selected files"
   git status -s | grep -e '^ M ' | sed -e 's/^ M //' | fzf --multi | xargs git add; and git status -s
 end
 
-function fgr
+function fgr -d "git reset selected files"
   git status -s | grep -e '^M ' | sed -e 's/^M //' | fzf --multi | xargs git reset; and git status -s
 end
 
-function gitaddm
+function fgss -d "git stash show selected stash"
+  git stash list | fzf --reverse --preview "echo {} | awk -F ':' '{print \$1}' | xargs git stash show -p | bat --color=always --style=numbers" | awk -F ':' '{print $1}'
+end
+
+function gitaddm -d "git add modified files"
   git status -s | grep -v 'M ' | sed -e 's/^\?\? //' | xargs git add
 end
 
