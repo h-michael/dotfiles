@@ -1,9 +1,9 @@
 [Unit]
 Description=Fcitx5 Input Method Framework
 Documentation=man:fcitx5(1)
-After=hyprland-session.target
-Wants=hyprland-session.target
-PartOf=hyprland-session.target
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
 
 [Service]
 Type=dbus
@@ -14,4 +14,4 @@ RestartSec=3
 Slice=session.slice
 
 [Install]
-WantedBy=hyprland-session.target
+WantedBy=graphical-session.target
