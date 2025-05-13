@@ -10,12 +10,8 @@ end
 
 
 {{ if eq .chezmoi.os "darwin" }}
-  # "/opt/homebrew/bin/brew shellenv | source" doesn't use fish_add_path.
-  # So add Homebrew paths manually.
-  fish_add_path -m $HOMEBREW_PREFIX/bin
-  fish_add_path -m $HOMEBREW_PREFIX/sbin
-  fish_add_path -m $HOMEBREW_PREFIX/libexec
-  fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
+/opt/homebrew/bin/brew shellenv | source
+fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
 {{ end }}
 
 # Haskell
