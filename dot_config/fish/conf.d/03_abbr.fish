@@ -1,6 +1,6 @@
-abbr -a mnvim "nvim -u ~/.minimal_nvimrc"
-abbr -a mvim "vim -u ~/.minimal_vimrc"
 abbr -a nvim-lsp-log "nvim $LSP_LOG_PATH"
 abbr -a rm-lsp-log "rm $LSP_LOG_PATH"
-abbr -a cd-dein-plugins "cd $DEIN_CACHE_PATH; cd ../repos"
-abbr -a cd-dein-cache "cd $DEIN_CACHE_PATH"
+
+# Kubernetes
+abbr -a kbcd "kubectl describe"
+abbr -a kbcg "kubectl get"
