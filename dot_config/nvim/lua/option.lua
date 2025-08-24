@@ -128,14 +128,14 @@ opt.spelllang = { 'en', 'cjk' }
 -- View:
 --
 
--- Show line number.
--- set number
--- set numberwidth=2
--- set relativenumber
-
--- Show <TAB> and <CR>
 opt.list = true
-opt.listchars = { tab = '▸\\ ', trail = '-', extends = '»', precedes = '«', nbsp = '%' }
+opt.listchars = {
+  tab = '▸ ',
+  trail = '-',
+  extends = '»',
+  precedes = '«',
+  nbsp = '%',
+}
 -- Always display statusline.
 opt.laststatus = 2
 -- Height of command line.
