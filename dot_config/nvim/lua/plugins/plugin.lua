@@ -153,18 +153,6 @@ return {
     cmd = { 'OpenGithubFile', 'OpenGithubIssue', 'OpenGithubPullReq' },
   },
   {
-    'mattn/vim-goimports',
-    ft = { 'go', 'gomod' },
-  },
-  {
-    'mattn/vim-goaddtags',
-    ft = { 'go', 'gomod' },
-  },
-  {
-    'mattn/vim-gorename',
-    ft = { 'go', 'gomod' },
-  },
-  {
     'github/copilot.vim',
     enabled = true,
   },
