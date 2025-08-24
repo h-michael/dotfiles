@@ -88,7 +88,29 @@ return {
       })
     end,
   },
-  { 'jiangmiao/auto-pairs' },
+  {
+    'windwp/nvim-autopairs',
+    event = "InsertEnter", -- Load the plugin only when entering insert mode for faster startup.
+    config = function()
+      local autopairs = require('nvim-autopairs')
+      autopairs.setup({
+        -- Enable Treesitter integration for smarter pairing based on syntax context.
+        check_ts = true,
+        -- Disable autopairs in specific filetypes, e.g., Telescope prompts.
+        disable_filetype = { "TelescopePrompt", "spectre_panel" },
+      })
+
+      -- Integration with nvim-cmp.
+      -- This is crucial for a smooth completion experience, preventing redundant pairs
+      -- when confirming a completion item.
+      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+      local cmp = require('cmp')
+      cmp.event:on(
+        'confirm_done',
+        cmp_autopairs.on_confirm_done()
+      )
+    end,
+  },
   { 'bfredl/nvim-luadev' },
   --  Plugin for vim to enabling opening a file in a given line
   {'bogado/file-line' },
