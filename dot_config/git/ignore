@@ -16,3 +16,4 @@ rls*.log
 .tool-versions
 compile_commands.json
 .DS_Store
+.geminiignore

@@ -5,7 +5,7 @@
 [include]
   path = .gitconfig.local
 [core]
-  excludesfile = ~/.gitignore_global
+  excludesFile = ~/.config/git/ignore
   editor = /usr/local/bin/nvim
   pager = delta
 [push]
