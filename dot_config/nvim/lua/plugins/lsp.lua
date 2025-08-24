@@ -5,7 +5,8 @@ return {
       'b0o/SchemaStore.nvim',
     },
     config = function()
-      vim.lsp.set_log_level("warn")
+      vim.lsp.log.set_level("warn")
+
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local on_attach = function(_client, bufnr)
