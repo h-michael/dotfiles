@@ -35,11 +35,8 @@ opt.autoindent = true
 opt.smartindent = true
 
 -- Enable modeline.
--- set modeline
-
--- Disable modeline.
-opt.modelines = 0
 opt.modeline = true
+opt.modelineexpr = true
 
 -- Use clipboard register.
 opt.clipboard:append({'unnamedplus'})
@@ -83,12 +80,21 @@ opt.isfname:remove('=')
 -- CursorHold time.
 -- set updatetime=1000
 
--- opt.swap = directory.
+-- Don't create backup.
+opt.writebackup = false
+opt.backup = false
+opt.backupdir:remove('.')
+
+opt.swapfile = true
 opt.directory:remove('.')
 
 -- Set undofile.
 opt.undofile = true
-api.nvim_set_var('undodir', opt.directory)
+local undo_dir = vim.fn.stdpath("data") .. "/undo"
+if not vim.loop.fs_stat(undo_dir) then
+  vim.fn.mkdir(undo_dir, "p")
+end
+opt.undodir = undo_dir
 
 -- Enable virtualedit in visual block mode.
 opt.virtualedit = 'block'
@@ -153,21 +159,12 @@ opt.whichwrap = 'h,l,<,>,[,],~'
 opt.breakindent = true
 opt.wrap = true
 
--- Do not display the greetings message at the time of Vim start.
-opt.shortmess = 'aTI'
+-- Make the UI cleaner by suppressing many messages.
+-- NOTE: The 'a' flag is very aggressive. It can hide useful feedback (like file
+-- write confirmation) and may cause issues with some LSP servers.
+-- For a safer alternative, consider using "cFIoOWT".
+opt.shortmess = "aTIcF"
 
--- Do not display the completion messages
---opt.noshowmode = true
-opt.shortmess = 'c'
-
--- Do not display the edit messages
-opt.shortmess = 'F'
-
--- Don't create backup.
-opt.writebackup = false
-opt.backup = false
-opt.swapfile = false
-opt.backupdir:remove('.')
 
 -- Disable bell.
 --opt.t_vb = false
@@ -176,7 +173,10 @@ opt.belloff = 'all'
 
 opt.wildmenu = true
 opt.wildmode = 'full'
+
 opt.wildoptions = 'pum'
+-- Can supplement a tag in a command-line.
+opt.wildoptions:append('tagfile')
 
 -- Ignore compiled files
 opt.wildignore = { '*.o', '*~', '*.pyc', '*/.git/*', '*/.hg/*', '*/.svn/*', '*/.DS_Store' }
@@ -185,8 +185,6 @@ opt.wildignore = { '*.o', '*~', '*.pyc', '*/.git/*', '*/.hg/*', '*/.svn/*', '*/.
 opt.history = 10000
 -- Display all the information of the tag by the supplement of the Insert mode.
 opt.showfulltag = true
--- Can supplement a tag in a command-line.
-opt.wildoptions:append('tagfile')
 
 -- Completion setting.
 opt.completeopt = 'menuone'
@@ -255,10 +253,11 @@ opt.tags:append('.git/tags;', 'codex.tags;')
 
 opt.inccommand = 'split'
 
+opt.signcolumn = 'auto'
+
 api.nvim_set_var('loaded_python_provider', false)
 api.nvim_set_var('loaded_python3_provider', false)
 api.nvim_set_var('loaded_node_provider', false)
-api.nvim_set_var('loaded_ruby_provider', false)
 api.nvim_set_var('loaded_ruby_provider', false)
 
 vim.diagnostic.config{
