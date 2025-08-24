@@ -8,7 +8,13 @@ function pp_path
 end
 
 function check_outdate
-  git checkout master
+  set -l default_branch (git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
+  if test -z "$default_branch"
+    echo "Error: Could not determine the default branch." >&2
+    return 1
+  end
+
+  git checkout $default_branch
   git fetch origin
   set UPSTREAM '@{u}'
   set LOCAL (git rev-parse @)
@@ -37,10 +43,10 @@ function install_neovim
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
 
-  {{ if eq .chezmoi.os "darwin" }}
+  
   set CMAKE_BIN (brew --prefix cmake)/bin/cmake
   set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
-  {{ end }}
+  
 
 
   if [ $argv ]
@@ -84,10 +90,10 @@ function build_neovim
   set CMAKE_FLAGS ""
   set CMAKE_BUILD_TYPE "RelWithDebInfo"
   set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
-  {{ if eq .chezmoi.os "darwin" }}
+  
   set CMAKE_BIN (brew --prefix cmake)/bin/cmake
   set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
-  {{ end }}
+  
 
   if [ $argv ]
     if [ $argv[1] = "d" ]
@@ -190,11 +196,9 @@ end
 
 function init_ssh_agent --description 'Ensure single ssh-agent instance and load keys'
   # Location to store environment file (safely cleared per session)
-  {{ if eq .chezmoi.os "darwin" }}
+  
   set -l AGENT_ENV $TMPDIR/ssh-agent-env.fish
-  {{ else if eq .chezmoi.os "linux" }}
-  set -l AGENT_ENV $XDG_RUNTIME_DIR/ssh-agent-env.fish
-  {{ end }}
+  
 
   # Load existing environment file if present
   if test -f $AGENT_ENV
@@ -213,11 +217,9 @@ function init_ssh_agent --description 'Ensure single ssh-agent instance and load
 
   # Add key only once if none are registered
   if not ssh-add -l > /dev/null 2>&1
-    {{ if eq .chezmoi.os "darwin" }}
+    
     ssh-add --apple-use-keychain
-    {{ else if eq .chezmoi.os "linux" }}
-    ssh-add
-    {{ end }}
+    
   end
 end
 
@@ -228,21 +230,9 @@ function yank_clipboard --description 'copy stdin to tmux & system clipboard'
     printf '%s' "$buf" | tmux load-buffer -
   end
 
-  {{ if eq .chezmoi.os "darwin" }}
+  
   printf '%s' "$buf" | pbcopy
-  {{ else if eq .chezmoi.os "linux" }}
-  # Wayland
-  if test -n "$WAYLAND_DISPLAY" -a (type -q wl-copy)
-    printf '%s' "$buf" | wl-copy --foreground --type text/plain
-  # X11
-  else if test -n "$DISPLAY"
-    if type -q xsel
-      printf '%s' "$buf" | xsel -i -b
-    else if type -q xclip
-      printf '%s' "$buf" | xclip -sel clip
-    end
-  end
-  {{ end }}
+  
 end
 
 function cargo_check_nowarn \

@@ -47,11 +47,11 @@ function fgdb -d "git delete selected branch"
   git branch | fzf --multi | xargs git branch -D
 end
 
-function fga -d "git add selected files"
+function fgadd -d "git add selected files"
   git status -s | grep -e '^ M ' | sed -e 's/^ M //' | fzf --multi | xargs git add; and git status -s
 end
 
-function fgr -d "git reset selected files"
+function fgreset -d "git reset selected files"
   git status -s | grep -e '^M ' | sed -e 's/^M //' | fzf --multi | xargs git reset; and git status -s
 end
 
@@ -110,13 +110,6 @@ end
 
 function fec2ssm -d "Select EC2 instance and start SSM session"
   aws ec2 describe-instances | jq -r '.Reservations[].Instances[] | [.InstanceId, .KeyName] | @tsv' | fzf | awk '{print $1}' | xargs aws ssm start-session --target
-end
-
-function fecse -d "Select ECS container and execute command"
-  set CLUSTER_ARN (aws ecs list-clusters | jq -r '.clusterArns[]' | fzf --prompt="Select cluster")
-  set TASK_ARN (aws ecs list-tasks --cluster $CLUSTER_ARN | jq -r '.taskArns[]' | fzf --prompt="Select task")
-  set CONTAINER_NAME (aws ecs describe-tasks --cluster $CLUSTER_ARN --tasks $TASK_ARN | jq -r '.tasks[] | .containers[] | .name' | fzf --prompt="Select container")
-  aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
 end
 
 function fecse -d "Select ECS container and execute command"
