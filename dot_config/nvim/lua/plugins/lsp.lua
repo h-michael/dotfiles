@@ -1,25 +1,33 @@
 return {
   {
     'neovim/nvim-lspconfig',
+    dependencies = {
+      'b0o/SchemaStore.nvim',
+    },
     config = function()
+      vim.lsp.set_log_level("warn")
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
       local on_attach = function(_client, bufnr)
-        local opts = { noremap = true, silent = true }
-        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+        local wk = require("which-key")
+        wk.add({
+          { "<Leader>l", buffer = bufnr, group = "LSP", remap = false },
+          { "<Leader>lrn", "<cmd>lua vim.lsp.buf.rename()<CR>", buffer = bufnr, desc = "Rename", remap = false },
+          { "<Leader>lds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", buffer = bufnr, desc = "Document Symbols", remap = false },
+          { "<Leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", buffer = bufnr, desc = "Code Action", remap = false },
+          { "<Leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", buffer = bufnr, desc = "Go to Definition", remap = false },
+          { "<Leader>le", "<cmd>lua vim.diagnostic.open_float()<CR>", buffer = bufnr, desc = "Show Diagnostic", remap = false },
+          { "<Leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", buffer = bufnr, desc = "Format", remap = false },
+          { "<Leader>lh", "<cmd>lua vim.lsp.buf.hover()<CR>", buffer = bufnr, desc = "Hover", remap = false },
+          { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
+          { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
+          { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
+          { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false }
+        })
 
-        vim.api.nvim_set_keymap('n', '<c-]>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<c-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-        vim.api.nvim_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gde', '<cmd>lua vim.lsp.buf.declaration()', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gdc', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>grf', '<cmd>lua vim.lsp.buf.references({ includeDeclaration = true })<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>fmt', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-        vim.api.nvim_set_keymap('n', '<Leader>od', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-        -- vim.api.nvim_set_keymap('n', '<Leader>gdh', '<cmd>lua vim.lsp.buf.document_highlight()<CR>', opts)
+        --local opts = { noremap = true, silent = true }
+
+        --vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
       end
 
       local lsp_flags = {
@@ -92,6 +100,12 @@ return {
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
+        settings = {
+          json = {
+            schemas = require("schemastore").json.schemas(),
+            validate = { enable = true },
+          }
+        }
       }
       require('lspconfig')['yamlls'].setup{
         on_attach = on_attach,
@@ -99,18 +113,23 @@ return {
         capabilities = capabilities,
         settings = {
           yaml = {
-            schemas = {
-              ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
-              ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-              ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
-              ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
-              ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
-              ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
-              ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
-              ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
-              ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
-              ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '**/*.docker-compose.{yml,yaml}',
-            }
+            schemaStore = {
+              enable = false,
+              url = "",
+            },
+            schemas = require("schemastore").yaml.schemas(),
+            --schemas = {
+            --  ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
+            --  ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
+            --  ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
+            --  ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
+            --  ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
+            --  ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
+            --  ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
+            --  ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
+            --  ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
+            --  ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '**/*.docker-compose.{yml,yaml}',
+            --}
           }
         },
       }
@@ -128,6 +147,22 @@ return {
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
+        settings = {
+          ['Lua'] = {
+            runtime = {
+              version = "LuaJIT",
+            },
+            telemetry = {
+              enable = false,
+            },
+            diagnostics = {
+              globals = { 'vim' },
+              unusedLocalExclude = {
+                '_*'
+              }
+            },
+          },
+        },
       }
     end,
   },
