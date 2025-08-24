@@ -24,18 +24,14 @@ function kubectl_status
 end
 
 function show_kube_context
-  set -l config $KUBECONFIG
-  [ -z "$config" ]; and set -l config "$HOME/.kube/config"
-  if [ ! -f $config ]
+  if not command -v kubectl >/dev/null
     return
   end
-
-  set -l ctx (cat $HOME/.kube/config | grep current-context | awk '{print $2}' 2>/dev/null)
+  set -l ctx (kubectl config current-context 2>/dev/null)
   if [ $status -ne 0 ]
     echo (set_color white)"no kube context"
     return
   end
-
   echo $ctx
 end
 
