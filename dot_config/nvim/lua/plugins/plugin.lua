@@ -145,11 +145,6 @@ return {
   {
     'glidenote/memolist.vim',
     cmd = { 'MemoNew', 'MemoList', 'MemoGrep' },
-    config = function()
-      vim.api.nvim_set_keymap('n' ,'<Leader>mn', ':MemoNew<CR>', { noremap = false, silent = false })
-      vim.api.nvim_set_keymap('n' ,'<Leader>ml', ':MemoList<CR>', { noremap = false, silent = false })
-      vim.api.nvim_set_keymap('n' ,'<Leader>mg', ':MemoGrep<CR>', { noremap = false, silent = false })
-    end,
   },
   -- Open GitHub URL of current file, etc. from Vim editor (supported GitHub Enterprise)
   {
