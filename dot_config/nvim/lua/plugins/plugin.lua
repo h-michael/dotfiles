@@ -9,28 +9,42 @@ return {
     end,
   },
   {
-    'rust-lang/rust.vim',
-    ft = 'rust',
-    setup = function()
-      vim.g.rustfmt_emit_files = 1
-      vim.g.rustfmt_autosave = 1
-    end,
-  },
-  {
     'rhysd/rust-doc.vim',
     ft = { 'help' },
   },
   {
+    'linrongbin16/lsp-progress.nvim',
+    config = function()
+      require('lsp-progress').setup()
+    end,
+  },
+  {
+    'nvim-tree/nvim-web-devicons',
+    config = function()
+      require('nvim-web-devicons').setup {}
+    end,
+  },
+  {
     'nvim-lualine/lualine.nvim',
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
-    dependencies = { 'nanotech/jellybeans.vim', 'nvim-lua/lsp-status.nvim' },
+    dependencies = {
+      'nanotech/jellybeans.vim',
+      --'nvim-lua/lsp-status.nvim',
+      'linrongbin16/lsp-progress.nvim',
+    },
     config = function()
+
+      local lsp_progress = function()
+        return require('lsp-progress').progress()
+      end
+
       require('lualine').setup {
         options = {
-          icons_enabled = false,
+          icons_enabled = true,
           theme = 'auto',
-          component_separators = { left = '|', right = '|'},
-          section_separators = { left = '|', right = '|'},
+          component_separators = { left = ' ', right = ' '},
+          section_separators = { left = ' ', right = ' '},
+          padding = 0,
           disabled_filetypes = {
             statusline = {},
             winbar = {},
@@ -41,21 +55,22 @@ return {
             statusline = 1000,
             tabline = 1000,
             winbar = 1000,
-          }
+          },
+          path = 4,
         },
         sections = {
-          lualine_a = {'mode'},
-          lualine_b = {'branch', 'diff', 'diagnostics'},
-          lualine_c = {'filename'},
-          lualine_x = {'encoding', 'fileformat', 'filetype'},
-          lualine_y = {'progress'},
-          lualine_z = {'location'}
+          lualine_a = { { 'mode', fmt = function(str) return " " .. str:sub(1,1) .. " " end } },
+          lualine_b = { 'branch' },
+          lualine_c = { 'filename' },
+          lualine_x = { lsp_progress },
+          lualine_y = { 'encoding', 'fileformat', 'filetype' },
+          lualine_z = { 'progress', 'location' }
         },
         inactive_sections = {
-          lualine_a = {},
+          lualine_a = { 'filename' },
           lualine_b = {},
-          lualine_c = {'filename'},
-          lualine_x = {'location'},
+          lualine_c = {},
+          lualine_x = {},
           lualine_y = {},
           lualine_z = {}
         },
@@ -64,6 +79,13 @@ return {
         inactive_winbar = {},
         extensions = {}
       }
+      -- listen lsp-progress event and refresh lualine
+      vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+      vim.api.nvim_create_autocmd("User", {
+        group = "lualine_augroup",
+        pattern = "LspProgressStatusUpdated",
+        callback = require("lualine").refresh,
+      })
     end,
   },
   { 'jiangmiao/auto-pairs' },
@@ -168,6 +190,7 @@ return {
   },
   {
     'ibhagwan/fzf-lua',
+    enabled = false,
     config = function()
       require('fzf-lua').register_ui_select()
 
@@ -219,16 +242,9 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {
-    },
+    opts = {},
     keys = {
-      --{
-      --  "<leader>?",
-      --  function()
-      --    require("which-key").show({ global = false })
-      --  end,
-      --  desc = "Buffer Local Keymaps (which-key)",
-      --},
+      { "<C-h>", "<cmd>WhichKey<CR>", mode = "n", desc = "WhichKey" },
     },
   },
 }
