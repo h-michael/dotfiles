@@ -1,3 +1,4 @@
+.gitignore-local/
 venv
 .envrc
 mise.toml
@@ -16,4 +17,8 @@ rls*.log
 .tool-versions
 compile_commands.json
 .DS_Store
+GEMINI.md
 .geminiignore
+.serena/
+repomix.config.json
+.repomixignore
