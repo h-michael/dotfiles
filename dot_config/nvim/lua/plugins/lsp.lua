@@ -13,7 +13,6 @@ return {
         local wk = require("which-key")
         wk.add({
           { "<Leader>l", buffer = bufnr, group = "LSP", remap = false },
-          { "<Leader>lrn", "<cmd>lua vim.lsp.buf.rename()<CR>", buffer = bufnr, desc = "Rename", remap = false },
           { "<Leader>lds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", buffer = bufnr, desc = "Document Symbols", remap = false },
           { "<Leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", buffer = bufnr, desc = "Code Action", remap = false },
           { "<Leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", buffer = bufnr, desc = "Go to Definition", remap = false },
@@ -23,10 +22,12 @@ return {
           { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
           { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
           { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
-          { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false }
+          { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false },
+          { "<Leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<CR>", buffer = bufnr, desc = "Go to previous diagnostic", remap = false },
+          { "<Leader>d]", "<cmd>lua vim.diagnostic.goto_next()<CR>", buffer = bufnr, desc = "Go to next diagnostic", remap = false },
+          { "<Leader>ldl", "<cmd>Telescope diagnostics<CR>", buffer = bufnr, desc = "List Diagnostics", remap = false },
+          { "<Leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", buffer = bufnr, desc = "Code Action", remap = false },
         })
-
-        --local opts = { noremap = true, silent = true }
 
         --vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
       end
@@ -35,136 +36,221 @@ return {
         debounce_text_changes = 150,
       }
 
-      require('lspconfig')['clangd'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
-        capabilities = capabilities,
-        cmd = {"clangd", "--background-index"},
-      }
-      require'lspconfig'.rust_analyzer.setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = vim.tbl_deep_extend(
-          'force',
-          require('cmp_nvim_lsp').default_capabilities(),
-          {
-            snippetTextEdit = true,
-            codeActionGroup = true,
-            hoverActions = true,
-            serverStatusNotification = true,
-          }
-        ),
-        settings = {
-          ['rust-analyzer'] = {
-            cargo = {
-              buildScripts = {
-                enable = true,
+      local servers = {
+        clangd = {
+          filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+          cmd = {"clangd", "--background-index"},
+        },
+        rust_analyzer = {
+          capabilities = vim.tbl_deep_extend(
+            'force',
+            require('cmp_nvim_lsp').default_capabilities(),
+            {
+              snippetTextEdit = true,
+              codeActionGroup = true,
+              hoverActions = true,
+              serverStatusNotification = true,
+            }
+          ),
+          settings = {
+            ['rust-analyzer'] = {
+              cargo = {
+                buildScripts = {
+                  enable = true,
+                },
+                targetDir = "target/rust_analyzer",
               },
-              targetDir = "target/rust_analyzer",
+              check = {
+                command = "clippy",
+                extraArgs = {
+                  "--all-features",
+                },
+              },
+              trace = { server = "warn" },
             },
-            check = {
-              command = "clippy",
-              extraArgs = {
-                "--all-targets",
-                "--all-features",
+          },
+        },
+        gopls = {},
+        ts_ls = {},
+        pyright = {},
+        jsonls = {
+          settings = {
+            json = {
+              schemas = require("schemastore").json.schemas(),
+              validate = { enable = true },
+            }
+          }
+        },
+        yamlls = {
+          settings = {
+            yaml = {
+              schemaStore = {
+                enable = false,
+                url = "",
               },
-              --command = "check",
-              --extraArgs = {
-              --  "--target-dir=target/rust_analyzer",
-              --},
+              schemas = require("schemastore").yaml.schemas(),
+            }
+          },
+        },
+        terraformls = {},
+        buf_ls = {},
+        lua_ls = {
+          settings = {
+            ['Lua'] = {
+              runtime = {
+                version = "LuaJIT",
+              },
+              telemetry = {
+                enable = false,
+              },
+              diagnostics = {
+                globals = { 'vim' },
+                unusedLocalExclude = {
+                  '_*'
+                }
+              },
             },
           },
         },
       }
-      require('lspconfig')['gopls'].setup{
+
+      local common_config = {
         on_attach = on_attach,
         flags = lsp_flags,
         capabilities = capabilities,
       }
-      --require('lspconfig')['solargraph'].setup{
-      --  on_attach = on_attach,
-      --  flags = lsp_flags,
-      --  capabilities = capabilities,
-      --}
-      require('lspconfig')['ts_ls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['pyright'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['jsonls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-        settings = {
-          json = {
-            schemas = require("schemastore").json.schemas(),
-            validate = { enable = true },
-          }
-        }
-      }
-      require('lspconfig')['yamlls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-        settings = {
-          yaml = {
-            schemaStore = {
-              enable = false,
-              url = "",
-            },
-            schemas = require("schemastore").yaml.schemas(),
-            --schemas = {
-            --  ['http://json.schemastore.org/github-workflow'] = '.github/workflows/*.{yml,yaml}',
-            --  ['http://json.schemastore.org/github-action'] = '.github/action.{yml,yaml}',
-            --  ['http://json.schemastore.org/ansible-stable-2.9'] = 'roles/tasks/*.{yml,yaml}',
-            --  ['http://json.schemastore.org/prettierrc'] = '.prettierrc.{yml,yaml}',
-            --  ['http://json.schemastore.org/stylelintrc'] = '.stylelintrc.{yml,yaml}',
-            --  ['http://json.schemastore.org/circleciconfig'] = '.circleci/**/*.{yml,yaml}',
-            --  ['https://json.schemastore.org/kustomization'] = 'kustomization.{yml,yaml}',
-            --  ['https://json.schemastore.org/cloudbuild'] = '*cloudbuild.{yml,yaml}',
-            --  ['https://taskfile.dev/schema.json'] = '**/{Taskfile,taskfile}.{yml,yaml}',
-            --  ['https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json'] = '**/*.docker-compose.{yml,yaml}',
-            --}
-          }
-        },
-      }
-      require('lspconfig')['terraformls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['buf_ls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-      }
-      require('lspconfig')['lua_ls'].setup{
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = capabilities,
-        settings = {
-          ['Lua'] = {
-            runtime = {
-              version = "LuaJIT",
-            },
-            telemetry = {
-              enable = false,
-            },
-            diagnostics = {
-              globals = { 'vim' },
-              unusedLocalExclude = {
-                '_*'
-              }
-            },
-          },
-        },
-      }
+
+      for server_name, server_config in pairs(servers) do
+        vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, server_config))
+        if server_name ~= "rust_analyzer" then
+          vim.lsp.enable(server_name)
+        end
+      end
     end,
+  },
+  {
+    'folke/trouble.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    keys = {
+      { "<leader>xx", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
+      { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
+      { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics" },
+      { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List" },
+      { "<leader>xl", "<cmd>TroubleToggle loclist<cr>", desc = "Location List" },
+      { "gR", "<cmd>TroubleToggle lsp_references<cr>", desc = "LSP References" },
+    },
+    opts = {
+      icons = {
+        error = "",
+        warning = "",
+        hint = "",
+        info = "",
+      },
+    },
+  },
+  {
+    'stevearc/aerial.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+    event = "LspAttach",
+    config = function()
+      require("aerial").setup({
+        on_attach = function(bufnr)
+          local wk = require("which-key")
+          wk.add({
+            { "{", "<cmd>AerialPrev<CR>", desc = "Aerial Prev", buffer = bufnr, remap = false },
+            { "}", "<cmd>AerialNext<CR>", desc = "Aerial Next", buffer = bufnr, remap = false },
+          })
+        end,
+        backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
+        layout = {
+          default_direction = "prefer_left",
+          resize_to_content = true,
+        },
+        lsp = {
+          diagnostics_trigger_update = true,
+          update_when_errors = true,
+          update_delay = 300,
+        },
+        treesitter = {
+          update_delay = 300,
+        },
+        markdown = {
+          update_delay = 300,
+        },
+
+        asciidoc = {
+          update_delay = 300,
+        },
+        man = {
+          update_delay = 300,
+        },
+      })
+      local wk = require("which-key")
+      wk.add({
+        { "<Leader>lo", "<cmd>AerialToggle!<CR>", desc = "Toggle Aerial (Outline)", remap = false },
+      })
+    end,
+  },
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("lsp_signature").setup({
+        bind = true,
+        handler_opts = {
+          border = "rounded",
+        },
+      })
+    end,
+  },
+  {
+    "RRethy/vim-illuminate",
+    event = "LspAttach",
+    config = function()
+      require("illuminate").configure({
+        providers = {
+            'lsp',
+            'treesitter',
+            'regex',
+        },
+        delay = 300,
+      })
+      local wk = require("which-key")
+      wk.add({
+        { "]]", function() require("illuminate").goto_next_reference(false) end, desc = "Next Reference", remap = false },
+        { "[[", function() require("illuminate").goto_prev_reference(false) end, desc = "Prev Reference", remap = false },
+      })
+    end,
+  },
+  {
+    "smjonas/inc-rename.nvim",
+    event = "LspAttach",
+    config = function()
+      require("inc_rename").setup{}
+
+      local wk = require("which-key")
+      wk.add({
+        { "<Leader>lrn", "<cmd>IncRename" .. vim.fn.expand("<cword>"), desc = "Rename (Incremental)", remap = false },
+      })
+    end,
+  },
+  {
+    "j-hui/fidget.nvim",
+    event = "LspAttach",
+    opts = {
+      notification = {
+        window = {
+          winblend = 0,
+        },
+      },
+    },
+  },
+  {
+    'mrcjkb/rustaceanvim',
+    version = '^6',
+    lazy = false,
   },
 }

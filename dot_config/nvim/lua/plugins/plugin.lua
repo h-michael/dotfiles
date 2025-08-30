@@ -13,9 +13,11 @@ return {
     ft = { 'help' },
   },
   {
-    'linrongbin16/lsp-progress.nvim',
+    'saecki/crates.nvim',
+    tag = 'stable',
+    event = "BufRead Cargo.toml",
     config = function()
-      require('lsp-progress').setup()
+      require('crates').setup()
     end,
   },
   {
@@ -29,14 +31,18 @@ return {
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
     dependencies = {
       'nanotech/jellybeans.vim',
-      --'nvim-lua/lsp-status.nvim',
-      'linrongbin16/lsp-progress.nvim',
+      'folke/trouble.nvim',
     },
     config = function()
-
-      local lsp_progress = function()
-        return require('lsp-progress').progress()
-      end
+      local trouble = require("trouble")
+      local symbols = trouble.statusline({
+        mode = "lsp_document_symbols",
+        groups = {},
+        title = false,
+        filter = { range = true },
+        format = "{kind_icon}{symbol.name:Normal}",
+        hl_group = "lualine_d_normal",
+      })
 
       require('lualine').setup {
         options = {
@@ -62,7 +68,8 @@ return {
           lualine_a = { { 'mode', fmt = function(str) return " " .. str:sub(1,1) .. " " end } },
           lualine_b = { 'branch' },
           lualine_c = { 'filename' },
-          lualine_x = { lsp_progress },
+          lualine_d = { symbols.get, cond = symbols.has },
+          lualine_x = { 'diagnostics' },
           lualine_y = { 'encoding', 'fileformat', 'filetype' },
           lualine_z = { 'progress', 'location' }
         },
@@ -79,13 +86,6 @@ return {
         inactive_winbar = {},
         extensions = {}
       }
-      -- listen lsp-progress event and refresh lualine
-      vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
-      vim.api.nvim_create_autocmd("User", {
-        group = "lualine_augroup",
-        pattern = "LspProgressStatusUpdated",
-        callback = require("lualine").refresh,
-      })
     end,
   },
   {
@@ -165,6 +165,7 @@ return {
       { 'hrsh7th/cmp-cmdline' },
       { 'hrsh7th/cmp-vsnip' },
       { 'hrsh7th/vim-vsnip' },
+      { "olimorris/codecompanion.nvim" },
     },
     config = function()
       local cmp = require'cmp'
@@ -189,6 +190,7 @@ return {
           { name = 'path' },
           { name = 'vsnip' },
           { name = 'cmdline' },
+          { name = 'codecompanion'}
         })
       })
     end,
@@ -251,5 +253,95 @@ return {
     keys = {
       { "<C-h>", "<cmd>WhichKey<CR>", mode = "n", desc = "WhichKey" },
     },
+  },
+  {
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    enabled = false,
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
+    opts = {
+      opts = {
+        log_level = "INFO",
+      },
+    },
+    config = function()
+      require("codecompanion").setup({
+        display = {
+          action_palette = {
+            width = 95,
+            height = 10,
+            prompt = "Prompt ",
+            provider = "telescope",
+            opts = {
+              show_default_actions = true,
+              show_default_prompt_library = true,
+              title = "CodeCompanion actions",
+            },
+          },
+        },
+        strategies = {
+          chat = {
+            adapter = function()
+              return require("codecompanion.adapters").extend("gemini_cli", {
+                commands = {
+                   default = {
+                     "gemini",
+                     "--experimental-acp",
+                   },
+                   flash = {
+                     "gemini",
+                     "--experimental-acp",
+                     "-m",
+                     "gemini-2.5-flash",
+                   },
+                   pro = {
+                     "gemini",
+                     "--experimental-acp",
+                     "-m",
+                     "gemini-2.5-pro",
+                   },
+                },
+                defaults = {
+                  auth_method = "oauth-personal",
+                },
+              })
+            end
+          },
+        },
+        adapters = {
+          http = nil,
+          acp = {
+            gemini_cli = function()
+              return require("codecompanion.adapters").extend("gemini_cli", {
+                commands = {
+                   default = {
+                     "gemini",
+                     "--experimental-acp",
+                   },
+                   flash = {
+                     "gemini",
+                     "--experimental-acp",
+                     "-m",
+                     "gemini-2.5-flash",
+                   },
+                   pro = {
+                     "gemini",
+                     "--experimental-acp",
+                     "-m",
+                     "gemini-2.5-pro",
+                   },
+                },
+                defaults = {
+                  auth_method = "oauth-personal",
+                },
+              })
+            end,
+          },
+        },
+      })
+    end,
   },
 }

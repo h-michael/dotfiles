@@ -41,3 +41,39 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end
   end,
 })
+
+api.nvim_create_augroup('CargoTomlKeymaps', { clear = true })
+api.nvim_create_autocmd('BufEnter', {
+  group = 'CargoTomlKeymaps',
+  pattern = 'Cargo.toml',
+  callback = function()
+    local bufnr = api.nvim_get_current_buf()
+    print("Attaching crates.nvim to buffer " .. bufnr)
+    local crates = require("crates")
+    local wk = require("which-key")
+
+    wk.add({
+      { "<Leader>c", buffer = bufnr, group = "Cargo", remap = false },
+      { "<leader>cr", crates.reload, desc = "Reload", buffer = bufnr, remap = false },
+      { "<leader>ct", crates.toggle, desc = "Toggle", buffer = bufnr, remap = false },
+      { "<leader>cv", crates.show_versions_popup, desc = "Show versions", buffer = bufnr, remap = false },
+      { "<leader>cf", crates.show_features_popup, desc = "Show features", buffer = bufnr, remap = false },
+      { "<leader>cd", crates.show_dependencies_popup, desc = "Show dependencies", buffer = bufnr, remap = false },
+
+      { "<leader>cu", crates.update_crate, desc = "Update crate", buffer = bufnr, remap = false },
+      { "<leader>cu", crates.update_crates, desc = "Update crate", buffer = bufnr, remap = false },
+      { "<leader>ca", crates.update_all_crates, desc = "Update all crates", buffer = bufnr, remap = false },
+      { "<leader>cU", crates.upgrade_crate, desc = "Upgrade crate", buffer = bufnr, remap = false },
+      { "<leader>cU", crates.upgrade_crates, desc = "Upgrade crate", buffer = bufnr, remap = false },
+      { "<leader>cA", crates.upgrade_all_crates, desc = "Upgrade all crates", buffer = bufnr, remap = false },
+
+      { "<leader>cx", crates.expand_plain_crate_to_inline_table, desc = "Expand a plain crate declaration into an inline table", buffer = bufnr, remap = false },
+      { "<leader>cX", crates.extract_crate_into_table, desc = "Extract an crate declaration from a dependency section into a table", buffer = bufnr, remap = false },
+
+      { "<leader>cH", crates.open_homepage, desc = "Open homepage", buffer = bufnr, remap = false },
+      { "<leader>cR", crates.open_repository, desc = "Open repository", buffer = bufnr, remap = false },
+      { "<leader>cD", crates.open_documentation, desc = "Open documentation", buffer = bufnr, remap = false },
+      { "<leader>cC", crates.open_crates_io, desc = "Open crates.io", buffer = bufnr, remap = false },
+    })
+  end,
+})

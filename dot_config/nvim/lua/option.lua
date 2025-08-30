@@ -159,12 +159,7 @@ opt.whichwrap = 'h,l,<,>,[,],~'
 opt.breakindent = true
 opt.wrap = true
 
--- Make the UI cleaner by suppressing many messages.
--- NOTE: The 'a' flag is very aggressive. It can hide useful feedback (like file
--- write confirmation) and may cause issues with some LSP servers.
--- For a safer alternative, consider using "cFIoOWT".
-opt.shortmess = "aTIcF"
-
+opt.shortmess = "cFIoOWT"
 
 -- Disable bell.
 --opt.t_vb = false
