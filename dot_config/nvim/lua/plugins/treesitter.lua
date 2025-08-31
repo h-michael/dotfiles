@@ -98,7 +98,6 @@ return {
         enable_autocmd = false,
       })
     end,
-
   },
   {
     'numToStr/Comment.nvim',

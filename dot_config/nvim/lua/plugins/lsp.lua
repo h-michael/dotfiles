@@ -7,8 +7,6 @@ return {
     config = function()
       vim.lsp.log.set_level("warn")
 
-      local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
       local on_attach = function(_client, bufnr)
         local wk = require("which-key")
         wk.add({
@@ -36,22 +34,20 @@ return {
         debounce_text_changes = 150,
       }
 
-      local servers = {
+      local server_configs = {
         clangd = {
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
           cmd = {"clangd", "--background-index"},
         },
         rust_analyzer = {
-          capabilities = vim.tbl_deep_extend(
-            'force',
-            require('cmp_nvim_lsp').default_capabilities(),
+          capabilities = {
             {
               snippetTextEdit = true,
               codeActionGroup = true,
               hoverActions = true,
               serverStatusNotification = true,
             }
-          ),
+          },
           settings = {
             ['rust-analyzer'] = {
               cargo = {
@@ -117,11 +113,15 @@ return {
       local common_config = {
         on_attach = on_attach,
         flags = lsp_flags,
-        capabilities = capabilities,
+        capabilities = vim.tbl_deep_extend(
+          'force',
+          vim.lsp.protocol.make_client_capabilities(),
+          require('cmp_nvim_lsp').default_capabilities()
+        ),
       }
 
-      for server_name, server_config in pairs(servers) do
-        vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, server_config))
+      for server_name, config in pairs(server_configs) do
+        vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
         if server_name ~= "rust_analyzer" then
           vim.lsp.enable(server_name)
         end
@@ -129,15 +129,14 @@ return {
     end,
   },
   {
-    'folke/trouble.nvim',
+    -- https://github.com/folke/trouble.nvim/pull/656
+    --'folke/trouble.nvim',
+    'h-michael/trouble.nvim',
+    branch = 'fix/decoration-provider-api',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
+    cmd = "Trouble",
     keys = {
-      { "<leader>xx", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
-      { "<leader>xw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
-      { "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics" },
-      { "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List" },
-      { "<leader>xl", "<cmd>TroubleToggle loclist<cr>", desc = "Location List" },
-      { "gR", "<cmd>TroubleToggle lsp_references<cr>", desc = "LSP References" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Toggle Trouble" },
     },
     opts = {
       icons = {
