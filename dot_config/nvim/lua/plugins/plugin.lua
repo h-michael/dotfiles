@@ -6,6 +6,39 @@ return {
     config = function()
       vim.opt.background = 'dark'
       vim.cmd [[colorscheme jellybeans]]
+
+      -- Set custom highlights for nvim-cmp kinds and menu
+      local highlights = {
+        CmpItemMenu = { fg = '#81a2be' },
+        CmpItemKindFunction = { fg = '#81a2be' },
+        CmpItemKindMethod = { fg = '#81a2be' },
+        CmpItemKindConstructor = { fg = '#81a2be' },
+        CmpItemKindVariable = { fg = '#b294bb' },
+        CmpItemKindField = { fg = '#b294bb' },
+        CmpItemKindClass = { fg = '#f0c674' },
+        CmpItemKindStruct = { fg = '#f0c674' },
+        CmpItemKindModule = { fg = '#f0c674' },
+        CmpItemKindInterface = { fg = '#8abeb7' },
+        CmpItemKindTypeParameter = { fg = '#8abeb7' },
+        CmpItemKindConstant = { fg = '#de935f' },
+        CmpItemKindEnum = { fg = '#de935f' },
+        CmpItemKindEnumMember = { fg = '#de935f' },
+        CmpItemKindKeyword = { fg = '#cc6666' },
+        CmpItemKindSnippet = { fg = '#c5c8c6' },
+        CmpItemKindText = { fg = '#c5c8c6' },
+        CmpItemKindFile = { fg = '#c5c8c6' },
+        CmpItemKindFolder = { fg = '#c5c8c6' },
+
+        -- Completion Menu Background
+        Pmenu = { bg = '#282a2e' },
+        PmenuSel = { bg = '#81a2be', fg = '#151515' },
+        PmenuSbar = { bg = '#373b41' },
+        PmenuThumb = { bg = '#c5c8c6' },
+      }
+
+      for group, conf in pairs(highlights) do
+        vim.api.nvim_set_hl(0, group, conf)
+      end
     end,
   },
   {
@@ -22,28 +55,14 @@ return {
   },
   {
     'nvim-tree/nvim-web-devicons',
-    config = function()
-      require('nvim-web-devicons').setup {}
-    end,
   },
   {
     'nvim-lualine/lualine.nvim',
     event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
     dependencies = {
       'nanotech/jellybeans.vim',
-      'folke/trouble.nvim',
     },
     config = function()
-      local trouble = require("trouble")
-      local symbols = trouble.statusline({
-        mode = "lsp_document_symbols",
-        groups = {},
-        title = false,
-        filter = { range = true },
-        format = "{kind_icon}{symbol.name:Normal}",
-        hl_group = "lualine_d_normal",
-      })
-
       require('lualine').setup {
         options = {
           icons_enabled = true,
@@ -68,7 +87,6 @@ return {
           lualine_a = { { 'mode', fmt = function(str) return " " .. str:sub(1,1) .. " " end } },
           lualine_b = { 'branch' },
           lualine_c = { 'filename' },
-          lualine_d = { symbols.get, cond = symbols.has },
           lualine_x = { 'diagnostics' },
           lualine_y = { 'encoding', 'fileformat', 'filetype' },
           lualine_z = { 'progress', 'location' }
@@ -98,6 +116,8 @@ return {
         check_ts = true,
         -- Disable autopairs in specific filetypes, e.g., Telescope prompts.
         disable_filetype = { "TelescopePrompt", "spectre_panel" },
+
+        map_cr = true,
       })
 
       -- Integration with nvim-cmp.
@@ -160,22 +180,51 @@ return {
     'hrsh7th/nvim-cmp',
     dependencies = {
       { 'hrsh7th/cmp-nvim-lsp' },
+      { "hrsh7th/cmp-nvim-lsp-signature-help" },
+      { "hrsh7th/cmp-nvim-lua" },
       { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
+      {
+        'FelipeLema/cmp-async-path',
+        url = 'https://codeberg.org/FelipeLema/cmp-async-path.git',
+      },
+      --{ 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
-      { 'hrsh7th/cmp-vsnip' },
-      { 'hrsh7th/vim-vsnip' },
-      { "olimorris/codecompanion.nvim" },
+      { 'olimorris/codecompanion.nvim' },
+      { 'onsails/lspkind.nvim' },
     },
     config = function()
-      local cmp = require'cmp'
-      require'cmp'.setup({
-        snippet = {
-          -- REQUIRED - you must specify a snippet engine
-          expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-          end,
-        },
+      require('lspkind').init({
+        symbol_map = {
+          Text = "󰉿 txt",
+          Method = "󰆧 m",
+          Function = "󰊕 f",
+          Constructor = " new",
+          Field = "󰜢 fld",
+          Variable = "󰆨  var",
+          Class = "󰠱  cls",
+          Interface = "  IF",
+          Module = "  mod",
+          Property = "󰜢  prop",
+          Unit = "󰑭  unit",
+          Value = "󰎠  val",
+          Enum = "  enum",
+          Keyword = "󰌋  key",
+          Snippet = "  snp",
+          Color = "󰏘  color",
+          File = "󰈙  file",
+          Reference = "󰈇  ref",
+          Folder = "󰉋  dir",
+          EnumMember = "  member",
+          Constant = "󰏿 const",
+          Struct = "󰙅 struct",
+          Event = "  event",
+          Operator = "󰆕  op",
+          TypeParameter = "󰊄 type",
+        }
+      })
+
+      local cmp = require('cmp')
+      require('cmp').setup({
         mapping = cmp.mapping.preset.insert({
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -186,12 +235,38 @@ return {
         sources = cmp.config.sources({
           { name = "copilot" },
           { name = 'nvim_lsp' },
+          { name = "nvim_lsp_signature_help" },
+          { name = "nvim_lua" },
           { name = 'buffer' },
-          { name = 'path' },
-          { name = 'vsnip' },
+          { name = 'async_path' },
+          --{ name = 'path' },
           { name = 'cmdline' },
           { name = 'codecompanion'}
-        })
+        }),
+        formatting = {
+          fields = { 'kind', 'abbr', 'menu' },
+          format = require('lspkind').cmp_format({
+            mode = 'symbol',
+            menu = ({
+              copilot = "[AI]",
+              nvim_lsp = "[LSP]",
+              nvim_lua = "[Lua]",
+              buffer = "[Buffer]",
+              async_path = "[Path]",
+              path = "[Path]",
+              codecompanion = "[AI]",
+            }),
+            maxwidth = {
+              -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+              -- can also be a function to dynamically calculate max width such as
+              -- menu = function() return math.floor(0.45 * vim.o.columns) end,
+              menu = 50, -- leading text (labelDetails)
+              abbr = 50, -- actual suggestion item
+            },
+            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+          })
+        },
       })
     end,
   },
