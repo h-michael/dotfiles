@@ -5,7 +5,16 @@ return {
     priority = 1000,
     opts = {},
     config = function()
-      vim.cmd [[colorscheme tokyonight-night]]
+      require("tokyonight").setup({
+        style = "night",
+        on_highlights = function(hl, c)
+          hl.WinSeparator = {
+            fg = c.yellow,
+          }
+        end
+      })
+
+      vim.cmd [[colorscheme tokyonight]]
     end,
   },
   {
@@ -15,7 +24,14 @@ return {
     priority = 1000,
   },
   {
+    "Mofiqul/dracula.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+  },
+  {
     'nanotech/jellybeans.vim',
+    enabled = false,
     lazy = false,
     priority = 1000,
     config = function()
@@ -55,9 +71,6 @@ return {
         vim.api.nvim_set_hl(0, group, conf)
       end
     end,
-  },
-  {
-    'nvim-tree/nvim-web-devicons',
   },
   {
     'nvim-lualine/lualine.nvim',
@@ -105,5 +118,30 @@ return {
         extensions = {}
       }
     end,
+  },
+  {
+    'nvim-tree/nvim-web-devicons',
+  },
+  {
+    "catgoose/nvim-colorizer.lua",
+    event = "BufReadPre",
+    opts = {
+      filetypes = {
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "lua",
+        "tmux",
+        "sh",
+        "bash",
+        "zsh",
+        "fish",
+      },
+    },
+  },
+  {
+    "uga-rosa/ccc.nvim",
+    cmd = { "CccPick", "CccConvert", "CccHighlighterToggle", "CccHighlighterEnable", "CccHighlighterDisable" },
   },
 }

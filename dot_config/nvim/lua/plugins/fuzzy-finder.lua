@@ -67,4 +67,55 @@ return {
       })
     end,
   },
+  {
+    'ibhagwan/fzf-lua',
+    enabled = false,
+    config = function()
+      require('fzf-lua').register_ui_select()
+
+      local api = vim.api
+      api.nvim_create_user_command(
+        'Rg',
+        function(_opts)
+          require('fzf-lua').grep({
+            rg_opts = '--column --line-number --no-heading --color=always --smart-case'
+          })
+        end,
+        { bang = true, nargs = '*' }
+      )
+      api.nvim_create_user_command(
+        'CurrentWordRg',
+        function(_opts)
+          require('fzf-lua').grep({
+            rg_opts = '--column --line-number --no-heading --color=always --smart-case'
+          })
+        end,
+        { bang = true, nargs = '*' }
+      )
+      api.nvim_create_user_command(
+        'CurrentBufferDir',
+        function(_opts)
+          require('fzf-lua').files({ cwd = vim.fn.expand('%:p:h') })
+        end,
+        { bang = true, nargs = '?' }
+      )
+      api.nvim_create_user_command(
+        'ProjectDir',
+        function(_opts)
+          require('fzf-lua').files({ cwd = vim.fn.getcwd() })
+        end,
+        { bang = true, nargs = '?' }
+      )
+      local opt = { noremap = true, silent = true }
+      vim.api.nvim_set_keymap('n', '/', "<cmd>lua require('fzf-lua').blines({ winopts = { preview = { hidden = 'hidden' } } })<CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>cw', "<cmd>lua require('fzf-lua').grep_cword()<CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>cbd', ":CurrentBufferDir <CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>pd', ":ProjectDir <CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>rg', ":Rg <CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>gr', ":Rg <CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>f', "<cmd>lua require('fzf-lua').files()<CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>t', "<cmd>lua require('fzf-lua').tags()<CR>", opt)
+    end,
+  },
 }
