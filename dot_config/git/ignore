@@ -18,7 +18,9 @@ rls*.log
 compile_commands.json
 .DS_Store
 GEMINI.md
+CLAUDE.local.md
 .geminiignore
 .serena/
 repomix.config.json
 .repomixignore
+**/.claude/settings.local.json
