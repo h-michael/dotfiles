@@ -19,6 +19,7 @@
 !.config/pip
 !.config/ripgreprc
 !.config/starship.toml
+!.config/tmux
 
 # Linux specific
 {{ if eq .chezmoi.os "linux" }}
