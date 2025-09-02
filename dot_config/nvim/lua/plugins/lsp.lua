@@ -171,20 +171,20 @@ return {
         lsp = {
           diagnostics_trigger_update = true,
           update_when_errors = true,
-          update_delay = 300,
+          update_delay = 1000,
         },
         treesitter = {
-          update_delay = 300,
+          update_delay = 1000,
         },
         markdown = {
-          update_delay = 300,
+          update_delay = 1000,
         },
 
         asciidoc = {
-          update_delay = 300,
+          update_delay = 1000,
         },
         man = {
-          update_delay = 300,
+          update_delay = 1000,
         },
       })
       local wk = require("which-key")
@@ -215,7 +215,7 @@ return {
             'treesitter',
             'regex',
         },
-        delay = 300,
+        delay = 1000,
       })
       local wk = require("which-key")
       wk.add({
