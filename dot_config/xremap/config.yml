@@ -8,4 +8,34 @@ modmap:
   - name: Super_L to Alt_L
     remap:
       Super_L: Alt_L
+
+applications:
+  - name: terminals
+    # Terminal applications where we want to show ESC reminder
+    only:
+      - /^Alacritty$/
+      - /^kitty$/
+      - /^gnome-terminal/
+      - /^konsole$/
+      - /^xterm$/
+      - /^rxvt/
+      - /^terminator$/
+      - /^tilix$/
+      - /^wezterm$/
+      - /^foot$/
+      - /^st$/
+      - /^ghostty$/
+    keymap:
+      Escape:
+        launch: |
+          if command -v notify-send >/dev/null 2>&1; then
+            notify-send "Ergonomic Reminder" \
+              "For your health, use <C-[> instead of <ESC>!" \
+              -t 3000
+          elif command -v dunstify >/dev/null 2>&1; then
+            dunstify "Ergonomic Reminder" \
+              "For your health, use <C-[> instead of <ESC>!" \
+              -t 3000
+          fi
+
 keymap:
