@@ -24,7 +24,6 @@ return {
           { "<Leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<CR>", buffer = bufnr, desc = "Go to previous diagnostic", remap = false },
           { "<Leader>d]", "<cmd>lua vim.diagnostic.goto_next()<CR>", buffer = bufnr, desc = "Go to next diagnostic", remap = false },
           { "<Leader>ldl", "<cmd>Telescope diagnostics<CR>", buffer = bufnr, desc = "List Diagnostics", remap = false },
-          { "<Leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", buffer = bufnr, desc = "Code Action", remap = false },
         })
 
         --vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
