@@ -89,11 +89,26 @@ function fga
 end
 
 function _fk
-  kubectl get pods -o go-template --template="{{range .items}}{{\$item := .}}{{range .spec.containers}}{{\$item.metadata.name}}{{`"\t"`}}{{.name}}{{`"\n"`}}{{end}}{{end}}" | sort | fzf
+  kubectl get pods -o go-template --template='POD{{"\t"}}CONTAINER{{"\n"}}{{range .items}}{{$item := .}}{{range .spec.containers}}{{$item.metadata.name}}{{"\t"}}{{.name}}{{"\n"}}{{end}}{{end}}' \
+    | begin; head -n 1; tail -n +2 | sort; end | column -t | fzf --header-lines=1
 end
 
-function fke
-  eval (_fk | awk '{print "kubectl exec -it " $1 " --container " $2 " -- /bin/sh"}')
+function fke -d "Select K8S container and login to the container" -a shell
+  switch "$shell"
+    case bash
+      set shell "/bin/bash"
+    case zsh
+      set shell "/bin/zsh"
+    case fish
+      set shell "/usr/bin/fish"
+    case sh
+      set shell "/bin/sh"
+    case ""
+      set shell "/bin/sh"
+    case "*"
+  end
+
+  eval (_fk | awk -v shell="$shell" '{print "kubectl exec -it " $1 " --container " $2 " -- " shell}')
 end
 
 function fkl
@@ -119,4 +134,22 @@ function fecse -d "Select ECS container and execute command"
   set TASK_ARN (aws ecs list-tasks --cluster $CLUSTER_ARN --service-name $SERVICE_NAME | jq -r '.taskArns[]' | fzf)
   set CONTAINER_NAME (aws ecs describe-tasks --cluster $CLUSTER_ARN --tasks $TASK_ARN | jq -r '.tasks[] | .containers[] | .name' | fzf)
   aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
+end
+
+function fde -d "Select Docker container and login to the container" -a shell
+  switch "$shell"
+    case bash
+      set shell "/bin/bash"
+    case zsh
+      set shell "/bin/zsh"
+    case fish
+      set shell "/usr/bin/fish"
+    case sh
+      set shell "/bin/sh"
+    case ""
+      set shell "/bin/sh"
+    case "*"
+  end
+
+  eval (docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.Status}}" | fzf --header-lines=1 | awk -v shell="$shell" '{print "docker exec -it " $1 " " shell}')
 end
