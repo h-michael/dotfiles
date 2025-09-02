@@ -35,8 +35,8 @@ opt.autoindent = true
 opt.smartindent = true
 
 -- Enable modeline.
-opt.modeline = true
-opt.modelineexpr = true
+opt.modeline = false
+opt.modelineexpr = false
 
 -- Use clipboard register.
 opt.clipboard:append({'unnamedplus'})
