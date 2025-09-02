@@ -16,7 +16,9 @@ return {
           { "<Leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", buffer = bufnr, desc = "Go to Definition", remap = false },
           { "<Leader>le", "<cmd>lua vim.diagnostic.open_float()<CR>", buffer = bufnr, desc = "Show Diagnostic", remap = false },
           { "<Leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", buffer = bufnr, desc = "Format", remap = false },
-          { "<Leader>lh", "<cmd>lua vim.lsp.buf.hover()<CR>", buffer = bufnr, desc = "Hover", remap = false },
+          { "<Leader>lh", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", buffer = bufnr, desc = "Inlay Hints", remap = false },
+          -- overrides the default keybinding to change the border to rounded
+          { "K", "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = "Hover", remap = false },
           { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
           { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
           { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
@@ -25,8 +27,6 @@ return {
           { "<Leader>d]", "<cmd>lua vim.diagnostic.goto_next()<CR>", buffer = bufnr, desc = "Go to next diagnostic", remap = false },
           { "<Leader>ldl", "<cmd>Telescope diagnostics<CR>", buffer = bufnr, desc = "List Diagnostics", remap = false },
         })
-
-        --vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
       end
 
       local lsp_flags = {
@@ -37,33 +37,6 @@ return {
         clangd = {
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
           cmd = {"clangd", "--background-index"},
-        },
-        rust_analyzer = {
-          capabilities = {
-            {
-              snippetTextEdit = true,
-              codeActionGroup = true,
-              hoverActions = true,
-              serverStatusNotification = true,
-            }
-          },
-          settings = {
-            ['rust-analyzer'] = {
-              cargo = {
-                buildScripts = {
-                  enable = true,
-                },
-                targetDir = "target/rust_analyzer",
-              },
-              check = {
-                command = "clippy",
-                extraArgs = {
-                  "--all-features",
-                },
-              },
-              trace = { server = "warn" },
-            },
-          },
         },
         gopls = {},
         ts_ls = {},
@@ -121,9 +94,7 @@ return {
 
       for server_name, config in pairs(server_configs) do
         vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
-        if server_name ~= "rust_analyzer" then
-          vim.lsp.enable(server_name)
-        end
+        vim.lsp.enable(server_name)
       end
     end,
   },
@@ -249,6 +220,71 @@ return {
   {
     'mrcjkb/rustaceanvim',
     version = '^6',
-    lazy = false,
+    ft = { "rust" },
+    config = function()
+        -- https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#gear-advanced-configuration
+        vim.g.rustaceanvim = {
+          tools = {
+            float_win_config = {
+              border = 'rounded',
+            }
+          },
+          server = {
+            on_attach = function(_client, bufnr)
+              local wk = require("which-key")
+              wk.add({
+                { "<Leader>l", buffer = bufnr, group = "LSP", remap = false },
+                { "<Leader>lds", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", buffer = bufnr, desc = "Document Symbols", remap = false },
+                { "<Leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", buffer = bufnr, desc = "Code Action", remap = false },
+                { "<Leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", buffer = bufnr, desc = "Go to Definition", remap = false },
+                { "<Leader>le", "<cmd>lua vim.diagnostic.open_float()<CR>", buffer = bufnr, desc = "Show Diagnostic", remap = false },
+                { "<Leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", buffer = bufnr, desc = "Format", remap = false },
+                { "<Leader>lh", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", buffer = bufnr, desc = "Inlay Hints", remap = false },
+                { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
+                { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
+                { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
+                { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false },
+                { "<Leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<CR>", buffer = bufnr, desc = "Go to previous diagnostic", remap = false },
+                { "<Leader>d]", "<cmd>lua vim.diagnostic.goto_next()<CR>", buffer = bufnr, desc = "Go to next diagnostic", remap = false },
+                { "<Leader>ldl", "<cmd>Telescope diagnostics<CR>", buffer = bufnr, desc = "List Diagnostics", remap = false },
+
+                -- overrides the default keybinding to change the border to rounded
+                { "K", "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>", desc = "Hover Actions", buffer = bufnr, remap = false },
+                { "<Leader>la", "<cmd>lua vim.cmd.RustLsp('codeAction')<CR>", desc = "Code Action", buffer = bufnr, remap = false },
+                { "<Leader>lem", "<cmd>lua vim.cmd.RustLsp('expandMacro')<CR>", desc = "Expand macros recursively", buffer = bufnr, remap = false },
+                { "<Leader>lrm", "<cmd>lua vim.cmd.RustLsp('rebuildProcMacros')<CR>", desc = "Rebuild proc macro", buffer = bufnr, remap = false },
+                { "<Leader>lmu", "<cmd>lua vim.cmd.RustLsp {'moveItem', 'up'}<CR>", desc = "Move item up", buffer = bufnr, remap = false },
+                { "<Leader>lmd", "<cmd>lua vim.cmd.RustLsp {'moveItem', 'down'}<CR>", desc = "Move item down", buffer = bufnr, remap = false },
+                { "<Leader>lee", "<cmd>lua vim.cmd.RustLsp('explainError')<CR>", desc = "Explain error", buffer = bufnr, remap = false },
+                { "<Leader>lrd", "<cmd>lua vim.cmd.RustLsp('renderDiagnostic')<CR>", desc = "Render diagnostics", buffer = bufnr, remap = false },
+                { "<Leader>ljd", "<cmd>lua vim.cmd.RustLsp('relatedDiagnostics')<CR>", desc = "Jump to related diagnostics", buffer = bufnr, remap = false },
+                { "<Leader>loc", "<cmd>lua vim.cmd.RustLsp('openCargo')<CR>", desc = "Open Cargo.toml", buffer = bufnr, remap = false },
+                { "<Leader>lod", "<cmd>lua vim.cmd.RustLsp('openDocs')<CR>", desc = "Open docs.rs", buffer = bufnr, remap = false },
+                { "<Leader>lpm", "<cmd>lua vim.cmd.RustLsp('parentModule')<CR>", desc = "Parent module", buffer = bufnr, remap = false },
+                { "<Leader>lcg", "<cmd>lua vim.cmd.RustLsp {'crateGraph', '[backend]', '[output]'}<CR>", desc = "Crate graph", buffer = bufnr, remap = false },
+                { "<Leader>lst", "<cmd>lua vim.cmd.RustLsp('syntaxTree')<CR>", desc = "View syntax tree", buffer = bufnr, remap = false },
+              })
+            end,
+            default_settings = {
+              -- https://rust-analyzer.github.io/book/configuration
+              ['rust-analyzer'] = {
+                cargo = {
+                  buildScripts = {
+                    enable = true,
+                  },
+                  targetDir = "target/rust_analyzer",
+                },
+                check = {
+                  command = "clippy",
+                  extraArgs = {
+                    "--all-features",
+                  },
+                },
+                trace = { server = "warn" },
+              },
+            },
+          },
+        }
+    end,
   },
 }
