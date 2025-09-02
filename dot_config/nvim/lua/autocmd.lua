@@ -48,7 +48,6 @@ api.nvim_create_autocmd('BufEnter', {
   pattern = 'Cargo.toml',
   callback = function()
     local bufnr = api.nvim_get_current_buf()
-    print("Attaching crates.nvim to buffer " .. bufnr)
     local crates = require("crates")
     local wk = require("which-key")
 
@@ -60,11 +59,11 @@ api.nvim_create_autocmd('BufEnter', {
       { "<leader>cf", crates.show_features_popup, desc = "Show features", buffer = bufnr, remap = false },
       { "<leader>cd", crates.show_dependencies_popup, desc = "Show dependencies", buffer = bufnr, remap = false },
 
-      { "<leader>cu", crates.update_crate, desc = "Update crate", buffer = bufnr, remap = false },
-      { "<leader>cu", crates.update_crates, desc = "Update crate", buffer = bufnr, remap = false },
+      { "<leader>cus", crates.update_crate, desc = "Update single crate", buffer = bufnr, remap = false },
+      { "<leader>cum", crates.update_crates, desc = "Update multiple crates", buffer = bufnr, remap = false },
       { "<leader>ca", crates.update_all_crates, desc = "Update all crates", buffer = bufnr, remap = false },
-      { "<leader>cU", crates.upgrade_crate, desc = "Upgrade crate", buffer = bufnr, remap = false },
-      { "<leader>cU", crates.upgrade_crates, desc = "Upgrade crate", buffer = bufnr, remap = false },
+      { "<leader>cUs", crates.upgrade_crate, desc = "Upgrade single crate", buffer = bufnr, remap = false },
+      { "<leader>cUm", crates.upgrade_crates, desc = "Upgrade multiple crates", buffer = bufnr, remap = false },
       { "<leader>cA", crates.upgrade_all_crates, desc = "Upgrade all crates", buffer = bufnr, remap = false },
 
       { "<leader>cx", crates.expand_plain_crate_to_inline_table, desc = "Expand a plain crate declaration into an inline table", buffer = bufnr, remap = false },
