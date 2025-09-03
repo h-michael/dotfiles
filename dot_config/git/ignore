@@ -24,3 +24,4 @@ CLAUDE.local.md
 repomix.config.json
 .repomixignore
 **/.claude/settings.local.json
+.devcontainer/
