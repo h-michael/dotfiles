@@ -1,4 +1,4 @@
-function _get_shell_path -a shell
+function _get_shell_path -a shell -d "Get shell executable path by name"
   switch "$shell"
     case bash
       echo "/bin/bash"
