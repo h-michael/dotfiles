@@ -240,6 +240,8 @@ return {
                 { "<Leader>le", "<cmd>lua vim.diagnostic.open_float()<CR>", buffer = bufnr, desc = "Show Diagnostic", remap = false },
                 { "<Leader>lf", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", buffer = bufnr, desc = "Format", remap = false },
                 { "<Leader>lh", "<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>", buffer = bufnr, desc = "Inlay Hints", remap = false },
+                -- overrides the default keybinding to change the border to rounded
+                { "K", "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = "Hover", remap = false },
                 { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
                 { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
                 { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
@@ -249,7 +251,7 @@ return {
                 { "<Leader>ldl", "<cmd>Telescope diagnostics<CR>", buffer = bufnr, desc = "List Diagnostics", remap = false },
 
                 -- overrides the default keybinding to change the border to rounded
-                { "K", "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>", desc = "Hover Actions", buffer = bufnr, remap = false },
+                { "<Leader>lrh", "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>", desc = "Hover Actions", buffer = bufnr, remap = false },
                 { "<Leader>la", "<cmd>lua vim.cmd.RustLsp('codeAction')<CR>", desc = "Code Action", buffer = bufnr, remap = false },
                 { "<Leader>lem", "<cmd>lua vim.cmd.RustLsp('expandMacro')<CR>", desc = "Expand macros recursively", buffer = bufnr, remap = false },
                 { "<Leader>lrm", "<cmd>lua vim.cmd.RustLsp('rebuildProcMacros')<CR>", desc = "Rebuild proc macro", buffer = bufnr, remap = false },
