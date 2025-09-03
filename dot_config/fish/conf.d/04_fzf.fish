@@ -110,27 +110,31 @@ function fga
   gcloud config configurations list --format="table[no-heading] (name,is_active,name,properties.core.account,properties.core.project)" | fzf | awk '{print $1}' | xargs gcloud config configurations activate
 end
 
+function _get_shell_path -a shell
+  switch "$shell"
+    case bash
+      echo "/bin/bash"
+    case zsh
+      echo "/bin/zsh"
+    case fish
+      echo "/usr/bin/fish"
+    case sh
+      echo "/bin/sh"
+    case ""
+      echo "/bin/sh"
+    case "*"
+      echo "/bin/sh"
+  end
+end
+
 function _fk
-  kubectl get pods -o go-template --template='POD{{"\t"}}CONTAINER{{"\n"}}{{range .items}}{{$item := .}}{{range .spec.containers}}{{$item.metadata.name}}{{"\t"}}{{.name}}{{"\n"}}{{end}}{{end}}' \
-    | begin; head -n 1; tail -n +2 | sort; end | column -t | fzf --header-lines=1
+ kubectl get pods -o go-template --template='{{range .items}}{{$item := .}}{{range .spec.containers}}{{$item.metadata.name}}{{"\t"}}{{.name}}{{"\n"}}{{end}}{{end}}' \
+    | sort | column -t | fzf
 end
 
 function fke -d "Select K8S container and login to the container" -a shell
-  switch "$shell"
-    case bash
-      set shell "/bin/bash"
-    case zsh
-      set shell "/bin/zsh"
-    case fish
-      set shell "/usr/bin/fish"
-    case sh
-      set shell "/bin/sh"
-    case ""
-      set shell "/bin/sh"
-    case "*"
-  end
-
-  eval (_fk | awk -v shell="$shell" '{print "kubectl exec -it " $1 " --container " $2 " -- " shell}')
+  set shell_path (_get_shell_path $shell)
+  eval (_fk | awk -v shell="$shell_path" '{print "kubectl exec -it " $1 " --container " $2 " -- " shell}')
 end
 
 function fkl
@@ -158,20 +162,65 @@ function fecse -d "Select ECS container and execute command"
   aws ecs execute-command --cluster $CLUSTER_ARN --task $TASK_ARN --container $CONTAINER_NAME --interactive --command "/bin/bash"
 end
 
-function fde -d "Select Docker container and login to the container" -a shell
-  switch "$shell"
-    case bash
-      set shell "/bin/bash"
-    case zsh
-      set shell "/bin/zsh"
-    case fish
-      set shell "/usr/bin/fish"
-    case sh
-      set shell "/bin/sh"
-    case ""
-      set shell "/bin/sh"
-    case "*"
-  end
+function _fdp
+  docker ps --format "{{.ID}}\t{{.Image}}\t{{.Command}}\t{{.Status}}" | sort -k2 | column -t | fzf
+end
 
-  eval (docker ps --format "table {{.ID}}\t{{.Image}}\t{{.Command}}\t{{.Status}}" | fzf --header-lines=1 | awk -v shell="$shell" '{print "docker exec -it " $1 " " shell}')
+function fds -d "Select Docker container and stop the container"
+  _fdp | awk '{print $1}' | xargs docker stop
+end
+
+function fde -d "Select Docker container and login to the container" -a shell
+  set shell_path (_get_shell_path $shell)
+  eval (_fdp | awk -v shell="$shell_path" '{print "docker exec -it " $1 " " shell}')
+end
+
+function fts -d "Select tmux session and switch to it"
+  set session (tmux list-sessions -F "#{session_name}: #{session_windows} windows (created #{session_created_string}) #{?session_attached,(attached),}" | fzf \
+    --layout=reverse \
+    --border=rounded \
+    --no-multi \
+    --info=inline \
+    --prompt="Select tmux session: " \
+    --preview='fish -c "set session_name (echo {} | cut -d: -f1); set current_session (tmux display-message -p \"#S\" 2>/dev/null); if test \"\$session_name\" = \"\$current_session\"; echo \"Current Session\"; else; tmux capture-pane -t \"\$session_name\" -e -p 2>/dev/null | bat --color=always --style=plain; or echo \"Session preview unavailable\"; end"' \
+    --preview-window=down:70%:wrap | cut -d: -f1)
+  if test -n "$session"
+    if set -q TMUX
+      tmux switch-client -t "$session"
+    else
+      tmux attach-session -t "$session"
+    end
+  end
+end
+
+function ftw -d "Select tmux window and switch to it"
+  set window (tmux list-windows -F "#{window_index}: #{window_name} (#{window_panes} panes) #{?window_active,(active),}" | fzf \
+    --layout=reverse \
+    --border=rounded \
+    --no-multi \
+    --info=inline \
+    --prompt="Select tmux window: " \
+    --preview='fish -c "set window_index (echo {} | cut -d: -f1); set current_window (tmux display-message -p \"#I\" 2>/dev/null); set session_name (tmux display-message -p \"#S\" 2>/dev/null); if test \"\$window_index\" = \"\$current_window\"; echo \"Current Window\"; else; tmux capture-pane -t \"\$session_name:\$window_index\" -e -p 2>/dev/null | bat --color=always --style=plain; or echo \"Window preview unavailable\"; end"' \
+    --preview-window=down:70%:wrap | cut -d: -f1)
+  if test -n "$window"
+    tmux select-window -t "$window"
+  end
+end
+
+function ftsw -d "Switch tmux session or window"
+  set choice (echo -e "Switch tmux session\nChange tmux window" | fzf \
+    --layout=reverse \
+    --border=rounded \
+    --no-multi \
+    --info=inline \
+    --prompt="Switch tmux session or window: ")
+  
+  if test -n "$choice"
+    switch "$choice"
+      case "Switch tmux session"
+        fts
+      case "Change tmux window"
+        ftw
+    end
+  end
 end
