@@ -1,6 +1,14 @@
-abbr -a nvim-lsp-log "nvim $LSP_LOG_PATH"
-abbr -a rm-lsp-log "rm $LSP_LOG_PATH"
+abbr -a ls "eza"
+abbr -a cat "bat"
+abbr -a grep "rg"
+abbr -a find "fd"
+
+abbr -a lsplog "nvim $LSP_LOG_PATH"
+abbr -a rmlsplog "rm $LSP_LOG_PATH"
 
 # Kubernetes
-abbr -a kbcd "kubectl describe"
-abbr -a kbcg "kubectl get"
+abbr -a kubectld "kubectl describe"
+abbr -a kubectlg "kubectl get"
+
+abbr -a tmuxa "tmux attach"
+abbr -a tmuxd "tmux dettach"
