@@ -150,7 +150,7 @@
                                 },
                                 "to": [
                                     {
-                                        "shell_command": "osascript -e 'display notification \"For your health, use <C-[> instead of <ESC>!\" with title \"Ergonomic Reminder\" sound name \"Blow\"'"
+                                        "shell_command": "/opt/homebrew/bin/fish -c \"if command -v terminal-notifier >/dev/null 2>&1; terminal-notifier -title 'Ergonomic Reminder' -message 'For your health, use <C-[> instead of <ESC>!' -sound Blow -activate com.mitchellh.ghostty; else; osascript -e 'display notification \\\"For your health, use <C-[> instead of <ESC>!\\\" with title \\\"Ergonomic Reminder\\\" sound name \\\"Blow\\\"'; end\""
                                     }
                                 ],
                                 "type": "basic"
