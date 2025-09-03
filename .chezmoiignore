@@ -9,7 +9,7 @@
 !.config/fish/config.fish
 !.config/fish/conf.d/**
 !.config/fish/completions
-!.config/fish/functions
+!.config/fish/functions/**
 !.config/gh/config.yml
 !.config/ghostty
 !.config/git
