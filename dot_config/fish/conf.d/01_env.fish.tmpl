@@ -5,7 +5,7 @@ set --global --export HOMEBREW_PREFIX "/opt/homebrew";
 {{ end }}
 
 if [ -z $TMUX ]
-  init_ssh_agent
+  init-ssh-agent
 
   # XDG Base Directory
   set -gx XDG_CONFIG_HOME $HOME/.config

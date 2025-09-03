@@ -5,7 +5,7 @@ function ftsw -d "Switch tmux session or window"
     --no-multi \
     --info=inline \
     --prompt="Switch tmux session or window: ")
-  
+
   if test -n "$choice"
     switch "$choice"
       case "Switch tmux session"
