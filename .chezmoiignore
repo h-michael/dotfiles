@@ -49,6 +49,4 @@
 
 .local/*
 !.local/bin/
-.local/bin/**
-!.local/bin/yank
 CLAUDE.local.md

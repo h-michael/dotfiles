@@ -23,5 +23,5 @@ CLAUDE.local.md
 .serena/
 repomix.config.json
 .repomixignore
-**/.claude/settings.local.json
+**/.claude/
 .devcontainer/

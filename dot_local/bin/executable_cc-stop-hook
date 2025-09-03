@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Claude Code stop hook
+
+# Extract cwd, get basename, and send notification
+cwd_basename=$(jq -r .cwd | xargs basename)
+
+# Check if Ghostty is the frontmost application
+frontmost_app=$(osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true' 2>/dev/null || echo "")
+
+if [ "$frontmost_app" = "ghostty" ]; then
+    # Ghostty is active - no sound
+    terminal-notifier -title 'Claude Code' -subtitle 'Stop' -message "$cwd_basename" -activate com.mitchellh.ghostty
+else
+    # Ghostty is not active - play sound
+    terminal-notifier -title 'Claude Code' -subtitle 'Stop' -message "$cwd_basename" -sound 'Grass' -activate com.mitchellh.ghostty
+fi
