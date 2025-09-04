@@ -202,7 +202,7 @@ return {
 
       local wk = require("which-key")
       wk.add({
-        { "<Leader>lrn", "<cmd>IncRename" .. vim.fn.expand("<cword>"), desc = "Rename (Incremental)", remap = false },
+        { "<Leader>lrn", "<cmd>IncRename" .. vim.fn.expand("<cword>") .. "<CR>", desc = "Rename (Incremental)", remap = false },
       })
     end,
   },
