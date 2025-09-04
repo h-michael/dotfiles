@@ -21,6 +21,7 @@ return {
           { "K", "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = "Hover", remap = false },
           { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
           { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
+          { "<Leader>lrn", "<cmd>lua vim.lsp.buf.rename()<CR>", buffer = bufnr, desc = "Rename", remap = false },
           { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
           { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false },
           { "<Leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<CR>", buffer = bufnr, desc = "Go to previous diagnostic", remap = false },
@@ -196,13 +197,14 @@ return {
   },
   {
     "smjonas/inc-rename.nvim",
+    enabled = false,
     event = "LspAttach",
     config = function()
       require("inc_rename").setup{}
 
       local wk = require("which-key")
       wk.add({
-        { "<Leader>lrn", "<cmd>IncRename" .. vim.fn.expand("<cword>") .. "<CR>", desc = "Rename (Incremental)", remap = false },
+        { "<Leader>lrn", function() return ":IncRename " .. vim.fn.expand("<cword>") end, desc = "Rename (Incremental)", remap = false , expr = true },
       })
     end,
   },
@@ -244,6 +246,7 @@ return {
                 { "K", "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = "Hover", remap = false },
                 { "<Leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", buffer = bufnr, desc = "Go to Implementation", remap = false },
                 { "<Leader>lrf", "<cmd>lua vim.lsp.buf.references()<CR>", buffer = bufnr, desc = "References", remap = false },
+                { "<Leader>lrn", "<cmd>lua vim.lsp.buf.rename()<CR>", buffer = bufnr, desc = "Rename", remap = false },
                 { "<Leader>lsig", "<cmd>lua vim.lsp.buf.signature_help()<CR>", buffer = bufnr, desc = "Signature Help", remap = false },
                 { "<Leader>lt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", buffer = bufnr, desc = "Type Definition", remap = false },
                 { "<Leader>d[", "<cmd>lua vim.diagnostic.goto_prev()<CR>", buffer = bufnr, desc = "Go to previous diagnostic", remap = false },
