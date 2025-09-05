@@ -136,16 +136,14 @@ opt.listchars = {
   precedes = '«',
   nbsp = '%',
 }
--- Always display statusline.
-opt.laststatus = 2
+-- Always display statusline but only last one.
+opt.laststatus = 3
 -- Height of command line.
 opt.cmdheight = 1
 -- Not show command on statusline.
 -- set noshowcmd
 -- Show title.
-opt.title = true
--- Title length.
-opt.titlelen = 95
+opt.title = false
 
 opt.showtabline = 2
 
