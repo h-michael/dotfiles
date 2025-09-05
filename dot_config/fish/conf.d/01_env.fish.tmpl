@@ -1,117 +1,118 @@
 {{ if eq .chezmoi.os "darwin" }}
 # "/opt/homebrew/bin/brew shellenv | source" doesn't use fish_add_path.
 # So add Homebrew paths manually.
-set --global --export HOMEBREW_PREFIX "/opt/homebrew";
+set --global --export HOMEBREW_PREFIX /opt/homebrew
+
 {{ end }}
 
 if [ -z $TMUX ]
-  init-ssh-agent
+    init-ssh-agent
 
-  # XDG Base Directory
-  set -gx XDG_CONFIG_HOME $HOME/.config
-  set -gx XDG_CACHE_HOME $HOME/.cache
-  set -gx XDG_DATA_HOME $HOME/.local/share
-  set -gx XDG_CONFIG_DIRS /etc/xdg
-  set -gx XDG_DATA_DIRS /usr/local/share:/usr/share
+    # XDG Base Directory
+    set -gx XDG_CONFIG_HOME $HOME/.config
+    set -gx XDG_CACHE_HOME $HOME/.cache
+    set -gx XDG_DATA_HOME $HOME/.local/share
+    set -gx XDG_CONFIG_DIRS /etc/xdg
+    set -gx XDG_DATA_DIRS /usr/local/share:/usr/share
 
-  set -gx RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgreprc
+    set -gx RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgreprc
 
-  # LANGUAGE must be set by en_US
-  set -gx LANGUAGE en_US.UTF-8
-  set -gx LANG $LANGUAGE
-  set -gx LC_ALL $LANGUAGE
-  set -gx LC_CTYPE $LANGUAGE
+    # LANGUAGE must be set by en_US
+    set -gx LANGUAGE en_US.UTF-8
+    set -gx LANG $LANGUAGE
+    set -gx LC_ALL $LANGUAGE
+    set -gx LC_CTYPE $LANGUAGE
 
-  # for Alacritty
-  set -gx COLORTERM 'truecolor'
+    # for Alacritty
+    set -gx COLORTERM truecolor
 
-  # Editor
-  set -gx EDITOR nvim
-  set -gx CVSEDITOR $EDITOR
-  set -gx SVN_EDITOR $EDITOR
-  set -gx GIT_EDITOR $EDITOR
+    # Editor
+    set -gx EDITOR nvim
+    set -gx CVSEDITOR $EDITOR
+    set -gx SVN_EDITOR $EDITOR
+    set -gx GIT_EDITOR $EDITOR
 
-  # Pager
-  # set -x PAGER page
-  set -gx PAGER less
+    # Pager
+    # set -x PAGER page
+    set -gx PAGER less
 
-  # Less
-  set -gx LESSCHARSET 'utf-8'
-  set -gx LESS '-R'
-  set -gx LESSOPEN '|lessfilter %s'
+    # Less
+    set -gx LESSCHARSET utf-8
+    set -gx LESS -R
+    set -gx LESSOPEN '|lessfilter %s'
 
-  # LESS man page colors (makes Man pages more readable).
-  set -gx LESS_TERMCAP_mb (printf "\033[01;31m")
-  set -gx LESS_TERMCAP_md (printf "\033[01;31m")
-  set -gx LESS_TERMCAP_me (printf "\033[0m")
-  set -gx LESS_TERMCAP_se (printf "\033[0m")
-  set -gx LESS_TERMCAP_so (printf "\033[01;44;33m")
-  set -gx LESS_TERMCAP_ue (printf "\033[0m")
-  set -gx LESS_TERMCAP_us (printf "\033[01;32m")
+    # LESS man page colors (makes Man pages more readable).
+    set -gx LESS_TERMCAP_mb (printf "\033[01;31m")
+    set -gx LESS_TERMCAP_md (printf "\033[01;31m")
+    set -gx LESS_TERMCAP_me (printf "\033[0m")
+    set -gx LESS_TERMCAP_se (printf "\033[0m")
+    set -gx LESS_TERMCAP_so (printf "\033[01;44;33m")
+    set -gx LESS_TERMCAP_ue (printf "\033[0m")
+    set -gx LESS_TERMCAP_us (printf "\033[01;32m")
 
-  # ls command colors
-  set -gx CLICOLOR true
-  set -gx LSCOLORS exfxcxdxbxegedabagacad
-  set -gx LS_COLORS 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+    # ls command colors
+    set -gx CLICOLOR true
+    set -gx LSCOLORS exfxcxdxbxegedabagacad
+    set -gx LS_COLORS 'di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
 
-  set -gx INTERACTIVE_FILTER "fzf:peco:percol:gof:pick"
+    set -gx INTERACTIVE_FILTER "fzf:peco:percol:gof:pick"
 
-  # gtags
-  set -gx GTAGSCONF "$HOME/.globalrc"
-  set -gx GTAGSLIBPATH '/usr/lib/gtags'
-  set -gx GTAGSLABEL pygments
+    # gtags
+    set -gx GTAGSCONF "$HOME/.globalrc"
+    set -gx GTAGSLIBPATH /usr/lib/gtags
+    set -gx GTAGSLABEL pygments
 
-  [ -f ~/.secret ]; and source ~/.secret
+    [ -f ~/.secret ]; and source ~/.secret
 
-  {{ if eq .chezmoi.os "darwin" }}
-  set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/lib"
-  set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib"
-  set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/c++"
-  set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
-  set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include"
-  set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/opt/llvm/include"
-  set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include/boost"
-  {{ end }}
+    {{ if eq .chezmoi.os "darwin" }}
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/lib"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/c++"
+    set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/opt/llvm/include"
+    set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include/boost"
+    {{ end }}
 
-  # For Enpass
-  set -gx QT_AUTO_SCREEN_SCALE_FACTOR 0
+    # For Enpass
+    set -gx QT_AUTO_SCREEN_SCALE_FACTOR 0
 
-  set -gx SSH_KEY_PATH $HOME/.ssh/id_rsa
+    set -gx SSH_KEY_PATH $HOME/.ssh/id_rsa
 
-  if [ -n $SSH_CONNECTION ]
-    set -x EDITOR nvim
-  end
+    if [ -n $SSH_CONNECTION ]
+        set -x EDITOR nvim
+    end
 
-  # The next line updates PATH for the Google Cloud SDK.
-  if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
-    source "$HOME/google-cloud-sdk/path.fish.inc"
-  end
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
+        source "$HOME/google-cloud-sdk/path.fish.inc"
+    end
 
-  # The next line enables shell command completion for gcloud.
-  if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
-    source "$HOME/google-cloud-sdk/completion.fish.inc"
-  end
+    # The next line enables shell command completion for gcloud.
+    if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
+        source "$HOME/google-cloud-sdk/completion.fish.inc"
+    end
 
-  # https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth
-  set -gx CLOUDSDK_PYTHON_SITEPACKAGES 1
+    # https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth
+    set -gx CLOUDSDK_PYTHON_SITEPACKAGES 1
 
-  # Nvim
-  set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
-  set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
-  set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
+    # Nvim
+    set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
+    set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
+    set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
 
-  {{ if eq .chezmoi.os "darwin" }}
-  # for Golang
-  set -gx GOROOT $HOMEBREW_PREFIX/opt/go/libexec/
-  {{ end }}
+    {{ if eq .chezmoi.os "darwin" }}
+    # for Golang
+    set -gx GOROOT $HOMEBREW_PREFIX/opt/go/libexec/
+    {{ end }}
 
-  # CMake
-  set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
+    # CMake
+    set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
 
-  # Display
-  set -g theme_color_scheme gruvbox
-  set -g theme_display_docker_machine no
-  set -g theme_display_virtualenv no
+    # Display
+    set -g theme_color_scheme gruvbox
+    set -g theme_display_docker_machine no
+    set -g theme_display_virtualenv no
 
-  set -gx DENO_INSTALL $HOME/.deno
+    set -gx DENO_INSTALL $HOME/.deno
 end

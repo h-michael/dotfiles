@@ -2,7 +2,7 @@ function cargo-check-nowarn -d "Run cargo check with warnings suppressed via RUS
     set -l dir ''
     set -l args
 
-    if count $argv > 0
+    if count $argv >0
         # If the first argument is a directory, treat it as the working directory
         if test -d $argv[1]
             set dir $argv[1]
@@ -13,12 +13,12 @@ function cargo-check-nowarn -d "Run cargo check with warnings suppressed via RUS
     end
 
     if test -n "$dir"
-        pushd $dir > /dev/null
+        pushd $dir >/dev/null
     end
 
     env RUSTFLAGS='-Awarnings' cargo check $args
 
     if test -n "$dir"
-        popd > /dev/null
+        popd >/dev/null
     end
 end
