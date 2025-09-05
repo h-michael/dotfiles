@@ -1,0 +1,33 @@
+# Lefthook configuration
+# https://github.com/evilmartians/lefthook
+
+pre-commit:
+  parallel: true
+  commands:
+    fish-indent:
+      glob: "**/*.fish"
+      run: fish_indent -w {staged_files}
+      stage_fixed: true
+
+    stylua:
+      glob: "**/*.lua"
+      run: stylua {staged_files}
+      stage_fixed: true
+    
+    prettier:
+      glob: "**/*.{js,jsx,ts,tsx,json,md,yml,yaml,css,scss,html}"
+      run: npx prettier --write {staged_files}
+      stage_fixed: true
+    
+    taplo:
+      glob: "**/*.toml"
+      run: taplo fmt {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    chezmoi-diff:
+      run: chezmoi diff
+      skip:
+        - merge
+        - rebase
