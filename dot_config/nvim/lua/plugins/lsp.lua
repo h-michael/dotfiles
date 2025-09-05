@@ -78,6 +78,9 @@ return {
                   '_*'
                 }
               },
+              format = {
+                enable = false, -- Disable lua_ls formatter, use StyLua instead
+              },
             },
           },
         },
