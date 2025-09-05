@@ -8,7 +8,6 @@ for conf in "$__fish_config_dir"/conf.local.d/*.fish
     source $conf
 end
 
-
 {{ if eq .chezmoi.os "darwin" }}
 /opt/homebrew/bin/brew shellenv | source
 fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
@@ -16,42 +15,41 @@ fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
 
 # Haskell
 if [ -d "$HOME/.cabal/bin" ]
-  fish_add_path -m $HOME/.cabal/bin
+    fish_add_path -m $HOME/.cabal/bin
 end
 
 # Rust
 if [ -d "$HOME/.cargo/bin" ]
-  fish_add_path -m $HOME/.cargo/bin
+    fish_add_path -m $HOME/.cargo/bin
 end
 
 # Go
 if [ -d "$HOME/go/bin" ]
-  fish_add_path -m $HOME/go/bin
+    fish_add_path -m $HOME/go/bin
 end
-
 
 # Deno
 if [ -d "$HOME/.deno/bin" ]
-  fish_add_path -m $HOME/.deno/bin
+    fish_add_path -m $HOME/.deno/bin
 end
 
 # Lua
 if [ -d "$HOME/.luarocks/bin" ]
-  fish_add_path -m $HOME/.luarocks/bin
+    fish_add_path -m $HOME/.luarocks/bin
 end
 
 # Python
 if [ -d "$HOME/.poetry/bin" ]
-  fish_add_path -m $HOME/.poetry/bin
+    fish_add_path -m $HOME/.poetry/bin
 end
 
 # Kubernetes
 if [ -d "$HOME/.krew/bin" ]
-  fish_add_path -m $HOME/.krew/bin
+    fish_add_path -m $HOME/.krew/bin
 end
 
-if [ -d "/usr/local/opt/gettext/bin" ]
-  fish_add_path -m /usr/local/opt/gettext/bin
+if [ -d /usr/local/opt/gettext/bin ]
+    fish_add_path -m /usr/local/opt/gettext/bin
 end
 
 fish_add_path -m $HOME/.local/bin
@@ -72,8 +70,9 @@ set -gx NPM_CONFIG_PREFIX $XDG_DATA_HOME/npm-global
 fish_add_path -m $NPM_CONFIG_PREFIX/bin
 
 # should execute the end of the config.fish
-if ! command -v starship &> /dev/null; then
-  curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
+if ! command -v starship &>/dev/null
+    then
+    curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
 end
 
 starship init fish | source
