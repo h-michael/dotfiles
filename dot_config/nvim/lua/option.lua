@@ -39,13 +39,13 @@ opt.modeline = false
 opt.modelineexpr = false
 
 -- Use clipboard register.
-opt.clipboard:append({ "unnamedplus" })
+opt.clipboard:append({ 'unnamedplus' })
 
 -- Enable backspace delete indent and newline.
-opt.backspace = { "indent", "eol", "start" }
+opt.backspace = { 'indent', 'eol', 'start' }
 
 -- Highlight <>.
-opt.matchpairs:append("<:>")
+opt.matchpairs:append('<:>')
 
 -- Display another buffer when current buffer isn't saved.
 opt.hidden = true
@@ -62,17 +62,17 @@ opt.lazyredraw = true
 -- opt.foldmethod = 'expr'
 -- opt.foldmethod = 'marker'
 -- Show folding level.
-opt.foldcolumn = "1"
+opt.foldcolumn = '1'
 --opt.fillchars = { vert: '|' }
-opt.commentstring = "%s"
+opt.commentstring = '%s'
 
 -- Use vimgrep.
 -- set grepprg=internal
 -- Use grep.
-opt.grepprg = "grep -inH"
+opt.grepprg = 'grep -inH'
 
 -- Exclude = from isfilename.
-opt.isfname:remove("=")
+opt.isfname:remove('=')
 
 -- Keymapping timeout.
 --opt.timeout timeoutlen=3000 = ttimeoutlen=100
@@ -83,24 +83,24 @@ opt.isfname:remove("=")
 -- Don't create backup.
 opt.writebackup = false
 opt.backup = false
-opt.backupdir:remove(".")
+opt.backupdir:remove('.')
 
 opt.swapfile = true
-opt.directory:remove(".")
+opt.directory:remove('.')
 
 -- Set undofile.
 opt.undofile = true
-local undo_dir = vim.fn.stdpath("data") .. "/undo"
+local undo_dir = vim.fn.stdpath('data') .. '/undo'
 if not vim.loop.fs_stat(undo_dir) then
-	vim.fn.mkdir(undo_dir, "p")
+  vim.fn.mkdir(undo_dir, 'p')
 end
 opt.undodir = undo_dir
 
 -- Enable virtualedit in visual block mode.
-opt.virtualedit = "block"
+opt.virtualedit = 'block'
 
 -- opt.keyword = help.
-opt.keywordprg = ":help"
+opt.keywordprg = ':help'
 
 -- Disable paste.
 --autocmd MyAutoCmd InsertLeave *
@@ -109,18 +109,18 @@ opt.keywordprg = ":help"
 
 -- Update diff.
 --autocmd MyAutoCmd InsertLeave * if &l:diff | diffupdate | endif
-opt.diffopt = "internal,algorithm:patience,indent-heuristic"
+opt.diffopt = 'internal,algorithm:patience,indent-heuristic'
 
 -- Use autofmt.
 --opt.formatexpr = autofmt#japanese#formatexpr()
 
-opt.helplang = { "en", "ja" }
+opt.helplang = { 'en', 'ja' }
 
 -- Default home directory.
 vim.t.cwd = vim.fn.getcwd()
 
 -- Spell check
-opt.spelllang = { "en", "cjk" }
+opt.spelllang = { 'en', 'cjk' }
 
 --opt.nofixeol = true
 
@@ -130,11 +130,11 @@ opt.spelllang = { "en", "cjk" }
 
 opt.list = true
 opt.listchars = {
-	tab = "▸ ",
-	trail = "-",
-	extends = "»",
-	precedes = "«",
-	nbsp = "%",
+  tab = '▸ ',
+  trail = '-',
+  extends = '»',
+  precedes = '«',
+  nbsp = '%',
 }
 -- Always display statusline but only last one.
 opt.laststatus = 3
@@ -149,30 +149,30 @@ opt.showtabline = 2
 
 -- Turn down a long line appointed in 'breakat'
 opt.linebreak = true
-opt.showbreak = "\\"
-opt.breakat = "\\	;:,!?"
+opt.showbreak = '\\'
+opt.breakat = '\\	;:,!?'
 
 -- Wrap conditions.
-opt.whichwrap = "h,l,<,>,[,],~"
+opt.whichwrap = 'h,l,<,>,[,],~'
 opt.breakindent = true
 opt.wrap = true
 
-opt.shortmess = "cFIoOWT"
+opt.shortmess = 'cFIoOWT'
 
 -- Disable bell.
 --opt.t_vb = false
 opt.visualbell = false
-opt.belloff = "all"
+opt.belloff = 'all'
 
 opt.wildmenu = true
-opt.wildmode = "full"
+opt.wildmode = 'full'
 
-opt.wildoptions = "pum"
+opt.wildoptions = 'pum'
 -- Can supplement a tag in a command-line.
-opt.wildoptions:append("tagfile")
+opt.wildoptions:append('tagfile')
 
 -- Ignore compiled files
-opt.wildignore = { "*.o", "*~", "*.pyc", "*/.git/*", "*/.hg/*", "*/.svn/*", "*/.DS_Store" }
+opt.wildignore = { '*.o', '*~', '*.pyc', '*/.git/*', '*/.hg/*', '*/.svn/*', '*/.DS_Store' }
 
 -- Increase history amount.
 opt.history = 10000
@@ -180,11 +180,11 @@ opt.history = 10000
 opt.showfulltag = true
 
 -- Completion setting.
-opt.completeopt = "menuone"
-opt.completeopt:append("noinsert")
+opt.completeopt = 'menuone'
+opt.completeopt:append('noinsert')
 
 -- Don't complete from other buffer.
-opt.complete = "."
+opt.complete = '.'
 
 -- opt.popup menu max = height.
 opt.pumheight = 20
@@ -224,41 +224,41 @@ opt.helpheight = 12
 opt.ttyfast = true
 
 -- When a line is long, do not omit it in @.
-opt.display = "lastline"
+opt.display = 'lastline'
 
 -- Display an invisible letter with hex format.
 --set display+=uhex
 
 -- For conceal.
 opt.conceallevel = 2
-opt.concealcursor = "niv"
+opt.concealcursor = 'niv'
 
 --opt.colorcolumn = '79'
 
-api.nvim_set_var("netrw_browse_split", 4)
+api.nvim_set_var('netrw_browse_split', 4)
 
 opt.termguicolors = true
 --let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 --let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 opt.showmode = false
-opt.tags:append(".git/tags;", "codex.tags;")
+opt.tags:append('.git/tags;', 'codex.tags;')
 
-opt.inccommand = "split"
+opt.inccommand = 'split'
 
-opt.signcolumn = "auto"
+opt.signcolumn = 'auto'
 
-api.nvim_set_var("loaded_python_provider", false)
-api.nvim_set_var("loaded_python3_provider", false)
-api.nvim_set_var("loaded_node_provider", false)
-api.nvim_set_var("loaded_ruby_provider", false)
+api.nvim_set_var('loaded_python_provider', false)
+api.nvim_set_var('loaded_python3_provider', false)
+api.nvim_set_var('loaded_node_provider', false)
+api.nvim_set_var('loaded_ruby_provider', false)
 
 vim.diagnostic.config({
-	virtual_text = {
-		-- virt_text_pos = 'eol'
-		virt_text_pos = "eol_right_align",
-		-- virt_text_pos = 'overlay'
-		-- virt_text_pos = 'right_align'
-		-- virt_text_pos = 'inline'
-	},
+  virtual_text = {
+    -- virt_text_pos = 'eol'
+    virt_text_pos = 'eol_right_align',
+    -- virt_text_pos = 'overlay'
+    -- virt_text_pos = 'right_align'
+    -- virt_text_pos = 'inline'
+  },
 })
