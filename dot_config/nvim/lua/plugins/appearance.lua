@@ -139,6 +139,12 @@ return {
   },
   {
     'uga-rosa/ccc.nvim',
-    cmd = { 'CccPick', 'CccConvert', 'CccHighlighterToggle', 'CccHighlighterEnable', 'CccHighlighterDisable' },
+    cmd = {
+      'CccPick',
+      'CccConvert',
+      'CccHighlighterToggle',
+      'CccHighlighterEnable',
+      'CccHighlighterDisable',
+    },
   },
 }

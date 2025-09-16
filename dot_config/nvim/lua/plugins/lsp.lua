@@ -9,120 +9,39 @@ return {
 
       local on_attach = function(_client, bufnr)
         local wk = require('which-key')
+        -- stylua: ignore start
         wk.add({
-          { '<Leader>l', buffer = bufnr, group = 'LSP', remap = false },
-          {
-            '<Leader>lds',
-            '<cmd>lua vim.lsp.buf.document_symbol()<CR>',
-            buffer = bufnr,
-            desc = 'Document Symbols',
-            remap = false,
-          },
-          {
-            '<Leader>la',
-            '<cmd>lua vim.lsp.buf.code_action()<CR>',
-            buffer = bufnr,
-            desc = 'Code Action',
-            remap = false,
-          },
-          {
-            '<Leader>ld',
-            '<cmd>lua vim.lsp.buf.definition()<CR>',
-            buffer = bufnr,
-            desc = 'Go to Definition',
-            remap = false,
-          },
-          {
-            '<Leader>le',
-            '<cmd>lua vim.diagnostic.open_float()<CR>',
-            buffer = bufnr,
-            desc = 'Show Diagnostic',
-            remap = false,
-          },
-          {
-            '<Leader>lf',
-            '<cmd>lua vim.lsp.buf.format({ async = true })<CR>',
-            buffer = bufnr,
-            desc = 'Format',
-            remap = false,
-          },
-          {
-            '<Leader>lh',
-            '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>',
-            buffer = bufnr,
-            desc = 'Inlay Hints',
-            remap = false,
-          },
-          -- overrides the default keybinding to change the border to rounded
-          {
-            'K',
-            "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>",
-            buffer = bufnr,
-            desc = 'Hover',
-            remap = false,
-          },
-          {
-            '<Leader>li',
-            '<cmd>lua vim.lsp.buf.implementation()<CR>',
-            buffer = bufnr,
-            desc = 'Go to Implementation',
-            remap = false,
-          },
-          {
-            '<Leader>lrf',
-            '<cmd>lua vim.lsp.buf.references()<CR>',
-            buffer = bufnr,
-            desc = 'References',
-            remap = false,
-          },
-          {
-            '<Leader>lrn',
-            '<cmd>lua vim.lsp.buf.rename()<CR>',
-            buffer = bufnr,
-            desc = 'Rename',
-            remap = false,
-          },
-          {
-            '<Leader>lsig',
-            '<cmd>lua vim.lsp.buf.signature_help()<CR>',
-            buffer = bufnr,
-            desc = 'Signature Help',
-            remap = false,
-          },
-          {
-            '<Leader>lt',
-            '<cmd>lua vim.lsp.buf.type_definition()<CR>',
-            buffer = bufnr,
-            desc = 'Type Definition',
-            remap = false,
-          },
-          {
-            '<Leader>d[',
-            '<cmd>lua vim.diagnostic.goto_prev()<CR>',
-            buffer = bufnr,
-            desc = 'Go to previous diagnostic',
-            remap = false,
-          },
-          {
-            '<Leader>d]',
-            '<cmd>lua vim.diagnostic.goto_next()<CR>',
-            buffer = bufnr,
-            desc = 'Go to next diagnostic',
-            remap = false,
-          },
-          {
-            '<Leader>ldl',
-            '<cmd>Telescope diagnostics<CR>',
-            buffer = bufnr,
-            desc = 'List Diagnostics',
-            remap = false,
-          },
+          { '<Leader>l', buffer = bufnr, group = 'LSP' },
+          { '<Leader>lds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', buffer = bufnr, desc = 'Document Symbols' },
+          { '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', buffer = bufnr, desc = 'Code Action' },
+          { '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', buffer = bufnr, desc = 'Go to Definition' },
+          { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
+          { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
+          { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
+          { 'K', "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = 'Hover' },
+          { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
+          { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
+          { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
+          { '<Leader>lsig', '<cmd>lua vim.lsp.buf.signature_help()<CR>', buffer = bufnr, desc = 'Signature Help' },
+          { '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', buffer = bufnr, desc = 'Type Definition' },
+          { '<Leader>d[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', buffer = bufnr, desc = 'Go to previous diagnostic' },
+          { '<Leader>d]', '<cmd>lua vim.diagnostic.goto_next()<CR>', buffer = bufnr, desc = 'Go to next diagnostic' },
+          { '<Leader>ldl', '<cmd>Telescope diagnostics<CR>', buffer = bufnr, desc = 'List Diagnostics' },
         })
+        -- stylua: ignore end
       end
 
-      local lsp_flags = {
-        debounce_text_changes = 150,
-      }
+      vim.lsp.config('*', {
+        on_attach = on_attach,
+        flags = {
+          debounce_text_changes = 150,
+        },
+        capabilities = vim.tbl_deep_extend(
+          'force',
+          vim.lsp.protocol.make_client_capabilities(),
+          require('cmp_nvim_lsp').default_capabilities()
+        ),
+      })
 
       local server_configs = {
         clangd = {
@@ -176,18 +95,11 @@ return {
         },
       }
 
-      local common_config = {
-        on_attach = on_attach,
-        flags = lsp_flags,
-        capabilities = vim.tbl_deep_extend(
-          'force',
-          vim.lsp.protocol.make_client_capabilities(),
-          require('cmp_nvim_lsp').default_capabilities()
-        ),
-      }
-
       for server_name, config in pairs(server_configs) do
-        vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
+        --vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
+        vim.lsp.config(server_name, config)
+        --print("enable LSP server: " .. server_name)
+        --print("config: " .. vim.inspect(config))
         vim.lsp.enable(server_name)
       end
     end,
@@ -222,10 +134,12 @@ return {
       require('aerial').setup({
         on_attach = function(bufnr)
           local wk = require('which-key')
+          -- stylua: ignore start
           wk.add({
-            { '{', '<cmd>AerialPrev<CR>', desc = 'Aerial Prev', buffer = bufnr, remap = false },
-            { '}', '<cmd>AerialNext<CR>', desc = 'Aerial Next', buffer = bufnr, remap = false },
+            { '{', '<cmd>AerialPrev<CR>', desc = 'Aerial Prev', buffer = bufnr },
+            { '}', '<cmd>AerialNext<CR>', desc = 'Aerial Next', buffer = bufnr },
           })
+          -- stylua: ignore end
         end,
         backends = { 'lsp', 'treesitter', 'markdown', 'asciidoc', 'man' },
         layout = {
@@ -252,9 +166,11 @@ return {
         },
       })
       local wk = require('which-key')
+      -- stylua: ignore start
       wk.add({
-        { '<Leader>lo', '<cmd>AerialToggle!<CR>', desc = 'Toggle Aerial (Outline)', remap = false },
+        { '<Leader>lo', '<cmd>AerialToggle!<CR>', desc = 'Toggle Aerial (Outline)' },
       })
+      -- stylua: ignore end
     end,
   },
   {
@@ -282,24 +198,12 @@ return {
         delay = 1000,
       })
       local wk = require('which-key')
+      -- stylua: ignore start
       wk.add({
-        {
-          ']]',
-          function()
-            require('illuminate').goto_next_reference(false)
-          end,
-          desc = 'Next Reference',
-          remap = false,
-        },
-        {
-          '[[',
-          function()
-            require('illuminate').goto_prev_reference(false)
-          end,
-          desc = 'Prev Reference',
-          remap = false,
-        },
+        { ']]', function() require('illuminate').goto_next_reference(false) end, desc = 'Next Reference' },
+        { '[[', function() require('illuminate').goto_prev_reference(false) end, desc = 'Prev Reference' },
       })
+      -- stylua: ignore end
     end,
   },
   {
@@ -310,17 +214,11 @@ return {
       require('inc_rename').setup({})
 
       local wk = require('which-key')
+      -- stylua: ignore start
       wk.add({
-        {
-          '<Leader>lrn',
-          function()
-            return ':IncRename ' .. vim.fn.expand('<cword>')
-          end,
-          desc = 'Rename (Incremental)',
-          remap = false,
-          expr = true,
-        },
+        { '<Leader>lrn', function() return ':IncRename ' .. vim.fn.expand('<cword>') end, desc = 'Rename (Incremental)', expr = true },
       })
+      -- stylua: ignore end
     end,
   },
   {
@@ -349,215 +247,40 @@ return {
         server = {
           on_attach = function(_client, bufnr)
             local wk = require('which-key')
+            -- stylua: ignore start
             wk.add({
-              { '<Leader>l', buffer = bufnr, group = 'LSP', remap = false },
-              {
-                '<Leader>lds',
-                '<cmd>lua vim.lsp.buf.document_symbol()<CR>',
-                buffer = bufnr,
-                desc = 'Document Symbols',
-                remap = false,
-              },
-              {
-                '<Leader>la',
-                '<cmd>lua vim.lsp.buf.code_action()<CR>',
-                buffer = bufnr,
-                desc = 'Code Action',
-                remap = false,
-              },
-              {
-                '<Leader>ld',
-                '<cmd>lua vim.lsp.buf.definition()<CR>',
-                buffer = bufnr,
-                desc = 'Go to Definition',
-                remap = false,
-              },
-              {
-                '<Leader>le',
-                '<cmd>lua vim.diagnostic.open_float()<CR>',
-                buffer = bufnr,
-                desc = 'Show Diagnostic',
-                remap = false,
-              },
-              {
-                '<Leader>lf',
-                '<cmd>lua vim.lsp.buf.format({ async = true })<CR>',
-                buffer = bufnr,
-                desc = 'Format',
-                remap = false,
-              },
-              {
-                '<Leader>lh',
-                '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>',
-                buffer = bufnr,
-                desc = 'Inlay Hints',
-                remap = false,
-              },
-              -- overrides the default keybinding to change the border to rounded
-              {
-                'K',
-                "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>",
-                buffer = bufnr,
-                desc = 'Hover',
-                remap = false,
-              },
-              {
-                '<Leader>li',
-                '<cmd>lua vim.lsp.buf.implementation()<CR>',
-                buffer = bufnr,
-                desc = 'Go to Implementation',
-                remap = false,
-              },
-              {
-                '<Leader>lrf',
-                '<cmd>lua vim.lsp.buf.references()<CR>',
-                buffer = bufnr,
-                desc = 'References',
-                remap = false,
-              },
-              {
-                '<Leader>lrn',
-                '<cmd>lua vim.lsp.buf.rename()<CR>',
-                buffer = bufnr,
-                desc = 'Rename',
-                remap = false,
-              },
-              {
-                '<Leader>lsig',
-                '<cmd>lua vim.lsp.buf.signature_help()<CR>',
-                buffer = bufnr,
-                desc = 'Signature Help',
-                remap = false,
-              },
-              {
-                '<Leader>lt',
-                '<cmd>lua vim.lsp.buf.type_definition()<CR>',
-                buffer = bufnr,
-                desc = 'Type Definition',
-                remap = false,
-              },
-              {
-                '<Leader>d[',
-                '<cmd>lua vim.diagnostic.goto_prev()<CR>',
-                buffer = bufnr,
-                desc = 'Go to previous diagnostic',
-                remap = false,
-              },
-              {
-                '<Leader>d]',
-                '<cmd>lua vim.diagnostic.goto_next()<CR>',
-                buffer = bufnr,
-                desc = 'Go to next diagnostic',
-                remap = false,
-              },
-              {
-                '<Leader>ldl',
-                '<cmd>Telescope diagnostics<CR>',
-                buffer = bufnr,
-                desc = 'List Diagnostics',
-                remap = false,
-              },
-
-              -- overrides the default keybinding to change the border to rounded
-              {
-                '<Leader>lrh',
-                "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>",
-                desc = 'Hover Actions',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>la',
-                "<cmd>lua vim.cmd.RustLsp('codeAction')<CR>",
-                desc = 'Code Action',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lem',
-                "<cmd>lua vim.cmd.RustLsp('expandMacro')<CR>",
-                desc = 'Expand macros recursively',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lrm',
-                "<cmd>lua vim.cmd.RustLsp('rebuildProcMacros')<CR>",
-                desc = 'Rebuild proc macro',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lmu',
-                "<cmd>lua vim.cmd.RustLsp {'moveItem', 'up'}<CR>",
-                desc = 'Move item up',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lmd',
-                "<cmd>lua vim.cmd.RustLsp {'moveItem', 'down'}<CR>",
-                desc = 'Move item down',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lee',
-                "<cmd>lua vim.cmd.RustLsp('explainError')<CR>",
-                desc = 'Explain error',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lrd',
-                "<cmd>lua vim.cmd.RustLsp('renderDiagnostic')<CR>",
-                desc = 'Render diagnostics',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>ljd',
-                "<cmd>lua vim.cmd.RustLsp('relatedDiagnostics')<CR>",
-                desc = 'Jump to related diagnostics',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>loc',
-                "<cmd>lua vim.cmd.RustLsp('openCargo')<CR>",
-                desc = 'Open Cargo.toml',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lod',
-                "<cmd>lua vim.cmd.RustLsp('openDocs')<CR>",
-                desc = 'Open docs.rs',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lpm',
-                "<cmd>lua vim.cmd.RustLsp('parentModule')<CR>",
-                desc = 'Parent module',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lcg',
-                "<cmd>lua vim.cmd.RustLsp {'crateGraph', '[backend]', '[output]'}<CR>",
-                desc = 'Crate graph',
-                buffer = bufnr,
-                remap = false,
-              },
-              {
-                '<Leader>lst',
-                "<cmd>lua vim.cmd.RustLsp('syntaxTree')<CR>",
-                desc = 'View syntax tree',
-                buffer = bufnr,
-                remap = false,
-              },
+              { '<Leader>l', buffer = bufnr, group = 'LSP' },
+              { '<Leader>lds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', buffer = bufnr, desc = 'Document Symbols' },
+              { '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', buffer = bufnr, desc = 'Code Action' },
+              { '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', buffer = bufnr, desc = 'Go to Definition' },
+              { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
+              { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
+              { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
+              { 'K', "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = 'Hover' },
+              { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
+              { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
+              { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
+              { '<Leader>lsig', '<cmd>lua vim.lsp.buf.signature_help()<CR>', buffer = bufnr, desc = 'Signature Help' },
+              { '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', buffer = bufnr, desc = 'Type Definition' },
+              { '<Leader>d[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', buffer = bufnr, desc = 'Go to previous diagnostic' },
+              { '<Leader>d]', '<cmd>lua vim.diagnostic.goto_next()<CR>', buffer = bufnr, desc = 'Go to next diagnostic' },
+              { '<Leader>ldl', '<cmd>Telescope diagnostics<CR>', buffer = bufnr, desc = 'List Diagnostics' },
+              { '<Leader>lrh', "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>", buffer = bufnr, desc = 'Hover Actions' },
+              { '<Leader>la', "<cmd>lua vim.cmd.RustLsp('codeAction')<CR>", buffer = bufnr, desc = 'Code Action' },
+              { '<Leader>lem', "<cmd>lua vim.cmd.RustLsp('expandMacro')<CR>", buffer = bufnr, desc = 'Expand macros recursively' },
+              { '<Leader>lrm', "<cmd>lua vim.cmd.RustLsp('rebuildProcMacros')<CR>", buffer = bufnr, desc = 'Rebuild proc macro' },
+              { '<Leader>lmu', "<cmd>lua vim.cmd.RustLsp {'moveItem', 'up'}<CR>", buffer = bufnr, desc = 'Move item up' },
+              { '<Leader>lmd', "<cmd>lua vim.cmd.RustLsp {'moveItem', 'down'}<CR>", buffer = bufnr, desc = 'Move item down' },
+              { '<Leader>lee', "<cmd>lua vim.cmd.RustLsp('explainError')<CR>", buffer = bufnr, desc = 'Explain error' },
+              { '<Leader>lrd', "<cmd>lua vim.cmd.RustLsp('renderDiagnostic')<CR>", buffer = bufnr, desc = 'Render diagnostics' },
+              { '<Leader>ljd', "<cmd>lua vim.cmd.RustLsp('relatedDiagnostics')<CR>", buffer = bufnr, desc = 'Jump to related diagnostics' },
+              { '<Leader>loc', "<cmd>lua vim.cmd.RustLsp('openCargo')<CR>", buffer = bufnr, desc = 'Open Cargo.toml' },
+              { '<Leader>lod', "<cmd>lua vim.cmd.RustLsp('openDocs')<CR>", buffer = bufnr, desc = 'Open docs.rs' },
+              { '<Leader>lpm', "<cmd>lua vim.cmd.RustLsp('parentModule')<CR>", buffer = bufnr, desc = 'Parent module' },
+              { '<Leader>lcg', "<cmd>lua vim.cmd.RustLsp {'crateGraph', '[backend]', '[output]'}<CR>", buffer = bufnr, desc = 'Crate graph' },
+              { '<Leader>lst', "<cmd>lua vim.cmd.RustLsp('syntaxTree')<CR>", buffer = bufnr, desc = 'View syntax tree' },
             })
+            -- stylua: ignore end
           end,
           default_settings = {
             -- https://rust-analyzer.github.io/book/configuration
