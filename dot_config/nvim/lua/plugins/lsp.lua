@@ -105,10 +105,7 @@ return {
     end,
   },
   {
-    -- https://github.com/folke/trouble.nvim/pull/656
-    --'folke/trouble.nvim',
-    'h-michael/trouble.nvim',
-    branch = 'fix/decoration-provider-api',
+    'folke/trouble.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     cmd = 'Trouble',
     keys = {
