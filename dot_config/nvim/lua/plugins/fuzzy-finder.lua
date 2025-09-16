@@ -54,80 +54,27 @@ return {
 
       local wk = require('which-key')
 
+      -- stylua: ignore start
       wk.add({
-        { '<Leader>f', group = 'Telescope', remap = false },
-        {
-          '<Leader>f/',
-          function()
-            builtin.current_buffer_fuzzy_find({ previewer = false })
-          end,
-          desc = 'Fuzzy find in buffer',
-          remap = false,
-        },
-        {
-          '<Leader>fb',
-          function()
-            builtin.buffers()
-          end,
-          desc = 'Switch buffer',
-          remap = false,
-        },
-        {
-          '<Leader>fcd',
-          function()
-            builtin.find_files({ cwd = vim.fn.expand('%:p:h') })
-          end,
-          desc = "Find file in buffer's directory",
-          remap = false,
-        },
-        {
-          '<Leader>fw',
-          function()
-            builtin.grep_string()
-          end,
-          desc = 'Grep string under cursor',
-          remap = false,
-        },
-        {
-          '<Leader>ff',
-          function()
-            builtin.find_files()
-          end,
-          desc = 'Find file',
-          remap = false,
-        },
-        {
-          '<Leader>fpf',
-          function()
-            builtin.find_files({ cwd = vim.fn.getcwd() })
-          end,
-          desc = 'Find file in project root',
-          remap = false,
-        },
-        {
-          '<Leader>frg',
-          function()
-            builtin.live_grep()
-          end,
-          desc = 'Live grep project',
-          remap = false,
-        },
-        {
-          '<Leader>ft',
-          function()
-            builtin.tags()
-          end,
-          desc = 'Find tag',
-          remap = false,
-        },
+        { '<Leader>f', group = 'Telescope' },
+        { '<Leader>f/', function() builtin.current_buffer_fuzzy_find({ previewer = false }) end, desc = 'Fuzzy find in buffer' },
+        { '<Leader>fb', function() builtin.buffers() end, desc = 'Switch buffer' },
+        { '<Leader>fcd', function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end, desc = "Find file in buffer's directory" },
+        { '<Leader>fw', function() builtin.grep_string() end, desc = 'Grep string under cursor' },
+        { '<Leader>ff', function() builtin.find_files() end, desc = 'Find file' },
+        { '<Leader>fpf', function() builtin.find_files({ cwd = vim.fn.getcwd() }) end, desc = 'Find file in project root' },
+        { '<Leader>frg', function() builtin.live_grep() end, desc = 'Live grep project' },
+        { '<Leader>ft', function() builtin.tags() end, desc = 'Find tag' },
       })
+      -- stylua: ignore end
     end,
   },
   {
     'ibhagwan/fzf-lua',
     enabled = false,
     config = function()
-      require('fzf-lua').register_ui_select()
+      local fzf_lua = require('fzf-lua')
+      fzf_lua.register_ui_select()
 
       local api = vim.api
       api.nvim_create_user_command('Rg', function(_opts)
@@ -147,20 +94,17 @@ return {
         require('fzf-lua').files({ cwd = vim.fn.getcwd() })
       end, { bang = true, nargs = '?' })
       local opt = { noremap = true, silent = true }
-      vim.api.nvim_set_keymap(
-        'n',
-        '/',
-        "<cmd>lua require('fzf-lua').blines({ winopts = { preview = { hidden = 'hidden' } } })<CR>",
-        opt
-      )
-      vim.api.nvim_set_keymap('n', '<Leader>cw', "<cmd>lua require('fzf-lua').grep_cword()<CR>", opt)
+      -- stylua: ignore start
+      vim.api.nvim_set_keymap('n', '/', function() fzf_lua.blines({ winopts = { preview = { hidden = 'hidden' } } }) end, opt)
+      vim.api.nvim_set_keymap('n', '<Leader>cw', function() fzf_lua.grep_cword() end, opt)
       vim.api.nvim_set_keymap('n', '<Leader>cbd', ':CurrentBufferDir <CR>', opt)
       vim.api.nvim_set_keymap('n', '<Leader>pd', ':ProjectDir <CR>', opt)
       vim.api.nvim_set_keymap('n', '<Leader>rg', ':Rg <CR>', opt)
       vim.api.nvim_set_keymap('n', '<Leader>gr', ':Rg <CR>', opt)
-      vim.api.nvim_set_keymap('n', '<Leader>b', "<cmd>lua require('fzf-lua').buffers()<CR>", opt)
-      vim.api.nvim_set_keymap('n', '<Leader>f', "<cmd>lua require('fzf-lua').files()<CR>", opt)
-      vim.api.nvim_set_keymap('n', '<Leader>t', "<cmd>lua require('fzf-lua').tags()<CR>", opt)
+      vim.api.nvim_set_keymap('n', '<Leader>b', function() fzf_lua.buffers() end, opt)
+      vim.api.nvim_set_keymap('n', '<Leader>f', function() fzf_lua.files() end, opt)
+      vim.api.nvim_set_keymap('n', '<Leader>t', function() fzf_lua.tags() end, opt)
+      -- stylua: ignore end
     end,
   },
 }

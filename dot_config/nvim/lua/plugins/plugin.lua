@@ -177,7 +177,7 @@ return {
     event = 'VeryLazy',
     opts = {},
     keys = {
-      { '<C-h>', '<cmd>WhichKey<CR>', mode = 'n', desc = 'WhichKey' },
+      { '<C-h>', '<cmd>WhichKey<CR>', mode = 'n', desc = 'WhichKey' }, -- stylua: ignore
     },
   },
   {
