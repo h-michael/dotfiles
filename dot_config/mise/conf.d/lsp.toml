@@ -1,0 +1,9 @@
+[tools]
+lua-language-server = "latest"
+"go:golang.org/x/tools/gopls" = "latest"
+"npm:json-language-server" = "latest"
+"npm:pyright" = "latest"
+"npm:typescript-language-server" = "latest"
+"npm:yaml-language-server" = "latest"
+terraform-ls = "latest"
+rust-analyzer = "latest"
