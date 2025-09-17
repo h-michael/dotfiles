@@ -1,8 +1,3 @@
-abbr -a ls eza
-abbr -a cat bat
-abbr -a grep rg
-abbr -a find fd
-
 abbr -a lsplog "nvim $LSP_LOG_PATH"
 abbr -a rmlsplog "rm $LSP_LOG_PATH"
 
