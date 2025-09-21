@@ -232,6 +232,7 @@ return {
   {
     'mrcjkb/rustaceanvim',
     version = '^6',
+    lazy = false,
     ft = { 'rust' },
     config = function()
       -- https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#gear-advanced-configuration
