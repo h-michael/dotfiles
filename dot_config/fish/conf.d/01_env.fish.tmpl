@@ -8,6 +8,12 @@ set --global --export HOMEBREW_PREFIX /opt/homebrew
 if [ -z $TMUX ]
     init-ssh-agent
 
+
+    {{ if eq .chezmoi.os "linux" }}
+    # Rootless Docker
+    set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/docker.sock
+    {{ end }}
+
     # XDG Base Directory
     set -gx XDG_CONFIG_HOME $HOME/.config
     set -gx XDG_CACHE_HOME $HOME/.cache
