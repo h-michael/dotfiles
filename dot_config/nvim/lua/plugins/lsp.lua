@@ -44,6 +44,7 @@ return {
       })
 
       local server_configs = {
+        arduino_language_server = {},
         clangd = {
           filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
           cmd = { 'clangd', '--background-index' },
@@ -70,6 +71,7 @@ return {
             },
           },
         },
+        tombi = {},
         terraformls = {},
         buf_ls = {},
         lua_ls = {
