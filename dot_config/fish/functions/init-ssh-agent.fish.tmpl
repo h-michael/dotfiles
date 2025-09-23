@@ -1,7 +1,8 @@
 function init-ssh-agent -d "Ensure single ssh-agent instance and load keys"
     # Location to store environment file (safely cleared per session)
 
-    set -l AGENT_ENV $TMPDIR/ssh-agent-env.fish
+    set -l TMPDIR_VAR (test -n "$TMPDIR"; and echo "$TMPDIR"; or echo "/tmp")
+    set -l AGENT_ENV $TMPDIR_VAR/ssh-agent-env.fish
 
     # Load existing environment file if present
     if test -f $AGENT_ENV
@@ -21,7 +22,11 @@ function init-ssh-agent -d "Ensure single ssh-agent instance and load keys"
     # Add key only once if none are registered
     if not ssh-add -l >/dev/null 2>&1
 
+{{- if eq .chezmoi.os "darwin" }}
         ssh-add --apple-use-keychain
+{{- else }}
+        ssh-add
+{{- end }}
 
     end
 end
