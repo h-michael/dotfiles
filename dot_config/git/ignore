@@ -1,7 +1,7 @@
 .gitignore-local/
 venv
 .envrc
-mise.toml
+.mise.toml
 .solargraph.yml
 tags
 GPATH
