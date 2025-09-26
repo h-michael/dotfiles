@@ -1,6 +1,7 @@
 .gitignore-local/
 venv
 .envrc
+.direnv/
 .mise/config.toml
 .solargraph.yml
 tags
