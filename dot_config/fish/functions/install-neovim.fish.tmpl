@@ -5,7 +5,13 @@ function install-neovim -d "Install Neovim from source with optional debug mode"
     set CMAKE_BUILD_TYPE RelWithDebInfo
     set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
 
+{{- if eq .chezmoi.os "darwin" }}
     set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+{{- else }}
+    if command -sq cmake
+        set CMAKE_BIN (command -s cmake)
+    end
+{{- end }}
     set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
 
     if [ $argv ]
