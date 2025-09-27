@@ -13,7 +13,6 @@
 !.config/gh/config.yml
 !.config/ghostty
 !.config/git
-!.config/mise
 !.config/nvim
 .config/nvim/lazy-lock.json
 !.config/pip
