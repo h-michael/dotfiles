@@ -17,11 +17,11 @@ rls*.log
 .tool-versions
 compile_commands.json
 .DS_Store
-GEMINI.md
+GEMINI.local.md
 CLAUDE.local.md
 .geminiignore
 .serena/
 repomix.config.json
 .repomixignore
-**/.claude/
+.claude/settings.local.json
 .devcontainer/
