@@ -27,6 +27,7 @@
 !.config/gtk-3.0
 !.config/hypr
 !.config/rofi
+!.config/dunst
 
 # disallow all files in the directories
 !.config/systemd/
