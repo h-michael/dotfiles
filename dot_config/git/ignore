@@ -20,6 +20,7 @@ compile_commands.json
 .DS_Store
 GEMINI.local.md
 CLAUDE.local.md
+.mcp.json
 .geminiignore
 .serena/
 repomix.config.json
