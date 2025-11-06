@@ -2,24 +2,43 @@
 # https://github.com/evilmartians/lefthook
 
 pre-commit:
-  parallel: true
+  parallel: false # Run gitleaks first, then format in parallel
   commands:
+    # Security: Scan for secrets (highest priority)
+    gitleaks:
+      priority: 1
+      run: gitleaks protect --verbose --redact --staged
+      skip:
+        - merge
+        - rebase
+
+    # Code formatting (run in parallel after gitleaks)
     fish-indent:
+      priority: 10
       glob: "*.fish"
       run: fish_indent -w {staged_files}
       stage_fixed: true
 
     stylua:
+      priority: 10
       glob: "*.lua"
       run: stylua {staged_files}
       stage_fixed: true
 
     prettier:
+      priority: 10
       glob: "*.{js,jsx,ts,tsx,json,md,yml,yaml,css,scss,html}"
       run: npx prettier --write {staged_files}
       stage_fixed: true
 
     taplo:
+      priority: 10
       glob: "*.toml"
       run: taplo fmt {staged_files}
       stage_fixed: true
+
+pre-push:
+  commands:
+    # Final security check before push (scan entire repository)
+    gitleaks-full:
+      run: gitleaks detect --verbose --redact
