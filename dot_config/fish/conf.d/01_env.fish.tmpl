@@ -115,6 +115,9 @@ if [ -z $TMUX ]
     # CMake
     set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON
 
+    # Rust
+    set -gx SCCACHE_CACHE_SIZE "50G"
+
     # Display
     set -g theme_color_scheme gruvbox
     set -g theme_display_docker_machine no
