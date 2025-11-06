@@ -41,6 +41,44 @@ return {
     'nvim-lualine/lualine.nvim',
     event = { 'InsertEnter', 'CursorHold', 'FocusLost', 'BufRead', 'BufNewFile' },
     config = function()
+      -- CodeCompanion spinner component
+      local codecompanion_spinner = require('lualine.component'):extend()
+
+      codecompanion_spinner.processing = false
+      codecompanion_spinner.spinner_index = 1
+
+      local spinner_symbols = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
+      local spinner_symbols_len = 10
+
+      -- Initializer
+      function codecompanion_spinner:init(options)
+        codecompanion_spinner.super.init(self, options)
+
+        local group = vim.api.nvim_create_augroup('CodeCompanionHooks', {})
+
+        vim.api.nvim_create_autocmd({ 'User' }, {
+          pattern = 'CodeCompanionRequest*',
+          group = group,
+          callback = function(request)
+            if request.match == 'CodeCompanionRequestStarted' then
+              self.processing = true
+            elseif request.match == 'CodeCompanionRequestFinished' then
+              self.processing = false
+            end
+          end,
+        })
+      end
+
+      -- Function that runs every time statusline is updated
+      function codecompanion_spinner:update_status()
+        if self.processing then
+          self.spinner_index = (self.spinner_index % spinner_symbols_len) + 1
+          return spinner_symbols[self.spinner_index]
+        else
+          return nil
+        end
+      end
+
       require('lualine').setup({
         options = {
           icons_enabled = true,
@@ -55,7 +93,7 @@ return {
           always_divide_middle = true,
           globalstatus = true,
           refresh = {
-            statusline = 1000,
+            statusline = 100, -- Faster refresh for smooth spinner animation
             tabline = 1000,
             winbar = 1000,
           },
@@ -72,7 +110,7 @@ return {
           },
           lualine_b = { 'branch' },
           lualine_c = { 'filename' },
-          lualine_x = { 'diagnostics' },
+          lualine_x = { codecompanion_spinner, 'diagnostics' }, -- CodeCompanion processing spinner
           lualine_y = { 'encoding', 'fileformat', 'filetype' },
           lualine_z = { 'progress', 'location' },
         },
