@@ -31,7 +31,7 @@ return {
         -- stylua: ignore end
       end
 
-      vim.lsp.config('*', {
+      local common_config = {
         on_attach = on_attach,
         flags = {
           debounce_text_changes = 150,
@@ -41,7 +41,7 @@ return {
           vim.lsp.protocol.make_client_capabilities(),
           require('cmp_nvim_lsp').default_capabilities()
         ),
-      })
+      }
 
       local server_configs = {
         arduino_language_server = {},
@@ -98,10 +98,7 @@ return {
       }
 
       for server_name, config in pairs(server_configs) do
-        --vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
-        vim.lsp.config(server_name, config)
-        --print("enable LSP server: " .. server_name)
-        --print("config: " .. vim.inspect(config))
+        vim.lsp.config(server_name, vim.tbl_deep_extend('force', common_config, config))
         vim.lsp.enable(server_name)
       end
     end,
