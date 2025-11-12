@@ -10,7 +10,7 @@ function build-neovim -d "Build Neovim from source with optional debug mode"
 
     if [ $argv ]
         if [ $argv[1] = d ]
-            set LOG_DIR "$HOME/.local/share/nvim/logs"
+            set LOG_DIR "$XDG_DATA_HOME/nvim/logs"
             # set CMAKE_FLAGS "$CMAKE_FLAGS -DPREFER_LUA=ON"
             set CMAKE_BUILD_TYPE Debug
             set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DMIN_LOG_LEVEL=0"
