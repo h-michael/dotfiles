@@ -3,6 +3,22 @@ set fish_greeting
 
 set -gx SHELL "$__fish_bin_dir"/fish
 
+# XDG Base Directory (used in PATH setup below)
+set -gx XDG_CONFIG_HOME $HOME/.config
+set -gx XDG_CACHE_HOME $HOME/.cache
+set -gx XDG_DATA_HOME $HOME/.local/share
+set -gx XDG_CONFIG_DIRS /etc/xdg
+set -gx XDG_DATA_DIRS /usr/local/share:/usr/share
+
+# Add private functions directory to function path
+if not contains $__fish_config_dir/private-functions $fish_function_path
+    set -g fish_function_path $__fish_config_dir/private-functions $fish_function_path
+end
+
+{{ if eq .chezmoi.os "darwin" }}
+set --global --export HOMEBREW_PREFIX /opt/homebrew
+{{ end }}
+
 # load configuration files that are ignored by git
 for conf in "$__fish_config_dir"/conf.local.d/*.fish
     source $conf
@@ -10,47 +26,19 @@ end
 
 {{ if eq .chezmoi.os "darwin" }}
 /opt/homebrew/bin/brew shellenv | source
-fish_add_path -m $HOMEBREW_PREFIX/opt/llvm/bin
+add_path_if_exists $HOMEBREW_PREFIX/opt/llvm/bin
 {{ end }}
 
-# Haskell
-if [ -d "$HOME/.cabal/bin" ]
-    fish_add_path -m $HOME/.cabal/bin
-end
-
-# Rust
-if [ -d "$HOME/.cargo/bin" ]
-    fish_add_path -m $HOME/.cargo/bin
-end
-
-# Go
-if [ -d "$HOME/go/bin" ]
-    fish_add_path -m $HOME/go/bin
-end
-
-# Deno
-if [ -d "$HOME/.deno/bin" ]
-    fish_add_path -m $HOME/.deno/bin
-end
-
-# Lua
-if [ -d "$HOME/.luarocks/bin" ]
-    fish_add_path -m $HOME/.luarocks/bin
-end
-
-# Python
-if [ -d "$HOME/.poetry/bin" ]
-    fish_add_path -m $HOME/.poetry/bin
-end
-
-# Kubernetes
-if [ -d "$HOME/.krew/bin" ]
-    fish_add_path -m $HOME/.krew/bin
-end
-
-if [ -d /usr/local/opt/gettext/bin ]
-    fish_add_path -m /usr/local/opt/gettext/bin
-end
+# Language toolchains
+add_path_if_exists \
+    $HOME/.cabal/bin \
+    $HOME/.cargo/bin \
+    $HOME/go/bin \
+    $HOME/.deno/bin \
+    $HOME/.luarocks/bin \
+    $HOME/.poetry/bin \
+    $HOME/.krew/bin \
+    /usr/local/opt/gettext/bin
 
 fish_add_path -m $HOME/.local/bin
 
@@ -74,7 +62,3 @@ if ! command -v starship &>/dev/null
     then
     curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
 end
-
-starship init fish | source
-
-direnv hook fish | source
