@@ -7,6 +7,8 @@ font-family = PlemolJP Console
 font-size = 14
 
 # https://ghostty.org/docs/config/reference#cursor-style
+# Disable cursor reporting to prevent [O[I sequences in Claude Code prompt
+# when switching windows with macOS gestures
 shell-integration-features = no-cursor
 cursor-style = block
 clipboard-paste-bracketed-safe = true
