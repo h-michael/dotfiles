@@ -4,6 +4,11 @@
 # Inserts a blank line between shell prompts
 add_newline = false
 
+# Performance optimization (explicit default values)
+scan_timeout = 30
+command_timeout = 500
+follow_symlinks = true
+
 format = """
 $username\
 $hostname\
@@ -21,56 +26,8 @@ $git_status\
 $hg_branch\
 $pijul_channel\
 $package\
-$c\
-$cmake\
-$cobol\
-$daml\
-$dart\
-$deno\
-$dotnet\
-$elixir\
-$elm\
-$erlang\
-$fennel\
-$golang\
-$guix_shell\
-$haskell\
-$haxe\
-$helm\
-$java\
-$julia\
-$kotlin\
-$gradle\
-$lua\
-$nim\
-$nodejs\
-$ocaml\
-$opa\
-$perl\
-$php\
-$pulumi\
-$purescript\
-$python\
-$raku\
-$rlang\
-$red\
-$ruby\
-$rust\
-$scala\
-$solidity\
-$swift\
-$terraform\
-$vlang\
-$vagrant\
-$zig\
-$buf\
-$nix_shell\
-$conda\
-$meson\
-$spack\
 $memory_usage\
 $env_var\
-$crystal\
 $custom\
 $sudo\
 $cmd_duration\
@@ -81,18 +38,17 @@ $status\
 $os\
 $container\
 $shell\
-$fill\
+$line_break\
+$character"""
+
+right_format = """
 $aws\
 $gcloud\
 $openstack\
 $azure\
 $kubernetes\
 $docker_context\
-$line_break\
-$character"""
-
-[fill]
-symbol = ''
+"""
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
@@ -123,22 +79,27 @@ format = '[$symbol$project\($region\)]($style) '
 disabled = false
 format = 'on [$symbol$branch]($style) '
 
+[git_metrics]
+disabled = false
+added_style = "bold green"
+deleted_style = "bold red"
+
 [git_status]
 disabled = false
-format = '([\[$conflicted$deleted$renamed$modified$staged$untracked\]]($style) )'
-
-[golang]
-disabled = true
+format = '([\[$all_status $ahead_behind\]]($style) )'
+conflicted = '🏳${count}'
+ahead = '⇡${count}'
+behind = '⇣${count}'
+diverged = '⇕⇡${ahead_count}⇣${behind_count}'
+up_to_date = '✓'
+untracked = '?${count}'
+# stashed = '\$${count}'
+modified = '!${count}'
+staged = '+${count}'
+renamed = '»${count}'
+deleted = '✘${count}'
 
 [kubernetes]
 disabled = false
-
 symbol = '☸  '
 format = '[$symbol$context(\($namespace\))]($style)'
-
-[ruby]
-disabled = true
-format = '[$symbol($version )]($style)'
-
-[rust]
-disabled = true
