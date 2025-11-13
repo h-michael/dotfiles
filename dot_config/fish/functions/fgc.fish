@@ -1,3 +1,6 @@
 function fgc -d "git checkout selected branch"
-    git branch | fzf --reverse | xargs git checkout
+    set -l branch (git branch | fzf --reverse --prompt="Select branch: " | string trim | string replace -r '^\* ' '')
+    if test -n "$branch"
+        git checkout $branch
+    end
 end
