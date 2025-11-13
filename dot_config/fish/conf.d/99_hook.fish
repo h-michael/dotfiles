@@ -6,3 +6,9 @@ if not set -q __fish_hooks_initialized
     direnv hook fish | source
     set -g __fish_hooks_initialized 1
 end
+
+# Starship transient prompt - simplifies previous prompts in history
+function starship_transient_prompt_func
+    starship module character
+end
+enable_transience

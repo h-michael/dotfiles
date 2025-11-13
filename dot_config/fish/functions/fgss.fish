@@ -1,3 +1,11 @@
 function fgss -d "git stash show selected stash"
-    git stash list | fzf --reverse --preview "echo {} | awk -F ':' '{print \$1}' | xargs git stash show -p | bat --color=always --style=numbers" | awk -F ':' '{print $1}'
+    set -l stash (git stash list | \
+        fzf --reverse \
+            --prompt="Select stash: " \
+            --preview="echo {} | cut -d: -f1 | xargs git stash show -p --color=always | bat --color=always --style=numbers" | \
+        cut -d: -f1)
+
+    if test -n "$stash"
+        git stash show -p $stash
+    end
 end
