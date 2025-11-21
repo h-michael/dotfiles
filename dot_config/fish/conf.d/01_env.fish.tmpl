@@ -57,13 +57,12 @@ set -gx GTAGSLABEL pygments
 [ -f ~/.secret ]; and source ~/.secret
 
 {{ if eq .chezmoi.os "darwin" }}
-set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/lib"
-set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib"
-set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/c++"
-set -gxp LDFLAGS "-L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
-set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include"
-set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/opt/llvm/include"
-set -gxp CPPFLAGS "-I$HOMEBREW_PREFIX/include/boost"
+# Build flags - COMMENTED OUT 2025-11-20
+# These are likely unnecessary as modern build tools auto-detect Homebrew paths via pkg-config.
+# Previously caused issues with Ruby builds (conflicting LDFLAGS).
+# Running without these flags for testing. If no problems occur by 2026-04-01, delete these lines.
+# set -gx LDFLAGS "-L$HOMEBREW_PREFIX/lib -L$HOMEBREW_PREFIX/opt/llvm/lib -L$HOMEBREW_PREFIX/opt/llvm/lib/c++ -L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
+# set -gx CPPFLAGS "-I$HOMEBREW_PREFIX/include -I$HOMEBREW_PREFIX/opt/llvm/include -I$HOMEBREW_PREFIX/include/boost"
 {{ end }}
 
 # For Enpass

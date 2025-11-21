@@ -26,7 +26,12 @@ end
 
 {{ if eq .chezmoi.os "darwin" }}
 /opt/homebrew/bin/brew shellenv | source
-add_path_if_exists $HOMEBREW_PREFIX/opt/llvm/bin
+# LLVM PATH - COMMENTED OUT 2025-11-20
+# Homebrew LLVM is likely unnecessary for most development work.
+# Apple's system Clang is sufficient and has better macOS SDK compatibility.
+# Only needed for: OpenMP, latest C++ features, or specific LLVM tools.
+# Running without this PATH for testing. If no problems occur by 2026-04-01, delete this line.
+# add_path_if_exists $HOMEBREW_PREFIX/opt/llvm/bin
 {{ end }}
 
 # Language toolchains
