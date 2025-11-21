@@ -20,6 +20,7 @@ compile_commands.json
 .DS_Store
 GEMINI.local.md
 CLAUDE.local.md
+**/.claude/settings.local.json
 .mcp.json
 .geminiignore
 .serena
