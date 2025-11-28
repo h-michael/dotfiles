@@ -15,10 +15,10 @@ return {
       { '<leader>cp', '<cmd>CodeCompanion<CR>', mode = { 'n', 'v' }, desc = 'CodeCompanion prompt' },
       { '<leader>cs', '<cmd>CodeCompanionChat Add<CR>', mode = 'v', desc = 'Add selection to chat' },
       -- Adapter switching
-      { '<leader>cac', '<cmd>CodeCompanionChat claude_code<CR>', mode = { 'n', 'v' }, desc = 'Chat with Claude Code' },
-      { '<leader>cag', '<cmd>CodeCompanionChat gemini_cli<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini CLI' },
-      { '<leader>caf', '<cmd>CodeCompanionChat gemini_cli_flash<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini Flash' },
-      { '<leader>cap', '<cmd>CodeCompanionChat gemini_cli_pro<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini Pro' },
+      { '<leader>cac', '<cmd>CodeCompanionChat adapter=claude_code<CR>', mode = { 'n', 'v' }, desc = 'Chat with Claude Code' },
+      { '<leader>cag', '<cmd>CodeCompanionChat adapter=gemini_cli<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini CLI' },
+      { '<leader>caf', '<cmd>CodeCompanionChat adapter=gemini_cli_flash<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini Flash' },
+      { '<leader>cap', '<cmd>CodeCompanionChat adapter=gemini_cli_pro<CR>', mode = { 'n', 'v' }, desc = 'Chat with Gemini Pro' },
       -- stylua: ignore end
     },
     config = function()
@@ -41,8 +41,8 @@ return {
           },
           chat = {
             icons = {
-              buffer_pin = '📌 ',
-              buffer_watch = '👀 ',
+              buffer_sync_all = '📌 ',
+              buffer_sync_diff = '👀 ',
               chat_fold = '▼ ',
               tool_pending = '⏳ ',
               tool_in_progress = '⚙️ ',
@@ -153,7 +153,7 @@ return {
             end,
           },
         },
-        memory = {
+        rules = {
           claude = {
             description = 'Memory files for Claude Code users',
             parser = 'claude',
@@ -180,7 +180,7 @@ return {
           opts = {
             chat = {
               enabled = true,
-              default_memory = { 'claude', 'gemini' },
+              default_rules = { 'claude', 'gemini' },
             },
           },
         },
