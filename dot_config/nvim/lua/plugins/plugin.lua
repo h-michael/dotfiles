@@ -91,7 +91,7 @@ return {
       },
       --{ 'hrsh7th/cmp-path' },
       { 'hrsh7th/cmp-cmdline' },
-      { 'olimorris/codecompanion.nvim' },
+      --{ 'olimorris/codecompanion.nvim' },
       { 'onsails/lspkind.nvim' },
     },
     config = function()
@@ -143,7 +143,7 @@ return {
           { name = 'async_path' },
           --{ name = 'path' },
           { name = 'cmdline' },
-          { name = 'codecompanion' },
+          --{ name = 'codecompanion' },
         }),
         formatting = {
           fields = { 'kind', 'abbr', 'menu' },
