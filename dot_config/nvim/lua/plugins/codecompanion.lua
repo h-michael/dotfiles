@@ -1,6 +1,7 @@
 return {
   {
     'olimorris/codecompanion.nvim',
+    enable = false,
     dependencies = {
       'nvim-lua/plenary.nvim',
       'nvim-treesitter/nvim-treesitter',
@@ -22,6 +23,7 @@ return {
       -- stylua: ignore end
     },
     config = function()
+      print('Loading CodeCompanion configuration...')
       require('codecompanion').setup({
         opts = {
           log_level = 'WARN', -- ERROR, WARN, INFO, DEBUG, TRACE
