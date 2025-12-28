@@ -166,6 +166,30 @@
     alsa.enable = true;
   };
 
+  # Tailscale VPN
+  services.tailscale.enable = true;
+
+  # Navidrome music streaming server
+  # Access: Tailscale only (http://<Tailscale-IP>:4533)
+  services.navidrome = {
+    enable = true;
+    openFirewall = false; # Block access from LAN
+    settings = {
+      Address = "0.0.0.0"; # Tailscale
+      Port = 4533;
+      MusicFolder = "/home/h-michael/Music";
+      ScanSchedule = "@every 1h";
+      EnableTranscodingConfig = true;
+      DefaultTheme = "Dark";
+    };
+  };
+
+  # Override navidrome systemd service to allow home directory access
+  # Reference: https://discourse.nixos.org/t/why-isnt-my-navidrome-service-seeing-my-music-dir/46836
+  systemd.services.navidrome.serviceConfig = {
+    ProtectHome = lib.mkForce false;
+  };
+
   # Security / PAM
   security.pam.services = {
     hyprlock = { };
@@ -236,6 +260,9 @@
   };
 
   users.groups.h-michael = { };
+
+  # Grant navidrome user access to music files in user home directory
+  users.users.navidrome.extraGroups = [ "h-michael" ];
 
   # Allow passwordless sudo for h-michael
   security.sudo.wheelNeedsPassword = false;
