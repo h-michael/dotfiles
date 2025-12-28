@@ -9,26 +9,12 @@
   programs.git = {
     enable = true;
 
-    userName = "Hirokazu Hata";
-    userEmail = "h.hata.ai.t@gmail.com";
-
     ignores = [ ];
 
-    delta = {
-      enable = true;
-      options = {
-        features = "side-by-side line-numbers decorations";
-        whitespace-error-style = "22 reverse";
-      };
-    };
-
-    aliases = {
-      graph = "log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'";
-      difff = "diff --word-diff";
-    };
-
-    extraConfig = {
+    settings = {
       user = {
+        name = "Hirokazu Hata";
+        email = "h.hata.ai.t@gmail.com";
         excludesfile = "~/.git_secret";
       };
       include = {
@@ -101,6 +87,21 @@
           "!gh auth git-credential"
         ];
       };
+      # Aliases
+      alias = {
+        graph = "log --graph --date=short --decorate=short --pretty=format:'%Cgreen%h %Creset%cd %Cblue%cn %Cred%d %Creset%s'";
+        difff = "diff --word-diff";
+      };
+    };
+  };
+
+  # Delta (git diff pager) - now a separate program
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      features = "side-by-side line-numbers decorations";
+      whitespace-error-style = "22 reverse";
     };
   };
 
