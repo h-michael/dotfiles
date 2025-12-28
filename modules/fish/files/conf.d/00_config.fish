@@ -1,0 +1,55 @@
+# blank greeeting message
+set fish_greeting
+
+set -gx SHELL "$__fish_bin_dir"/fish
+
+# XDG Base Directory (used in PATH setup below)
+set -gx XDG_CONFIG_HOME $HOME/.config
+set -gx XDG_CACHE_HOME $HOME/.cache
+set -gx XDG_DATA_HOME $HOME/.local/share
+set -gx XDG_CONFIG_DIRS /etc/xdg
+# XDG_DATA_DIRS is set by home-manager (see modules/fish/default.nix)
+
+# Add private functions directory to function path
+if not contains $__fish_config_dir/private-functions $fish_function_path
+    set -g fish_function_path $__fish_config_dir/private-functions $fish_function_path
+end
+
+# load configuration files that are ignored by git
+for conf in "$__fish_config_dir"/conf.local.d/*.fish
+    source $conf
+end
+
+# Language toolchains
+add_path_if_exists \
+    $HOME/.cabal/bin \
+    $HOME/.cargo/bin \
+    $HOME/go/bin \
+    $HOME/.deno/bin \
+    $HOME/.luarocks/bin \
+    $HOME/.poetry/bin \
+    $HOME/.krew/bin \
+    /usr/local/opt/gettext/bin
+
+fish_add_path -m $HOME/.local/bin
+
+# Why I use "shims" instead of "mise activate"
+# https://mise.jdx.dev/dev-tools/shims.html#shims-vs-path
+# https://mise.jdx.dev/dev-tools/shims.html#hook-on-cd
+# "eval ($HOME/.local/bin/mise activate fish --shims)" add shims to PATH without using fish_add_path
+# So add shims to PATH manually
+fish_add_path -m $XDG_DATA_HOME/mise/shims
+
+# https://aquaproj.github.io/docs/install#linux-macos
+fish_add_path -m $XDG_DATA_HOME/aquaproj-aqua/bin
+set -gx AQUA_GLOBAL_CONFIG $XDG_CONFIG_HOME/aquaproj-aqua/aqua.yaml
+
+# https://aquaproj.github.io/docs/reference/nodejs-support/#set-up
+set -gx NPM_CONFIG_PREFIX $XDG_DATA_HOME/npm-global
+fish_add_path -m $NPM_CONFIG_PREFIX/bin
+
+# should execute the end of the config.fish
+if ! command -v starship &>/dev/null
+    then
+    curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
+end

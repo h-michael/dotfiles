@@ -1,8 +1,0 @@
-[Unit]
-Description=Hyprland Session
-
-PartOf=graphical.target
-After=graphical.target
-
-Requires=graphical-session.target
-After=graphical.target
