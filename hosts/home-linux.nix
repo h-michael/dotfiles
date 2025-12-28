@@ -33,6 +33,7 @@
 
     # Communication (with audio/video support)
     discord
+    vesktop # Discord client with better Wayland screen sharing
     slack
 
     # Audio control
