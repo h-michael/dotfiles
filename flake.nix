@@ -30,6 +30,7 @@
       ...
     }@inputs:
     let
+      username = "h-michael";
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -50,7 +51,7 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs; };
+          specialArgs = { inherit inputs username; };
           modules = [
             ./hosts/nixos
 
@@ -68,9 +69,9 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.h-michael = import ./hosts/home-linux.nix;
+              home-manager.users.${username} = import ./hosts/home-linux.nix;
               home-manager.extraSpecialArgs = {
-                inherit inputs;
+                inherit inputs username;
                 isNixOS = true;
               };
             }
@@ -101,14 +102,14 @@
         arch = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = {
-            inherit inputs;
+            inherit inputs username;
             isNixOS = false;
           };
           modules = [
             ./hosts/home-linux.nix
             {
-              home.username = "h-michael";
-              home.homeDirectory = "/home/h-michael";
+              home.username = username;
+              home.homeDirectory = "/home/${username}";
               targets.genericLinux.enable = true;
             }
           ];
