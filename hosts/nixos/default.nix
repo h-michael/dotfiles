@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  username,
   ...
 }:
 
@@ -177,7 +178,7 @@
     settings = {
       Address = "0.0.0.0"; # Tailscale
       Port = 4533;
-      MusicFolder = "/home/h-michael/Music";
+      MusicFolder = "/home/${username}/Music";
       ScanSchedule = "@every 1h";
       EnableTranscodingConfig = true;
       DefaultTheme = "Dark";
@@ -244,9 +245,9 @@
   programs.fish.enable = true;
 
   # User configuration
-  users.users.h-michael = {
+  users.users.${username} = {
     isNormalUser = true;
-    group = "h-michael";
+    group = username;
     extraGroups = [
       "wheel"
       "input"
@@ -259,12 +260,12 @@
     shell = pkgs.fish;
   };
 
-  users.groups.h-michael = { };
+  users.groups.${username} = { };
 
   # Grant navidrome user access to music files in user home directory
-  users.users.navidrome.extraGroups = [ "h-michael" ];
+  users.users.navidrome.extraGroups = [ username ];
 
-  # Allow passwordless sudo for h-michael
+  # Allow passwordless sudo
   security.sudo.wheelNeedsPassword = false;
 
   environment.systemPackages = with pkgs; [
