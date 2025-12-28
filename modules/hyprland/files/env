@@ -1,0 +1,24 @@
+env = XCURSOR_THEME,Adwaita
+env = XCURSOR_SIZE,24
+env = HYPRCURSOR_SIZE,24
+env = MOZ_ENABLE_WAYLAND,1
+env = ELECTRON_OZONE_PLATFORM_HINT,x11
+env = QT_STYLE_OVERRIDE,kvantum
+env = QT_QPA_PLATFORMTHEME,qt5ct
+
+# Default browser
+env = BROWSER,google-chrome-stable
+
+# fcitx5 input method settings
+# ref: https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland
+
+# Required for X11/XWayland applications
+env = XMODIFIERS,@im=fcitx
+
+# Required for Qt5 apps (Qt6.8.2+ can use QT_IM_MODULES="wayland;fcitx" instead)
+env = QT_IM_MODULE,fcitx
+
+# GTK_IM_MODULE is NOT set globally because:
+# - Wayland native GTK apps use text-input-v3 protocol automatically
+# - Setting it globally can cause candidate window blinking issues
+# - For XWayland GTK apps, configure via ~/.config/gtk-{3,4}.0/settings.ini instead
