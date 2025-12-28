@@ -229,6 +229,8 @@
       "uinput"
       "video" # Webcam access for Discord/Slack video calls
       "audio" # Audio device access
+      "optical" # CD/DVD drive access
+      "cdrom" # CD/DVD drive access
     ];
     shell = pkgs.fish;
   };
