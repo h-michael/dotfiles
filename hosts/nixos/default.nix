@@ -126,6 +126,18 @@
   # Hyprland
   programs.hyprland.enable = true;
 
+  # Steam
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Steam Remote Play
+    dedicatedServer.openFirewall = true; # Steam dedicated server
+    # Proton for Windows games
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin # GloriousEggroll's custom Proton (better compatibility)
+    ];
+  };
+  programs.gamemode.enable = true; # Performance optimization for games
+
   # XDG Desktop Portal for screen sharing in Discord/Slack
   xdg.portal = {
     enable = true;
