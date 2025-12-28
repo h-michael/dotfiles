@@ -39,6 +39,17 @@
     # Audio control
     pavucontrol # PipeWire/PulseAudio GUI
 
+    # CD ripping
+    asunder # GTK CD ripper (fast, CDDB support)
+    whipper # Accurate CD ripper (AccurateRip verification, slow)
+    cdparanoia # CD ripping engine
+    lame # MP3 encoder
+    flac # FLAC encoder
+
+    # Music tagging
+    picard # MusicBrainz tagger (auto-fetch metadata)
+    kid3 # Tag editor with lyrics support
+
     # Terminals
     ghostty
     kitty
