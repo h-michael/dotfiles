@@ -3,6 +3,7 @@
   lib,
   pkgs,
   username,
+  unstablePkgs,
   ...
 }:
 
@@ -170,6 +171,41 @@
   # Tailscale VPN
   services.tailscale.enable = true;
 
+  # Ollama - Local LLM runtime with AMD ROCm GPU acceleration
+  services.ollama = {
+    enable = true;
+    package = unstablePkgs.ollama; # Use latest from nixpkgs-unstable
+    acceleration = "rocm";
+    # Strix Halo (gfx1151 = RDNA 3.5) → gfx1100 (RDNA 3) emulation
+    # ROCm doesn't officially support gfx1151 yet, so we use gfx1100 kernels
+    rocmOverrideGfx = "11.0.0";
+    environmentVariables = {
+      # Flash Attention: Improves memory efficiency and speeds up long context
+      OLLAMA_FLASH_ATTENTION = "1";
+      # KV cache quantization: Reduces VRAM footprint (q8_0 = 8-bit quantization)
+      OLLAMA_KV_CACHE_TYPE = "q8_0";
+    };
+    loadModels = [
+      "qwen2.5:32b" # High-quality general model (~20GB, runs well with 64GB RAM)
+      "qwen3:8b" # Lightweight fast model (~5GB)
+    ];
+  };
+
+  # Open WebUI - Web interface for Ollama
+  # Access: Tailscale only (http://<Tailscale-IP>:3080)
+  services.open-webui = {
+    enable = true;
+    package = unstablePkgs.open-webui; # Use latest from nixpkgs-unstable
+    host = "0.0.0.0"; # Listen on all interfaces including Tailscale
+    port = 3080;
+    openFirewall = false; # Block LAN access, allow Tailscale only
+    environment = {
+      ANONYMIZED_TELEMETRY = "False";
+      DO_NOT_TRACK = "True";
+      SCARF_NO_ANALYTICS = "True";
+    };
+  };
+
   # Navidrome music streaming server
   # Access: Tailscale only (http://<Tailscale-IP>:4533)
   services.navidrome = {
@@ -307,6 +343,13 @@
     # GPU stuff
     vulkan-tools
     mesa
+
+    # AMD GPU monitoring
+    amdgpu_top # TUI for AMDGPU usage (like nvidia-smi)
+    radeontop # Classic AMD GPU monitor
+    rocmPackages.rocm-smi # ROCm System Management Interface
+    rocmPackages.rocminfo # GFX version info (rocminfo | grep gfx)
+    clinfo # OpenCL info
 
     # Webcam
     v4l-utils # Webcam tools (v4l2-ctl)
