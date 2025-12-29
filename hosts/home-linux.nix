@@ -30,6 +30,7 @@
     vlc
     obs-studio
     kdePackages.dolphin # KDE file manager
+    lmstudio # Local LLM GUI
 
     # Communication (with audio/video support)
     discord

@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -24,6 +25,7 @@
     {
       self,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       darwin,
       neovim-nightly-overlay,
@@ -37,6 +39,11 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
+      # Unstable packages for latest Ollama and Open WebUI
+      unstablePkgs = import nixpkgs-unstable {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
     in
     {
       # Overlays
@@ -51,7 +58,7 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs username; };
+          specialArgs = { inherit inputs username unstablePkgs; };
           modules = [
             ./hosts/nixos
 
