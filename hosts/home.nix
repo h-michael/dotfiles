@@ -74,5 +74,6 @@
     rust-analyzer
     taplo
     vscode-langservers-extracted # html, css, json, eslint
+    omnisharp-roslyn # C# (Unity)
   ];
 }
