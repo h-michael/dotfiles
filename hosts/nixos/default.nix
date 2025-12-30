@@ -218,17 +218,11 @@
     settings = {
       Address = "0.0.0.0"; # Tailscale
       Port = 4533;
-      MusicFolder = "/home/${username}/Music";
+      MusicFolder = "/mnt/shared/Media/Music";
       ScanSchedule = "@every 1h";
       EnableTranscodingConfig = true;
       DefaultTheme = "Dark";
     };
-  };
-
-  # Override navidrome systemd service to allow home directory access
-  # Reference: https://discourse.nixos.org/t/why-isnt-my-navidrome-service-seeing-my-music-dir/46836
-  systemd.services.navidrome.serviceConfig = {
-    ProtectHome = lib.mkForce false;
   };
 
   # Prometheus - Metrics collection and storage
@@ -1590,9 +1584,6 @@
   };
 
   users.groups.${username} = { };
-
-  # Grant navidrome user access to music files in user home directory
-  users.users.navidrome.extraGroups = [ username ];
 
   # Allow passwordless sudo
   security.sudo.wheelNeedsPassword = false;

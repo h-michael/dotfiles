@@ -50,6 +50,14 @@
     ];
   };
 
+  # Bind mount for Ollama data (required for DynamicUser + StateDirectory)
+  fileSystems."/var/lib/private/ollama" = {
+    device = "/mnt/shared/ollama";
+    fsType = "none";
+    options = [ "bind" ];
+    depends = [ "/mnt/shared" ];
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
