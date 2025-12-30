@@ -40,6 +40,16 @@
     ];
   };
 
+  # Shared data volume
+  fileSystems."/mnt/shared" = {
+    device = "/dev/mapper/vg_linux-data";
+    fsType = "btrfs";
+    options = [
+      "defaults"
+      "compress=zstd"
+    ];
+  };
+
   swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
