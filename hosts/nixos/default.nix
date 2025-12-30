@@ -190,8 +190,12 @@
       OLLAMA_KV_CACHE_TYPE = "q8_0";
     };
     loadModels = [
-      "qwen2.5:32b" # High-quality general model (~20GB, runs well with 64GB RAM)
-      "qwen3:8b" # Lightweight fast model (~5GB)
+      "qwen2.5:32b" # https://ollama.com/library/qwen2.5
+      "qwen2.5:72b" # https://ollama.com/library/qwen2.5
+      "qwen3:8b" # https://ollama.com/library/qwen3
+      "qwen2.5-coder:32b" # https://ollama.com/library/qwen2.5-coder
+      "gemma2:27b" # https://ollama.com/library/gemma2
+      "llama3.3:70b" # https://ollama.com/library/llama3.3
     ];
   };
 
@@ -207,6 +211,9 @@
       ANONYMIZED_TELEMETRY = "False";
       DO_NOT_TRACK = "True";
       SCARF_NO_ANALYTICS = "True";
+      # Web search (uses DuckDuckGo by default, no API key needed)
+      ENABLE_RAG_WEB_SEARCH = "True";
+      RAG_WEB_SEARCH_ENGINE = "duckduckgo";
     };
   };
 
