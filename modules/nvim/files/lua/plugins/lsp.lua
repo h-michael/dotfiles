@@ -74,6 +74,7 @@ return {
 				tombi = {},
 				terraformls = {},
 				buf_ls = {},
+				omnisharp = {},
 				lua_ls = {
 					settings = {
 						["Lua"] = {

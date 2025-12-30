@@ -20,6 +20,7 @@
     ../modules/fcitx5
     ../modules/fontconfig
     ../modules/scripts-linux
+    ../modules/vscode
   ];
 
   # Linux-specific packages
@@ -32,6 +33,11 @@
     kdePackages.dolphin # KDE file manager
     lmstudio # Local LLM GUI
     opencode # AI coding agent for terminal
+
+    # Unity development
+    unityhub # Unity installer and project manager
+    dotnet-sdk_8 # .NET SDK for C# development
+    mono # Required by some Unity tools
 
     # Communication (with audio/video support)
     discord
