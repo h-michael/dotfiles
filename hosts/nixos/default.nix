@@ -14,6 +14,10 @@
     ./llm.nix
   ];
 
+  # Use latest kernel for Strix Halo (gfx1151) VRAM fix
+  # Reference: https://github.com/ROCm/ROCm/issues/5444
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Use systemd-boot
   boot.loader.systemd-boot = {
     enable = true;
