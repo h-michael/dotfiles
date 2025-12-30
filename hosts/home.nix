@@ -53,6 +53,7 @@
     ast-grep
     stylua
     nixfmt-rfc-style
+    python3
     uv
     deno
 
