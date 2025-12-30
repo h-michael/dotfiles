@@ -302,14 +302,20 @@
         name = "{{.Comm}}";
         comm = [ "node_exporter" ];
       }
-      # System services
+      # systemd services (not monitoring PID 1 - includes all child processes)
       {
         name = "{{.Comm}}";
         comm = [
-          "systemd"
-          "journald"
-          "NetworkManager"
+          "systemd-journal"
+          "systemd-udevd"
+          "systemd-logind"
+          "systemd-oomd"
         ];
+      }
+      # Network
+      {
+        name = "{{.Comm}}";
+        comm = [ "NetworkManager" ];
       }
       # Desktop
       {
@@ -472,13 +478,13 @@
             }
           ];
         }
-        # Disk Usage
+        # Disk Usage (NixOS root)
         {
           type = "gauge";
-          title = "Disk Usage (/)";
+          title = "Disk (/)";
           gridPos = {
             h = 6;
-            w = 6;
+            w = 3;
             x = 12;
             y = 1;
           };
@@ -517,6 +523,55 @@
           targets = [
             {
               expr = "100 - ((node_filesystem_avail_bytes{mountpoint=\"/\"} / node_filesystem_size_bytes{mountpoint=\"/\"}) * 100)";
+              refId = "A";
+            }
+          ];
+        }
+        # Disk Usage (shared volume)
+        {
+          type = "gauge";
+          title = "Disk (shared)";
+          gridPos = {
+            h = 6;
+            w = 3;
+            x = 15;
+            y = 1;
+          };
+          fieldConfig = {
+            defaults = {
+              color.mode = "thresholds";
+              max = 100;
+              min = 0;
+              thresholds.mode = "absolute";
+              thresholds.steps = [
+                {
+                  color = "green";
+                  value = null;
+                }
+                {
+                  color = "yellow";
+                  value = 70;
+                }
+                {
+                  color = "red";
+                  value = 85;
+                }
+              ];
+              unit = "percent";
+            };
+          };
+          options = {
+            reduceOptions = {
+              calcs = [ "lastNotNull" ];
+              fields = "";
+              values = false;
+            };
+            showThresholdLabels = false;
+            showThresholdMarkers = true;
+          };
+          targets = [
+            {
+              expr = "100 - ((node_filesystem_avail_bytes{mountpoint=\"/mnt/shared\"} / node_filesystem_size_bytes{mountpoint=\"/mnt/shared\"}) * 100)";
               refId = "A";
             }
           ];
@@ -836,7 +891,7 @@
           };
           targets = [
             {
-              expr = "rate(namedprocess_namegroup_cpu_seconds_total{mode!=\"idle\"}[5m])";
+              expr = "sum by (groupname) (rate(namedprocess_namegroup_cpu_seconds_total{mode!=\"idle\"}[5m]))";
               legendFormat = "{{groupname}}";
               refId = "A";
             }
@@ -924,7 +979,7 @@
           gridPos = {
             h = 6;
             w = 6;
-            x = 0;
+            x = 12;
             y = 25;
           };
           fieldConfig = {
@@ -977,7 +1032,7 @@
           gridPos = {
             h = 6;
             w = 6;
-            x = 6;
+            x = 0;
             y = 25;
           };
           fieldConfig = {
@@ -1026,7 +1081,7 @@
           gridPos = {
             h = 6;
             w = 6;
-            x = 12;
+            x = 6;
             y = 25;
           };
           fieldConfig = {
