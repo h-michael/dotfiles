@@ -54,6 +54,10 @@
   #   - https://forums.linuxmint.com/viewtopic.php?t=455342
   boot.kernelParams = [
     "mt7925e.disable_aspm=1"
+    # Disable USB autosuspend to fix MT7925 Bluetooth connection issues
+    # Workaround for br-connection-create-socket error until kernel 6.17+
+    # Reference: https://forums.linuxmint.com/viewtopic.php?t=455342
+    "usbcore.autosuspend=-1"
     # AMD P-State driver for better CPU power management
     # Reference: https://wiki.archlinux.org/title/CPU_frequency_scaling#amd_pstate
     "amd_pstate=active"
