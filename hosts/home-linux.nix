@@ -31,6 +31,7 @@
     obs-studio
     kdePackages.dolphin # KDE file manager
     lmstudio # Local LLM GUI
+    opencode # AI coding agent for terminal
 
     # Communication (with audio/video support)
     discord
