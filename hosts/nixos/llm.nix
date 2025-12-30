@@ -11,7 +11,7 @@
   # Ollama - Local LLM runtime with AMD ROCm GPU acceleration
   services.ollama = {
     enable = true;
-    package = unstablePkgs.ollama; # Use latest from nixpkgs-unstable
+    package = unstablePkgs.ollama-rocm; # ROCm-enabled build from nixpkgs-unstable
     acceleration = "rocm";
     # Strix Halo (gfx1151 = RDNA 3.5) → gfx1100 (RDNA 3) emulation
     # ROCm doesn't officially support gfx1151 yet, so we use gfx1100 kernels
@@ -31,6 +31,9 @@
       "llama3.3:70b" # https://ollama.com/library/llama3.3
     ];
   };
+
+  # Increase memory limit for large models (70B+ requires >40GB)
+  systemd.services.ollama.serviceConfig.MemoryMax = lib.mkForce "92G";
 
   # Open WebUI - Web interface for Ollama
   # Access: Tailscale only (http://<Tailscale-IP>:3080)
