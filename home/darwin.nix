@@ -11,6 +11,7 @@
 
     # macOS-specific modules
     ../modules/karabiner
+    ../modules/scripts-darwin
   ];
 
   # macOS-specific packages (migrated from Homebrew)
