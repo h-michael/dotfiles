@@ -7,7 +7,7 @@
 
 {
   imports = [
-    ./home.nix
+    ./common.nix
 
     # macOS-specific modules
     ../modules/karabiner

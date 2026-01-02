@@ -7,7 +7,7 @@
 
 {
   imports = [
-    ./home.nix
+    ./common.nix
 
     # Linux-specific modules
     ../modules/hyprland

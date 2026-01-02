@@ -86,7 +86,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./hosts/home-linux.nix;
+              home-manager.users.${username} = import ./home/linux.nix;
               home-manager.extraSpecialArgs = {
                 inherit inputs username;
                 isNixOS = true;
@@ -126,7 +126,7 @@
             isNixOS = false;
           };
           modules = [
-            ./hosts/home-darwin.nix
+            ./home/darwin.nix
             {
               home.username = darwinUsername;
               home.homeDirectory = "/Users/${darwinUsername}";
@@ -142,7 +142,7 @@
             isNixOS = false;
           };
           modules = [
-            ./hosts/home-linux.nix
+            ./home/linux.nix
             {
               home.username = username;
               home.homeDirectory = "/home/${username}";
