@@ -5,7 +5,12 @@ function build-neovim -d "Build Neovim from source with optional debug mode"
     set CMAKE_BUILD_TYPE RelWithDebInfo
     set CMAKE_EXTRA_FLAGS "-DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$HOME/.local"
 
-    set CMAKE_BIN (brew --prefix cmake)/bin/cmake
+    if command -q cmake
+        set CMAKE_BIN (command -s cmake)
+    else
+        echo "cmake not found"
+        return 1
+    end
     set CMAKE_EXTRA_FLAGS "$CMAKE_EXTRA_FLAGS -DCMAKE_COMMAND=$CMAKE_BIN"
 
     if [ $argv ]

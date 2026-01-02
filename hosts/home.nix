@@ -37,11 +37,10 @@
     eza
     delta
     jq
+    yq
     ghq
     tree-sitter
-
-    # Password manager
-    enpass
+    pstree
 
     # Development tools
     gh
