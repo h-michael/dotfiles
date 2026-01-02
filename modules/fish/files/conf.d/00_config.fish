@@ -47,9 +47,3 @@ set -gx AQUA_GLOBAL_CONFIG $XDG_CONFIG_HOME/aquaproj-aqua/aqua.yaml
 # https://aquaproj.github.io/docs/reference/nodejs-support/#set-up
 set -gx NPM_CONFIG_PREFIX $XDG_DATA_HOME/npm-global
 fish_add_path -m $NPM_CONFIG_PREFIX/bin
-
-# should execute the end of the config.fish
-if ! command -v starship &>/dev/null
-    then
-    curl -sS https://starship.rs/install.sh | BIN_DIR=~/.local/bin sh
-end

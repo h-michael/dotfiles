@@ -11,7 +11,7 @@
     };
 
     darwin = {
-      url = "github:lnl7/nix-darwin";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -32,7 +32,17 @@
       ...
     }@inputs:
     let
+      # Linux username
       username = "h-michael";
+      # macOS username (from environment variable, requires --impure)
+      darwinUsername =
+        let
+          envUser = builtins.getEnv "DARWIN_USERNAME";
+        in
+        if envUser != "" then
+          envUser
+        else
+          throw "DARWIN_USERNAME environment variable is required. Set it before running.";
       systems = [
         "x86_64-linux"
         "aarch64-linux"
@@ -86,12 +96,31 @@
         };
       };
 
+      # nix-darwin configurations for macOS (system only, home-manager is standalone)
+      darwinConfigurations.darwin = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        specialArgs = {
+          inherit inputs;
+          username = darwinUsername;
+        };
+        modules = [
+          ./hosts/darwin
+
+          # Apply overlays
+          {
+            nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
+          }
+        ];
+      };
+
       # Standalone Home Manager for non-NixOS systems
       homeConfigurations = {
         # macOS (Apple Silicon)
-        # Username and home directory are read from USER/HOME env vars (requires --impure)
         darwin = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+          pkgs = import nixpkgs {
+            system = "aarch64-darwin";
+            overlays = [ neovim-nightly-overlay.overlays.default ];
+          };
           extraSpecialArgs = {
             inherit inputs;
             isNixOS = false;
@@ -99,8 +128,8 @@
           modules = [
             ./hosts/home-darwin.nix
             {
-              home.username = builtins.getEnv "USER";
-              home.homeDirectory = builtins.getEnv "HOME";
+              home.username = darwinUsername;
+              home.homeDirectory = "/Users/${darwinUsername}";
             }
           ];
         };

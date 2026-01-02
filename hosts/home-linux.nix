@@ -33,6 +33,7 @@
     kdePackages.dolphin # KDE file manager
     lmstudio # Local LLM GUI
     opencode # AI coding agent for terminal
+    enpass # Password manager
 
     # Unity development
     unityhub # Unity installer and project manager

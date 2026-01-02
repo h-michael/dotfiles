@@ -37,6 +37,4 @@ keybind = super+shift+0=reset_font_size
 keybind = super+up=jump_to_prompt:-1
 keybind = super+down=jump_to_prompt:1
 
-initial-command = $SHELL --login --interactive
-command = $SHELL --login --interactive
 fullscreen = false
