@@ -41,6 +41,7 @@
     ghq
     tree-sitter
     pstree
+    gawk
 
     # Development tools
     gh
