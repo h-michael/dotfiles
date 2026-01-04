@@ -83,24 +83,25 @@
         per_monitor_dpi = false;
       };
 
+      # Tokyonight colors (https://github.com/folke/tokyonight.nvim)
       urgency_low = {
-        background = "#1a1a1aee";
-        foreground = "#ffffff";
-        frame_color = "#595959aa";
+        background = "#16161e";
+        foreground = "#c0caf5";
+        frame_color = "#c0caf5";
         timeout = 5;
       };
 
       urgency_normal = {
-        background = "#1a1a1aee";
-        foreground = "#ffffff";
-        frame_color = "#33ccffee";
+        background = "#1a1b26";
+        foreground = "#c0caf5";
+        frame_color = "#c0caf5";
         timeout = 5;
       };
 
       urgency_critical = {
-        background = "#1a1a1aee";
-        foreground = "#ffffff";
-        frame_color = "#ff5555ee";
+        background = "#292e42";
+        foreground = "#db4b4b";
+        frame_color = "#db4b4b";
         timeout = 0;
       };
     };

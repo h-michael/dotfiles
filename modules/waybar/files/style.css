@@ -1,3 +1,8 @@
+/*
+ * Tokyonight theme for Waybar
+ * Colors from: https://github.com/folke/tokyonight.nvim (MIT License)
+ */
+
 * {
   font-family:
     "Cica", "Symbols Nerd Font Mono", "Font Awesome 6 Free", sans-serif;
@@ -9,8 +14,8 @@
 }
 
 window#waybar {
-  background: rgba(24, 24, 28, 0.95);
-  color: rgba(255, 255, 255, 1);
+  background: rgba(26, 27, 38, 0.95); /* bg: #1a1b26 */
+  color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
   border-radius: 0;
   padding: 4px 10px;
 }
@@ -19,24 +24,24 @@ window#waybar {
   padding: 0 8px;
   margin: 0 4px;
   border-radius: 6px;
-  background: rgba(59, 63, 76, 1);
-  color: rgba(192, 192, 192, 1);
+  background: rgba(41, 46, 66, 1); /* bg_highlight: #292e42 */
+  color: rgba(169, 177, 214, 1); /* fg_dark: #a9b1d6 */
 }
 
 #workspaces button.active {
-  background: rgba(97, 175, 239, 1);
-  color: rgba(30, 30, 46, 1);
+  background: rgba(122, 162, 247, 1); /* blue: #7aa2f7 */
+  color: rgba(26, 27, 38, 1); /* bg: #1a1b26 */
   font-weight: bold;
 }
 
 #workspaces button.urgent {
-  background: rgba(224, 108, 117, 1);
+  background: rgba(247, 118, 142, 1); /* red: #f7768e */
   color: rgba(255, 255, 255, 1);
 }
 
 #workspaces button:hover {
-  background: rgba(92, 99, 112, 1);
-  color: rgba(255, 255, 255, 1);
+  background: rgba(86, 95, 137, 1); /* comment: #565f89 */
+  color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
 }
 
 #systemd-failed-units,
@@ -52,71 +57,71 @@ window#waybar {
 #tray {
   padding: 0 6px;
   margin: 0 2px;
-  background: rgba(30, 30, 30, 0.5);
-  color: rgba(230, 230, 230, 1);
+  background: rgba(41, 46, 66, 0.5); /* bg_highlight: #292e42 */
+  color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
   border-radius: 6px;
 }
 
 #systemd-failed-units.warning {
-  background: rgba(255, 85, 85, 0.8);
+  background: rgba(247, 118, 142, 0.8); /* red: #f7768e */
   color: rgba(255, 255, 255, 1);
   font-weight: bold;
 }
 
 #systemd-failed-units.ok {
-  background: rgba(98, 255, 145, 0.2);
-  color: rgba(150, 255, 150, 1);
+  background: rgba(158, 206, 106, 0.2); /* green: #9ece6a */
+  color: rgba(158, 206, 106, 1);
 }
 
 #battery.charging {
-  background: rgba(152, 195, 121, 1);
-  color: rgba(30, 30, 46, 1);
+  background: rgba(158, 206, 106, 1); /* green: #9ece6a */
+  color: rgba(26, 27, 38, 1);
 }
 
 #battery.warning {
-  background: rgba(229, 192, 123, 1);
-  color: rgba(30, 30, 46, 1);
+  background: rgba(224, 175, 104, 1); /* yellow: #e0af68 */
+  color: rgba(26, 27, 38, 1);
 }
 
 #battery.critical {
-  background: rgba(224, 108, 117, 1);
+  background: rgba(247, 118, 142, 1); /* red: #f7768e */
   color: rgba(255, 255, 255, 1);
 }
 
 #cpu {
-  color: rgba(255, 184, 108, 1);
+  color: rgba(255, 158, 100, 1); /* orange: #ff9e64 */
 }
 
 #memory {
-  color: rgba(189, 147, 249, 1);
+  color: rgba(187, 154, 247, 1); /* magenta: #bb9af7 */
 }
 
 #clock {
-  color: rgba(220, 223, 228, 1);
+  color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
 }
 
 #temperature {
-  color: rgba(255, 85, 85, 1);
+  color: rgba(247, 118, 142, 1); /* red: #f7768e */
 }
 
 #custom-network {
-  color: rgba(139, 233, 253, 1);
+  color: rgba(125, 207, 255, 1); /* cyan: #7dcfff */
 }
 
 #pulseaudio {
-  color: rgba(241, 250, 140, 1);
+  color: rgba(224, 175, 104, 1); /* yellow: #e0af68 */
 }
 
 #custom-bluetooth {
-  color: rgba(97, 175, 239, 1);
+  color: rgba(122, 162, 247, 1); /* blue: #7aa2f7 */
 }
 
 #custom-power {
-  color: rgba(255, 100, 100, 1);
+  color: rgba(247, 118, 142, 1); /* red: #f7768e */
 }
 
 #custom-bluetooth:hover,
 #custom-network:hover,
 #custom-power:hover {
-  background: rgba(100, 100, 120, 0.3);
+  background: rgba(86, 95, 137, 0.3); /* comment: #565f89 */
 }
