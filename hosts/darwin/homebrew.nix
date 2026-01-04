@@ -17,9 +17,13 @@
     # GUI applications (casks)
     casks = [
       "mqttx" # MQTT client GUI
-      #"font-hack-nerd-font" # Nerd font
       "ghostty" # Terminal emulator
       "karabiner-elements" # Keyboard customization
+
+      # Nerd Fonts
+      "font-hack-nerd-font"
+      "font-jetbrains-mono-nerd-font"
+      "font-fira-code-nerd-font"
     ];
 
     # CLI tools only available via Homebrew
