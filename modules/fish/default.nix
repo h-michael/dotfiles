@@ -40,6 +40,12 @@ in
       recursive = true;
     };
 
+    # themes directory - for fish_config theme
+    "fish/themes" = {
+      source = "${fishFilesPath}/themes";
+      recursive = true;
+    };
+
     # Note: On macOS with nix-darwin, PATH and environment are handled by
     # /etc/fish/nixos-env-preinit.fish which sources the set-environment script.
     # No manual 000_nix.fish workaround needed.
