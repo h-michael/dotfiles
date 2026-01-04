@@ -2,6 +2,9 @@
 { ... }:
 
 {
+  # Add Homebrew to PATH
+  environment.systemPath = [ "/opt/homebrew/bin" ];
+
   homebrew = {
     enable = true;
 
