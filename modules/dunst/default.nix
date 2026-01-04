@@ -15,7 +15,7 @@
         width = "(0, 400)";
         height = "(0, 300)";
         origin = "top-right";
-        offset = "(10, 50)";
+        offset = "(30, 50)";
         scale = 0;
         notification_limit = 20;
 
@@ -30,15 +30,15 @@
         indicate_hidden = "yes";
         transparency = 0;
         separator_height = 2;
-        padding = 12;
-        horizontal_padding = 12;
+        padding = 16;
+        horizontal_padding = 16;
         text_icon_padding = 0;
-        frame_width = 2;
+        frame_width = 3;
         gap_size = 5;
         separator_color = "frame";
         sort = "yes";
 
-        font = "Monospace 11";
+        font = "Noto Sans CJK JP 14, Symbols Nerd Font Mono 14";
         line_height = 0;
         markup = "full";
         format = "<b>%s</b>\\n%b";
@@ -87,14 +87,14 @@
         background = "#1a1a1aee";
         foreground = "#ffffff";
         frame_color = "#595959aa";
-        timeout = 10;
+        timeout = 5;
       };
 
       urgency_normal = {
         background = "#1a1a1aee";
         foreground = "#ffffff";
         frame_color = "#33ccffee";
-        timeout = 10;
+        timeout = 5;
       };
 
       urgency_critical = {
