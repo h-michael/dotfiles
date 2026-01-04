@@ -82,6 +82,7 @@
     imv # Image viewer for Wayland
     wdisplays # GUI display configuration
     libnotify # notify-send for notifications
+    wtype # Wayland keyboard input tool
   ];
 
   # Cursor theme

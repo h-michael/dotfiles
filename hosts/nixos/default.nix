@@ -138,6 +138,9 @@
   # Hyprland
   programs.hyprland.enable = true;
 
+  # ydotool for gesture key simulation
+  programs.ydotool.enable = true;
+
   # Steam
   programs.steam = {
     enable = true;
@@ -261,6 +264,7 @@
       "audio" # Audio device access
       "optical" # CD/DVD drive access
       "cdrom" # CD/DVD drive access
+      "ydotool" # ydotool socket access for gesture key simulation
     ];
     shell = pkgs.fish;
   };
