@@ -17,6 +17,7 @@
     ../modules/ripgrep
     ../modules/mise
     ../modules/scripts
+    ../modules/fastfetch
   ];
 
   home.stateVersion = "24.05";
@@ -42,6 +43,7 @@
     tree-sitter
     pstree
     gawk
+    fastfetch
 
     # Development tools
     gh
