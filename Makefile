@@ -52,9 +52,9 @@ switch-darwin: switch-darwin-system switch-darwin-home
 
 switch-darwin-system:
 	@if command -v darwin-rebuild >/dev/null 2>&1; then \
-		sudo darwin-rebuild switch --flake .#darwin --impure ; \
+		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" darwin-rebuild switch --flake .#darwin --impure ; \
 	else \
-		sudo nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#darwin --impure ; \
+		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#darwin --impure ; \
 	fi
 
 switch-darwin-home:
