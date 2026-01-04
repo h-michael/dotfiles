@@ -3,11 +3,18 @@
 // To see current keybindings: rofi -list-keybindings | nvim -R -
 
 configuration {
-    modes: "window,drun,run";
-    font: "Cica, Symbols Nerd Font Mono, Font Awesome 6 Free, sans-serif 16";
-    location: 0;
-    fixed-num-lines: false;
+    modes: "drun,window,run";
     show-icons: true;
     terminal: "ghostty";
+    drun-display-format: "{icon} {name}";
+    display-drun: " Apps";
+    display-window: " Windows";
+    display-run: " Run";
+
+    // Vim keybindings
+    kb-row-up: "Up,Control+k";
+    kb-row-down: "Down,Control+j";
+    kb-accept-entry: "Return,KP_Enter";
+    kb-remove-to-eol: "";
 }
-@theme "Arc-Dark"
+@theme "tokyonight"

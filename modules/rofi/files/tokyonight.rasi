@@ -1,0 +1,87 @@
+/*
+ * Tokyonight colorscheme for rofi
+ * Colors from: https://github.com/folke/tokyonight.nvim (MIT License)
+ */
+
+* {
+    bg: #1a1b26;
+    bg-alt: #292e42;
+    fg: #c0caf5;
+    fg-alt: #a9b1d6;
+    accent: #7aa2f7;
+    urgent: #f7768e;
+    selected: #9d7cd8;
+
+    background-color: @bg;
+    text-color: @fg;
+    border: 0px;
+    font: "Cica 14";
+}
+
+window {
+    width: 1100px;
+    location: center;
+    anchor: center;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 8px;
+    padding: 0;
+}
+
+mainbox {
+    spacing: 0;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    padding: 12px;
+    background-color: @bg-alt;
+    border: 0 0 2px 0;
+    border-color: @accent;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    padding: 0 8px 0 0;
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Search...";
+    placeholder-color: @fg-alt;
+}
+
+listview {
+    padding: 8px;
+    lines: 8;
+    columns: 1;
+    dynamic: true;
+    scrollbar: false;
+}
+
+element {
+    padding: 4px 12px;
+    spacing: 4px;
+    border-radius: 4px;
+}
+
+element normal.normal {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+element selected.normal {
+    background-color: @selected;
+    text-color: @bg;
+}
+
+element-icon {
+    size: 24px;
+    background-color: inherit;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
