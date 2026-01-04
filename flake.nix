@@ -53,6 +53,28 @@
       unstablePkgs = import nixpkgs-unstable {
         system = "x86_64-linux";
         config.allowUnfree = true;
+        overlays = [
+          # Fixes for open-webui dependencies
+          # TODO: Remove these overlays when upstream packages are fixed
+          (final: prev: {
+            python313Packages = prev.python313Packages.overrideScope (
+              pyFinal: pyPrev: {
+                # extract-msg 0.55.0 requires beautifulsoup4<4.14, but nixpkgs has 4.14.3
+                extract-msg = pyPrev.extract-msg.overridePythonAttrs (old: {
+                  pythonRelaxDeps = (old.pythonRelaxDeps or [ ]) ++ [ "beautifulsoup4" ];
+                });
+                # duckdb-engine tests fail due to missing pg_collation in DuckDB
+                duckdb-engine = pyPrev.duckdb-engine.overridePythonAttrs (old: {
+                  doCheck = false;
+                });
+                # langchain-community tests fail due to duckdb-engine test issues
+                langchain-community = pyPrev.langchain-community.overridePythonAttrs (old: {
+                  doCheck = false;
+                });
+              }
+            );
+          })
+        ];
       };
     in
     {
