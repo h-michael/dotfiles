@@ -93,17 +93,8 @@
     gtk.enable = true;
   };
 
-  # GTK settings for fcitx5 (XWayland apps)
-  # Wayland native apps use text-input-v3 protocol automatically
-  gtk = {
-    enable = true;
-    gtk3.extraConfig = {
-      gtk-im-module = "fcitx";
-    };
-    gtk4.extraConfig = {
-      gtk-im-module = "fcitx";
-    };
-  };
+  # GTK/Qt theme settings are in modules/theme
+  # fcitx5 im-module settings are in modules/fcitx5
 
   # Linux-specific XDG settings
   xdg.mimeApps = {

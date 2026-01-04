@@ -1,6 +1,13 @@
 { pkgs, ... }:
 
 {
+  # GTK im-module settings for fcitx5 (XWayland apps)
+  # Wayland native apps use text-input-v3 protocol automatically
+  gtk = {
+    gtk3.extraConfig.gtk-im-module = "fcitx";
+    gtk4.extraConfig.gtk-im-module = "fcitx";
+  };
+
   # Use home-manager's i18n.inputMethod module for fcitx5
   # Reference: https://wiki.nixos.org/wiki/Fcitx5
   i18n.inputMethod = {

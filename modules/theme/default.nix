@@ -6,12 +6,12 @@
 }:
 
 {
-  # GTK dark theme
+  # GTK Tokyonight theme
   gtk = {
     enable = true;
     theme = {
-      name = "Adwaita-dark";
-      package = pkgs.gnome-themes-extra;
+      name = "Tokyonight-Dark";
+      package = pkgs.tokyonight-gtk-theme;
     };
     iconTheme = {
       name = "Adwaita";
