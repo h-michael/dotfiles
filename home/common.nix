@@ -52,6 +52,7 @@
     direnv
     lefthook
     gitleaks
+    pinact
     ast-grep
     stylua
     nixfmt-rfc-style
