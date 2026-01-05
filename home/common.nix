@@ -50,7 +50,6 @@
     gnumake
     direnv
     lefthook
-    git-secrets
     gitleaks
     ast-grep
     stylua

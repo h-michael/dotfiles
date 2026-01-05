@@ -12,14 +12,6 @@ pre-commit:
         - merge
         - rebase
 
-    # Security: AWS credentials and secrets
-    git-secrets:
-      priority: 1
-      run: git-secrets --pre_commit_hook -- {staged_files}
-      skip:
-        - merge
-        - rebase
-
     # Code formatting (run in parallel after security checks)
     fish-indent:
       priority: 10

@@ -49,14 +49,6 @@
         status = "auto";
         branch = "auto";
       };
-      secrets = {
-        providers = "git secrets --aws-provider";
-        patterns = [
-          "(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}"
-          ''(\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\s*(:|=>|=)\s*(\"|')?[A-Za-z0-9/\+=]{40}(\"|')?''
-          ''(\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)_?(ID|id|Id)?(\"|')?\s*(:|=>|=)\s*(\"|')?[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}(\"|')?''
-        ];
-      };
       "browse-remote \"github.com\"" = {
         top = "https://{host}/{path}";
         ref = "https://{host}/{path}/tree/{short_ref}";

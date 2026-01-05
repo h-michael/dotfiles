@@ -2,3 +2,15 @@ title = "Dotfiles Gitleaks Configuration"
 
 [extend]
 useDefault = true
+
+# Custom rules: patterns not covered by default
+[[rules]]
+id = "anthropic-oauth-token"
+description = "Anthropic OAuth Token (Claude Code)"
+regex = '''sk-ant-oat\d{2}-[a-zA-Z0-9_\-]{80,}'''
+keywords = ["sk-ant-oat"]
+
+# Allowlist: skip unnecessary files and false positives
+[allowlist]
+paths = ['''flake\.lock''', '''\.git/''', '''lazy-lock\.json''']
+regexes = ['''EXAMPLE''', '''example\.com''', '''placeholder''']
