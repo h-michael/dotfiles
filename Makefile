@@ -1,4 +1,4 @@
-.PHONY: switch build test update clean gc help setup
+.PHONY: switch build test update clean gc help setup news
 
 # Default target
 help:
@@ -19,12 +19,13 @@ help:
 	@echo "  make test-arch      - Test configuration (dry-run) on Arch"
 	@echo ""
 	@echo "Setup:"
-	@echo "  make setup          - Install git hooks (lefthook + git-secrets)"
+	@echo "  make setup          - Install git hooks (lefthook)"
 	@echo ""
 	@echo "Maintenance:"
 	@echo "  make update         - Update flake inputs"
 	@echo "  make clean          - Remove old generations"
 	@echo "  make gc             - Garbage collect nix store"
+	@echo "  make news           - Show home-manager news"
 
 # NixOS commands (--impure needed for gitignored hardware-configuration.nix)
 switch-nix:
@@ -85,5 +86,16 @@ gc:
 # Setup
 setup:
 	lefthook install
-	git secrets --register-aws
 	@echo "Git hooks installed successfully"
+
+# Home Manager news (auto-detect platform)
+news:
+	@case "$$(uname -s)" in \
+		Darwin) home-manager --flake .#darwin --impure news ;; \
+		Linux) \
+			if [ -f /etc/NIXOS ]; then \
+				home-manager --flake .#nixos --impure news ; \
+			else \
+				home-manager --flake .#arch --impure news ; \
+			fi ;; \
+	esac

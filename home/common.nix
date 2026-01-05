@@ -46,6 +46,7 @@
     fastfetch
 
     # Development tools
+    home-manager
     gh
     gnumake
     direnv
