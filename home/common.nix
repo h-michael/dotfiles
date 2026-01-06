@@ -49,6 +49,7 @@
     home-manager
     gh
     gnumake
+    pkg-config
     direnv
     lefthook
     gitleaks
