@@ -27,3 +27,4 @@ repomix.config.json
 .repomixignore
 .claude
 .devcontainer
+.gwtx.toml
