@@ -101,6 +101,19 @@
         # Don't create .DS_Store files on USB drives
         DSDontWriteUSBStores = true;
       };
+      "com.apple.AppleMultitouchTrackpad" = {
+        # Three-Finger Gestures (0=disabled, 2=enabled)
+        TrackpadThreeFingerHorizSwipeGesture = 2;
+        TrackpadThreeFingerVertSwipeGesture = 2;
+        TrackpadThreeFingerTapGesture = 0;
+        # Four-Finger Gestures
+        TrackpadFourFingerPinchGesture = 2;
+        TrackpadFourFingerHorizSwipeGesture = 2;
+        TrackpadFourFingerVertSwipeGesture = 2;
+        # Two-Finger Gestures
+        TrackpadTwoFingerDoubleTapGesture = 1;
+        TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
+      };
     };
   };
 
