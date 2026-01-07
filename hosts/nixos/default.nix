@@ -252,6 +252,10 @@
   # Shell configuration
   programs.fish.enable = true;
 
+  # Disable man cache generation (slow rebuild caused by fish enabling this)
+  # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365
+  documentation.man.generateCaches = false;
+
   # User configuration
   users.users.${username} = {
     isNormalUser = true;

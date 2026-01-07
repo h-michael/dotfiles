@@ -21,6 +21,10 @@ in
 {
   programs.fish.enable = true;
 
+  # Disable man cache generation (slow rebuild caused by fish enabling this)
+  # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365
+  programs.man.generateCaches = false;
+
   # Only set XDG_DATA_DIRS for standalone home-manager (Arch Linux)
   home.sessionVariables = lib.mkIf (xdgDataDirs != null) {
     XDG_DATA_DIRS = xdgDataDirs;
