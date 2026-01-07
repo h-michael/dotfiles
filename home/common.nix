@@ -50,6 +50,7 @@
     gh
     gnumake
     pkg-config
+    openssl
     direnv
     lefthook
     gitleaks
