@@ -78,24 +78,12 @@
 
       # Three-Finger Gestures
       TrackpadThreeFingerDrag = false;
-      TrackpadThreeFingerHorizSwipeGesture = 2;
-      TrackpadThreeFingerVertSwipeGesture = 2;
-      TrackpadThreeFingerTapGesture = 0;
-
-      # Four-Finger Gestures
-      TrackpadFourFingerPinchGesture = 2;
-      TrackpadFourFingerHorizSwipeGesture = 2;
-      TrackpadFourFingerVertSwipeGesture = 2;
-
-      # Two-Finger Gestures
-      TrackpadTwoFingerDoubleTapGesture = 1;
-      TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
 
       # Scrolling & Momentum
       TrackpadMomentumScroll = true;
 
-      # Corner Secondary Click
-      TrackpadCornerSecondaryClick = 0;
+      # Note: Many gesture options (TrackpadThreeFingerHorizSwipeGesture, etc.)
+      # are not exposed in nix-darwin and must be configured manually via defaults
     };
 
     # Screenshot settings
