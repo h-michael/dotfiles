@@ -19,6 +19,8 @@
       "mqttx" # MQTT client GUI
       "ghostty" # Terminal emulator
       "karabiner-elements" # Keyboard customization
+      "enpass" # password manager
+      "alfred" # launcher
 
       # Nerd Fonts
       "font-hack-nerd-font"

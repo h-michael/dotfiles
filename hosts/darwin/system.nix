@@ -95,6 +95,11 @@
     # Custom preferences for settings not directly exposed
     # https://mynixos.com/nix-darwin/options/system.defaults.CustomUserPreferences
     CustomUserPreferences = {
+      # Global preferences
+      ".GlobalPreferences" = {
+        # Disable IME indicator popup when switching input sources
+        TSMLanguageIndicatorEnabled = false;
+      };
       "com.apple.desktopservices" = {
         # Don't create .DS_Store files on network drives
         DSDontWriteNetworkStores = true;
