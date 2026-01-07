@@ -47,6 +47,7 @@
     expect # Automating interactive applications
     autoconf
     automake
+    watchexec
 
     # Lua (luajit only - lua conflicts with luajit's /bin/lua)
     luajit
