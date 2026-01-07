@@ -31,18 +31,28 @@
     # Global settings
     # https://mynixos.com/nix-darwin/options/system.defaults.NSGlobalDomain
     NSGlobalDomain = {
+      # Keyboard settings
       InitialKeyRepeat = 15;
       KeyRepeat = 2;
+      # Disable press-and-hold for special characters (better for Vim)
+      ApplePressAndHoldEnabled = false;
+      # Use F1, F2, etc. as standard function keys
+      "com.apple.keyboard.fnState" = false;
+      # Keyboard control behavior (3 = full keyboard access)
+      AppleKeyboardUIMode = 3;
+
+      # Interface & Appearance
       AppleInterfaceStyle = "Dark";
+
       # Disable auto-corrections (for developers)
       NSAutomaticCapitalizationEnabled = false;
       NSAutomaticSpellingCorrectionEnabled = false;
       NSAutomaticQuoteSubstitutionEnabled = false;
       NSAutomaticDashSubstitutionEnabled = false;
-      # Disable press-and-hold for special characters (better for Vim)
-      ApplePressAndHoldEnabled = false;
+
       # Don't save new documents to iCloud by default
       NSDocumentSaveNewDocumentsToCloud = false;
+
       # Expand save panel by default
       NSNavPanelExpandedStateForSaveMode = true;
       NSNavPanelExpandedStateForSaveMode2 = true;
@@ -51,9 +61,41 @@
     # Trackpad settings
     # https://mynixos.com/nix-darwin/options/system.defaults.trackpad
     trackpad = {
+      # Click & Tap
       Clicking = false;
+      Dragging = false;
+      DragLock = false;
       TrackpadRightClick = true;
+
+      # Click Sensitivity (0=light, 1=medium, 2=firm)
+      FirstClickThreshold = 1;
+      SecondClickThreshold = 1;
+
+      # Haptic Feedback
+      ActuateDetents = true;
+      ActuationStrength = 0; # Silent clicking disabled
+      ForceSuppressed = false;
+
+      # Three-Finger Gestures
       TrackpadThreeFingerDrag = false;
+      TrackpadThreeFingerHorizSwipeGesture = 2;
+      TrackpadThreeFingerVertSwipeGesture = 2;
+      TrackpadThreeFingerTapGesture = 0;
+
+      # Four-Finger Gestures
+      TrackpadFourFingerPinchGesture = 2;
+      TrackpadFourFingerHorizSwipeGesture = 2;
+      TrackpadFourFingerVertSwipeGesture = 2;
+
+      # Two-Finger Gestures
+      TrackpadTwoFingerDoubleTapGesture = 1;
+      TrackpadTwoFingerFromRightEdgeSwipeGesture = 3;
+
+      # Scrolling & Momentum
+      TrackpadMomentumScroll = true;
+
+      # Corner Secondary Click
+      TrackpadCornerSecondaryClick = 0;
     };
 
     # Screenshot settings
