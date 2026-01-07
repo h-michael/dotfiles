@@ -3,11 +3,13 @@ if [ -z $TMUX ]
     init-ssh-agent
 end
 
-
 # Rootless Docker
 set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/docker.sock
 
 set -gx RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgreprc
+
+# pkg-config
+set -gx PKG_CONFIG_PATH $HOME/.nix-profile/lib/pkgconfig
 
 # LANGUAGE must be set by en_US
 set -gx LANGUAGE en_US.UTF-8
