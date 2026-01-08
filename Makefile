@@ -1,4 +1,4 @@
-.PHONY: switch build test update clean gc help setup news
+.PHONY: switch build test update clean gc help setup news diff
 
 # Default target
 help:
@@ -26,6 +26,11 @@ help:
 	@echo "  make clean          - Remove old generations"
 	@echo "  make gc             - Garbage collect nix store"
 	@echo "  make news           - Show home-manager news"
+	@echo ""
+	@echo "Diff Commands (requires nvd):"
+	@echo "  make diff-darwin    - Show package changes for darwin (system + home)"
+	@echo "  make diff-nix       - Show package changes for NixOS"
+	@echo "  make diff-arch      - Show package changes for Arch (home-manager)"
 
 # NixOS commands (--impure needed for gitignored hardware-configuration.nix)
 switch-nix:
@@ -66,8 +71,8 @@ switch-darwin-home:
 	fi
 
 build-darwin:
-	nix build .#darwinConfigurations.darwin.system --impure
-	nix build .#homeConfigurations.darwin.activationPackage --impure
+	nix build .#darwinConfigurations.darwin.system --impure -o result-system
+	nix build .#homeConfigurations.darwin.activationPackage --impure -o result-home
 
 test-darwin:
 	nix build .#darwinConfigurations.darwin.system --dry-run --impure
@@ -99,3 +104,17 @@ news:
 				home-manager --flake .#arch --impure news ; \
 			fi ;; \
 	esac
+
+# Diff commands (requires nvd)
+diff-darwin: build-darwin
+	@echo "=== System differences ==="
+	@nvd diff /run/current-system ./result-system
+	@echo ""
+	@echo "=== Home Manager differences ==="
+	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result-home
+
+diff-nix: build-nix
+	@nvd diff /run/current-system ./result
+
+diff-arch: build-arch
+	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result

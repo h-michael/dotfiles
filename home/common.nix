@@ -58,6 +58,7 @@
     ast-grep
     stylua
     nixfmt-rfc-style
+    nvd # Nix package version diff
     python3
     uv
     deno
