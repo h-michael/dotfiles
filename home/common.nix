@@ -60,6 +60,7 @@
     nixfmt-rfc-style
     nvd # Nix package version diff
     python3
+    ruby
     uv
     deno
 
