@@ -43,7 +43,9 @@
 
     # Communication (with audio/video support)
     discord
-    vesktop # Discord client with better Wayland screen sharing
+    (vesktop.override {
+      withMiddleClickScroll = true; # Enable middle-click autoscroll
+    })
     slack
 
     # Audio control
