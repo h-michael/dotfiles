@@ -48,6 +48,7 @@
 
     # Audio control
     pavucontrol # PipeWire/PulseAudio GUI
+    sound-theme-freedesktop # System sound files
 
     # CD ripping
     asunder # GTK CD ripper (fast, CDDB support)
