@@ -42,7 +42,9 @@
         Description = "xremap";
       };
       Service = {
-        ExecStart = "${pkgs.xremap.passthru.hyprland}/bin/xremap --watch=config %h/.config/xremap/config.yml";
+        # --watch=config: reload on config changes
+        # --watch=device: detect newly connected keyboards
+        ExecStart = "${pkgs.xremap.passthru.hyprland}/bin/xremap --watch=config --watch=device %h/.config/xremap/config.yml";
         Restart = "on-failure";
         Slice = "session.slice";
       };
