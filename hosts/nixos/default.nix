@@ -153,6 +153,9 @@
     enable = true;
     remotePlay.openFirewall = true; # Steam Remote Play
     dedicatedServer.openFirewall = true; # Steam dedicated server
+    localNetworkGameTransfers.openFirewall = true; # Fast game transfers on LAN
+    extest.enable = true; # Fix Steam Input on Wayland
+    protontricks.enable = true; # Winetricks for Proton games
     # Proton for Windows games
     extraCompatPackages = with pkgs; [
       proton-ge-bin # GloriousEggroll's custom Proton (better compatibility)
