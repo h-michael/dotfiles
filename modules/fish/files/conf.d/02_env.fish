@@ -96,3 +96,6 @@ set -g theme_display_docker_machine no
 set -g theme_display_virtualenv no
 
 set -gx DENO_INSTALL $HOME/.deno
+
+# Claude Code
+set -gx ENABLE_TOOL_SEARCH 1
