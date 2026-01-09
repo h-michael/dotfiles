@@ -90,7 +90,7 @@ async function getActiveWindowClass(): Promise<string> {
 }
 
 async function playSound(sound: string): Promise<void> {
-  const soundPath = `/usr/share/sounds/freedesktop/stereo/${sound}.oga`;
+  const soundPath = `/run/current-system/sw/share/sounds/freedesktop/stereo/${sound}.oga`;
   // Fire and forget - don't wait for sound to finish
   runCommand(["pw-play", soundPath], { stdout: "null" });
 }
