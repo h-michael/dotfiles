@@ -11,9 +11,9 @@ configuration {
     display-window: " Windows";
     display-run: " Run";
 
-    // Vim keybindings
-    kb-row-up: "Up,Control+k";
-    kb-row-down: "Down,Control+j";
+    // Vim/Emacs keybindings
+    kb-row-up: "Up,Control+k,Control+p";
+    kb-row-down: "Down,Control+j,Control+n";
     kb-accept-entry: "Return,KP_Enter";
     kb-remove-to-eol: "";
 }
