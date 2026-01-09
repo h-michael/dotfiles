@@ -21,6 +21,7 @@
     ../modules/fontconfig
     ../modules/scripts-linux
     ../modules/vscode
+    ../modules/swappy
   ];
 
   # Linux-specific packages
