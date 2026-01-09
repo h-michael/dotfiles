@@ -7,6 +7,7 @@ actions=(
     "Pin window (all workspaces)"
     "Toggle floating"
     "Toggle fullscreen"
+    "Close window"
 )
 
 # Show rofi menu
@@ -25,5 +26,12 @@ case "$selected" in
         ;;
     "Toggle fullscreen")
         hyprctl dispatch fullscreen
+        ;;
+    "Close window")
+        # Show confirmation dialog
+        choice=$(echo -e "Yes\nNo" | rofi -dmenu -p "Close this window?" -theme-str 'window {width: 300px;}')
+        if [ "$choice" = "Yes" ]; then
+            hyprctl dispatch killactive
+        fi
         ;;
 esac
