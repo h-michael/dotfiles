@@ -106,6 +106,13 @@
   };
   services.blueman.enable = true;
 
+  # Disable TP-Link Bluetooth USB Adapter (use internal MT7925 instead)
+  # USB ID: 2357:0604
+  services.udev.extraRules = ''
+    # Disable TP-Link Bluetooth USB Adapter
+    SUBSYSTEM=="usb", ATTRS{idVendor}=="2357", ATTRS{idProduct}=="0604", ATTR{authorized}="0"
+  '';
+
   # Workaround: MediaTek MT7925 Bluetooth is soft-blocked on boot with kernel 6.12+
   #
   # Symptoms:
