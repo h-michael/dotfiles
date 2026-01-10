@@ -54,6 +54,7 @@
     direnv
     lefthook
     gitleaks
+    git-cliff
     pinact
     ast-grep
     stylua
