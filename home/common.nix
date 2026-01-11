@@ -73,6 +73,21 @@
     # Protobuf
     buf
 
+    # Network diagnostics
+    bind.dnsutils # dig, nslookup, host
+    whois
+    iputils # ping
+    mtr # traceroute + ping
+    traceroute
+    nmap
+    netcat
+    tcpdump
+    iperf3
+    ipcalc
+    socat
+    websocat # WebSocket client/server
+    grpcurl # gRPC testing tool
+
     # Language Servers
     lua-language-server
     gopls
