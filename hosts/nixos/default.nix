@@ -90,6 +90,22 @@
   # Networking
   networking.hostName = "nixos";
   networking.networkmanager.enable = true;
+  networking.firewall = {
+    enable = true;
+    extraCommands = ''
+      # KDE Connect: Allow only from local and Tailscale networks
+
+      # Local network (home WiFi, etc.)
+      iptables -A nixos-fw -p tcp --dport 1714:1764 -s 192.168.0.0/16 -j nixos-fw-accept
+      iptables -A nixos-fw -p udp --dport 1714:1764 -s 192.168.0.0/16 -j nixos-fw-accept
+      iptables -A nixos-fw -p tcp --dport 1714:1764 -s 10.0.0.0/8 -j nixos-fw-accept
+      iptables -A nixos-fw -p udp --dport 1714:1764 -s 10.0.0.0/8 -j nixos-fw-accept
+
+      # Tailscale network
+      iptables -A nixos-fw -p tcp --dport 1714:1764 -s 100.64.0.0/10 -j nixos-fw-accept
+      iptables -A nixos-fw -p udp --dport 1714:1764 -s 100.64.0.0/10 -j nixos-fw-accept
+    '';
+  };
 
   # Bluetooth (with MT7925 workarounds)
   hardware.bluetooth = {

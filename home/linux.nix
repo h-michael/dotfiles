@@ -47,6 +47,7 @@
       withMiddleClickScroll = true; # Enable middle-click autoscroll
     })
     slack
+    kdePackages.kdeconnect-kde # Android integration (file sharing, notifications, clipboard sync)
 
     # Audio control
     pavucontrol # PipeWire/PulseAudio GUI
