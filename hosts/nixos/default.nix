@@ -216,6 +216,15 @@
   # Tailscale VPN
   services.tailscale.enable = true;
 
+  # Docker Rootless mode
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
+
   # Navidrome music streaming server
   # Access: Tailscale only (http://<Tailscale-IP>:4533)
   services.navidrome = {
