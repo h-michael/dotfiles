@@ -364,6 +364,7 @@
     liberation_ttf
     nerd-fonts.symbols-only # For waybar icons
     font-awesome_6 # For waybar icons
+    plemoljp-nf # PlemolJP with Nerd Fonts (Japanese + IBM Plex Mono)
   ];
 
   system.stateVersion = "24.11";

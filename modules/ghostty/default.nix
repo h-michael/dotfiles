@@ -16,6 +16,18 @@ in
       ${baseConfig}
       # Fish shell (path resolved by Nix, works on macOS and Linux)
       command = ${fishPath} --login --interactive
+
+      # Platform-specific settings
+      ${lib.optionalString pkgs.stdenv.isDarwin ''
+        font-size = 14
+        fullscreen = true
+      ''}
+      ${lib.optionalString pkgs.stdenv.isLinux ''
+        font-size = 16
+        fullscreen = false
+        # Font rendering (Linux/FreeType only)
+        freetype-load-flags = hinting,autohint
+      ''}
     '';
   };
 }

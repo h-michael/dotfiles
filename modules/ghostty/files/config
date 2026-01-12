@@ -2,9 +2,9 @@ shell-integration = fish
 
 theme = "TokyoNight Night"
 
+# Font selection
 font-family = Cica
-font-family = PlemolJP Console
-font-size = 14
+font-family = PlemolJP Console NF Light
 
 # Shell integration features
 # - no-cursor: Disable cursor reporting to prevent [O[I sequences in Claude Code
@@ -28,13 +28,8 @@ link-url = true
 window-padding-x = 4
 window-padding-y = 4
 
-# Minimum contrast ratio
-minimum-contrast = 1.1
-
 # Keybindings
 keybind = super+0=unbind
 keybind = super+shift+0=reset_font_size
 keybind = super+up=jump_to_prompt:-1
 keybind = super+down=jump_to_prompt:1
-
-fullscreen = true
