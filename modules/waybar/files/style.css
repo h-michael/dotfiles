@@ -6,7 +6,7 @@
 * {
   font-family:
     "Cica", "Symbols Nerd Font Mono", "Font Awesome 6 Free", sans-serif;
-  font-size: 14px;
+  font-size: 18px;
   border: none;
   padding: 0;
   margin: 0;
@@ -55,7 +55,7 @@ window#waybar {
 #custom-bluetooth,
 #custom-power,
 #tray {
-  padding: 0 6px;
+  padding: 0 2px;
   margin: 0 2px;
   background: rgba(41, 46, 66, 0.5); /* bg_highlight: #292e42 */
   color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
@@ -124,4 +124,20 @@ window#waybar {
 #custom-network:hover,
 #custom-power:hover {
   background: rgba(86, 95, 137, 0.3); /* comment: #565f89 */
+}
+
+#taskbar button {
+  padding: 0 6px;
+  margin: 0 4px;
+  background: rgba(41, 46, 66, 0.5); /* bg_highlight: #292e42 */
+  color: rgba(192, 202, 245, 1); /* fg: #c0caf5 */
+  border-radius: 6px;
+}
+
+#taskbar button.active {
+  background: rgba(122, 162, 247, 0.3); /* blue: #7aa2f7 */
+}
+
+#taskbar button:hover {
+  background: rgba(86, 95, 137, 0.5); /* comment: #565f89 */
 }

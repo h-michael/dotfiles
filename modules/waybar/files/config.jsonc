@@ -1,9 +1,10 @@
 {
-  "height": 24,
+  "height": 30,
   "layer": "top",
   "position": "top",
   "tray": {
-    "spacing": 5,
+    "icon-size": 20,
+    "spacing": 6,
   },
   "modules-left": ["hyprland/workspaces"],
   "modules-center": ["hyprland/window"],
@@ -102,5 +103,11 @@
     "format": "{name}",
     "on-click": "activate",
     "sort-by-number": true,
+  },
+  "wlr/taskbar": {
+    "format": "{icon}",
+    "icon-size": 18,
+    "tooltip-format": "{title}",
+    "on-click": "activate",
   },
 }
