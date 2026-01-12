@@ -12,6 +12,7 @@
     "wlr/taskbar",
     "tray",
     "systemd-failed-units",
+    "custom/brightness",
     "pulseaudio",
     "cpu",
     "memory",
@@ -92,6 +93,15 @@
     "format-ok": "󰄬",
     "system": true,
     "user": true,
+  },
+  "custom/brightness": {
+    "return-type": "json",
+    "format": "{}",
+    "tooltip": true,
+    "interval": 2,
+    "exec": "~/.config/waybar/script/brightness_status.ts",
+    "on-click": "brightness up",
+    "on-click-right": "brightness down",
   },
   "custom/power": {
     "format": "⏻",

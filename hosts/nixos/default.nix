@@ -37,6 +37,9 @@
     };
   };
 
+  # I2C support for DDC/CI (external display brightness control)
+  boot.kernelModules = [ "i2c-dev" ];
+
   boot.initrd = {
     kernelModules = [ "amdgpu" ];
     services.lvm.enable = true;
@@ -128,6 +131,9 @@
     # Disable TP-Link Bluetooth USB Adapter
     SUBSYSTEM=="usb", ATTRS{idVendor}=="2357", ATTRS{idProduct}=="0604", ATTR{authorized}="0"
   '';
+
+  # ddcutil udev rules for I2C device access
+  services.udev.packages = [ pkgs.ddcutil ];
 
   # Workaround: MediaTek MT7925 Bluetooth is soft-blocked on boot with kernel 6.12+
   #
@@ -295,6 +301,7 @@
       "optical" # CD/DVD drive access
       "cdrom" # CD/DVD drive access
       "ydotool" # ydotool socket access for gesture key simulation
+      "i2c" # I2C device access for ddcutil (external display control)
     ];
     shell = pkgs.fish;
   };
@@ -350,6 +357,9 @@
     rocmPackages.rocm-smi # ROCm System Management Interface
     rocmPackages.rocminfo # GFX version info (rocminfo | grep gfx)
     clinfo # OpenCL info
+
+    # External display brightness control (DDC/CI)
+    ddcutil
 
     # Webcam
     v4l-utils # Webcam tools (v4l2-ctl)
