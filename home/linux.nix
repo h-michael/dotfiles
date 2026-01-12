@@ -26,22 +26,63 @@
 
   # Linux-specific packages
   home.packages = with pkgs; [
-    # GUI applications
+    # Terminals
+    ghostty
+    kitty
+
+    # Development tools
+    xh # HTTP client (Rust implementation of httpie)
+    lazygit # Git TUI
+    btop # Resource monitor
+    hyperfine # Command-line benchmarking tool
+    just # Task runner (Make alternative)
+    tealdeer # tldr client (simplified man pages)
+    gdb # GNU debugger
+    delve # Go debugger
+    miller # CSV/JSON/TSV data processing
+    qsv # High-performance CSV toolkit
+    watchman # File watching service
+
+    # Container tools
+    lazydocker # Docker TUI
+    dive # Docker image layer analyzer
+    trivy # Container security scanner
+    ctop # Container metrics (top-like interface)
+
+    # Database tools
+    pgcli # PostgreSQL REPL with autocomplete
+    mycli # MySQL REPL with autocomplete
+    usql # Universal SQL client
+    sqlite-utils # SQLite CLI utilities
+
+    # Performance analysis
+    valgrind # Memory debugger and profiler
+    strace # System call tracer
+
+    # Backup & sync
+    rclone # Cloud storage sync
+    restic # Backup tool
+
+    # Development GUI
+    bruno # API client (Postman alternative, Git-friendly)
+    dbeaver-bin # Database management tool
+    wireshark # Network protocol analyzer
+
+    # Browsers & media
     firefox
     google-chrome
     vlc
     obs-studio
+
+    # File management
     kdePackages.dolphin # KDE file manager
+
+    # AI & productivity
     lmstudio # Local LLM GUI
     opencode # AI coding agent for terminal
     enpass # Password manager
 
-    # Unity development
-    unityhub # Unity installer and project manager
-    dotnet-sdk_8 # .NET SDK for C# development
-    mono # Required by some Unity tools
-
-    # Communication (with audio/video support)
+    # Communication
     discord
     (vesktop.override {
       withMiddleClickScroll = true; # Enable middle-click autoscroll
@@ -49,38 +90,33 @@
     slack
     kdePackages.kdeconnect-kde # Android integration (file sharing, notifications, clipboard sync)
 
-    # Audio control
+    # Audio
     pavucontrol # PipeWire/PulseAudio GUI
     sound-theme-freedesktop # System sound files
 
-    # CD ripping
+    # Music production
     asunder # GTK CD ripper (fast, CDDB support)
     whipper # Accurate CD ripper (AccurateRip verification, slow)
     cdparanoia # CD ripping engine
     lame # MP3 encoder
     flac # FLAC encoder
-
-    # Music tagging
     picard # MusicBrainz tagger (auto-fetch metadata)
     kid3 # Tag editor with lyrics support
 
-    # Terminals
-    ghostty
-    kitty
+    # Unity development
+    unityhub # Unity installer and project manager
+    dotnet-sdk_8 # .NET SDK for C# development
+    mono # Required by some Unity tools
 
-    # Hyprland/Wayland tools
+    # Hyprland/Wayland
     rofi
     waybar
-
-    # Wayland essentials
     wl-clipboard # Clipboard (wl-copy, wl-paste)
     grim # Screenshot
     slurp # Region selection for screenshots
     swappy # Screenshot annotation/editor
     wf-recorder # Screen recording
     cliphist # Clipboard history manager
-
-    # Wayland utilities
     wev # Event viewer (debug)
     wlr-randr # Display configuration (like xrandr)
     swww # Wallpaper daemon (animated support)

@@ -22,6 +22,11 @@
       "enpass" # password manager
       "alfred" # launcher
 
+      # Development tools
+      "bruno" # API client (Postman alternative, Git-friendly)
+      "dbeaver-community" # Database management tool
+      "wireshark" # Network protocol analyzer
+
       # Nerd Fonts
       "font-hack-nerd-font"
       "font-jetbrains-mono-nerd-font"

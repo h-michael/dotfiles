@@ -47,13 +47,18 @@
     expect # Automating interactive applications
     autoconf
     automake
-    watchexec
+    xh # HTTP client (Rust implementation of httpie)
+    lazygit # Git TUI
+    hyperfine # Command-line benchmarking tool
+    just # Task runner (Make alternative)
+    tealdeer # tldr client (simplified man pages)
+    delve # Go debugger
+    miller # CSV/JSON/TSV data processing
+    qsv # High-performance CSV toolkit
 
-    # Lua (luajit only - lua conflicts with luajit's /bin/lua)
-    luajit
+    # Languages
+    luajit # (luajit only - lua conflicts with luajit's /bin/lua)
     luarocks
-
-    # Java
     openjdk
 
     # Libraries
@@ -67,6 +72,15 @@
     kind
     kubeconform
 
+    # Database tools
+    postgresql_16
+    redis
+    tbls # Database schema documentation
+    pgcli # PostgreSQL REPL with autocomplete
+    mycli # MySQL REPL with autocomplete
+    usql # Universal SQL client
+    sqlite-utils # SQLite CLI utilities
+
     # Network & Security
     nmap
     grpcurl
@@ -77,20 +91,15 @@
     netcat # Network utility
     gnupg
 
-    # Database
-    postgresql_16
-    redis
-    tbls # Database schema documentation
-    # mysql  # Uncomment if needed
-
     # Documentation & Text
     pandoc
     glow
 
-    # System info
+    # System utilities
     fastfetch
-
-    # Notifications
+    btop # Resource monitor
     terminal-notifier
+    rclone # Cloud storage sync
+    restic # Backup tool
   ];
 }
