@@ -29,8 +29,9 @@
     "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰂂", "󰁹"],
   },
   "clock": {
-    "format": "{:%H:%M}",
-    "format-alt": "{:%A, %B %d, %Y %R}",
+    "format": "{:%b/%d %H:%M}",
+    "format-alt": "{:%a,%b/%d %H:%M:%S}",
+    "interval": 1,
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "month",
