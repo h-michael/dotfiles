@@ -76,8 +76,6 @@
     postgresql_16
     redis
     tbls # Database schema documentation
-    pgcli # PostgreSQL REPL with autocomplete
-    mycli # MySQL REPL with autocomplete
     usql # Universal SQL client
     sqlite-utils # SQLite CLI utilities
 
