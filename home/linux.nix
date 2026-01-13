@@ -49,6 +49,10 @@
     trivy # Container security scanner
     ctop # Container metrics (top-like interface)
 
+    # Network diagnostics
+    iputils # ping
+    traceroute
+
     # Database tools
     pgcli # PostgreSQL REPL with autocomplete
     mycli # MySQL REPL with autocomplete

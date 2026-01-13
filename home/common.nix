@@ -76,9 +76,7 @@
     # Network diagnostics
     bind.dnsutils # dig, nslookup, host
     whois
-    iputils # ping
     mtr # traceroute + ping
-    traceroute
     nmap
     netcat
     tcpdump
