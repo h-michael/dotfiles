@@ -205,12 +205,33 @@
     };
   };
 
-  # Pipewire
+  # PipeWire
   services.pipewire = {
     enable = true;
     pulse.enable = true;
     jack.enable = true;
     alsa.enable = true;
+    wireplumber.extraConfig = {
+      # Prevents game audio loss when starting Discord/Vesktop voice chat
+      #
+      # Problem: When voice chat starts, WirePlumber auto-switches Bluetooth headset
+      # from A2DP (high-quality audio, no mic) to HSP/HFP (low-quality, with mic).
+      # This disconnects existing A2DP audio streams (games), routing them to a
+      # non-existent device, leaving streams in 'idle' state.
+      #
+      # Why streams don't recover: Many games (Steam/Java) lock to their initial
+      # audio device at launch and don't auto-reconnect to new default devices.
+      # Even after closing Discord, game audio remains broken until game restart.
+      #
+      # This setting disables auto-switching, keeping headset on A2DP during voice chat.
+      # Trade-off: Bluetooth headset mic becomes unavailable (A2DP has no mic support).
+      # Use built-in or external mic for Discord instead.
+      "10-disable-bluetooth-autoswitch" = {
+        "wireplumber.settings" = {
+          "bluetooth.autoswitch-to-headset-profile" = false;
+        };
+      };
+    };
   };
 
   # Tailscale VPN
