@@ -31,6 +31,7 @@
     kitty
 
     # Development tools
+    clang # C/C++ compiler (needed for Rust/C toolchains)
     xh # HTTP client (Rust implementation of httpie)
     lazygit # Git TUI
     btop # Resource monitor
