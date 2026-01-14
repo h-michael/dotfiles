@@ -103,3 +103,9 @@ deleted = '✘${count}'
 disabled = false
 symbol = '☸  '
 format = '[$symbol$context(\($namespace\))]($style)'
+
+[status]
+disabled = false
+format = '[$symbol$status]($style) '
+style = 'bold red'
+symbol = '✘ '
