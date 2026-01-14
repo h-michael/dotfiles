@@ -96,6 +96,5 @@
     taplo
     rustup # Rust toolchain manager (removed rust-analyzer to avoid conflict)
     vscode-langservers-extracted # html, css, json, eslint
-    omnisharp-roslyn # C# (Unity)
   ];
 }

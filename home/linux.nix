@@ -44,6 +44,9 @@
     qsv # High-performance CSV toolkit
     watchman # File watching service
 
+    # Language Servers
+    omnisharp-roslyn # C# (Unity)
+
     # Container tools
     lazydocker # Docker TUI
     dive # Docker image layer analyzer
