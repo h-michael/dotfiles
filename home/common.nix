@@ -48,6 +48,7 @@
     # Development tools
     home-manager
     gh
+    hub
     gnumake
     pkg-config
     openssl.dev

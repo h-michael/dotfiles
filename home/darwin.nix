@@ -37,7 +37,6 @@
     perl
     shfmt
     tokei
-    hub
     tig
     watchexec
     sccache
