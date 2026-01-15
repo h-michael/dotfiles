@@ -38,7 +38,10 @@
   };
 
   # I2C support for DDC/CI (external display brightness control)
-  boot.kernelModules = [ "i2c-dev" ];
+  boot.kernelModules = [
+    "i2c-dev"
+    "mt7925e"
+  ];
 
   boot.initrd = {
     kernelModules = [ "amdgpu" ];
