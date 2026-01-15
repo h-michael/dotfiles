@@ -56,6 +56,11 @@
     };
   };
 
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/fadc1b39-e7bf-4bd9-9487-7979adb5c485"; }
+  ];
+  boot.resumeDevice = "/dev/disk/by-uuid/fadc1b39-e7bf-4bd9-9487-7979adb5c485";
+
   # Workaround: Disable ASPM (Active State Power Management) for MediaTek MT7925
   #
   # ASPM can cause Bluetooth connection instability and firmware communication
@@ -127,6 +132,17 @@
     };
   };
   services.blueman.enable = true;
+
+  services.logind = {
+    lidSwitch = "suspend-then-hibernate";
+    lidSwitchExternalPower = "suspend-then-hibernate";
+    lidSwitchDocked = "ignore";
+    settings.Login.PowerKeyLongPress = "poweroff";
+  };
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30min
+  '';
 
   # Disable TP-Link Bluetooth USB Adapter (use internal MT7925 instead)
   # USB ID: 2357:0604
