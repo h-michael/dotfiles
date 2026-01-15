@@ -39,6 +39,7 @@
     delta
     jq
     yq
+    p7zip
     ghq
     tree-sitter
     pstree
