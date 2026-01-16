@@ -26,6 +26,14 @@
 
   # Linux-specific packages
   home.packages = with pkgs; [
+    dash
+    tcsh
+    ksh
+    mksh
+    elvish
+    nushell
+    xonsh
+
     # Terminals
     ghostty
     kitty
