@@ -1,4 +1,4 @@
-.PHONY: switch build test update clean gc help setup news diff
+.PHONY: switch build test update clean nix-gc help setup news diff
 
 # Default target
 help:
@@ -24,7 +24,8 @@ help:
 	@echo "Maintenance:"
 	@echo "  make update         - Update flake inputs"
 	@echo "  make clean          - Remove old generations"
-	@echo "  make gc             - Garbage collect nix store"
+	@echo "  make nix-gc         - Garbage collect nix store"
+	@echo "                      - Or keep latest NixOS generations (KEEP=15)"
 	@echo "  make news           - Show home-manager news"
 	@echo ""
 	@echo "Diff Commands (requires nvd):"
@@ -85,8 +86,21 @@ update:
 clean:
 	sudo nix-collect-garbage -d
 
-gc:
-	nix store gc
+nix-gc:
+	@if [ -n "$(KEEP)" ]; then \
+		if [ ! -f /etc/NIXOS ]; then \
+			echo "nix-gc KEEP is for NixOS system generations only"; \
+			exit 1; \
+		fi; \
+		echo "Keeping latest $(KEEP) NixOS system generations..."; \
+		sudo nix-env --list-generations --profile /nix/var/nix/profiles/system \
+			| awk '{print $$1}' \
+			| head -n -$(KEEP) \
+			| xargs -r sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations; \
+		sudo nix-collect-garbage -d; \
+	else \
+		nix store gc; \
+	fi
 
 # Setup
 setup:
