@@ -20,7 +20,7 @@
         "npm:js-beautify" = "latest";
 
         # LLM Tools (npm packages, keep in mise)
-        "npm:@google/gemini-cli" = "preview";
+        "npm:@google/gemini-cli" = "latest";
         "npm:@github/copilot-language-server" = "latest";
         "npm:@anthropic-ai/claude-code" = "latest";
         "npm:@zed-industries/claude-code-acp" = "latest";
