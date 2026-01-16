@@ -21,7 +21,7 @@
   # Use systemd-boot
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 30;
+    configurationLimit = 15;
     editor = true;
     consoleMode = "keep";
     # Dual-boot with Arch Linux
