@@ -25,10 +25,10 @@ pre-commit:
       run: stylua {staged_files}
       stage_fixed: true
 
-    prettier:
+    dprint:
       priority: 10
-      glob: "*.{js,jsx,ts,tsx,json,md,yml,yaml,css,scss,html}"
-      run: npx prettier --write {staged_files}
+      glob: "*.{json,md,yml,yaml,css}"
+      run: dprint fmt {staged_files}
       stage_fixed: true
 
     taplo:

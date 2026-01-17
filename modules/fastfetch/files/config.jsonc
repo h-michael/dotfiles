@@ -28,15 +28,15 @@
     "memory",
     "disk",
     "tpm",
-    //"separator",
+    // "separator",
     //// Network
-    //"wifi",
-    //"bluetooth",
-    //"localip",
-    //"dns",
+    // "wifi",
+    // "bluetooth",
+    // "localip",
+    // "dns",
     "separator",
     "locale",
     "break",
-    "colors"
-  ]
+    "colors",
+  ],
 }

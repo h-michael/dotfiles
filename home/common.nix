@@ -60,6 +60,7 @@
     pinact
     ast-grep
     stylua
+    dprint
     nixfmt-rfc-style
     nvd # Nix package version diff
     python3
