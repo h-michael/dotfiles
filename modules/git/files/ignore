@@ -26,5 +26,7 @@ CLAUDE.local.md
 repomix.config.json
 .repomixignore
 .claude
+.opencode
+opencode.json
 .devcontainer
 .gwtx.toml

@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -93,7 +94,7 @@
 
     # AI & productivity
     lmstudio # Local LLM GUI
-    opencode # AI coding agent for terminal
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.opencode # AI coding agent (unstable version)
     enpass # Password manager
 
     # Communication
