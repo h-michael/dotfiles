@@ -94,7 +94,7 @@
 
     # AI & productivity
     lmstudio # Local LLM GUI
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.opencode # AI coding agent (unstable version)
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.opencode # AI coding agent (unstable version)
     enpass # Password manager
 
     # Communication

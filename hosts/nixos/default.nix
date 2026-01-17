@@ -134,10 +134,12 @@
   services.blueman.enable = true;
 
   services.logind = {
-    lidSwitch = "suspend-then-hibernate";
-    lidSwitchExternalPower = "suspend-then-hibernate";
-    lidSwitchDocked = "ignore";
-    settings.Login.PowerKeyLongPress = "poweroff";
+    settings.Login = {
+      HandleLidSwitch = "suspend-then-hibernate";
+      HandleLidSwitchExternalPower = "suspend-then-hibernate";
+      HandleLidSwitchDocked = "ignore";
+      PowerKeyLongPress = "poweroff";
+    };
   };
 
   systemd.sleep.extraConfig = ''
