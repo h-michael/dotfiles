@@ -112,6 +112,8 @@
 
     # Music production
     asunder # GTK CD ripper (fast, CDDB support)
+    picard # MusicBrainz tag editor (automatic tagging)
+    kid3 # Audio tag editor (batch editing)
     whipper # Accurate CD ripper (AccurateRip verification, slow)
     cdparanoia # CD ripping engine
     lame # MP3 encoder
