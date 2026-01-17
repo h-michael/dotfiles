@@ -95,6 +95,7 @@
     # AI & productivity
     lmstudio # Local LLM GUI
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.opencode # AI coding agent (unstable version)
+    obsidian # Knowledge base and note-taking
     enpass # Password manager
 
     # Communication
