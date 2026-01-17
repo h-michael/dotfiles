@@ -33,3 +33,4 @@ keybind = super+0=unbind
 keybind = super+shift+0=reset_font_size
 keybind = super+up=jump_to_prompt:-1
 keybind = super+down=jump_to_prompt:1
+keybind = ctrl+enter=unbind
