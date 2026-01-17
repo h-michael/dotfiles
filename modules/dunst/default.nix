@@ -52,7 +52,7 @@
         show_indicators = "yes";
 
         enable_recursive_icon_lookup = true;
-        icon_theme = "Adwaita";
+        icon_theme = "Breeze";
         icon_position = "left";
         min_icon_size = 32;
         max_icon_size = 64;

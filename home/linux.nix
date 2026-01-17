@@ -142,8 +142,8 @@
 
   # Cursor theme
   home.pointerCursor = {
-    name = "Adwaita";
-    package = pkgs.adwaita-icon-theme;
+    name = "Breeze";
+    package = pkgs.kdePackages.breeze;
     size = 24;
     gtk.enable = true;
   };
