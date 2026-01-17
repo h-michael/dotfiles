@@ -15,4 +15,5 @@ let
 in
 {
   home.packages = [ yankScript ];
+  home.file.".claude/statusline.ts".source = ./files/cc-statusline.ts;
 }
