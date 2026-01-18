@@ -146,7 +146,7 @@
 
   # Cursor theme
   home.pointerCursor = {
-    name = "Breeze";
+    name = "breeze_cursors";
     package = pkgs.kdePackages.breeze;
     size = 24;
     gtk.enable = true;
