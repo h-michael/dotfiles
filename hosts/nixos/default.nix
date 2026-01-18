@@ -257,6 +257,8 @@
   services.navidrome = {
     enable = true;
     openFirewall = false; # Block access from LAN
+    # Use unstable to avoid Go 1.24.12 build issue (see notes/navidrome-go124-build-issue.md)
+    package = unstablePkgs.navidrome;
     settings = {
       Address = "0.0.0.0"; # Tailscale
       Port = 4533;
