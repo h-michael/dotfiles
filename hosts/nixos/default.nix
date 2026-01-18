@@ -243,6 +243,12 @@
     rootless = {
       enable = true;
       setSocketVariable = true;
+      daemon.settings = {
+        experimental = true;
+        features = {
+          buildkit = true;
+        };
+      };
     };
   };
 
