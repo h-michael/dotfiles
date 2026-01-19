@@ -185,6 +185,9 @@
   # xremap needs uinput access
   hardware.uinput.enable = true;
 
+  # Enable nix-ld for running dynamically linked binaries (npm, cargo, pip, etc.)
+  programs.nix-ld.enable = true;
+
   # Hyprland
   programs.hyprland.enable = true;
 
