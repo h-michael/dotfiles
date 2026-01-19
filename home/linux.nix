@@ -156,14 +156,45 @@
   # fcitx5 im-module settings are in modules/fcitx5
 
   # Linux-specific XDG settings
+  xdg.desktopEntries = {
+    # Custom Chrome entry with 2-finger gestures
+    google-chrome-touchpad = {
+      name = "Google Chrome (2-finger gestures)";
+      genericName = "Web Browser";
+      icon = "google-chrome";
+      exec = "google-chrome-stable --ozone-platform=wayland --enable-features=TouchpadOverscrollHistoryNavigation %U";
+      terminal = false;
+      categories = [
+        "Network"
+        "WebBrowser"
+      ];
+      mimeType = [
+        "text/html"
+        "text/xml"
+        "application/xhtml+xml"
+        "application/pdf"
+        "application/rdf+xml"
+        "application/rss+xml"
+        "application/xhtml_xml"
+        "application/xml"
+        "image/gif"
+        "image/jpeg"
+        "image/png"
+        "image/webp"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
+    };
+  };
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
-      "text/html" = "google-chrome.desktop";
-      "x-scheme-handler/http" = "google-chrome.desktop";
-      "x-scheme-handler/https" = "google-chrome.desktop";
-      "x-scheme-handler/about" = "google-chrome.desktop";
-      "x-scheme-handler/unknown" = "google-chrome.desktop";
+      "text/html" = "google-chrome-touchpad.desktop";
+      "x-scheme-handler/http" = "google-chrome-touchpad.desktop";
+      "x-scheme-handler/https" = "google-chrome-touchpad.desktop";
+      "x-scheme-handler/about" = "google-chrome-touchpad.desktop";
+      "x-scheme-handler/unknown" = "google-chrome-touchpad.desktop";
     };
   };
 }
