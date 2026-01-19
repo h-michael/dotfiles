@@ -45,6 +45,7 @@
     pstree
     gawk
     fastfetch
+    file
 
     # Development tools
     home-manager
