@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -74,7 +75,7 @@
     # Database tools
     postgresql_16
     redis
-    tbls # Database schema documentation
+    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.tbls # Database schema documentation (unstable for latest)
     usql # Universal SQL client
     sqlite-utils # SQLite CLI utilities
 
