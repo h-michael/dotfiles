@@ -24,11 +24,18 @@ let
     executable = true;
     destination = "/bin/brightness";
   };
+  nixSearchScript = pkgs.writeTextFile {
+    name = "nix-search";
+    text = builtins.readFile ./files/nix-search.ts;
+    executable = true;
+    destination = "/bin/nix-search";
+  };
 in
 {
   home.packages = [
     ccNotifyScript
     escReminderScript
     brightnessScript
+    nixSearchScript
   ];
 }
