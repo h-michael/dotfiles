@@ -81,6 +81,7 @@
       # Overlays
       overlays = {
         uhk-agent-fix = import ./overlays/uhk-agent-fix.nix;
+        tmux-master = import ./overlays/tmux-master.nix;
         custom-packages = final: prev: {
           cica-font = final.callPackage ./pkgs/cica-font.nix { };
         };
@@ -98,6 +99,7 @@
             {
               nixpkgs.overlays = [
                 self.overlays.uhk-agent-fix
+                self.overlays.tmux-master
                 self.overlays.custom-packages
                 neovim-nightly-overlay.overlays.default
               ];
@@ -130,7 +132,10 @@
 
           # Apply overlays
           {
-            nixpkgs.overlays = [ neovim-nightly-overlay.overlays.default ];
+            nixpkgs.overlays = [
+              self.overlays.tmux-master
+              neovim-nightly-overlay.overlays.default
+            ];
           }
         ];
       };
@@ -141,7 +146,10 @@
         darwin = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             system = "aarch64-darwin";
-            overlays = [ neovim-nightly-overlay.overlays.default ];
+            overlays = [
+              self.overlays.tmux-master
+              neovim-nightly-overlay.overlays.default
+            ];
           };
           extraSpecialArgs = {
             inherit inputs;
