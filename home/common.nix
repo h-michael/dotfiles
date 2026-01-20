@@ -46,6 +46,7 @@
     gawk
     fastfetch
     file
+    yazi # Terminal file manager with image preview
 
     # Development tools
     home-manager
