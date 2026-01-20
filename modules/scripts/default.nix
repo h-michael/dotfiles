@@ -12,8 +12,16 @@ let
     executable = true;
     destination = "/bin/yank";
   };
+  ccStatuslineScript = pkgs.writeTextFile {
+    name = "cc-statusline";
+    text = builtins.readFile ./files/cc-statusline.ts;
+    executable = true;
+    destination = "/bin/cc-statusline";
+  };
 in
 {
-  home.packages = [ yankScript ];
-  home.file.".claude/statusline.ts".source = ./files/cc-statusline.ts;
+  home.packages = [
+    yankScript
+    ccStatuslineScript
+  ];
 }
