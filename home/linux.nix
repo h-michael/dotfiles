@@ -22,7 +22,7 @@
     ../modules/fontconfig
     ../modules/scripts-linux
     ../modules/vscode
-    ../modules/swappy
+    ../modules/satty
   ];
 
   # Linux-specific packages
@@ -132,7 +132,7 @@
     wl-clipboard # Clipboard (wl-copy, wl-paste)
     grim # Screenshot
     slurp # Region selection for screenshots
-    swappy # Screenshot annotation/editor
+    satty # Screenshot annotation/editor
     wf-recorder # Screen recording
     cliphist # Clipboard history manager
     wev # Event viewer (debug)
