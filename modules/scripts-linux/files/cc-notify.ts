@@ -59,7 +59,9 @@ Arguments:
 Options:
   -s, --subtitle TEXT  Notification subtitle
   -m, --message TEXT   Notification message
-  -S, --sound SOUND    Notification sound (without .oga extension)
+  -S, --sound SOUND    Notification sound (default: message)
+  -q, --quiet          Always suppress sound
+  --mute-when-active   Suppress sound only when terminal is active
   -a, --activate ID    App class to activate on click
   -h, --help           Show this help message
 
@@ -117,11 +119,12 @@ async function focusTerminal(terminalClass: string): Promise<void> {
 async function main(): Promise<void> {
   const args = parseArgs(Deno.args, {
     string: ["subtitle", "message", "sound", "activate"],
-    boolean: ["help"],
+    boolean: ["help", "quiet", "mute-when-active"],
     alias: {
       s: "subtitle",
       m: "message",
       S: "sound",
+      q: "quiet",
       a: "activate",
       h: "help",
     },
@@ -142,7 +145,9 @@ async function main(): Promise<void> {
   const title = String(positional[0]);
   const subtitle = args.subtitle || "";
   const message = args.message || "";
-  let sound = args.sound || "";
+  let sound = args.sound || "message";
+  const quiet = args.quiet || false;
+  const muteWhenActive = args["mute-when-active"] || false;
   const activate = args.activate || TERMINAL_CLASS;
 
   // Build display title with subtitle
@@ -151,21 +156,26 @@ async function main(): Promise<void> {
     displayTitle = `${title} - ${subtitle}`;
   }
 
-  // Check if terminal is active
-  const activeClass = await getActiveWindowClass();
-
-  // Auto-set sound based on active window if not explicitly provided
-  if (!sound && activeClass !== activate) {
-    sound = "message";
-  }
-
   // Validate sound if provided
   if (sound && !availableSounds.includes(sound)) {
     console.error(`Warning: Sound '${sound}' may not be available.`);
   }
 
-  // Play sound only if terminal is not active
-  if (sound && activeClass !== activate) {
+  // Always suppress sound when quiet mode is enabled
+  if (quiet) {
+    sound = "";
+  }
+
+  // Suppress sound when terminal is active and mute-when-active is enabled
+  if (muteWhenActive && sound) {
+    const activeClass = await getActiveWindowClass();
+    if (activeClass === activate) {
+      sound = "";
+    }
+  }
+
+  // Play sound
+  if (sound) {
     await playSound(sound);
   }
 

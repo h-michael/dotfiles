@@ -35,7 +35,9 @@ Arguments:
 Options:
   -s, --subtitle TEXT  Notification subtitle
   -m, --message TEXT   Notification message
-  -S, --sound SOUND    Notification sound
+  -S, --sound SOUND    Notification sound (default: Hero)
+  -q, --quiet          Always suppress sound
+  --mute-when-active   Suppress sound only when Ghostty is active
   -a, --activate ID    App to activate on click
   -h, --help           Show this help message
 
@@ -132,11 +134,12 @@ async function sendViaOsascript(
 async function main(): Promise<void> {
   const args = parseArgs(Deno.args, {
     string: ["subtitle", "message", "sound", "activate"],
-    boolean: ["help"],
+    boolean: ["help", "quiet", "mute-when-active"],
     alias: {
       s: "subtitle",
       m: "message",
       S: "sound",
+      q: "quiet",
       a: "activate",
       h: "help",
     },
@@ -157,7 +160,9 @@ async function main(): Promise<void> {
   const title = String(positional[0]);
   const subtitle = args.subtitle || "";
   const message = args.message || "";
-  let sound = args.sound || "";
+  let sound = args.sound || "Hero";
+  const quiet = args.quiet || false;
+  const muteWhenActive = args["mute-when-active"] || false;
   const activate = args.activate || "";
 
   // Validate sound if provided
@@ -170,12 +175,17 @@ async function main(): Promise<void> {
     Deno.exit(1);
   }
 
-  // Check if Ghostty is the frontmost application
-  const frontmostApp = await getFrontmostApp();
+  // Always suppress sound when quiet mode is enabled
+  if (quiet) {
+    sound = "";
+  }
 
-  // Auto-set sound based on frontmost app if not explicitly provided
-  if (!sound && frontmostApp.toLowerCase() !== "ghostty") {
-    sound = "Hero";
+  // Suppress sound when Ghostty is active and mute-when-active is enabled
+  if (muteWhenActive && sound) {
+    const frontmostApp = await getFrontmostApp();
+    if (frontmostApp.toLowerCase() === "ghostty") {
+      sound = "";
+    }
   }
 
   // Try terminal-notifier first, fallback to osascript
