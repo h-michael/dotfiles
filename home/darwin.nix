@@ -28,6 +28,7 @@
     tree
     ncdu
     unzip
+    p7zip # 7z
     wget
     curl
 
