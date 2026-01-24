@@ -47,6 +47,7 @@
     fastfetch
     file
     yazi # Terminal file manager with image preview
+    zellij
 
     # Development tools
     home-manager
