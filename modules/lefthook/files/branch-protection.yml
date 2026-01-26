@@ -1,0 +1,25 @@
+pre-commit:
+  commands:
+    protect-branches:
+      run: |
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        case "$branch" in
+          main|master|develop|production)
+            echo "ERROR: Direct commit to $branch is not allowed"
+            echo "Create a feature branch first: git checkout -b feature/your-feature"
+            exit 1
+            ;;
+        esac
+
+pre-push:
+  commands:
+    protect-branches:
+      run: |
+        branch=$(git rev-parse --abbrev-ref HEAD)
+        case "$branch" in
+          main|master|develop|production)
+            echo "ERROR: Direct push to $branch is not allowed"
+            echo "Create a PR instead"
+            exit 1
+            ;;
+        esac

@@ -1,4 +1,5 @@
 .gitignore-local
+lefthook-local.yml
 venv
 .envrc
 .direnv

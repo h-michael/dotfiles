@@ -18,6 +18,7 @@
     ../modules/mise
     ../modules/scripts
     ../modules/fastfetch
+    ../modules/lefthook
   ];
 
   home.stateVersion = "24.05";
