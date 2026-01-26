@@ -11,6 +11,8 @@ let
   onlineStatusDir = "${pkgs.tmuxPlugins.online-status}/share/tmux-plugins/online-status";
   cpuDir = "${pkgs.tmuxPlugins.cpu}/share/tmux-plugins/cpu";
   prefixHighlightDir = "${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight";
+  resurrectDir = "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect";
+  continuumDir = "${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum";
 
   # Build complete tmux.conf with correct ordering
   tmuxConf = ''
@@ -35,6 +37,20 @@ let
     run-shell ${onlineStatusDir}/online_status.tmux
     run-shell ${cpuDir}/cpu.tmux
     run-shell ${prefixHighlightDir}/prefix_highlight.tmux
+
+    # Session persistence (resurrect must be loaded before continuum)
+    set -g @resurrect-strategy-nvim 'session'
+    set -g @resurrect-capture-pane-contents 'on'
+    set -g @resurrect-save 'S'
+    set -g @resurrect-restore 'R'
+    run-shell ${resurrectDir}/resurrect.tmux
+    set -g @continuum-restore 'on'
+    set -g @continuum-save-interval '15'
+    run-shell ${continuumDir}/continuum.tmux
+
+    # Add descriptions for resurrect keybindings (after plugin loads)
+    bind-key -N "Save session (resurrect)" -T prefix S run-shell ${resurrectDir}/scripts/save.sh
+    bind-key -N "Restore session (resurrect)" -T prefix R run-shell ${resurrectDir}/scripts/restore.sh
 
     # Load custom config
     ${builtins.readFile ./files/tmux.conf}
