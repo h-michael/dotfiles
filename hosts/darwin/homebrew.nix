@@ -25,7 +25,7 @@
       # Development tools
       "bruno" # API client (Postman alternative, Git-friendly)
       "dbeaver-community" # Database management tool
-      "wireshark" # Network protocol analyzer
+      "wireshark-app" # Network protocol analyzer
 
       # Nerd Fonts
       "font-hack-nerd-font"
