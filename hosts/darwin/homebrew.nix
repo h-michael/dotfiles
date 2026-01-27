@@ -26,11 +26,6 @@
       "bruno" # API client (Postman alternative, Git-friendly)
       "dbeaver-community" # Database management tool
       "wireshark-app" # Network protocol analyzer
-
-      # Nerd Fonts
-      "font-hack-nerd-font"
-      "font-jetbrains-mono-nerd-font"
-      "font-fira-code-nerd-font"
     ];
 
     # CLI tools only available via Homebrew

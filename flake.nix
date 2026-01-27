@@ -134,6 +134,7 @@
           {
             nixpkgs.overlays = [
               self.overlays.tmux-master
+              self.overlays.custom-packages
               neovim-nightly-overlay.overlays.default
             ];
           }
@@ -148,6 +149,7 @@
             system = "aarch64-darwin";
             overlays = [
               self.overlays.tmux-master
+              self.overlays.custom-packages
               neovim-nightly-overlay.overlays.default
             ];
           };

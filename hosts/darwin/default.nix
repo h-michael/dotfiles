@@ -138,6 +138,15 @@
   # All packages managed by home-manager (via useUserPackages = true)
   environment.systemPackages = [ ];
 
+  # Fonts (same as NixOS, excluding Linux-specific waybar fonts)
+  fonts.packages = with pkgs; [
+    cica-font
+    noto-fonts
+    noto-fonts-color-emoji
+    noto-fonts-cjk-sans
+    plemoljp-nf
+  ];
+
   # User configuration
   users.users.${username} = {
     name = username;
