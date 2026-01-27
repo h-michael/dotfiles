@@ -6,7 +6,7 @@ function tss --description "Start tmux and attach to restored session"
     end
 
     # Start tmux (continuum will restore sessions)
-    tmux new-session -d -s _temp_
+    tmux new-session -d -s _temp_ -c "$HOME"
 
     # Wait a moment for continuum to restore
     sleep 0.5
