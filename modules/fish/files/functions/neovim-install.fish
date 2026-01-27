@@ -1,4 +1,4 @@
-function install-neovim -d "Install Neovim from source with optional debug mode"
+function neovim-install -d "Install Neovim from source with optional debug mode"
     cd (ghq root)/github.com/neovim/neovim
 
     set CMAKE_FLAGS ""

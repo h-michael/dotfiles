@@ -1,4 +1,4 @@
-function install-tmux -d "Install tmux from source if updates are available"
+function tmux-install -d "Install tmux from source if updates are available"
     cd (ghq root)/github.com/tmux/tmux
     if check-outdate
         hub sync
