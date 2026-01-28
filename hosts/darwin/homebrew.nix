@@ -21,6 +21,7 @@
       "karabiner-elements" # Keyboard customization
       "enpass" # password manager
       "alfred" # launcher
+      "obsidian" # Knowledge base and note-taking
 
       # Development tools
       "bruno" # API client (Postman alternative, Git-friendly)
