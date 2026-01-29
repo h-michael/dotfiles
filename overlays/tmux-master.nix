@@ -3,8 +3,8 @@ let
   tmuxMasterSrc = prev.fetchFromGitHub {
     owner = "tmux";
     repo = "tmux";
-    rev = "e6522138557e31b60bae8e303453bd3cdea6f978";
-    hash = "sha256-EMW5MRHqUWjJ+X36LvundeDQ4L0scQ5KTiaixJq6aiI=";
+    rev = "d7f59eccaf7f9435065017fa214a7b3c53bc631d";
+    hash = "sha256-+dLXSVPZezGuJPsTAbp6eyhQFSa3AZrdQwEvJHq6GXw=";
   };
 in
 {
