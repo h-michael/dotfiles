@@ -18,10 +18,24 @@ let
     executable = true;
     destination = "/bin/cc-statusline";
   };
+  ccHookStopScript = pkgs.writeTextFile {
+    name = "cc-hook-stop";
+    text = builtins.readFile ./files/cc-hook-stop.ts;
+    executable = true;
+    destination = "/bin/cc-hook-stop";
+  };
+  ccHookNotificationScript = pkgs.writeTextFile {
+    name = "cc-hook-notification";
+    text = builtins.readFile ./files/cc-hook-notification.ts;
+    executable = true;
+    destination = "/bin/cc-hook-notification";
+  };
 in
 {
   home.packages = [
     yankScript
     ccStatuslineScript
+    ccHookStopScript
+    ccHookNotificationScript
   ];
 }
