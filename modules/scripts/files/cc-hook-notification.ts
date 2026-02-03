@@ -85,12 +85,12 @@ async function main(): Promise<void> {
   // Gather context
   const ref = await getRef(cwd);
 
-  // Build project identifier
+  // Build project identifier (use parentheses like Stop hook)
   let projectId = project;
-  if (ref) projectId = `${project}:${ref}`;
+  if (ref) projectId = `${project} (${ref})`;
 
-  // Build message
-  const message = `[${projectId}] ${originalMessage}`;
+  // Build message (avoid [] as terminal-notifier has issues with brackets)
+  const message = `${projectId} - ${originalMessage}`;
 
   // Get appropriate subtitle
   const subtitle = getSubtitle(notificationType, title);
