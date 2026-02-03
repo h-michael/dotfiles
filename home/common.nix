@@ -54,6 +54,7 @@
     home-manager
     gh
     hub
+    jujutsu
     gnumake
     pkg-config
     openssl.dev
