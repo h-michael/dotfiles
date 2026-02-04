@@ -72,6 +72,7 @@
     ruby
     uv
     deno
+    bun
 
     # Kubernetes
     kubectl
