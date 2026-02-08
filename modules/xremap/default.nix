@@ -6,8 +6,5 @@
 }:
 
 {
-  xdg.configFile."xremap" = {
-    source = ./files;
-    recursive = true;
-  };
+  xdg.configFile."xremap/config.yml".source = ./files/config.yml;
 }

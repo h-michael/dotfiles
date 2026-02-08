@@ -1,4 +1,4 @@
-#!/usr/bin/env -S deno run --allow-run
+#!/usr/bin/env -S deno run --allow-run --allow-env
 
 interface SearchSite {
   name: string;
@@ -40,9 +40,15 @@ const sites: SearchSite[] = [
   },
 ];
 
-async function rofiSelect(items: string[], prompt: string): Promise<string | null> {
-  const cmd = new Deno.Command("rofi", {
-    args: ["-dmenu", "-p", prompt, "-i", "-no-custom"],
+const isNiri = !!Deno.env.get("NIRI_SOCKET");
+
+async function dmenuSelect(items: string[], prompt: string): Promise<string | null> {
+  const args = isNiri
+    ? ["fuzzel", "--dmenu", "--prompt", `${prompt}> `]
+    : ["rofi", "-dmenu", "-p", prompt, "-i", "-no-custom"];
+
+  const cmd = new Deno.Command(args[0], {
+    args: args.slice(1),
     stdin: "piped",
     stdout: "piped",
   });
@@ -58,9 +64,13 @@ async function rofiSelect(items: string[], prompt: string): Promise<string | nul
   return new TextDecoder().decode(stdout).trim();
 }
 
-async function rofiInput(prompt: string): Promise<string | null> {
-  const cmd = new Deno.Command("rofi", {
-    args: ["-dmenu", "-p", prompt, "-l", "0"],
+async function dmenuInput(prompt: string): Promise<string | null> {
+  const args = isNiri
+    ? ["fuzzel", "--dmenu", "--prompt", `${prompt}> `]
+    : ["rofi", "-dmenu", "-p", prompt, "-l", "0"];
+
+  const cmd = new Deno.Command(args[0], {
+    args: args.slice(1),
     stdout: "piped",
   });
 
@@ -104,15 +114,46 @@ async function focusBrowser(desktop: string): Promise<void> {
     targetBrowser = desktop.replace(".desktop", "");
   }
 
-  const cmd = new Deno.Command("hyprctl", {
-    args: ["dispatch", "focuswindow", `class:^(?i).*${targetBrowser}.*$`],
-    stdout: "null",
-    stderr: "null",
-  });
-  await cmd.output();
+  const isNiri = !!Deno.env.get("NIRI_SOCKET");
+
+  if (isNiri) {
+    // Find window by app_id containing the browser name
+    const listCmd = new Deno.Command("niri", {
+      args: ["msg", "--json", "windows"],
+      stdout: "piped",
+      stderr: "null",
+    });
+    const { stdout, success } = await listCmd.output();
+    if (success) {
+      try {
+        const windows = JSON.parse(new TextDecoder().decode(stdout));
+        const target = windows.find(
+          (w: { app_id?: string }) =>
+            w.app_id?.toLowerCase().includes(targetBrowser),
+        );
+        if (target?.id !== undefined) {
+          const focusCmd = new Deno.Command("niri", {
+            args: ["msg", "action", "focus-window", "--id", String(target.id)],
+            stdout: "null",
+            stderr: "null",
+          });
+          await focusCmd.output();
+        }
+      } catch {
+        // ignore
+      }
+    }
+  } else {
+    const cmd = new Deno.Command("hyprctl", {
+      args: ["dispatch", "focuswindow", `class:^(?i).*${targetBrowser}.*$`],
+      stdout: "null",
+      stderr: "null",
+    });
+    await cmd.output();
+  }
 }
 
-const selected = await rofiSelect(
+const selected = await dmenuSelect(
   sites.map((s) => s.name),
   "Search"
 );
@@ -121,7 +162,7 @@ if (!selected) Deno.exit(0);
 const site = sites.find((s) => s.name === selected);
 if (!site) Deno.exit(1);
 
-const query = await rofiInput("Query");
+const query = await dmenuInput("Query");
 if (!query) Deno.exit(0);
 
 await openBrowser(site.buildUrl(query));

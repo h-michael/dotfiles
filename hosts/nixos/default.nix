@@ -188,8 +188,9 @@
   # Enable nix-ld for running dynamically linked binaries (npm, cargo, pip, etc.)
   programs.nix-ld.enable = true;
 
-  # Hyprland
+  # Compositors
   programs.hyprland.enable = true;
+  programs.niri.enable = true;
 
   # ydotool for gesture key simulation
   programs.ydotool.enable = true;
@@ -208,15 +209,6 @@
     ];
   };
   programs.gamemode.enable = true; # Performance optimization for games
-
-  # XDG Desktop Portal for screen sharing in Discord/Slack
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-hyprland # Screen sharing for Hyprland
-      xdg-desktop-portal-gtk # File dialogs
-    ];
-  };
 
   # SDDM login manager
   services.displayManager.sddm = {
@@ -270,6 +262,7 @@
   # Security / PAM
   security.pam.services = {
     hyprlock = { };
+    swaylock = { };
   };
 
   security.rtkit.enable = true;
@@ -373,7 +366,7 @@
     tpm2-tools
     nixfmt-tree # Recursive nix formatter
 
-    # Hyprland system dependencies (need hardware access or system integration)
+    # Compositor system dependencies (need hardware access or system integration)
     dunst
     brightnessctl
     playerctl
@@ -382,6 +375,13 @@
     udiskie
     hyprlock
     hypridle
+
+    # niri dependencies
+    swaylock
+    swayidle
+    fuzzel
+    swaybg
+    xwayland-satellite
 
     # GPU stuff
     vulkan-tools

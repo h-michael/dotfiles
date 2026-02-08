@@ -12,9 +12,12 @@
 
     # Linux-specific modules
     ../modules/hyprland
+    ../modules/niri
     ../modules/waybar
     ../modules/rofi
+    ../modules/fuzzel
     ../modules/dunst
+    ../modules/swaylock
     ../modules/theme
     ../modules/xremap
     ../modules/systemd

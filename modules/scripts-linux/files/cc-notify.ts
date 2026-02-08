@@ -79,13 +79,27 @@ Available sounds:`);
 }
 
 async function getActiveWindowClass(): Promise<string> {
-  const result = await runCommand(["hyprctl", "activewindow", "-j"]);
-  if (result.success && result.stdout) {
-    try {
-      const data = JSON.parse(result.stdout);
-      return data.class || "";
-    } catch {
-      return "";
+  const isNiri = !!Deno.env.get("NIRI_SOCKET");
+
+  if (isNiri) {
+    const result = await runCommand(["niri", "msg", "--json", "focused-window"]);
+    if (result.success && result.stdout) {
+      try {
+        const data = JSON.parse(result.stdout);
+        return data.app_id || "";
+      } catch {
+        return "";
+      }
+    }
+  } else {
+    const result = await runCommand(["hyprctl", "activewindow", "-j"]);
+    if (result.success && result.stdout) {
+      try {
+        const data = JSON.parse(result.stdout);
+        return data.class || "";
+      } catch {
+        return "";
+      }
     }
   }
   return "";
@@ -108,12 +122,40 @@ async function sendNotification(title: string, message: string): Promise<void> {
 }
 
 async function focusTerminal(terminalClass: string): Promise<void> {
-  await runCommand([
-    "hyprctl",
-    "dispatch",
-    "focuswindow",
-    `class:${terminalClass}`,
-  ]);
+  const isNiri = !!Deno.env.get("NIRI_SOCKET");
+
+  if (isNiri) {
+    // niri doesn't have a direct focus-by-app-id command;
+    // use niri msg action focus-window (requires window ID)
+    const result = await runCommand(["niri", "msg", "--json", "windows"]);
+    if (result.success && result.stdout) {
+      try {
+        const windows = JSON.parse(result.stdout);
+        const target = windows.find(
+          (w: { app_id?: string }) => w.app_id === terminalClass,
+        );
+        if (target?.id !== undefined) {
+          await runCommand([
+            "niri",
+            "msg",
+            "action",
+            "focus-window",
+            "--id",
+            String(target.id),
+          ]);
+        }
+      } catch {
+        // ignore parse errors
+      }
+    }
+  } else {
+    await runCommand([
+      "hyprctl",
+      "dispatch",
+      "focuswindow",
+      `class:${terminalClass}`,
+    ]);
+  }
 }
 
 async function main(): Promise<void> {

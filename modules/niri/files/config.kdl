@@ -1,0 +1,234 @@
+// niri configuration
+// Reference: https://github.com/YaLTeR/niri/wiki/Configuration:-Overview
+
+// Environment variables
+environment {
+    XCURSOR_THEME "breeze_cursors"
+    XCURSOR_SIZE "24"
+    MOZ_ENABLE_WAYLAND "1"
+    ELECTRON_OZONE_PLATFORM_HINT "x11"
+    BROWSER "google-chrome-stable"
+
+    // fcitx5 input method
+    // GTK_IM_MODULE is intentionally unset: GTK4 apps (e.g. ghostty) should
+    // use Wayland-native text-input-v3 instead of the GTK IM module to avoid
+    // conflicts between the two input paths.
+    XMODIFIERS "@im=fcitx"
+    QT_IM_MODULE "fcitx"
+}
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+
+    touchpad {
+        natural-scroll
+        tap
+        dwt
+    }
+
+    mouse {
+        // no modifications
+    }
+
+    focus-follows-mouse max-scroll-amount="0%"
+}
+
+// spawn-at-startup runs in parallel, so chain with sh -c to ensure
+// env vars are propagated before starting the session target
+spawn-at-startup "sh" "-c" "dbus-update-activation-environment --systemd WAYLAND_DISPLAY DISPLAY XDG_CURRENT_DESKTOP NIRI_SOCKET && systemctl --user start niri-session.target"
+
+// XWayland support via xwayland-satellite
+spawn-at-startup "xwayland-satellite"
+
+cursor {
+    xcursor-theme "breeze_cursors"
+    xcursor-size 24
+}
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/%Y%m%d_%H%M%S.png"
+
+hotkey-overlay {
+    skip-at-startup
+}
+
+layout {
+    gaps 5
+
+    center-focused-column "never"
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width {
+        proportion 0.5
+    }
+
+    focus-ring {
+        width 2
+        // Tokyonight blue -> purple gradient
+        active-gradient from="#7aa2f7" to="#9d7cd8" angle=45
+        inactive-color "#565f89"
+    }
+
+    border {
+        off
+    }
+}
+
+animations {
+    // Defaults are fine
+}
+
+// Window rules
+
+// Floating windows
+window-rule {
+    match app-id=r#"^org\.kde\.dolphin$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^org\.kde\.gwenview$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^org\.kde\.haruna$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^mpv$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^steam$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^Steam$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^discord$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^vesktop$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^Unity$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^unityhub$"#
+    open-floating true
+}
+
+window-rule {
+    match app-id=r#"^com\.mitchellh\.ghostty$"#
+    default-column-width { proportion 1.0; }
+}
+
+// Keybindings
+// Note: Mod = Super_L, but xremap swaps Super_L <-> Alt_L
+binds {
+    // Application launchers
+    Mod+P { spawn "fuzzel"; }
+    Mod+Return { spawn "ghostty"; }
+    Mod+S { spawn "nix-search"; }
+
+    // Window management
+    Mod+Shift+X { close-window; }
+    Mod+Shift+Return { fullscreen-window; }
+    Mod+J { switch-preset-column-width; }
+    Mod+F { toggle-window-floating; }
+    Mod+Shift+F { toggle-column-tabbed-display; }
+
+    // Focus navigation
+    Mod+Left { focus-column-left; }
+    Mod+Right { focus-column-right; }
+    Mod+Up { focus-window-or-workspace-up; }
+    Mod+Down { focus-window-or-workspace-down; }
+
+    // Workspace navigation
+    Mod+H { focus-workspace-up; }
+    Mod+L { focus-workspace-down; }
+
+    // Move window between workspaces
+    Mod+Shift+H { move-window-to-workspace-up; }
+    Mod+Shift+L { move-window-to-workspace-down; }
+
+    // Move columns
+    Mod+Shift+Left { move-column-left; }
+    Mod+Shift+Right { move-column-right; }
+    Mod+Shift+Up { move-window-up-or-to-workspace-up; }
+    Mod+Shift+Down { move-window-down-or-to-workspace-down; }
+
+    // Column width
+    Mod+Minus { set-column-width "-10%"; }
+    Mod+Equal { set-column-width "+10%"; }
+
+    // Window height
+    Mod+Shift+Minus { set-window-height "-10%"; }
+    Mod+Shift+Equal { set-window-height "+10%"; }
+
+    // Consume/expel windows from column
+    Mod+BracketLeft { consume-or-expel-window-left; }
+    Mod+BracketRight { consume-or-expel-window-right; }
+
+    // Screenshots (niri built-in)
+    Mod+Ctrl+3 { screenshot-screen; }
+    Mod+Ctrl+4 { screenshot; }
+    Mod+Ctrl+5 { screenshot-window; }
+    Print { screenshot-screen; }
+    Shift+Print { screenshot; }
+    Mod+Print { screenshot-window; }
+
+    // Clipboard history
+    Mod+Shift+C { spawn "sh" "-c" "cliphist list | fuzzel --dmenu --prompt 'Clipboard> ' | cliphist decode | wl-copy"; }
+
+    // Lock screen
+    Mod+Shift+P { spawn "swaylock" "-f"; }
+
+    // Session
+    Mod+M { quit; }
+
+    // Volume / brightness
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-"; }
+    XF86AudioMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+    XF86AudioMicMute allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
+    XF86MonBrightnessUp { spawn "brightness" "up"; }
+    XF86MonBrightnessDown { spawn "brightness" "down"; }
+
+    // Media keys
+    XF86AudioNext { spawn "playerctl" "next"; }
+    XF86AudioPause { spawn "playerctl" "play-pause"; }
+    XF86AudioPlay { spawn "playerctl" "play-pause"; }
+    XF86AudioPrev { spawn "playerctl" "previous"; }
+
+    // IME control (fcitx5)
+    // Unlike Hyprland, niri doesn't special-case modifier keys in binds.
+    // Pressing Alt_R activates Mod1 (Alt) automatically, so the bind must
+    // include Alt+ to match. (Hyprland strips the self-modifier implicitly.)
+    // ref: https://github.com/YaLTeR/niri/discussions/1215
+    Mod+Alt+Alt_R { spawn "fcitx5-remote" "-o"; }
+    Alt+Alt_R { spawn "fcitx5-remote" "-c"; }
+}
