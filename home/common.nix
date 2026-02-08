@@ -2,9 +2,13 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
+let
+  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
+in
 {
   # Cross-platform modules
   imports = [
@@ -54,7 +58,7 @@
     home-manager
     gh
     hub
-    jujutsu
+    unstablePkgs.jujutsu
     gnumake
     pkg-config
     openssl.dev
