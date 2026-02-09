@@ -23,6 +23,7 @@ GEMINI.local.md
 CLAUDE.local.md
 .mcp.json
 .geminiignore
+.gemini
 .serena
 repomix.config.json
 .repomixignore
