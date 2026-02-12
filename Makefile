@@ -1,19 +1,30 @@
 .PHONY: switch build test update clean nix-gc help setup news diff
 
+# Host auto-detection
+UNAME_S := $(shell uname -s)
+ifeq ($(UNAME_S),Darwin)
+  HOST := darwin
+else ifeq ($(shell test -f /etc/NIXOS && echo yes),yes)
+  HOST := nix
+else
+  HOST := arch
+endif
+
 # Default target
 help:
-	@echo "NixOS Commands:"
+	@echo "Auto-detected Commands (current host: $(HOST)):"
+	@echo "  make switch         - Rebuild and switch configuration"
+	@echo "  make build          - Build without switching"
+	@echo "  make test           - Test configuration (dry-run)"
+	@echo "  make diff           - Show package changes (requires nvd)"
+	@echo ""
+	@echo "Platform-specific Commands:"
 	@echo "  make switch-nix     - Rebuild and switch NixOS configuration"
 	@echo "  make build-nix      - Build without switching"
 	@echo "  make test-nix       - Test configuration (dry-run)"
-	@echo ""
-	@echo "macOS Commands (nix-darwin + home-manager):"
-	@echo "  Requires: export DARWIN_USERNAME=yourusername"
 	@echo "  make switch-darwin  - Rebuild and switch nix-darwin configuration"
 	@echo "  make build-darwin   - Build nix-darwin without switching"
 	@echo "  make test-darwin    - Test configuration (dry-run)"
-	@echo ""
-	@echo "Arch Linux Commands (home-manager only):"
 	@echo "  make switch-arch    - Switch Home Manager on Arch"
 	@echo "  make build-arch     - Build Home Manager on Arch"
 	@echo "  make test-arch      - Test configuration (dry-run) on Arch"
@@ -27,11 +38,12 @@ help:
 	@echo "  make nix-gc         - Garbage collect nix store"
 	@echo "                      - Or keep latest NixOS generations (KEEP=15)"
 	@echo "  make news           - Show home-manager news"
-	@echo ""
-	@echo "Diff Commands (requires nvd):"
-	@echo "  make diff-darwin    - Show package changes for darwin (system + home)"
-	@echo "  make diff-nix       - Show package changes for NixOS"
-	@echo "  make diff-arch      - Show package changes for Arch (home-manager)"
+
+# Auto-detect targets
+switch: switch-$(HOST)
+build: build-$(HOST)
+test: test-$(HOST)
+diff: diff-$(HOST)
 
 # NixOS commands (--impure needed for gitignored hardware-configuration.nix)
 switch-nix:
