@@ -247,10 +247,10 @@ opt.inccommand = "split"
 
 opt.signcolumn = "auto"
 
-api.nvim_set_var("loaded_python_provider", false)
-api.nvim_set_var("loaded_python3_provider", false)
-api.nvim_set_var("loaded_node_provider", false)
-api.nvim_set_var("loaded_ruby_provider", false)
+vim.g.loaded_python_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 vim.diagnostic.config({
 	virtual_text = {
