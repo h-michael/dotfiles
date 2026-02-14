@@ -12,22 +12,11 @@ endif
 
 # Default target
 help:
-	@echo "Auto-detected Commands (current host: $(HOST)):"
+	@echo "Commands (detected host: $(HOST)):"
 	@echo "  make switch         - Rebuild and switch configuration"
 	@echo "  make build          - Build without switching"
 	@echo "  make test           - Test configuration (dry-run)"
 	@echo "  make diff           - Show package changes (requires nvd)"
-	@echo ""
-	@echo "Platform-specific Commands:"
-	@echo "  make switch-nix     - Rebuild and switch NixOS configuration"
-	@echo "  make build-nix      - Build without switching"
-	@echo "  make test-nix       - Test configuration (dry-run)"
-	@echo "  make switch-darwin  - Rebuild and switch nix-darwin configuration"
-	@echo "  make build-darwin   - Build nix-darwin without switching"
-	@echo "  make test-darwin    - Test configuration (dry-run)"
-	@echo "  make switch-arch    - Switch Home Manager on Arch"
-	@echo "  make build-arch     - Build Home Manager on Arch"
-	@echo "  make test-arch      - Test configuration (dry-run) on Arch"
 	@echo ""
 	@echo "Setup:"
 	@echo "  make setup          - Install git hooks (lefthook)"
@@ -36,60 +25,68 @@ help:
 	@echo "  make update         - Update flake inputs"
 	@echo "  make clean          - Remove old generations"
 	@echo "  make nix-gc         - Garbage collect nix store"
-	@echo "                      - Or keep latest NixOS generations (KEEP=15)"
+	@echo "                        Or keep latest NixOS generations (KEEP=15)"
 	@echo "  make news           - Show home-manager news"
 
-# Auto-detect targets
-switch: switch-$(HOST)
-build: build-$(HOST)
-test: test-$(HOST)
-diff: diff-$(HOST)
+# Main targets with inlined platform logic
+ifeq ($(HOST),darwin)
 
-# NixOS commands (--impure needed for gitignored hardware-configuration.nix)
-switch-nix:
-	sudo nixos-rebuild switch --flake .#nixos
-
-build-nix:
-	nixos-rebuild build --flake .#nixos
-
-test-nix:
-	nixos-rebuild dry-activate --flake .#nixos
-
-# Arch Linux commands
-switch-arch:
-	nix run .#homeConfigurations.arch.activationPackage
-
-build-arch:
-	nix build .#homeConfigurations.arch.activationPackage
-
-test-arch:
-	nix build .#homeConfigurations.arch.activationPackage --dry-run
-
-# macOS commands - nix-darwin + standalone home-manager
-# Requires: export DARWIN_USERNAME=yourusername
-switch-darwin: switch-darwin-system switch-darwin-home
-
-switch-darwin-system:
+switch:
 	@if command -v darwin-rebuild >/dev/null 2>&1; then \
 		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" darwin-rebuild switch --flake .#darwin --impure ; \
 	else \
 		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#darwin --impure ; \
 	fi
-
-switch-darwin-home:
 	@if command -v home-manager >/dev/null 2>&1; then \
 		home-manager switch --flake .#darwin --impure ; \
 	else \
 		nix run home-manager/release-25.11 -- switch --flake .#darwin --impure ; \
 	fi
 
-build-darwin:
+build:
 	nix build .#darwinConfigurations.darwin.system --impure -o result-system
 	nix build .#homeConfigurations.darwin.activationPackage --impure -o result-home
 
-test-darwin:
+test:
 	nix build .#darwinConfigurations.darwin.system --dry-run --impure
 	nix build .#homeConfigurations.darwin.activationPackage --dry-run --impure
+
+diff: build
+	@echo "=== System differences ==="
+	@nvd diff /run/current-system ./result-system
+	@echo ""
+	@echo "=== Home Manager differences ==="
+	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result-home
+
+else ifeq ($(HOST),nix)
+
+switch:
+	sudo nixos-rebuild switch --flake .#nixos
+
+build:
+	nixos-rebuild build --flake .#nixos
+
+test:
+	nixos-rebuild dry-activate --flake .#nixos
+
+diff: build
+	@nvd diff /run/current-system ./result
+
+else # arch
+
+switch:
+	nix run .#homeConfigurations.arch.activationPackage
+
+build:
+	nix build .#homeConfigurations.arch.activationPackage
+
+test:
+	nix build .#homeConfigurations.arch.activationPackage --dry-run
+
+diff: build
+	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result
+
+endif
 
 # Maintenance
 update:
@@ -119,7 +116,7 @@ setup:
 	lefthook install
 	@echo "Git hooks installed successfully"
 
-# Home Manager news (auto-detect platform)
+# Home Manager news
 news:
 	@case "$$(uname -s)" in \
 		Darwin) home-manager --flake .#darwin --impure news ;; \
@@ -130,17 +127,3 @@ news:
 				home-manager --flake .#arch --impure news ; \
 			fi ;; \
 	esac
-
-# Diff commands (requires nvd)
-diff-darwin: build-darwin
-	@echo "=== System differences ==="
-	@nvd diff /run/current-system ./result-system
-	@echo ""
-	@echo "=== Home Manager differences ==="
-	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result-home
-
-diff-nix: build-nix
-	@nvd diff /run/current-system ./result
-
-diff-arch: build-arch
-	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result
