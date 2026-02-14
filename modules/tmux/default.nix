@@ -16,23 +16,13 @@ let
 
   # Build complete tmux.conf with correct ordering
   tmuxConf = ''
-    # Basic settings managed by home-manager
-    set -g default-terminal "screen"
-    set -g base-index 1
-    setw -g pane-base-index 1
-    set -g status-keys vi
-    set -g mode-keys vi
-    set -g mouse on
+    # Basic settings, keybindings, and options
+    ${builtins.readFile ./files/tmux.conf}
 
-    setw -g aggressive-resize off
-    setw -g clock-mode-style 24
-    set -s escape-time 500
-    set -g history-limit 2000
-
-    # Load appearance config BEFORE plugins
+    # Appearance (status-right must be set before plugins that reference it)
     ${builtins.readFile ./files/appearance.conf}
 
-    # Load plugins AFTER status-right is set
+    # Plugins
     run-shell ${pluginDir}/battery.tmux
     run-shell ${onlineStatusDir}/online_status.tmux
     run-shell ${cpuDir}/cpu.tmux
@@ -48,12 +38,9 @@ let
     set -g @continuum-save-interval '15'
     run-shell ${continuumDir}/continuum.tmux
 
-    # Add descriptions for resurrect keybindings (after plugin loads)
+    # Resurrect keybinding descriptions (after plugin loads)
     bind-key -N "Save session (resurrect)" -T prefix S run-shell ${resurrectDir}/scripts/save.sh
     bind-key -N "Restore session (resurrect)" -T prefix R run-shell ${resurrectDir}/scripts/restore.sh
-
-    # Load custom config
-    ${builtins.readFile ./files/tmux.conf}
   '';
 in
 {
