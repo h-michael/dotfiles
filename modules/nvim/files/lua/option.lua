@@ -247,6 +247,8 @@ opt.inccommand = "split"
 
 opt.signcolumn = "auto"
 
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 vim.g.loaded_python_provider = 0
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_node_provider = 0
