@@ -6,6 +6,7 @@ if not set -q __fish_hooks_initialized
     direnv hook fish | source
     atuin init fish | source
     zoxide init fish | source
+    kabu init fish | source
     set -g __fish_hooks_initialized 1
 end
 
