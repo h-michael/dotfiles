@@ -7,10 +7,9 @@ font-family = Cica
 font-family = PlemolJP Console NF Light
 
 # Shell integration features
-# - no-cursor: Disable cursor reporting to prevent [O[I sequences in Claude Code
 # - sudo: Preserve Ghostty terminfo in sudo
 # - title: Allow shell to set window title
-shell-integration-features = no-cursor,sudo,title
+shell-integration-features = cursor,sudo,title
 
 cursor-style = block
 clipboard-paste-bracketed-safe = true

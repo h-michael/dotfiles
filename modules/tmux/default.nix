@@ -23,7 +23,7 @@ let
     set -g status-keys vi
     set -g mode-keys vi
     set -g mouse on
-    set -g focus-events off
+
     setw -g aggressive-resize off
     setw -g clock-mode-style 24
     set -s escape-time 500
