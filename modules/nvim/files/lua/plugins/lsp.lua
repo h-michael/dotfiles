@@ -72,7 +72,11 @@ return {
 					},
 				},
 				tombi = {},
-				terraformls = {},
+				terraformls = {
+					-- terraform-ls dumps all logs to stderr by default, which Neovim
+					-- records as ERROR in lsp.log. See hashicorp/terraform-ls issue #1271
+					cmd = { "terraform-ls", "serve", "-log-file=/dev/null" },
+				},
 				buf_ls = {},
 				omnisharp = {},
 				lua_ls = {
