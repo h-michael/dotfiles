@@ -109,5 +109,19 @@ in
     taplo
     rustup # Rust toolchain manager (removed rust-analyzer to avoid conflict)
     vscode-langservers-extracted # html, css, json, eslint
+
+    xh # HTTP client (Rust implementation of httpie)
+    lazygit # Git TUI
+    btop # Resource monitor
+    hyperfine # Command-line benchmarking tool
+    just # Task runner (Make alternative)
+    tealdeer # tldr client (simplified man pages)
+    delve # Go debugger
+    miller # CSV/JSON/TSV data processing
+    qsv # High-performance CSV toolkit
+    usql # Universal SQL client
+    sqlite-utils # SQLite CLI utilities
+    rclone # Cloud storage sync
+    restic # Backup tool
   ];
 }
