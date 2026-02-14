@@ -77,6 +77,9 @@ return {
 	{
 		"github/copilot.vim",
 		enabled = true,
+		init = function()
+			vim.g.copilot_command = "copilot-language-server"
+		end,
 	},
 	{
 		"hrsh7th/nvim-cmp",
