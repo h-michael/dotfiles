@@ -4,6 +4,8 @@
 if not set -q __fish_hooks_initialized
     starship init fish | source
     direnv hook fish | source
+    atuin init fish | source
+    zoxide init fish | source
     set -g __fish_hooks_initialized 1
 end
 

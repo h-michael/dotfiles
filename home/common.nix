@@ -123,5 +123,8 @@ in
     sqlite-utils # SQLite CLI utilities
     rclone # Cloud storage sync
     restic # Backup tool
+    atuin # Enhanced shell history
+    zoxide # Smarter `cd` command
+    dust # Modern `du` alternative
   ];
 }
