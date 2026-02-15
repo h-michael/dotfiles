@@ -139,7 +139,24 @@
         "home-manager": "home-manager",
         "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-unstable": "nixpkgs-unstable"
+        "nixpkgs-unstable": "nixpkgs-unstable",
+        "tmux-copy-pane": "tmux-copy-pane"
+      }
+    },
+    "tmux-copy-pane": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1771145716,
+        "narHash": "sha256-X/GNpDST0OP9fYnDScGdkZX2ZRxsNb+m9bhBW04aCsM=",
+        "owner": "h-michael",
+        "repo": "tmux-copy-pane",
+        "rev": "96cc7f8e4e54139a8e9f1fa2e506ccc352f7e0b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "h-michael",
+        "repo": "tmux-copy-pane",
+        "type": "github"
       }
     }
   },

@@ -19,6 +19,11 @@
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tmux-copy-pane = {
+      url = "github:h-michael/tmux-copy-pane";
+      flake = false;
+    };
   };
 
   outputs =
@@ -29,6 +34,7 @@
       home-manager,
       darwin,
       neovim-nightly-overlay,
+      tmux-copy-pane,
       ...
     }@inputs:
     let

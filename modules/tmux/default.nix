@@ -2,6 +2,7 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -13,6 +14,7 @@ let
   prefixHighlightDir = "${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight";
   resurrectDir = "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect";
   continuumDir = "${pkgs.tmuxPlugins.continuum}/share/tmux-plugins/continuum";
+  copyPaneDir = inputs.tmux-copy-pane;
 
   # Build complete tmux.conf with correct ordering
   tmuxConf = ''
@@ -41,6 +43,9 @@ let
     # Resurrect keybinding descriptions (after plugin loads)
     bind-key -N "Save session (resurrect)" -T prefix S run-shell ${resurrectDir}/scripts/save.sh
     bind-key -N "Restore session (resurrect)" -T prefix R run-shell ${resurrectDir}/scripts/restore.sh
+
+    # Copy pane output to clipboard
+    run-shell ${copyPaneDir}/tmux-copy-pane.tmux
   '';
 in
 {
