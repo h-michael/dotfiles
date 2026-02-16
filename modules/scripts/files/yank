@@ -36,14 +36,17 @@ printf "$esc"
 # also copy to tmux clipboard
 test -n "$TMUX" && tmux set-buffer "$buf"
 
-# also copy to Wayland clipboard
+# also copy to platform clipboard
 if [ -n "$WAYLAND_DISPLAY" ] && command -v wl-copy >/dev/null 2>&1; then
   printf "%s" "$buf" | wl-copy
-# also copy to X11 clipboard
 elif [ -n "$DISPLAY" ]; then
   if command -v xsel >/dev/null 2>&1; then
     printf "%s" "$buf" | xsel -i -b
   elif command -v xclip >/dev/null 2>&1; then
     printf "%s" "$buf" | xclip -sel clip
   fi
+elif command -v pbcopy >/dev/null 2>&1; then
+  printf "%s" "$buf" | pbcopy
+elif command -v clip.exe >/dev/null 2>&1; then
+  printf "%s" "$buf" | clip.exe
 fi
