@@ -6,6 +6,9 @@
   ...
 }:
 
+let
+  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
 {
   imports = [
     ./common.nix
@@ -66,7 +69,7 @@
     # Database tools
     postgresql_16
     redis
-    inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.tbls # Database schema documentation (unstable for latest)
+    unstablePkgs.tbls # Database schema documentation (unstable for latest)
 
     # Network & Security
     pinentry_mac
