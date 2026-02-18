@@ -1,3 +1,27 @@
+local function setup_lsp_keymaps(bufnr)
+	local wk = require("which-key")
+	-- stylua: ignore start
+	wk.add({
+		{ '<Leader>l', buffer = bufnr, group = 'LSP' },
+		{ '<Leader>lds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', buffer = bufnr, desc = 'Document Symbols' },
+		{ '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', buffer = bufnr, desc = 'Code Action' },
+		{ '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', buffer = bufnr, desc = 'Go to Definition' },
+		{ '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
+		{ '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
+		{ '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
+		{ 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', buffer = bufnr, desc = 'Hover' },
+		{ '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
+		{ '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
+		{ '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
+		{ '<Leader>lsig', '<cmd>lua vim.lsp.buf.signature_help()<CR>', buffer = bufnr, desc = 'Signature Help' },
+		{ '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', buffer = bufnr, desc = 'Type Definition' },
+		{ '<Leader>d[', '<cmd>lua vim.diagnostic.jump({ count = -1 })<CR>', buffer = bufnr, desc = 'Go to previous diagnostic' },
+		{ '<Leader>d]', '<cmd>lua vim.diagnostic.jump({ count = 1 })<CR>', buffer = bufnr, desc = 'Go to next diagnostic' },
+		{ '<Leader>ldl', '<cmd>Telescope diagnostics<CR>', buffer = bufnr, desc = 'List Diagnostics' },
+	})
+	-- stylua: ignore end
+end
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -7,32 +31,10 @@ return {
 		config = function()
 			vim.lsp.log.set_level("warn")
 
-			local on_attach = function(_client, bufnr)
-				local wk = require("which-key")
-        -- stylua: ignore start
-        wk.add({
-          { '<Leader>l', buffer = bufnr, group = 'LSP' },
-          { '<Leader>lds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', buffer = bufnr, desc = 'Document Symbols' },
-          { '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', buffer = bufnr, desc = 'Code Action' },
-          { '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', buffer = bufnr, desc = 'Go to Definition' },
-          { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
-          { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
-          { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
-          { 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', buffer = bufnr, desc = 'Hover' },
-          { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
-          { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
-          { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
-          { '<Leader>lsig', '<cmd>lua vim.lsp.buf.signature_help()<CR>', buffer = bufnr, desc = 'Signature Help' },
-          { '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', buffer = bufnr, desc = 'Type Definition' },
-          { '<Leader>d[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', buffer = bufnr, desc = 'Go to previous diagnostic' },
-          { '<Leader>d]', '<cmd>lua vim.diagnostic.goto_next()<CR>', buffer = bufnr, desc = 'Go to next diagnostic' },
-          { '<Leader>ldl', '<cmd>Telescope diagnostics<CR>', buffer = bufnr, desc = 'List Diagnostics' },
-        })
-				-- stylua: ignore end
-			end
-
 			local common_config = {
-				on_attach = on_attach,
+				on_attach = function(_client, bufnr)
+					setup_lsp_keymaps(bufnr)
+				end,
 				flags = {
 					debounce_text_changes = 150,
 				},
@@ -117,10 +119,10 @@ return {
 		},
 		opts = {
 			icons = {
-				error = "",
-				warning = "",
-				hint = "",
-				info = "",
+				error = "",
+				warning = "",
+				hint = "",
+				info = "",
 			},
 		},
 	},
@@ -223,25 +225,11 @@ return {
 			vim.g.rustaceanvim = {
 				server = {
 					on_attach = function(_client, bufnr)
+						setup_lsp_keymaps(bufnr)
+
 						local wk = require("which-key")
             -- stylua: ignore start
             wk.add({
-              { '<Leader>l', buffer = bufnr, group = 'LSP' },
-              { '<Leader>lds', '<cmd>lua vim.lsp.buf.document_symbol()<CR>', buffer = bufnr, desc = 'Document Symbols' },
-              { '<Leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', buffer = bufnr, desc = 'Code Action' },
-              { '<Leader>ld', '<cmd>lua vim.lsp.buf.definition()<CR>', buffer = bufnr, desc = 'Go to Definition' },
-              { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
-              { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
-              { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
-              { 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', buffer = bufnr, desc = 'Hover' },
-              { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
-              { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
-              { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
-              { '<Leader>lsig', '<cmd>lua vim.lsp.buf.signature_help()<CR>', buffer = bufnr, desc = 'Signature Help' },
-              { '<Leader>lt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', buffer = bufnr, desc = 'Type Definition' },
-              { '<Leader>d[', '<cmd>lua vim.diagnostic.goto_prev()<CR>', buffer = bufnr, desc = 'Go to previous diagnostic' },
-              { '<Leader>d]', '<cmd>lua vim.diagnostic.goto_next()<CR>', buffer = bufnr, desc = 'Go to next diagnostic' },
-              { '<Leader>ldl', '<cmd>Telescope diagnostics<CR>', buffer = bufnr, desc = 'List Diagnostics' },
               { '<Leader>lrh', "<cmd>lua vim.cmd.RustLsp {'hover', 'actions'}<CR>", buffer = bufnr, desc = 'Hover Actions' },
               { '<Leader>la', "<cmd>lua vim.cmd.RustLsp('codeAction')<CR>", buffer = bufnr, desc = 'Code Action' },
               { '<Leader>lem', "<cmd>lua vim.cmd.RustLsp('expandMacro')<CR>", buffer = bufnr, desc = 'Expand macros recursively' },
