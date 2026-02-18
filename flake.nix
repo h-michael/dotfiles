@@ -55,8 +55,8 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-      # Unstable packages for latest Ollama and Open WebUI
-      unstablePkgs = import nixpkgs-unstable {
+      # Unstable packages for NixOS services (Ollama, Open WebUI, Navidrome)
+      nixosUnstablePkgs = import nixpkgs-unstable {
         system = "x86_64-linux";
         config.allowUnfree = true;
         overlays = [ ];
@@ -76,7 +76,10 @@
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit inputs username unstablePkgs; };
+          specialArgs = {
+            inherit inputs username;
+            unstablePkgs = nixosUnstablePkgs;
+          };
           modules = [
             ./hosts/nixos
 
