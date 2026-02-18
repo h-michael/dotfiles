@@ -98,14 +98,12 @@
 
     # Music production
     asunder # GTK CD ripper (fast, CDDB support)
-    picard # MusicBrainz tag editor (automatic tagging)
-    kid3 # Audio tag editor (batch editing)
+    picard # MusicBrainz tag editor (automatic tagging, metadata fetch)
+    kid3 # Audio tag editor (batch editing, lyrics support)
     whipper # Accurate CD ripper (AccurateRip verification, slow)
     cdparanoia # CD ripping engine
     lame # MP3 encoder
     flac # FLAC encoder
-    picard # MusicBrainz tagger (auto-fetch metadata)
-    kid3 # Tag editor with lyrics support
 
     # Unity development
     unityhub # Unity installer and project manager
