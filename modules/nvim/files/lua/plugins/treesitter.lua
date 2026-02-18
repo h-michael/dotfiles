@@ -91,24 +91,4 @@ return {
 			)
 		end,
 	},
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		config = function()
-			-- https://github.com/JoosepAlviste/nvim-ts-context-commentstring/wiki/Integrations#commentnvim
-			require("ts_context_commentstring").setup({
-				enable_autocmd = false,
-			})
-		end,
-	},
-	{
-		"numToStr/Comment.nvim",
-		dependencies = {
-			"JoosepAlviste/nvim-ts-context-commentstring",
-		},
-		config = function()
-			require("Comment").setup({
-				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-			})
-		end,
-	},
 }
