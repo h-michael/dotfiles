@@ -137,6 +137,7 @@
         ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
       };
       Service = {
+        Type = "simple";
         ExecStart = "${pkgs.xremap.passthru.hyprland}/bin/xremap --watch=config --watch=device %h/.config/xremap/config.yml";
         Restart = "on-failure";
         Slice = "session.slice";
@@ -155,6 +156,7 @@
         ConditionEnvironment = "NIRI_SOCKET";
       };
       Service = {
+        Type = "simple";
         ExecStart = "${pkgs.xremap.passthru.wlroots}/bin/xremap --watch=config --watch=device %h/.config/xremap/config.yml";
         Restart = "on-failure";
         Slice = "session.slice";
