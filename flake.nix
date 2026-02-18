@@ -170,6 +170,9 @@
         };
       };
 
+      # Formatter for `nix fmt`
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+
       # Development shell
       devShells = forAllSystems (system: {
         default = nixpkgs.legacyPackages.${system}.mkShell {
