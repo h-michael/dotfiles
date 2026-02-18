@@ -287,7 +287,14 @@
   # SSH
   services.openssh = {
     enable = true;
-    settings.PasswordAuthentication = false;
+    settings = {
+      PasswordAuthentication = false;
+      # Disable challenge-response auth (PAM keyboard-interactive).
+      # Without this, password login may still be possible via PAM
+      # even with PasswordAuthentication = false.
+      KbdInteractiveAuthentication = false;
+      PermitRootLogin = "no";
+    };
   };
 
   # Temp cleanup
