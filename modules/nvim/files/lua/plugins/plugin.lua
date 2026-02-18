@@ -41,11 +41,6 @@ return {
 		"rhysd/git-messenger.vim",
 		cmd = { "GitMessenger", "GitMessengerClose" },
 	},
-	-- Benchmarck
-	{
-		"tweekmonster/startuptime.vim",
-		cmd = { "StartupTime" },
-	},
 	-- Edit vinari
 	{
 		"Shougo/vinarise.vim",
@@ -55,13 +50,6 @@ return {
 	{
 		"tpope/vim-endwise",
 		ft = { "ruby" },
-	},
-	{
-		"preservim/tagbar",
-		cmd = { "TabbarToggle", "TagbarOpen" },
-		config = function()
-			vim.api.nvim_set_keymap("n", "<Leader>tb", ":TagbarToggle<CR>", { noremap = true, silent = true })
-		end,
 	},
 	-- simple memo plugin for Vim.
 	{

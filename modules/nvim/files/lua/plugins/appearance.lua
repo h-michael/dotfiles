@@ -28,16 +28,6 @@ return {
 		opts = {},
 	},
 	{
-		"nanotech/jellybeans.vim",
-		enabled = false,
-		lazy = false,
-		priority = 1000,
-		config = function()
-			vim.opt.background = "dark"
-			vim.cmd([[colorscheme jellybeans]])
-		end,
-	},
-	{
 		"nvim-lualine/lualine.nvim",
 		event = { "InsertEnter", "CursorHold", "FocusLost", "BufRead", "BufNewFile" },
 		config = function()
@@ -136,27 +126,6 @@ return {
 		"nvim-mini/mini.icons",
 		version = false,
 	},
-	--{
-	--  'rcarriga/nvim-notify',
-	--  config = function()
-	--    vim.notify = require('notify')
-	--    require('notify').setup({
-	--      fps = 60,
-	--      stages = 'fade_in_slide_out',
-	--      timeout = 2000,
-	--      max_height = function()
-	--        return math.floor(vim.o.lines * 0.40)
-	--      end,
-	--      max_width = function()
-	--        return math.floor(vim.o.columns * 0.40)
-	--      end,
-	--    })
-	--    local severity = { 'error', 'warn', 'info', 'debug' }
-	--    vim.lsp.handlers['window/showMessage'] = function(_err, method, params, _client_id)
-	--      vim.notify(method.message, severity[params.type])
-	--    end
-	--  end,
-	--},
 	{
 		"catgoose/nvim-colorizer.lua",
 		event = "BufReadPre",

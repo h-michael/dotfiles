@@ -208,21 +208,6 @@ return {
 		end,
 	},
 	{
-		"smjonas/inc-rename.nvim",
-		enabled = false,
-		event = "LspAttach",
-		config = function()
-			require("inc_rename").setup({})
-
-			local wk = require("which-key")
-      -- stylua: ignore start
-      wk.add({
-        { '<Leader>lrn', function() return ':IncRename ' .. vim.fn.expand('<cword>') end, desc = 'Rename (Incremental)', expr = true },
-      })
-			-- stylua: ignore end
-		end,
-	},
-	{
 		"j-hui/fidget.nvim",
 		event = "LspAttach",
 		opts = {
