@@ -18,7 +18,7 @@ return {
           { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
           { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
           { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
-          { 'K', "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = 'Hover' },
+          { 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', buffer = bufnr, desc = 'Hover' },
           { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
           { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
           { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },
@@ -177,14 +177,9 @@ return {
 	{
 		"ray-x/lsp_signature.nvim",
 		event = "VeryLazy",
-		config = function()
-			require("lsp_signature").setup({
-				bind = true,
-				handler_opts = {
-					border = "rounded",
-				},
-			})
-		end,
+		opts = {
+			bind = true,
+		},
 	},
 	{
 		"RRethy/vim-illuminate",
@@ -226,11 +221,6 @@ return {
 		config = function()
 			-- https://github.com/mrcjkb/rustaceanvim?tab=readme-ov-file#gear-advanced-configuration
 			vim.g.rustaceanvim = {
-				tools = {
-					float_win_config = {
-						border = "rounded",
-					},
-				},
 				server = {
 					on_attach = function(_client, bufnr)
 						local wk = require("which-key")
@@ -243,7 +233,7 @@ return {
               { '<Leader>le', '<cmd>lua vim.diagnostic.open_float()<CR>', buffer = bufnr, desc = 'Show Diagnostic' },
               { '<Leader>lf', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', buffer = bufnr, desc = 'Format' },
               { '<Leader>lh', '<cmd>lua vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())<CR>', buffer = bufnr, desc = 'Inlay Hints' },
-              { 'K', "<cmd>lua vim.lsp.buf.hover({ border = 'rounded' })<CR>", buffer = bufnr, desc = 'Hover' },
+              { 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', buffer = bufnr, desc = 'Hover' },
               { '<Leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>', buffer = bufnr, desc = 'Go to Implementation' },
               { '<Leader>lrf', '<cmd>lua vim.lsp.buf.references()<CR>', buffer = bufnr, desc = 'References' },
               { '<Leader>lrn', '<cmd>lua vim.lsp.buf.rename()<CR>', buffer = bufnr, desc = 'Rename' },

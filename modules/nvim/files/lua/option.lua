@@ -241,6 +241,8 @@ opt.inccommand = "split"
 
 opt.signcolumn = "auto"
 
+vim.o.winborder = "rounded"
+
 opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 vim.g.loaded_python_provider = 0
