@@ -1,8 +1,6 @@
 local opt = vim.opt
 local api = vim.api
 
-opt.compatible = false
-
 opt.ignorecase = true
 -- If the search pattern contains upper case characters, override ignorecase
 -- option.
@@ -63,8 +61,6 @@ opt.lazyredraw = true
 -- Show folding level.
 opt.foldcolumn = "1"
 --opt.fillchars = { vert: '|' }
-opt.commentstring = "%s"
-
 -- Use vimgrep.
 -- set grepprg=internal
 -- Use grep.
@@ -90,7 +86,7 @@ opt.directory:remove(".")
 -- Set undofile.
 opt.undofile = true
 local undo_dir = vim.fn.stdpath("data") .. "/undo"
-if not vim.loop.fs_stat(undo_dir) then
+if not vim.uv.fs_stat(undo_dir) then
 	vim.fn.mkdir(undo_dir, "p")
 end
 opt.undodir = undo_dir
@@ -219,8 +215,6 @@ opt.equalalways = false
 opt.previewheight = 10
 
 opt.helpheight = 12
-
-opt.ttyfast = true
 
 -- When a line is long, do not omit it in @.
 opt.display = "lastline"
