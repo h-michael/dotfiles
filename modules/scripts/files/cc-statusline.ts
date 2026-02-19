@@ -261,22 +261,22 @@ async function main() {
     parts.push(`${colors.blue}${dirText}${colors.reset}`);
   }
 
-  // Git
-  const gitText = await getGitStatus(currentDir);
-  if (gitText) {
-    const branchMatch = gitText.match(/^on\s(.*?)(?:\s(\[.*\]))?$/);
-    if (branchMatch) {
-      const branch = branchMatch[1];
-      const status = branchMatch[2];
-      if (status) {
-        parts.push(
-          `${colors.gray}${branch}${colors.reset} ${colors.gray}${status}${colors.reset}`,
-        );
-      } else {
-        parts.push(`${colors.gray}${branch}${colors.reset}`);
-      }
-    }
-  }
+  // Git (temporarily disabled)
+  // const gitText = await getGitStatus(currentDir);
+  // if (gitText) {
+  //   const branchMatch = gitText.match(/^on\s(.*?)(?:\s(\[.*\]))?$/);
+  //   if (branchMatch) {
+  //     const branch = branchMatch[1];
+  //     const status = branchMatch[2];
+  //     if (status) {
+  //       parts.push(
+  //         `${colors.gray}${branch}${colors.reset} ${colors.gray}${status}${colors.reset}`,
+  //       );
+  //     } else {
+  //       parts.push(`${colors.gray}${branch}${colors.reset}`);
+  //     }
+  //   }
+  // }
 
   // Model
   const modelText = formatModel(modelDisplay);
