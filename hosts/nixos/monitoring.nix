@@ -1304,12 +1304,12 @@
       #!/bin/sh
       OUTPUT_FILE="/var/lib/prometheus-node-exporter/amdgpu.prom"
 
-      # Get GPU metrics using rocm-smi
-      TEMP=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showtemp --json 2>/dev/null | ${pkgs.jq}/bin/jq -r '.card0."Temperature (Sensor edge) (C)" // "0"')
-      GPU_USE=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showuse --json 2>/dev/null | ${pkgs.jq}/bin/jq -r '.card0."GPU use (%)" // "0"')
-      VRAM_USED=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showmeminfo vram --json 2>/dev/null | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Used Memory (B)" // "0"')
-      VRAM_TOTAL=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showmeminfo vram --json 2>/dev/null | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Memory (B)" // "0"')
-      POWER=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showpower --json 2>/dev/null | ${pkgs.jq}/bin/jq -r '.card0."Current Socket Graphics Package Power (W)" // "0"')
+      ALL=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showtemp --showuse --showmeminfo vram --showpower --json 2>/dev/null)
+      TEMP=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."Temperature (Sensor edge) (C)" // "0"')
+      GPU_USE=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."GPU use (%)" // "0"')
+      VRAM_USED=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Used Memory (B)" // "0"')
+      VRAM_TOTAL=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Memory (B)" // "0"')
+      POWER=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."Current Socket Graphics Package Power (W)" // "0"')
 
       cat > "$OUTPUT_FILE" << EOF
       # HELP amdgpu_temperature_celsius GPU temperature in celsius
