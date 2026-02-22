@@ -29,6 +29,10 @@
   fileSystems."/" = {
     device = "/dev/mapper/vg_linux-nixos";
     fsType = "btrfs";
+    options = [
+      "compress=zstd"
+      "noatime"
+    ];
   };
 
   fileSystems."/boot" = {
