@@ -142,6 +142,17 @@ return {
 				"zsh",
 				"fish",
 			},
+			options = {
+				parsers = {
+					css = true,
+					hex = { default = true },
+					rgb = { enable = true },
+					hsl = { enable = true },
+				},
+				display = {
+					mode = "background",
+				},
+			},
 		},
 	},
 	{
