@@ -22,6 +22,7 @@
       "enpass" # password manager
       "alfred" # launcher
       "obsidian" # Knowledge base and note-taking
+      "cmux" # tmux session manager
 
       # Development tools
       "bruno" # API client (Postman alternative, Git-friendly)
