@@ -1,78 +1,35 @@
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
-		branch = "master", -- Pin to master for compatibility with textobjects etc.
+		branch = "main",
+		lazy = false,
 		build = ":TSUpdate",
-		event = "VimEnter",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-		},
 		config = function()
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = {
-					"bash",
-					"c",
-					"cmake",
-					"cpp",
-					"css",
-					"csv",
-					"diff",
-					"dockerfile",
-					"fish",
-					"git_config",
-					"git_rebase",
-					"gitattributes",
-					"gitcommit",
-					"gitignore",
-					"go",
-					"gomod",
-					"gosum",
-					"gotmpl",
-					"haskell",
-					"html",
-					"hyprlang",
-					"ini",
-					"java",
-					"javascript",
-					"json",
-					"json5",
-					"jsonnet",
-					"lua",
-					"luadoc",
-					"make",
-					"markdown",
-					"markdown_inline",
-					"mermaid",
-					"nginx",
-					"nix",
-					"ocaml",
-					"perl",
-					"php",
-					"proto",
-					"python",
-					"regex",
-					"ruby",
-					"rust",
-					"scss",
-					"sql",
-					"ssh_config",
-					"terraform",
-					"tmux",
-					"toml",
-					"tsv",
-					"tsx",
-					"typescript",
-					"vim",
-					"yaml",
-				},
-				highlight = {
-					enable = true,
-				},
-				indent = {
-					enable = true,
-				},
+			require("nvim-treesitter").setup({})
+
+			require("nvim-treesitter").install({
+				"bash", "c", "cmake", "cpp", "css", "csv", "diff",
+				"dockerfile", "fish", "git_config", "git_rebase",
+				"gitattributes", "gitcommit", "gitignore", "go", "gomod",
+				"gosum", "gotmpl", "haskell", "html", "hyprlang", "ini",
+				"java", "javascript", "json", "json5", "jsonnet", "lua",
+				"luadoc", "make", "markdown", "markdown_inline", "mermaid",
+				"nginx", "nix", "ocaml", "perl", "php", "proto", "python",
+				"regex", "ruby", "rust", "scss", "sql", "ssh_config",
+				"terraform", "tmux", "toml", "tsv", "tsx", "typescript",
+				"vim", "yaml",
+			})
+
+			vim.api.nvim_create_autocmd("FileType", {
+				callback = function(args)
+					pcall(vim.treesitter.start, args.buf)
+				end,
 			})
 		end,
+	},
+	{
+		"nvim-treesitter/nvim-treesitter-textobjects",
+		branch = "main",
 	},
 	{
 		"nvim-treesitter/nvim-treesitter-context",
