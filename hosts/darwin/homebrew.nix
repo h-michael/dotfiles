@@ -23,6 +23,7 @@
       "alfred" # launcher
       "obsidian" # Knowledge base and note-taking
       "cmux" # tmux session manager
+      "cursor" # AI-powered code editor
 
       # Development tools
       "bruno" # API client (Postman alternative, Git-friendly)
