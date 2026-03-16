@@ -1,6 +1,7 @@
 return {
 	{
 		"rmagatti/auto-session",
+		enabled = false,
 		lazy = false,
 		opts = {
 			-- Save session on exit, restore on entering same directory
