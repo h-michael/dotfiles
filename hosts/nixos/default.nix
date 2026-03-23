@@ -152,7 +152,7 @@
   # USB ID: 2357:0604
   services.udev.extraRules = ''
     # Disable TP-Link Bluetooth USB Adapter
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="2357", ATTRS{idProduct}=="0604", ATTR{authorized}="0"
+    ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{authorized}="0"
   '';
 
   # ddcutil udev rules for I2C device access
