@@ -18,6 +18,8 @@
   # Reference: https://github.com/ROCm/ROCm/issues/5444
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  boot.loader.timeout = null;
+
   # Use systemd-boot
   boot.loader.systemd-boot = {
     enable = true;
