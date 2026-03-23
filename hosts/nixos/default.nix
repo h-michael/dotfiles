@@ -177,7 +177,34 @@
     before = [ "bluetooth.service" ];
     serviceConfig = {
       Type = "oneshot";
+      RemainAfterExit = true;
       ExecStart = "${pkgs.util-linux}/bin/rfkill unblock bluetooth";
+    };
+  };
+
+  # Workaround: Reload btusb at boot to work around MT7925 init race
+  #
+  # The MT7925 btmtk driver has a race condition where usb_autopm_put_interface()
+  # is called before the WMT event response arrives, causing intermittent
+  # "wmt command timed out" failures on first initialization. Reloading btusb
+  # forces a clean re-initialization that bypasses the timing-sensitive path.
+  #
+  # Only btusb is reloaded to avoid disrupting Wi-Fi (mt7925e is a combo driver).
+  # If btusb-only reload is insufficient, mt7925e reload may also be needed.
+  #
+  # Candidate upstream fix (under review as of 2026-03):
+  #   https://lists.infradead.org/pipermail/linux-mediatek/2025-March/090780.html
+  # Reference:
+  #   https://github.com/moolooite/mt7925e-bt-heal
+  systemd.services.mt7925e-bt-heal = {
+    description = "Reload btusb to work around MT7925 Bluetooth init race";
+    before = [ "bluetooth.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      # modprobe -r may fail if btusb is not yet loaded; ignore that case
+      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.kmod}/bin/modprobe -r btusb || true; ${pkgs.coreutils}/bin/sleep 1; ${pkgs.kmod}/bin/modprobe btusb'";
+      RemainAfterExit = true;
     };
   };
 
