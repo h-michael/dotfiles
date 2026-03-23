@@ -77,6 +77,7 @@ in
     uv
     deno
     bun
+    devcontainer
 
     # Kubernetes
     kubectl
