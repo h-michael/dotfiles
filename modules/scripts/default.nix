@@ -30,6 +30,18 @@ let
     executable = true;
     destination = "/bin/cc-hook-notification";
   };
+  geminiHookNotificationScript = pkgs.writeTextFile {
+    name = "gemini-hook-notification";
+    text = builtins.readFile ./files/gemini-hook-notification.ts;
+    executable = true;
+    destination = "/bin/gemini-hook-notification";
+  };
+  geminiHookStopScript = pkgs.writeTextFile {
+    name = "gemini-hook-stop";
+    text = builtins.readFile ./files/gemini-hook-stop.ts;
+    executable = true;
+    destination = "/bin/gemini-hook-stop";
+  };
 in
 {
   home.packages = [
@@ -37,5 +49,7 @@ in
     ccStatuslineScript
     ccHookStopScript
     ccHookNotificationScript
+    geminiHookNotificationScript
+    geminiHookStopScript
   ];
 }
