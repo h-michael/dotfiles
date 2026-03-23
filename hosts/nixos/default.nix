@@ -45,6 +45,11 @@
     "mt7925e"
   ];
 
+  # Prevent btusb from auto-binding before the TP-Link adapter is removed.
+  # The boot-time workaround service loads btusb explicitly after udev rules
+  # have had a chance to detach the external Realtek dongle.
+  boot.blacklistedKernelModules = [ "btusb" ];
+
   boot.initrd = {
     kernelModules = [ "amdgpu" ];
     services.lvm.enable = true;
@@ -152,7 +157,7 @@
   # USB ID: 2357:0604
   services.udev.extraRules = ''
     # Disable TP-Link Bluetooth USB Adapter
-    ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{authorized}="0"
+    ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{authorized}="0", ATTR{remove}="1"
   '';
 
   # ddcutil udev rules for I2C device access
@@ -203,7 +208,7 @@
     serviceConfig = {
       Type = "oneshot";
       # modprobe -r may fail if btusb is not yet loaded; ignore that case
-      ExecStart = "${pkgs.bash}/bin/bash -c '${pkgs.kmod}/bin/modprobe -r btusb || true; ${pkgs.coreutils}/bin/sleep 1; ${pkgs.kmod}/bin/modprobe btusb'";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'for d in /sys/bus/usb/devices/*; do if [ -f \"$d/idVendor\" ] && [ -f \"$d/idProduct\" ] && [ \"$(cat \"$d/idVendor\")\" = \"2357\" ] && [ \"$(cat \"$d/idProduct\")\" = \"0604\" ] && [ -w \"$d/remove\" ]; then echo 1 > \"$d/remove\"; fi; done; ${pkgs.kmod}/bin/modprobe -r btusb || true; ${pkgs.coreutils}/bin/sleep 1; ${pkgs.kmod}/bin/modprobe btusb'";
       RemainAfterExit = true;
     };
   };
