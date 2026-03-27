@@ -154,6 +154,21 @@
     shell = pkgs.fish;
   };
 
+  # Raise default open file descriptor limit (macOS default is 256, too low for Nix)
+  launchd.daemons.limit-maxfiles = {
+    serviceConfig = {
+      Label = "limit.maxfiles";
+      ProgramArguments = [
+        "launchctl"
+        "limit"
+        "maxfiles"
+        "65536"
+        "65536"
+      ];
+      RunAtLoad = true;
+    };
+  };
+
   # Required for nix-darwin
   system.stateVersion = 6;
 }
