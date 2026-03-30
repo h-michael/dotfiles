@@ -2,12 +2,17 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
+let
+  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
 {
   programs.mise = {
     enable = true;
+    package = unstablePkgs.mise;
     enableFishIntegration = true;
 
     globalConfig = {
