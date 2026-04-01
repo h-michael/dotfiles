@@ -82,5 +82,8 @@ in
 
     # System utilities
     terminal-notifier
+
+    # Monitoring
+    python3Packages.datadog # Datadog CLI (dog, dogwrap)
   ];
 }
