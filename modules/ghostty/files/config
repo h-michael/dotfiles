@@ -11,6 +11,8 @@ font-family = PlemolJP Console NF Light
 # - title: Allow shell to set window title
 shell-integration-features = cursor,sudo,title
 
+macos-option-as-alt = true
+
 cursor-style = block
 clipboard-paste-bracketed-safe = true
 

@@ -44,6 +44,7 @@ in
     delta
     jq
     yq
+    xz
     p7zip
     ghq
     tree-sitter
