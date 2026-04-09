@@ -140,6 +140,7 @@
               self.overlays.custom-packages
               neovim-nightly-overlay.overlays.default
               (import ./overlays/inetutils-macos-fix.nix)
+              (import ./overlays/direnv-darwin-fix.nix)
             ];
           };
           extraSpecialArgs = {
