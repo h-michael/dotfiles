@@ -141,6 +141,7 @@
               neovim-nightly-overlay.overlays.default
               (import ./overlays/inetutils-macos-fix.nix)
               (import ./overlays/direnv-darwin-fix.nix)
+              (import ./overlays/fish-darwin-codesign-fix.nix)
             ];
           };
           extraSpecialArgs = {
