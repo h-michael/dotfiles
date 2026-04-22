@@ -140,6 +140,10 @@
   };
   services.blueman.enable = true;
 
+  # Required by udiskie (user systemd unit in modules/systemd) — without this
+  # the UDisks2 D-Bus service is missing and udiskie restarts forever.
+  services.udisks2.enable = true;
+
   services.logind = {
     settings.Login = {
       HandleLidSwitch = "suspend-then-hibernate";
