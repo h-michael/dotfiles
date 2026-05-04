@@ -113,6 +113,9 @@ in
     dotnet-sdk_8 # .NET SDK for C# development
     mono # Required by some Unity tools
 
+    # Game development
+    godot_4 # Godot Engine 4.x
+
     # Hyprland/Wayland
     rofi
     waybar
