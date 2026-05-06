@@ -77,6 +77,16 @@ return {
 				},
 				buf_ls = {},
 				omnisharp = {},
+				-- GDScript LSP is hosted inside the Godot editor itself
+				-- (Editor Settings → Network → Language Server, default
+				-- port 6005). Open the project in Godot before editing
+				-- .gd files in Neovim. GDScript_Port env var can override
+				-- the port for per-project setups.
+				gdscript = {
+					cmd = vim.lsp.rpc.connect("127.0.0.1", tonumber(os.getenv("GDScript_Port")) or 6005),
+					filetypes = { "gd", "gdscript", "gdscript3" },
+					root_markers = { "project.godot" },
+				},
 				lua_ls = {
 					settings = {
 						["Lua"] = {
