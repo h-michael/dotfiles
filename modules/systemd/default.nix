@@ -25,7 +25,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -39,7 +42,8 @@
       };
     };
 
-    # Shared services (compositor-agnostic)
+    # Shared between Hyprland and niri (excluded from Plasma to avoid
+    # conflicts with KDE's built-in equivalents: Klipper, Solid, Plasma applets)
 
     nm-applet = {
       Unit = {
@@ -54,7 +58,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -71,7 +78,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -90,7 +100,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -107,7 +120,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -124,45 +140,10 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-    };
-
-    # Hyprland-only: xremap with hyprland variant
-    xremap = {
-      Unit = {
-        Description = "xremap (Hyprland)";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
-        ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.xremap.passthru.hyprland}/bin/xremap --watch=config --watch=device %h/.config/xremap/config.yml";
-        Restart = "on-failure";
-        Slice = "session.slice";
-      };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-    };
-
-    # niri-only: xremap with wlroots variant
-    xremap-niri = {
-      Unit = {
-        Description = "xremap (niri)";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
-        ConditionEnvironment = "NIRI_SOCKET";
-      };
-      Service = {
-        Type = "simple";
-        ExecStart = "${pkgs.xremap.passthru.wlroots}/bin/xremap --watch=config --watch=device %h/.config/xremap/config.yml";
-        Restart = "on-failure";
-        Slice = "session.slice";
-      };
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
 
@@ -187,7 +168,7 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [ "niri-session.target" ];
       };
     };
 
@@ -206,7 +187,7 @@
         Slice = "session.slice";
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [ "niri-session.target" ];
       };
     };
   };
@@ -225,7 +206,10 @@
         ];
       };
       Install = {
-        WantedBy = [ "graphical-session.target" ];
+        WantedBy = [
+          "hyprland-session.target"
+          "niri-session.target"
+        ];
       };
     };
   };

@@ -230,8 +230,33 @@
   programs.hyprland.enable = true;
   programs.niri.enable = true;
 
+  # KDE Plasma 6 session (selectable from SDDM alongside Hyprland/niri)
+  services.desktopManager.plasma6.enable = true;
+
   # ydotool for gesture key simulation
   programs.ydotool.enable = true;
+
+  # xremap (declarative via xremap/nix-flake).
+  # Replaces the previous hand-rolled user systemd services for
+  # hyprland/niri/KDE binaries. The YAML config is reused as-is from
+  # modules/xremap/files/config.yml. We don't enable any withXXX feature
+  # because our config has no application: filters, so the base xremap
+  # binary is enough across Hyprland, niri, and Plasma sessions.
+  services.xremap = {
+    enable = true;
+    serviceMode = "user";
+    userName = username;
+    yamlConfig = builtins.readFile ../../modules/xremap/files/config.yml;
+  };
+
+  # xremap's launch actions (esc-reminder, fcitx5-remote) live in the
+  # user profile, which isn't on the user systemd service's default PATH.
+  # Documented workaround: extend the service's path. Drop the trailing
+  # /bin per the xremap-flake README.
+  systemd.user.services.xremap.path = [
+    "/run/current-system/sw"
+    "/etc/profiles/per-user/${username}"
+  ];
 
   # Steam
   programs.steam = {

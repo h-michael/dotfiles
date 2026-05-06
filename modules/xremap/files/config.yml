@@ -5,12 +5,23 @@ modmap:
   - name: Alt_L to Super_L
     remap:
       Alt_L: Super_L
-  - name: Super_R to Alt_R
+  # Funnel each keyboard's "right modifier" key (right Cmd on Magic Keyboard,
+  # right Alt elsewhere) into the unused F19 scratch key, so the keymap
+  # section can fire IME hotkeys on it. xremap's keymap cannot use bare
+  # modifier keys as triggers (modifiers bypass find_keymap in
+  # event_handler.rs), hence the scratch-key indirection.
+  - name: Magic Keyboard right Cmd to F19
     device:
       only:
         - "Magic Keyboard"
     remap:
-      Super_R: Alt_R
+      Super_R: F19
+  - name: Other keyboards right Alt to F19
+    device:
+      not:
+        - "Magic Keyboard"
+    remap:
+      Alt_R: F19
 keymap:
   - name: Esc
     remap:
@@ -22,3 +33,15 @@ keymap:
       Esc:
         launch:
           - esc-reminder
+  - name: IME activate
+    remap:
+      Super-F19:
+        launch:
+          - fcitx5-remote
+          - -o
+  - name: IME deactivate
+    remap:
+      F19:
+        launch:
+          - fcitx5-remote
+          - -c

@@ -22,10 +22,10 @@ in
     ../modules/dunst
     ../modules/swaylock
     ../modules/theme
-    ../modules/xremap
     ../modules/systemd
     ../modules/fcitx5
     ../modules/fontconfig
+    ../modules/plasma
     ../modules/scripts-linux
     ../modules/vscode
     ../modules/satty

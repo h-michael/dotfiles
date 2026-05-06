@@ -10,6 +10,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager/trunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
+    xremap-flake = {
+      url = "github:xremap/nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -83,6 +94,11 @@
           modules = [
             ./hosts/nixos
 
+            # xremap as a NixOS module (replaces hand-rolled user systemd
+            # services for Hyprland/niri/KDE binaries; configured in
+            # hosts/nixos/default.nix via services.xremap)
+            inputs.xremap-flake.nixosModules.default
+
             # Apply overlays
             {
               nixpkgs.overlays = [
@@ -98,7 +114,16 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              # Plasma writes files like ~/.gtkrc-2.0 on session start that
+              # then collide with home-manager's managed copies. Auto-backup
+              # rather than aborting activation, and silently replace any
+              # stale backup left from a previous activation cycle.
+              home-manager.backupFileExtension = "hm-backup";
+              home-manager.overwriteBackup = true;
               home-manager.users.${username} = import ./home/linux.nix;
+              home-manager.sharedModules = [
+                inputs.plasma-manager.homeModules.plasma-manager
+              ];
               home-manager.extraSpecialArgs = {
                 inherit inputs username;
                 isNixOS = true;

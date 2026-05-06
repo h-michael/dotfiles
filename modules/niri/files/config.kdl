@@ -223,12 +223,4 @@ binds {
     XF86AudioPause { spawn "playerctl" "play-pause"; }
     XF86AudioPlay { spawn "playerctl" "play-pause"; }
     XF86AudioPrev { spawn "playerctl" "previous"; }
-
-    // IME control (fcitx5)
-    // Unlike Hyprland, niri doesn't special-case modifier keys in binds.
-    // Pressing Alt_R activates Mod1 (Alt) automatically, so the bind must
-    // include Alt+ to match. (Hyprland strips the self-modifier implicitly.)
-    // ref: https://github.com/YaLTeR/niri/discussions/1215
-    Mod+Alt+Alt_R { spawn "fcitx5-remote" "-o"; }
-    Alt+Alt_R { spawn "fcitx5-remote" "-c"; }
 }

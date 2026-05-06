@@ -17,6 +17,11 @@
       addons = with pkgs; [
         fcitx5-mozc
         fcitx5-gtk
+        # Qt 6 platform input context plugin. Required for KWin/Plasma 6 to
+        # translate Wayland key events into fcitx5 keysyms (otherwise
+        # "fcitx_key_event_handler.cc: Translate failed" and IME hotkeys
+        # such as Zenkaku_Hankaku do nothing in KDE sessions).
+        kdePackages.fcitx5-qt
       ];
       settings = {
         # Input method configuration
