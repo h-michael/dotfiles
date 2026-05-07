@@ -53,9 +53,7 @@ in
   # This gives us full control over the configuration order
   xdg.configFile."tmux/tmux.conf".text = tmuxConf;
 
-  # Install tmux packages (normal + ASan-enabled for debugging)
   home.packages = [
     pkgs.tmux
-    pkgs.tmux-asan
   ];
 }
