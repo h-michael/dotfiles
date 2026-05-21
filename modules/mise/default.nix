@@ -44,6 +44,9 @@ in
           "node"
           "terraform"
         ];
+        # Mitigate supply chain attacks by only allowing tool versions
+        # released at least 7 days ago.
+        minimum_release_age = "7d";
       };
     };
   };
