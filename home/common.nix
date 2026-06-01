@@ -62,6 +62,7 @@ in
     unstablePkgs.jujutsu
     gnumake
     pkg-config
+    openssl # CLI
     openssl.dev
     direnv
     lefthook
