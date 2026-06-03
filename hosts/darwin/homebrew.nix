@@ -9,9 +9,12 @@
     enable = true;
 
     onActivation = {
-      autoUpdate = true;
+      # Run tap metadata refresh and cask upgrades manually so freshly
+      # published versions aren't pulled in immediately by darwin-rebuild
+      # switch. See `make brew-check` for the audited upgrade workflow.
+      autoUpdate = false;
+      upgrade = false;
       cleanup = "zap"; # Remove unlisted packages
-      upgrade = true;
     };
 
     # GUI applications (casks)

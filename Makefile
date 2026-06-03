@@ -1,4 +1,5 @@
-.PHONY: switch build test update clean nix-gc help setup news diff
+.PHONY: switch build test update clean nix-gc help setup news diff \
+	brew-update brew-outdated brew-info brew-upgrade brew-check
 
 # Host auto-detection
 UNAME_S := $(shell uname -s)
@@ -27,6 +28,15 @@ help:
 	@echo "  make nix-gc         - Garbage collect nix store"
 	@echo "                        Or keep latest NixOS generations (KEEP=15)"
 	@echo "  make news           - Show home-manager news"
+ifeq ($(HOST),darwin)
+	@echo ""
+	@echo "Homebrew (cask audit workflow):"
+	@echo "  make brew-check     - Refresh tap metadata, then list outdated casks"
+	@echo "  make brew-update    - brew update (refresh tap metadata only)"
+	@echo "  make brew-outdated  - brew outdated --cask --verbose"
+	@echo "  make brew-info CASK=<name>    - brew info --cask <name>"
+	@echo "  make brew-upgrade CASK=<name> - brew upgrade --cask <name>"
+endif
 
 # Main targets with inlined platform logic
 ifeq ($(HOST),darwin)
@@ -57,6 +67,23 @@ diff: build
 	@echo ""
 	@echo "=== Home Manager differences ==="
 	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result-home
+
+# Homebrew cask audit workflow
+brew-update:
+	brew update
+
+brew-outdated:
+	brew outdated --cask --verbose
+
+brew-check: brew-update brew-outdated
+
+brew-info:
+	@test -n "$(CASK)" || { echo "Usage: make brew-info CASK=<name>"; exit 1; }
+	brew info --cask $(CASK)
+
+brew-upgrade:
+	@test -n "$(CASK)" || { echo "Usage: make brew-upgrade CASK=<name>"; exit 1; }
+	brew upgrade --cask $(CASK)
 
 else ifeq ($(HOST),nix)
 

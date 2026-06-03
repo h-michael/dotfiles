@@ -18,6 +18,15 @@ in
     ../modules/scripts-darwin
   ];
 
+  # Homebrew supply-chain hardening. Attestation verification needs the `gh`
+  # CLI (already in home/common.nix).
+  home.sessionVariables = {
+    HOMEBREW_NO_AUTO_UPDATE = "1";
+    HOMEBREW_NO_INSECURE_REDIRECT = "1";
+    HOMEBREW_VERIFY_ATTESTATIONS = "1";
+    HOMEBREW_NO_ANALYTICS = "1";
+  };
+
   # macOS-specific packages (migrated from Homebrew)
   home.packages = with pkgs; [
     # Shell & Core utilities
