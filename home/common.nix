@@ -79,7 +79,9 @@ in
     uv
     deno
     bun
-    devcontainer
+    # devcontainer wraps docker into its PATH; the default `docker` is the
+    # now-insecure docker_28, so pin the maintained docker_29 instead.
+    (devcontainer.override { docker = docker_29; })
 
     # Kubernetes
     kubectl
