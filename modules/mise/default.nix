@@ -8,11 +8,20 @@
 
 let
   unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+
+  # The OCI layer test asserts setuid/setgid bits survive a round-trip, but the
+  # Nix build sandbox strips special permission bits, so it always fails there.
+  # Skip just that test rather than disabling the whole check suite.
+  mise = unstablePkgs.mise.overrideAttrs (old: {
+    checkFlags = (old.checkFlags or [ ]) ++ [
+      "--skip=oci::layer::tests::preserve_metadata_dir_layer_keeps_special_permission_bits"
+    ];
+  });
 in
 {
   programs.mise = {
     enable = true;
-    package = unstablePkgs.mise;
+    package = mise;
     enableFishIntegration = true;
 
     globalConfig = {
