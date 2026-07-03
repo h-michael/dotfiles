@@ -78,6 +78,7 @@
       overlays = {
         uhk-agent-fix = import ./overlays/uhk-agent-fix.nix;
         tmux-master = import ./overlays/tmux-master.nix;
+        vscode-langservers-fix = import ./overlays/vscode-langservers-fix.nix;
         custom-packages = final: prev: {
           cica-font = final.callPackage ./pkgs/cica-font.nix { };
         };
@@ -105,6 +106,7 @@
                 self.overlays.uhk-agent-fix
                 self.overlays.tmux-master
                 self.overlays.custom-packages
+                self.overlays.vscode-langservers-fix
                 neovim-nightly-overlay.overlays.default
               ];
             }
@@ -163,6 +165,7 @@
             overlays = [
               self.overlays.tmux-master
               self.overlays.custom-packages
+              self.overlays.vscode-langservers-fix
               neovim-nightly-overlay.overlays.default
               (import ./overlays/inetutils-macos-fix.nix)
               (import ./overlays/direnv-darwin-fix.nix)
