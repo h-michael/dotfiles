@@ -1,0 +1,124 @@
+# ~/.zshenv - environment variables and PATH (sourced for every zsh invocation)
+#
+# Ported from the fish config (modules/fish/files/conf.d/00_config.fish and
+# 02_env.fish). Keep the two in sync when changing shared environment.
+#
+# Interactive-only behaviour and tool init live in ~/.zshrc.
+
+# XDG Base Directory
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_DIRS=/etc/xdg
+
+# Locale (LANGUAGE must be en_US)
+export LANGUAGE=en_US.UTF-8
+export LANG=$LANGUAGE
+export LC_ALL=$LANGUAGE
+export LC_CTYPE=$LANGUAGE
+
+# Editor
+export EDITOR=nvim
+export CVSEDITOR=$EDITOR
+export SVN_EDITOR=$EDITOR
+export GIT_EDITOR=$EDITOR
+
+# Pager / less
+export PAGER=less
+export LESSCHARSET=utf-8
+export LESS=-R
+export LESSOPEN='|lessfilter %s'
+# LESS man page colors (makes man pages more readable)
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
+# Colors
+export COLORTERM=truecolor
+export CLICOLOR=true
+export LSCOLORS=exfxcxdxbxegedabagacad
+export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+
+# ripgrep
+export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgreprc
+
+# pkg-config
+export PKG_CONFIG_PATH=$HOME/.nix-profile/lib/pkgconfig
+
+# Rootless Docker
+export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+
+# gtags
+export GTAGSCONF=$HOME/.globalrc
+export GTAGSLIBPATH=/usr/lib/gtags
+export GTAGSLABEL=pygments
+
+export INTERACTIVE_FILTER="fzf:peco:percol:gof:pick"
+
+# Qt (Enpass)
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+
+export SSH_KEY_PATH=$HOME/.ssh/id_rsa
+
+# gcloud
+export CLOUDSDK_PYTHON_SITEPACKAGES=1
+
+# Neovim
+export DEIN_CACHE_PATH=$XDG_CACHE_HOME/dein-nvim/.cache
+export NVIM_SHARED_PATH=$HOME/.local/share/nvim
+export LSP_LOG_PATH=$NVIM_SHARED_PATH/lsp.log
+
+# CMake
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+# Rust
+export SCCACHE_CACHE_SIZE=50G
+
+# Deno
+export DENO_INSTALL=$HOME/.deno
+
+# Claude Code
+export ENABLE_TOOL_SEARCH=1
+
+# aqua (https://aquaproj.github.io)
+export AQUA_GLOBAL_CONFIG=$XDG_CONFIG_HOME/aquaproj-aqua/aqua.yaml
+
+# npm prefix (aqua nodejs support)
+export NPM_CONFIG_PREFIX=$XDG_DATA_HOME/npm-global
+
+# Load local secrets if present
+[[ -f $HOME/.secret ]] && source "$HOME/.secret"
+
+# --- PATH ---
+# `path` is the array tied to PATH; -U keeps it deduplicated.
+typeset -U path PATH
+
+# Language toolchains: prepend only if the directory exists
+# (mirrors fish add_path_if_exists).
+for dir in \
+  "$HOME/.cabal/bin" \
+  "$HOME/.cargo/bin" \
+  "$HOME/go/bin" \
+  "$HOME/.deno/bin" \
+  "$HOME/.luarocks/bin" \
+  "$HOME/.poetry/bin" \
+  "$HOME/.krew/bin" \
+  /usr/local/opt/gettext/bin; do
+  [[ -d $dir ]] && path=("$dir" $path)
+done
+
+# High-priority bins. Prepended last so they win, matching fish_add_path -m
+# ordering in 00_config.fish. mise uses shims (not `mise activate`) on purpose:
+# https://mise.jdx.dev/dev-tools/shims.html#shims-vs-path
+path=(
+  "$NPM_CONFIG_PREFIX/bin"
+  "$XDG_DATA_HOME/aquaproj-aqua/bin"
+  "$XDG_DATA_HOME/mise/shims"
+  "$HOME/.local/bin"
+  $path
+)
+export PATH

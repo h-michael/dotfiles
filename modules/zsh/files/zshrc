@@ -1,0 +1,43 @@
+# ~/.zshrc - interactive shell configuration
+#
+# Environment variables and PATH (including mise shims) live in ~/.zshenv,
+# which zsh sources for every invocation. Because mise is wired through shims
+# on PATH, no `mise activate` hook is needed here.
+#
+# fish remains the primary interactive shell (modules/fish); this covers the
+# standard interactive niceties (completion, history, key bindings) so zsh is
+# usable on its own when needed.
+
+# --- History ---
+[[ -d $XDG_CACHE_HOME/zsh ]] || mkdir -p $XDG_CACHE_HOME/zsh
+HISTFILE=$XDG_CACHE_HOME/zsh/history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt EXTENDED_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_VERIFY
+setopt SHARE_HISTORY
+
+# --- Completion ---
+autoload -Uz compinit
+compinit -d $XDG_CACHE_HOME/zsh/zcompdump
+
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zsh/zcompcache
+zstyle ':completion:*' use-cache on
+
+# --- Options ---
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt EXTENDED_GLOB
+setopt INTERACTIVE_COMMENTS
+setopt NO_BEEP
+
+# --- Key bindings ---
+bindkey -e

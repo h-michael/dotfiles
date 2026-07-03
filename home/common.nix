@@ -13,6 +13,7 @@ in
   # Cross-platform modules
   imports = [
     ../modules/fish
+    ../modules/zsh
     ../modules/starship
     ../modules/git
     ../modules/tmux
