@@ -3,8 +3,12 @@ if [ -z $TMUX ]
     init-ssh-agent
 end
 
-# Rootless Docker
-set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/docker.sock
+# Rootless Docker (Linux only; XDG_RUNTIME_DIR is unset on macOS, where
+# Docker Desktop's own socket at ~/.docker/run/docker.sock should be used
+# via its default context instead)
+if test -n "$XDG_RUNTIME_DIR"
+    set -gx DOCKER_HOST unix://$XDG_RUNTIME_DIR/docker.sock
+end
 
 set -gx RIPGREP_CONFIG_PATH $XDG_CONFIG_HOME/ripgreprc
 
