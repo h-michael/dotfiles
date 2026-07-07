@@ -49,8 +49,10 @@ export RIPGREP_CONFIG_PATH=$XDG_CONFIG_HOME/ripgreprc
 # pkg-config
 export PKG_CONFIG_PATH=$HOME/.nix-profile/lib/pkgconfig
 
-# Rootless Docker
-export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+# Rootless Docker (Linux only; XDG_RUNTIME_DIR is unset on macOS, where
+# Docker Desktop's own socket at ~/.docker/run/docker.sock should be used
+# via its default context instead)
+[[ -n $XDG_RUNTIME_DIR ]] && export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
 
 # gtags
 export GTAGSCONF=$HOME/.globalrc
