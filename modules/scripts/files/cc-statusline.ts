@@ -1,238 +1,253 @@
 #!/usr/bin/env -S deno run --allow-run --allow-read --allow-env
-// Claude Code statusline for Deno - Self-contained version
-// Features: directory, model, git status, code changes, output style,
-// context window, tokens (input/output/cache), cost, block timer, session ID, execution time
+// Claude Code statusline for Deno.
+// Reads the JSON payload documented at
+// https://code.claude.com/docs/en/statusline.md and prints one line.
 
-// deno-types: https://deno.land/std/types.d.ts
-// @ts-types https://deno.land/std/types.d.ts
+interface CurrentUsage {
+  input_tokens?: number;
+  output_tokens?: number;
+  cache_creation_input_tokens?: number;
+  cache_read_input_tokens?: number;
+}
 
 interface ContextWindow {
   used_percentage?: number;
   remaining_percentage?: number;
   total_input_tokens?: number;
-  current_usage?: {
-    input_tokens?: number;
-    output_tokens?: number;
-    cache_creation_tokens?: number;
-    cache_read_tokens?: number;
-  };
+  total_output_tokens?: number;
+  context_window_size?: number;
+  current_usage?: CurrentUsage | null;
+}
+
+interface RateLimitWindow {
+  used_percentage?: number;
+  resets_at?: number;
 }
 
 interface StatusLineInput {
-  model?: { display_name?: string };
-  workspace?: { current_dir?: string; project_dir?: string };
-  output_style?: { name?: string };
+  cwd?: string;
   session_id?: string;
+  session_name?: string;
+  transcript_path?: string;
+  version?: string;
+  model?: { id?: string; display_name?: string };
+  workspace?: {
+    current_dir?: string;
+    project_dir?: string;
+    added_dirs?: string[];
+    git_worktree?: string;
+    repo?: { host?: string; owner?: string; name?: string };
+  };
+  output_style?: { name?: string };
   cost?: {
     total_cost_usd?: number;
+    total_duration_ms?: number;
+    total_api_duration_ms?: number;
     total_lines_added?: number;
     total_lines_removed?: number;
-    total_tokens?: number;
   };
-  transcript_path?: string;
   context_window?: ContextWindow;
   exceeds_200k_tokens?: boolean;
+  effort?: { level?: string };
+  thinking?: { enabled?: boolean };
+  rate_limits?: {
+    five_hour?: RateLimitWindow;
+    seven_day?: RateLimitWindow;
+  };
+  agent?: { name?: string };
+  pr?: { number?: number; url?: string; review_state?: string };
 }
 
-// Tokyo Night color scheme (truecolor)
+// Tokyo Night truecolor palette.
 const colors = {
-  blue: "\x1b[38;2;122;170;247m",      // 7aa2f7
-  cyan: "\x1b[38;2;125;207;255m",      // 7dcfff
-  magenta: "\x1b[38;2;187;154;247m",   // bb9af7
-  yellow: "\x1b[38;2;224;175;104m",    // e0af68
-  green: "\x1b[38;2;158;206;106m",     // 9ece6a
-  red: "\x1b[38;2;247;118;142m",       // f7768e
-  orange: "\x1b[38;2;255;158;100m",    // ff9e64
-  white: "\x1b[38;2;192;202;245m",     // c0caf5
-  gray: "\x1b[38;2;139;148;191m",      // 8b94bf (lighter gray)
+  blue: "\x1b[38;2;122;170;247m",
+  cyan: "\x1b[38;2;125;207;255m",
+  magenta: "\x1b[38;2;187;154;247m",
+  yellow: "\x1b[38;2;224;175;104m",
+  green: "\x1b[38;2;158;206;106m",
+  red: "\x1b[38;2;247;118;142m",
+  orange: "\x1b[38;2;255;158;100m",
+  white: "\x1b[38;2;192;202;245m",
+  gray: "\x1b[38;2;139;148;191m",
   reset: "\x1b[0m",
   blink: "\x1b[5m",
 };
 
-// Helper functions (replacing Fish functions)
+function paint(color: string, text: string): string {
+  return `${color}${text}${colors.reset}`;
+}
 
-// Format directory name display
-function formatDirectory(currentDir: string, depth: number = 0): string | null {
-  if (!currentDir) return null;
+// Resolve the current directory the way the docs recommend:
+// prefer workspace.current_dir, fall back to cwd.
+function resolveCwd(input: StatusLineInput): string {
+  return input.workspace?.current_dir || input.cwd || "";
+}
 
-  if (depth <= 0) {
-    return currentDir;
+// Render the location as owner/repo[/subpath][ (worktree)] when the JSON
+// exposes workspace.repo, otherwise ~/... or ⋯/last-three-segments.
+function formatPath(input: StatusLineInput): string | null {
+  const cwd = resolveCwd(input);
+  if (!cwd) return null;
+
+  const repo = input.workspace?.repo;
+  const worktree = input.workspace?.git_worktree;
+
+  if (repo?.name) {
+    let display = repo.owner ? `${repo.owner}/${repo.name}` : repo.name;
+    const anchor = `/${repo.name}`;
+    const idx = cwd.lastIndexOf(anchor);
+    if (idx >= 0) {
+      const tail = cwd.slice(idx + anchor.length);
+      if (tail && tail !== "/") display += tail;
+    }
+    if (worktree) display += ` (${worktree})`;
+    return display;
   }
-
-  const pathParts = currentDir.split("/").filter((p) => p);
-  const numParts = pathParts.length;
-
-  if (depth >= numParts) {
-    return currentDir;
-  }
-
-  const startIdx = numParts - depth;
-  const dirName = pathParts.slice(startIdx).join("/");
 
   const home = Deno.env.get("HOME") || "";
-  if (home && currentDir.startsWith(home + "/")) {
-    const reconstructedPath = `${home}/${dirName}`;
-    if (reconstructedPath === currentDir) {
-      return `~/${dirName}`;
-    }
+  if (home && cwd.startsWith(home + "/")) {
+    return "~" + cwd.slice(home.length);
   }
 
-  return `⋯/${dirName}`;
+  const parts = cwd.split("/").filter((p) => p);
+  if (parts.length <= 3) return cwd;
+  return "⋯/" + parts.slice(-3).join("/");
 }
 
-// Format model display name
-function formatModel(modelDisplay: string): string | null {
-  if (!modelDisplay || modelDisplay === "null") return null;
-  return modelDisplay.replace("Claude ", "").replace(/ /g, "-");
+function formatModel(displayName: string): string | null {
+  if (!displayName || displayName === "null") return null;
+  return displayName.replace("Claude ", "").replace(/ /g, "-");
 }
 
-// Get git branch and status
-async function getGitStatus(currentDir: string): Promise<string | null> {
-  if (!currentDir) return null;
-
+// One `git status -b --porcelain=v1` call gives branch + working-tree state.
+async function getGitStatus(cwd: string): Promise<string | null> {
+  if (!cwd) return null;
   try {
-    const gitCheckCmd = new Deno.Command("git", {
-      args: ["-C", currentDir, "rev-parse", "--git-dir"],
+    const out = await new Deno.Command("git", {
+      args: ["status", "--branch", "--porcelain=v1"],
+      cwd,
       stderr: "null",
-      stdout: "null",
-    });
-    const result = await gitCheckCmd.output();
-    if (!result.success) return null;
+    }).output();
+    if (!out.success) return null;
 
-    const branchCmd = new Deno.Command("git", {
-      args: ["-C", currentDir, "branch", "--show-current"],
-    });
-    const { stdout: branchOutput } = await branchCmd.output();
-    let branch = new TextDecoder().decode(branchOutput).trim();
-    if (!branch) branch = "detached";
-
-    const statusCmd = new Deno.Command("git", {
-      args: ["-C", currentDir, "status", "--porcelain"],
-    });
-    const { stdout: statusOutput } = await statusCmd.output();
-    const status = new TextDecoder().decode(statusOutput);
-
-    if (!status) return `on ${branch}`;
-
-    const lines = status.split("\n").filter((l) => l);
-    const staged = lines.filter((l) => /^[MADRCU]/.test(l)).length;
-    const modified = lines.filter((l) => /^.[MD]/.test(l)).length;
-    const untracked = lines.filter((l) => l.startsWith("??")).length;
-
-    const indicators: string[] = [];
-    if (staged > 0) indicators.push("+");
-    if (modified > 0) indicators.push("!");
-    if (untracked > 0) indicators.push("?");
-
-    if (indicators.length > 0) {
-      return `on ${branch} [${indicators.join("")}]`;
+    const text = new TextDecoder().decode(out.stdout);
+    const lines = text.split("\n");
+    const first = lines[0] || "";
+    let branch = "detached";
+    if (first.startsWith("## ")) {
+      const rest = first.slice(3);
+      if (rest.startsWith("HEAD (no branch)")) {
+        branch = "detached";
+      } else {
+        const upstreamIdx = rest.indexOf("...");
+        branch = upstreamIdx >= 0 ? rest.slice(0, upstreamIdx) : rest.split(" ")[0];
+      }
     }
 
-    return `on ${branch}`;
+    const entries = lines.slice(1).filter((l) => l);
+    const staged = entries.some((l) => /^[MADRCU]/.test(l));
+    const modified = entries.some((l) => /^.[MD]/.test(l));
+    const untracked = entries.some((l) => l.startsWith("??"));
+
+    const marks: string[] = [];
+    if (staged) marks.push("+");
+    if (modified) marks.push("!");
+    if (untracked) marks.push("?");
+
+    return marks.length ? `${branch} [${marks.join("")}]` : branch;
   } catch {
     return null;
   }
 }
 
-// Format output style
-function formatOutputStyle(style: string): string | null {
-  if (!style || style === "null") return null;
-  return style;
+function formatCost(v: number): string | null {
+  if (v < 0.01) return null;
+  return `$${v.toFixed(3)}`;
 }
 
-// Format cost
-function formatCost(totalCost: number): string | null {
-  const threshold = 0.01;
-  if (totalCost < threshold) return null;
-  return `$${totalCost.toFixed(3)}`;
+function formatTokenCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
+  return n.toString();
 }
 
-// Format token count
-function formatTokenCount(count: number): string {
-  if (count >= 1_000_000) {
-    return `${(count / 1_000_000).toFixed(1)}M`;
-  } else if (count >= 1_000) {
-    return `${Math.round(count / 1_000)}k`;
-  }
-  return count.toString();
-}
-
-// Format execution time
-function formatTimer(startTimeMs: number): string | null {
-  const elapsed = Date.now() - startTimeMs;
-  if (elapsed <= 0) return null;
-  return `${elapsed}ms`;
-}
-
-// Parse timestamp and get elapsed time in block
-function getBlockTimerDisplay(timestamp: string): string | null {
-  if (!timestamp) return null;
-
-  try {
-    const firstDate = new Date(timestamp.substring(0, 19));
-    const currentDate = new Date();
-    const elapsedSeconds = Math.floor(
-      (currentDate.getTime() - firstDate.getTime()) / 1000,
-    );
-    const totalHours = elapsedSeconds / 3600;
-    const blockNum = Math.floor(totalHours / 5);
-    const blockStartHours = blockNum * 5;
-    const elapsedInBlock = totalHours - blockStartHours;
-
-    if (elapsedInBlock < 0) return null;
-
-    const progressChars = Math.floor((elapsedInBlock / 5.0) * 16);
-    const bar = "█".repeat(progressChars);
-    const empty = "░".repeat(16 - progressChars);
-
-    return `[${bar}${empty}] ${elapsedInBlock.toFixed(1)}h`;
-  } catch {
-    return null;
-  }
-}
-
-// Format session ID (short display)
-function formatSessionId(sessionId: string): string | null {
-  if (!sessionId || sessionId === "null") return null;
-  const shortId = sessionId.substring(0, 8);
-  return `sid:${shortId}`;
-}
-
-// Format context window with warnings
-function formatContextWindow(
-  usedPct: number,
-  exceedsLimit: boolean,
-): string | null {
-  if (usedPct <= 0 && !exceedsLimit) return null;
-
-  const usedInt = Math.round(usedPct);
+function formatContextPct(pct: number, exceeds: boolean): string | null {
+  if (pct <= 0 && !exceeds) return null;
+  const p = Math.round(pct);
   let color = colors.gray;
-
-  if (exceedsLimit) {
-    color = colors.blink + colors.red;
-  } else if (usedInt >= 90) {
-    color = colors.red;
-  } else if (usedInt >= 80) {
-    color = colors.orange;
-  } else if (usedInt >= 60) {
-    color = colors.yellow;
-  }
-
-  return `${color}${usedInt}%${colors.reset}`;
+  if (exceeds) color = colors.blink + colors.red;
+  else if (p >= 90) color = colors.red;
+  else if (p >= 80) color = colors.orange;
+  else if (p >= 60) color = colors.yellow;
+  return paint(color, `ctx:${p}%`);
 }
 
-// Main function
-async function main() {
-  const startTimeMs = Date.now();
+function formatDuration(seconds: number): string {
+  if (seconds <= 0) return "0m";
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  return h > 0 ? `${h}h${m}m` : `${m}m`;
+}
 
-  const decoder = new TextDecoder();
-  const buffer = new Uint8Array(64 * 1024);
-  const bytesRead = await Deno.stdin.read(buffer);
-  const jsonStr = decoder.decode(buffer.slice(0, bytesRead || 0));
+// Real 5-hour block indicator backed by rate_limits.five_hour.
+// Bar shows used_percentage; the suffix shows time until resets_at.
+function formatFiveHourBlock(rl: RateLimitWindow | undefined): string | null {
+  if (!rl) return null;
+  const pct = rl.used_percentage;
+  const resetsAt = rl.resets_at;
+  if (pct == null && resetsAt == null) return null;
+
+  const segments: string[] = [];
+  if (pct != null) {
+    const p = Math.round(pct);
+    const width = 10;
+    const filled = Math.min(width, Math.max(0, Math.floor((p / 100) * width)));
+    const bar = "█".repeat(filled) + "░".repeat(width - filled);
+
+    let color = colors.gray;
+    if (p >= 90) color = colors.red;
+    else if (p >= 75) color = colors.orange;
+    else if (p >= 50) color = colors.yellow;
+
+    segments.push(paint(color, `5h[${bar}] ${p}%`));
+  }
+  if (resetsAt != null) {
+    const remaining = resetsAt - Math.floor(Date.now() / 1000);
+    if (remaining > 0) {
+      segments.push(paint(colors.gray, `⟳${formatDuration(remaining)}`));
+    }
+  }
+  return segments.join(" ");
+}
+
+function formatPr(pr: StatusLineInput["pr"]): string | null {
+  if (!pr?.number) return null;
+  let color = colors.gray;
+  switch (pr.review_state) {
+    case "approved":
+      color = colors.green;
+      break;
+    case "changes_requested":
+      color = colors.red;
+      break;
+    case "pending":
+      color = colors.yellow;
+      break;
+    case "draft":
+      color = colors.gray;
+      break;
+  }
+  return paint(color, `#${pr.number}`);
+}
+
+async function main() {
+  const buf = new Uint8Array(64 * 1024);
+  const n = await Deno.stdin.read(buf);
+  const raw = new TextDecoder().decode(buf.slice(0, n || 0));
 
   let input: StatusLineInput = {};
   try {
-    input = JSON.parse(jsonStr);
+    input = JSON.parse(raw);
   } catch {
     console.error("Failed to parse input JSON");
     Deno.exit(1);
@@ -240,94 +255,52 @@ async function main() {
 
   const parts: string[] = [];
 
-  // Extract fields from JSON
-  const modelDisplay = input.model?.display_name || "";
-  const currentDir = input.workspace?.current_dir || "";
-  const sessionId = input.session_id || "";
-  const transcriptPath = input.transcript_path || "";
-  const totalCost = input.cost?.total_cost_usd || 0;
-  const contextUsedPct = input.context_window?.used_percentage ?? 0;
-  const inputTokensCurrent =
-    input.context_window?.current_usage?.input_tokens ?? 0;
-  const outputTokensCurrent =
-    input.context_window?.current_usage?.output_tokens ?? 0;
-  const cacheReadTokens =
-    input.context_window?.current_usage?.cache_read_tokens ?? 0;
-  const exceedsLimit = input.exceeds_200k_tokens ?? false;
+  const pathText = formatPath(input);
+  if (pathText) parts.push(paint(colors.blue, pathText));
 
-  // Directory
-  const dirText = formatDirectory(currentDir, 3);
-  if (dirText) {
-    parts.push(`${colors.blue}${dirText}${colors.reset}`);
+  const gitText = await getGitStatus(resolveCwd(input));
+  if (gitText) parts.push(paint(colors.gray, gitText));
+
+  const modelText = formatModel(input.model?.display_name || "");
+  if (modelText) parts.push(paint(colors.magenta, modelText));
+
+  const effort = input.effort?.level;
+  if (effort) parts.push(paint(colors.cyan, effort));
+
+  if (input.agent?.name) parts.push(paint(colors.yellow, `@${input.agent.name}`));
+
+  const ctxText = formatContextPct(
+    input.context_window?.used_percentage ?? 0,
+    input.exceeds_200k_tokens ?? false,
+  );
+  if (ctxText) parts.push(ctxText);
+
+  const cu = input.context_window?.current_usage;
+  if (cu) {
+    const inTok = cu.input_tokens ?? 0;
+    const outTok = cu.output_tokens ?? 0;
+    const cacheTok = cu.cache_read_input_tokens ?? 0;
+    if (inTok > 0 || outTok > 0 || cacheTok > 0) {
+      parts.push(
+        paint(
+          colors.gray,
+          `in:${formatTokenCount(inTok)} out:${formatTokenCount(outTok)} cache:${formatTokenCount(cacheTok)}`,
+        ),
+      );
+    }
   }
 
-  // Git (temporarily disabled)
-  // const gitText = await getGitStatus(currentDir);
-  // if (gitText) {
-  //   const branchMatch = gitText.match(/^on\s(.*?)(?:\s(\[.*\]))?$/);
-  //   if (branchMatch) {
-  //     const branch = branchMatch[1];
-  //     const status = branchMatch[2];
-  //     if (status) {
-  //       parts.push(
-  //         `${colors.gray}${branch}${colors.reset} ${colors.gray}${status}${colors.reset}`,
-  //       );
-  //     } else {
-  //       parts.push(`${colors.gray}${branch}${colors.reset}`);
-  //     }
-  //   }
-  // }
+  const costText = formatCost(input.cost?.total_cost_usd ?? 0);
+  if (costText) parts.push(paint(colors.gray, costText));
 
-  // Model
-  const modelText = formatModel(modelDisplay);
-  if (modelText) {
-    parts.push(`${colors.gray}${modelText}${colors.reset}`);
-  }
+  const blockText = formatFiveHourBlock(input.rate_limits?.five_hour);
+  if (blockText) parts.push(blockText);
 
-  // Output style (disabled by default, uncomment to enable)
-  // const styleText = formatOutputStyle(outputStyle);
-  // if (styleText) {
-  //   parts.push(`${colors.yellow}🎨 ${styleText}${colors.reset}`);
-  // }
+  if (input.session_name) parts.push(paint(colors.gray, `[${input.session_name}]`));
 
-  // Context window usage with warning
-  const contextDisplay = formatContextWindow(contextUsedPct, exceedsLimit);
-  if (contextDisplay) {
-    parts.push(contextDisplay);
-  }
+  const prText = formatPr(input.pr);
+  if (prText) parts.push(prText);
 
-  // Tokens (input, output, cache)
-  if (inputTokensCurrent > 0 || outputTokensCurrent > 0 || cacheReadTokens > 0) {
-    parts.push(`${colors.gray}in:${formatTokenCount(inputTokensCurrent)}${colors.reset}`);
-    parts.push(`${colors.gray}out:${formatTokenCount(outputTokensCurrent)}${colors.reset}`);
-    parts.push(`${colors.gray}cache:${formatTokenCount(cacheReadTokens)}${colors.reset}`);
-  }
-
-  // Cost
-  const costText = formatCost(totalCost);
-  if (costText) {
-    parts.push(`${colors.gray}${costText}${colors.reset}`);
-  }
-
-  // Block timer (5-hour intervals)
-  const blockTimerText = getBlockTimerDisplay(transcriptPath ? "2025-01-17" : "");
-  if (blockTimerText) {
-    parts.push(`${colors.gray}${blockTimerText}${colors.reset}`);
-  }
-
-  // Session ID (short display)
-  const sessionIdText = formatSessionId(sessionId);
-  if (sessionIdText) {
-    parts.push(`${colors.gray}${sessionIdText}${colors.reset}`);
-  }
-
-  // Timer
-  const timerText = formatTimer(startTimeMs);
-  if (timerText) {
-    parts.push(`${colors.gray}time:${timerText}${colors.reset}`);
-  }
-
-  // Output statusline
   console.log(parts.join(" "));
 }
 
