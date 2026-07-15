@@ -89,6 +89,7 @@ in
     kustomize
     kubectx # includes kubens
     kubecolor # colorized kubectl output
+    skaffold
 
     # Protobuf
     buf
