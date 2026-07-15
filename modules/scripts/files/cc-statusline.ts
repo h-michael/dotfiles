@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-run --allow-read --allow-env
 // Claude Code statusline for Deno.
 // Reads the JSON payload documented at
-// https://code.claude.com/docs/en/statusline.md and prints one line.
+// https://code.claude.com/docs/en/statusline.md and prints one or two lines.
 
 interface CurrentUsage {
   input_tokens?: number;
@@ -77,41 +77,63 @@ function paint(color: string, text: string): string {
   return `${color}${text}${colors.reset}`;
 }
 
-// Resolve the current directory the way the docs recommend:
-// prefer workspace.current_dir, fall back to cwd.
+// OSC 8 hyperlink escape — Cmd+click opens `url` in Ghostty/iTerm2/WezTerm/Kitty.
+function osc8(text: string, url: string): string {
+  return `\x1b]8;;${url}\x1b\\${text}\x1b]8;;\x1b\\`;
+}
+
+function stripAnsi(s: string): string {
+  return s
+    .replace(/\x1b\]8;;[^\x1b]*\x1b\\/g, "")
+    .replace(/\x1b\[[0-9;]*m/g, "");
+}
+
+function visibleLength(s: string): number {
+  return [...stripAnsi(s)].length;
+}
+
 function resolveCwd(input: StatusLineInput): string {
   return input.workspace?.current_dir || input.cwd || "";
 }
 
-// Render the location as owner/repo[/subpath][ (worktree)] when the JSON
-// exposes workspace.repo, otherwise ~/... or ⋯/last-three-segments.
-function formatPath(input: StatusLineInput): string | null {
+// Multiple path renderings from full to compact, tried in order until one fits.
+function pathVariants(input: StatusLineInput): string[] {
   const cwd = resolveCwd(input);
-  if (!cwd) return null;
+  if (!cwd) return [];
 
   const repo = input.workspace?.repo;
   const worktree = input.workspace?.git_worktree;
+  const worktreeSuffix = worktree ? ` (${worktree})` : "";
 
   if (repo?.name) {
-    let display = repo.owner ? `${repo.owner}/${repo.name}` : repo.name;
     const anchor = `/${repo.name}`;
     const idx = cwd.lastIndexOf(anchor);
-    if (idx >= 0) {
-      const tail = cwd.slice(idx + anchor.length);
-      if (tail && tail !== "/") display += tail;
-    }
-    if (worktree) display += ` (${worktree})`;
-    return display;
+    const subpath =
+      idx >= 0 ? cwd.slice(idx + anchor.length).replace(/\/$/, "") : "";
+    const subpathTail = subpath.split("/").filter(Boolean).pop();
+
+    const full =
+      `${repo.owner ? repo.owner + "/" : ""}${repo.name}${subpath}${worktreeSuffix}`;
+    const mid = `${repo.name}${subpath}${worktreeSuffix}`;
+    const compact =
+      `${repo.name}${subpathTail ? "/…/" + subpathTail : ""}${worktreeSuffix}`;
+    return [full, mid, compact];
   }
 
   const home = Deno.env.get("HOME") || "";
   if (home && cwd.startsWith(home + "/")) {
-    return "~" + cwd.slice(home.length);
+    const rel = cwd.slice(home.length);
+    const tail = rel.split("/").filter(Boolean).pop() || "";
+    return ["~" + rel, "~/…/" + tail];
   }
 
   const parts = cwd.split("/").filter((p) => p);
-  if (parts.length <= 3) return cwd;
-  return "⋯/" + parts.slice(-3).join("/");
+  if (parts.length <= 3) return [cwd];
+  return [
+    "⋯/" + parts.slice(-3).join("/"),
+    "⋯/" + parts.slice(-2).join("/"),
+    "⋯/" + parts.slice(-1).join("/"),
+  ];
 }
 
 function formatModel(displayName: string): string | null {
@@ -165,13 +187,29 @@ function formatCost(v: number): string | null {
   return `$${v.toFixed(3)}`;
 }
 
+function formatLinesChanged(added: number, removed: number): string | null {
+  if (added <= 0 && removed <= 0) return null;
+  return `${paint(colors.green, `+${added}`)}/${paint(colors.red, `-${removed}`)}`;
+}
+
 function formatTokenCount(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
   if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
   return n.toString();
 }
 
-function formatContextPct(pct: number, exceeds: boolean): string | null {
+// Suffix like "/1M" only when the model isn't on the default 200k window.
+function formatContextSize(size?: number): string {
+  if (!size || size <= 200_000) return "";
+  if (size >= 1_000_000) return "/1M";
+  return `/${Math.round(size / 1000)}k`;
+}
+
+function formatContextPct(
+  pct: number,
+  exceeds: boolean,
+  size?: number,
+): string | null {
   if (pct <= 0 && !exceeds) return null;
   const p = Math.round(pct);
   let color = colors.gray;
@@ -179,7 +217,7 @@ function formatContextPct(pct: number, exceeds: boolean): string | null {
   else if (p >= 90) color = colors.red;
   else if (p >= 80) color = colors.orange;
   else if (p >= 60) color = colors.yellow;
-  return paint(color, `ctx:${p}%`);
+  return paint(color, `ctx:${p}%${formatContextSize(size)}`);
 }
 
 function formatDuration(seconds: number): string {
@@ -189,8 +227,6 @@ function formatDuration(seconds: number): string {
   return h > 0 ? `${h}h${m}m` : `${m}m`;
 }
 
-// Real 5-hour block indicator backed by rate_limits.five_hour.
-// Bar shows used_percentage; the suffix shows time until resets_at.
 function formatFiveHourBlock(rl: RateLimitWindow | undefined): string | null {
   if (!rl) return null;
   const pct = rl.used_percentage;
@@ -220,6 +256,26 @@ function formatFiveHourBlock(rl: RateLimitWindow | undefined): string | null {
   return segments.join(" ");
 }
 
+// Only render 7-day usage once it crosses 75% — otherwise it's noise.
+function formatSevenDay(rl: RateLimitWindow | undefined): string | null {
+  if (!rl || rl.used_percentage == null) return null;
+  const p = Math.round(rl.used_percentage);
+  if (p < 75) return null;
+
+  let color = colors.yellow;
+  if (p >= 90) color = colors.red;
+  else if (p >= 80) color = colors.orange;
+
+  const segments = [paint(color, `7d:${p}%`)];
+  if (rl.resets_at) {
+    const remaining = rl.resets_at - Math.floor(Date.now() / 1000);
+    if (remaining > 0) {
+      segments.push(paint(colors.gray, `⟳${formatDuration(remaining)}`));
+    }
+  }
+  return segments.join(" ");
+}
+
 function formatPr(pr: StatusLineInput["pr"]): string | null {
   if (!pr?.number) return null;
   let color = colors.gray;
@@ -237,7 +293,8 @@ function formatPr(pr: StatusLineInput["pr"]): string | null {
       color = colors.gray;
       break;
   }
-  return paint(color, `#${pr.number}`);
+  const painted = paint(color, `#${pr.number}`);
+  return pr.url ? osc8(painted, pr.url) : painted;
 }
 
 async function main() {
@@ -253,55 +310,81 @@ async function main() {
     Deno.exit(1);
   }
 
-  const parts: string[] = [];
+  const cols = parseInt(Deno.env.get("COLUMNS") || "0", 10) || 200;
 
-  const pathText = formatPath(input);
-  if (pathText) parts.push(paint(colors.blue, pathText));
-
+  const paths = pathVariants(input);
   const gitText = await getGitStatus(resolveCwd(input));
-  if (gitText) parts.push(paint(colors.gray, gitText));
 
   const modelText = formatModel(input.model?.display_name || "");
-  if (modelText) parts.push(paint(colors.magenta, modelText));
-
   const effort = input.effort?.level;
-  if (effort) parts.push(paint(colors.cyan, effort));
-
-  if (input.agent?.name) parts.push(paint(colors.yellow, `@${input.agent.name}`));
+  const agentName = input.agent?.name;
 
   const ctxText = formatContextPct(
     input.context_window?.used_percentage ?? 0,
     input.exceeds_200k_tokens ?? false,
+    input.context_window?.context_window_size,
   );
-  if (ctxText) parts.push(ctxText);
 
   const cu = input.context_window?.current_usage;
+  let tokensText: string | null = null;
   if (cu) {
     const inTok = cu.input_tokens ?? 0;
     const outTok = cu.output_tokens ?? 0;
     const cacheTok = cu.cache_read_input_tokens ?? 0;
     if (inTok > 0 || outTok > 0 || cacheTok > 0) {
-      parts.push(
-        paint(
-          colors.gray,
-          `in:${formatTokenCount(inTok)} out:${formatTokenCount(outTok)} cache:${formatTokenCount(cacheTok)}`,
-        ),
+      tokensText = paint(
+        colors.gray,
+        `in:${formatTokenCount(inTok)} out:${formatTokenCount(outTok)} cache:${formatTokenCount(cacheTok)}`,
       );
     }
   }
 
   const costText = formatCost(input.cost?.total_cost_usd ?? 0);
-  if (costText) parts.push(paint(colors.gray, costText));
+  const linesText = formatLinesChanged(
+    input.cost?.total_lines_added ?? 0,
+    input.cost?.total_lines_removed ?? 0,
+  );
 
-  const blockText = formatFiveHourBlock(input.rate_limits?.five_hour);
-  if (blockText) parts.push(blockText);
-
-  if (input.session_name) parts.push(paint(colors.gray, `[${input.session_name}]`));
-
+  const block5h = formatFiveHourBlock(input.rate_limits?.five_hour);
+  const block7d = formatSevenDay(input.rate_limits?.seven_day);
   const prText = formatPr(input.pr);
-  if (prText) parts.push(prText);
+  const sessionName = input.session_name
+    ? paint(colors.gray, `[${input.session_name}]`)
+    : null;
+  const sessionIdText = input.session_id
+    ? paint(colors.gray, `#${input.session_id.slice(0, 8)}`)
+    : null;
 
-  console.log(parts.join(" "));
+  // Line 1: repo/session state — where you are and what changed.
+  const buildLine1 = (pathText: string) => {
+    const items: string[] = [paint(colors.blue, pathText)];
+    if (gitText) items.push(paint(colors.gray, gitText));
+    if (linesText) items.push(linesText);
+    if (prText) items.push(prText);
+    if (sessionName) items.push(sessionName);
+    if (sessionIdText) items.push(sessionIdText);
+    return items.join(" ");
+  };
+
+  // Try each path variant in order and stop once line 1 fits COLUMNS.
+  let line1 = buildLine1(paths[0] || "");
+  for (let i = 1; i < paths.length && visibleLength(line1) > cols; i++) {
+    line1 = buildLine1(paths[i]);
+  }
+
+  // Line 2: execution context and usage — what's running and how much it costs.
+  const line2Items: string[] = [];
+  if (modelText) line2Items.push(paint(colors.magenta, modelText));
+  if (effort) line2Items.push(paint(colors.cyan, effort));
+  if (agentName) line2Items.push(paint(colors.yellow, `@${agentName}`));
+  if (ctxText) line2Items.push(ctxText);
+  if (tokensText) line2Items.push(tokensText);
+  if (costText) line2Items.push(paint(colors.gray, costText));
+  if (block5h) line2Items.push(block5h);
+  if (block7d) line2Items.push(block7d);
+
+  console.log(line1);
+  if (line2Items.length) console.log(line2Items.join(" "));
 }
 
 main().catch((err) => {

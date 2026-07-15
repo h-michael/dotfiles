@@ -18,6 +18,12 @@ let
     executable = true;
     destination = "/bin/cc-statusline";
   };
+  ccSubagentStatuslineScript = pkgs.writeTextFile {
+    name = "cc-subagent-statusline";
+    text = builtins.readFile ./files/cc-subagent-statusline.ts;
+    executable = true;
+    destination = "/bin/cc-subagent-statusline";
+  };
   ccHookStopScript = pkgs.writeTextFile {
     name = "cc-hook-stop";
     text = builtins.readFile ./files/cc-hook-stop.ts;
@@ -47,6 +53,7 @@ in
   home.packages = [
     yankScript
     ccStatuslineScript
+    ccSubagentStatuslineScript
     ccHookStopScript
     ccHookNotificationScript
     geminiHookNotificationScript
