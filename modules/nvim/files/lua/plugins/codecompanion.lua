@@ -6,6 +6,7 @@ return {
 			"nvim-treesitter/nvim-treesitter",
 			"nvim-telescope/telescope.nvim",
 		},
+		enabled = false,
 		cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "CodeCompanionCmd" },
 		keys = {
       -- stylua: ignore start
