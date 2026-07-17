@@ -42,10 +42,6 @@ return {
 						module = "blink-copilot",
 						async = true,
 					},
-					codecompanion = {
-						name = "CodeCompanion",
-						module = "codecompanion.providers.completion.blink",
-					},
 				},
 			},
 			cmdline = {
