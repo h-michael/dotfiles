@@ -4,7 +4,6 @@ return {
 		version = "1.*",
 		dependencies = {
 			"fang2hou/blink-copilot",
-			"olimorris/codecompanion.nvim",
 		},
 		opts = {
 			keymap = {
@@ -35,16 +34,12 @@ return {
 			},
 			signature = { enabled = false }, -- lsp_signature.nvim handles this
 			sources = {
-				default = { "copilot", "lsp", "path", "buffer", "codecompanion" },
+				default = { "copilot", "lsp", "path", "buffer" },
 				providers = {
 					copilot = {
 						name = "copilot",
 						module = "blink-copilot",
 						async = true,
-					},
-					codecompanion = {
-						name = "CodeCompanion",
-						module = "codecompanion.providers.completion.blink",
 					},
 				},
 			},
