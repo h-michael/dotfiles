@@ -4,6 +4,8 @@ venv
 .envrc
 .direnv
 .mise/config.toml
+.mise.local.toml
+mise.local.toml
 .solargraph.yml
 tags
 GPATH
