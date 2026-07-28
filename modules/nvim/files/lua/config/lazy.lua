@@ -4,7 +4,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	-- Temporary: use personal fork to dogfood the minimum_release_age feature.
 	local lazyrepo = "https://github.com/h-michael/lazy.nvim.git"
 	local out =
-		vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=feat/minimum-release-age", lazyrepo, lazypath })
+		vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=dogfooding/minimum-release-age", lazyrepo, lazypath })
 	if vim.v.shell_error ~= 0 then
 		vim.api.nvim_echo({
 			{ "Failed to clone lazy.nvim:\n", "ErrorMsg" },
