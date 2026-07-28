@@ -25,7 +25,6 @@
       "enpass" # password manager
       "alfred" # launcher
       "obsidian" # Knowledge base and note-taking
-      "cmux" # tmux session manager
       "cursor" # AI-powered code editor
       "visual-studio-code"
 
