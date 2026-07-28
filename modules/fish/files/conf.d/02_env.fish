@@ -70,14 +70,20 @@ if [ -n $SSH_CONNECTION ]
     set -x EDITOR nvim
 end
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
-    source "$HOME/google-cloud-sdk/path.fish.inc"
-end
+# The next lines initialize the Google Cloud SDK.
+# This is only needed for interactive sessions to provide completions and helpers.
+# Non-interactive shells (like those used by tools) should rely on a well-defined
+# PATH and not pay the startup cost of sourcing these.
+if status is-interactive
+    # The next line updates PATH for the Google Cloud SDK.
+    if [ -f "$HOME/google-cloud-sdk/path.fish.inc" ]
+        source "$HOME/google-cloud-sdk/path.fish.inc"
+    end
 
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
-    source "$HOME/google-cloud-sdk/completion.fish.inc"
+    # The next line enables shell command completion for gcloud.
+    if [ -f "$HOME/google-cloud-sdk/completion.fish.inc" ]
+        source "$HOME/google-cloud-sdk/completion.fish.inc"
+    end
 end
 
 # https://cloud.google.com/iap/docs/using-tcp-forwarding#increasing_the_tcp_upload_bandwidth
