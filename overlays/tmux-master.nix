@@ -11,5 +11,11 @@ in
   tmux = prev.tmux.overrideAttrs (oldAttrs: {
     version = "git-master";
     src = tmuxMasterSrc;
+    # nixpkgs' tmux-control-notify-uninitialized.patch backports a fix that
+    # is already present on this master revision, so applying it fails.
+    patches = [ ];
+    # versionCheckHook expects `tmux -V` to report the `version` attribute
+    # above, but the binary reports its own git-describe string instead.
+    doInstallCheck = false;
   });
 }

@@ -73,7 +73,7 @@ in
     ast-grep
     stylua
     dprint
-    nixfmt-rfc-style
+    nixfmt
     nvd # Nix package version diff
     python3
     ruby
