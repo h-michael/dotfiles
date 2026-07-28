@@ -3,8 +3,8 @@ let
   tmuxMasterSrc = prev.fetchFromGitHub {
     owner = "tmux";
     repo = "tmux";
-    rev = "fcce73af4224fd7e172936f402f8d398ae4fa1d9";
-    hash = "sha256-kPAzVVNBx3GTE6U2NL91tWkjbqQyiR1TEvpgXIfQXUY=";
+    rev = "9c402fa7b70c5328ea183fa2f18a7eaf44c0857d";
+    hash = "sha256-HPZKyISkvi8oR+AjeRyD0RdR4fvqqEiRg42o7GuZ39Y=";
   };
 in
 {
@@ -17,5 +17,9 @@ in
     # versionCheckHook expects `tmux -V` to report the `version` attribute
     # above, but the binary reports its own git-describe string instead.
     doInstallCheck = false;
+    # This master revision requires an explicit jemalloc choice on macOS,
+    # to work around a calloc(3) zeroing bug in the system allocator.
+    configureFlags = oldAttrs.configureFlags ++ [ "--enable-jemalloc" ];
+    buildInputs = oldAttrs.buildInputs ++ [ final.jemalloc ];
   });
 }
