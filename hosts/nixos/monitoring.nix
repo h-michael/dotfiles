@@ -120,6 +120,7 @@
         http_addr = "0.0.0.0"; # Listen on all interfaces for Tailscale
         http_port = 3081;
       };
+      security.secret_key = "$__file{/var/lib/grafana/secret_key}";
       analytics.reporting_enabled = false;
     };
     provision = {

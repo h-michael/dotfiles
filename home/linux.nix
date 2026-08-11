@@ -127,7 +127,7 @@ in
     cliphist # Clipboard history manager
     wev # Event viewer (debug)
     wlr-randr # Display configuration (like xrandr)
-    swww # Wallpaper daemon (animated support)
+    awww # Wallpaper daemon (animated support)
     imv # Image viewer for Wayland
     wdisplays # GUI display configuration
     libnotify # notify-send for notifications

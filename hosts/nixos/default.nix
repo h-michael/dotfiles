@@ -153,9 +153,7 @@
     };
   };
 
-  systemd.sleep.extraConfig = ''
-    HibernateDelaySec=30min
-  '';
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "30min";
 
   # Disable TP-Link Bluetooth USB Adapter (use internal MT7925 instead)
   # USB ID: 2357:0604
@@ -385,7 +383,7 @@
 
   # Disable man cache generation (slow rebuild caused by fish enabling this)
   # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365
-  documentation.man.generateCaches = false;
+  documentation.man.cache.enable = false;
 
   # User configuration
   users.users.${username} = {
