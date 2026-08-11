@@ -280,6 +280,7 @@
     enable = true;
     wayland.enable = true;
   };
+  services.displayManager.defaultSession = "hyprland";
 
   # PipeWire
   services.pipewire = {
