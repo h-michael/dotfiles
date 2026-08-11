@@ -45,3 +45,15 @@ keymap:
         launch:
           - fcitx5-remote
           - -c
+  - name: IME activate
+    remap:
+      Super_L-Super_R:
+        launch:
+          - fcitx5-remote
+          - -o
+  - name: IME deactivate
+    remap:
+      Super_R:
+        launch:
+          - fcitx5-remote
+          - -c
