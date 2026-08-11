@@ -94,7 +94,7 @@ build:
 	nixos-rebuild build --flake .#nixos
 
 test:
-	nixos-rebuild dry-activate --flake .#nixos
+	sudo nixos-rebuild dry-activate --flake .#nixos
 
 diff: build
 	@nvd diff /run/current-system ./result
