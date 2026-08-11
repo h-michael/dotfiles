@@ -414,6 +414,13 @@
   security.sudo.wheelNeedsPassword = false;
 
   environment.systemPackages = with pkgs; [
+    # Disk utilities
+    nvme-cli
+    smartmontools
+    pciutils
+    sysstat
+    ddrescue
+
     # Core (used with sudo)
     curl
     wget
