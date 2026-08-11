@@ -12,9 +12,6 @@
   services.ollama = {
     enable = true;
     package = unstablePkgs.ollama-rocm; # ROCm-enabled build from nixpkgs-unstable
-    # Strix Halo (gfx1151 = RDNA 3.5) → gfx1100 (RDNA 3) emulation
-    # ROCm doesn't officially support gfx1151 yet, so we use gfx1100 kernels
-    rocmOverrideGfx = "11.0.0";
     environmentVariables = {
       # Flash Attention: Improves memory efficiency and speeds up long context
       OLLAMA_FLASH_ATTENTION = "1";
