@@ -160,6 +160,10 @@
   services.udev.extraRules = ''
     # Disable TP-Link Bluetooth USB Adapter
     ACTION=="add", SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTR{idVendor}=="2357", ATTR{idProduct}=="0604", ATTR{authorized}="0", ATTR{remove}="1"
+
+    # WebHID needs read-write access; explicit ownership avoids relying on uaccess ACLs.
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3434", MODE="0660", GROUP="${username}"
+    SUBSYSTEM=="usb", ATTR{idVendor}=="3434", MODE="0660", GROUP="${username}"
   '';
 
   # ddcutil udev rules for I2C device access
