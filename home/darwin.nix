@@ -88,6 +88,7 @@ in
     # Documentation & Text
     pandoc
     glow
+    poppler-utils # PDF utilities (pdftoppm, pdftotext, etc.)
 
     # System utilities
     terminal-notifier
