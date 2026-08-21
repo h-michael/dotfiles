@@ -31,19 +31,21 @@ add_path_if_exists \
     $HOME/.krew/bin \
     /usr/local/opt/gettext/bin
 
-fish_add_path -m $HOME/.local/bin
+# -g keeps fish_user_paths out of universal scope (the untracked
+# fish_variables file); paths are rebuilt from this config every startup
+fish_add_path -gm $HOME/.local/bin
 
 # Why I use "shims" instead of "mise activate"
 # https://mise.jdx.dev/dev-tools/shims.html#shims-vs-path
 # https://mise.jdx.dev/dev-tools/shims.html#hook-on-cd
 # "eval ($HOME/.local/bin/mise activate fish --shims)" add shims to PATH without using fish_add_path
 # So add shims to PATH manually
-fish_add_path -m $XDG_DATA_HOME/mise/shims
+fish_add_path -gm $XDG_DATA_HOME/mise/shims
 
 # https://aquaproj.github.io/docs/install#linux-macos
-fish_add_path -m $XDG_DATA_HOME/aquaproj-aqua/bin
+fish_add_path -gm $XDG_DATA_HOME/aquaproj-aqua/bin
 set -gx AQUA_GLOBAL_CONFIG $XDG_CONFIG_HOME/aquaproj-aqua/aqua.yaml
 
 # https://aquaproj.github.io/docs/reference/nodejs-support/#set-up
 set -gx NPM_CONFIG_PREFIX $XDG_DATA_HOME/npm-global
-fish_add_path -m $NPM_CONFIG_PREFIX/bin
+fish_add_path -gm $NPM_CONFIG_PREFIX/bin
