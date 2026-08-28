@@ -60,6 +60,12 @@ in
     home-manager
     gh
     unstablePkgs.jujutsu
+    # @github/copilot-language-server's published bin path
+    # ("../dist/language-server.js") points outside its own package dir.
+    # npm silently sanitizes leading ".." in bin paths; mise's npm backend
+    # (aube) does not, so `mise install`/shims fail to resolve the binary.
+    # Install via nixpkgs instead, which builds/links it correctly.
+    unstablePkgs.copilot-language-server
     gnumake
     pkg-config
     openssl # CLI

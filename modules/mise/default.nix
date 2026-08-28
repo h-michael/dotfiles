@@ -35,7 +35,8 @@ in
 
         # LLM Tools (npm packages, keep in mise)
         "npm:@google/gemini-cli" = "latest";
-        "npm:@github/copilot-language-server" = "latest";
+        # copilot-language-server moved to nixpkgs (see home/common.nix) —
+        # mise's npm backend can't install it, see comment there.
         "npm:@zed-industries/claude-code-acp" = "latest";
         "npm:@openai/codex" = "latest";
         "npm:@github/copilot" = "latest";
