@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Usage: git sync
+#
+# Fast-forwards all local branches to their upstream, and deletes local
+# branches whose upstream was deleted on the remote (if already merged into
+# the current branch). A drop-in replacement for `hub sync`.
+#
+# Squash/rebase-merged branches are not detected as merged (that requires
+# querying the GitHub API, which this script intentionally avoids), so such
+# branches are left in place with a warning instead of being deleted.
+
+set -e
+
+if [ -t 1 ]; then
+  green=$(printf '\033[32m')
+  light_green=$(printf '\033[32;1m')
+  red=$(printf '\033[31m')
+  light_red=$(printf '\033[31;1m')
+  reset=$(printf '\033[0m')
+else
+  green=""
+  light_green=""
+  red=""
+  light_red=""
+  reset=""
+fi
+
+current_branch=$(git symbolic-ref --short HEAD)
+
+git fetch --all --prune
+
+git for-each-ref --format='%(refname:short)' refs/heads/ | while IFS= read -r branch; do
+  upstream=$(git for-each-ref --format='%(upstream:short)' "refs/heads/$branch")
+  [ -z "$upstream" ] && continue
+
+  if ! git show-ref --verify --quiet "refs/remotes/$upstream"; then
+    if git merge-base --is-ancestor "$branch" "$current_branch"; then
+      local_short=$(git rev-parse --short "$branch")
+      git branch -d "$branch"
+      printf '%sDeleted branch %s%s%s (was %s).\n' "$red" "$light_red" "$branch" "$reset" "$local_short"
+    else
+      echo "warning: '$branch' was deleted on remote, but appears not merged into '$current_branch'"
+    fi
+    continue
+  fi
+
+  local_hash=$(git rev-parse "$branch")
+  upstream_hash=$(git rev-parse "$upstream")
+  [ "$local_hash" = "$upstream_hash" ] && continue
+
+  if git merge-base --is-ancestor "$branch" "$upstream"; then
+    local_short=$(git rev-parse --short "$branch")
+    git update-ref "refs/heads/$branch" "$upstream"
+    printf '%sUpdated branch %s%s%s (was %s).\n' "$green" "$light_green" "$branch" "$reset" "$local_short"
+  else
+    echo "warning: '$branch' contains unpushed or diverged work, skipping"
+  fi
+done
+
+git switch --quiet "$current_branch"

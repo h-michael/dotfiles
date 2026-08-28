@@ -59,7 +59,6 @@ in
     # Development tools
     home-manager
     gh
-    hub
     unstablePkgs.jujutsu
     gnumake
     pkg-config

@@ -12,6 +12,12 @@ let
     executable = true;
     destination = "/bin/yank";
   };
+  gitSyncScript = pkgs.writeTextFile {
+    name = "git-sync";
+    text = builtins.readFile ./files/git-sync;
+    executable = true;
+    destination = "/bin/git-sync";
+  };
   ccStatuslineScript = pkgs.writeTextFile {
     name = "cc-statusline";
     text = builtins.readFile ./files/cc-statusline.ts;
@@ -52,6 +58,7 @@ in
 {
   home.packages = [
     yankScript
+    gitSyncScript
     ccStatuslineScript
     ccSubagentStatuslineScript
     ccHookStopScript
