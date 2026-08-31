@@ -9,6 +9,12 @@
 # Squash/rebase-merged branches are not detected as merged (that requires
 # querying the GitHub API, which this script intentionally avoids), so such
 # branches are left in place with a warning instead of being deleted.
+#
+# Branches checked out in another worktree are fast-forwarded there via
+# `git -C <worktree> merge --ff-only`, so that worktree's index and working
+# tree stay in sync (a bare `git update-ref` would silently desync them).
+# `hub sync` has this same gap: it only protects the branch checked out in
+# the worktree it's invoked from, with no cross-worktree awareness.
 
 set -e
 
@@ -17,16 +23,27 @@ if [ -t 1 ]; then
   light_green=$(printf '\033[32;1m')
   red=$(printf '\033[31m')
   light_red=$(printf '\033[31;1m')
+  yellow=$(printf '\033[33m')
   reset=$(printf '\033[0m')
 else
   green=""
   light_green=""
   red=""
   light_red=""
+  yellow=""
   reset=""
 fi
 
 current_branch=$(git symbolic-ref --short HEAD)
+worktree_list=$(git worktree list --porcelain)
+
+# Path of the worktree that has $1 checked out, if any.
+worktree_for_branch() {
+  printf '%s\n' "$worktree_list" | awk -v b="refs/heads/$1" '
+    /^worktree / { path = substr($0, 10) }
+    /^branch /   { if ($2 == b) { print path; exit } }
+  '
+}
 
 git fetch --all --prune
 
@@ -49,13 +66,32 @@ git for-each-ref --format='%(refname:short)' refs/heads/ | while IFS= read -r br
   upstream_hash=$(git rev-parse "$upstream")
   [ "$local_hash" = "$upstream_hash" ] && continue
 
-  if git merge-base --is-ancestor "$branch" "$upstream"; then
-    local_short=$(git rev-parse --short "$branch")
-    git update-ref "refs/heads/$branch" "$upstream"
-    printf '%sUpdated branch %s%s%s (was %s).\n' "$green" "$light_green" "$branch" "$reset" "$local_short"
-  else
+  if ! git merge-base --is-ancestor "$branch" "$upstream"; then
     echo "warning: '$branch' contains unpushed or diverged work, skipping"
+    continue
   fi
-done
 
-git switch --quiet "$current_branch"
+  local_short=$(git rev-parse --short "$branch")
+
+  if [ "$branch" = "$current_branch" ]; then
+    if git merge --ff-only --quiet "$upstream"; then
+      printf '%sUpdated branch %s%s%s (was %s).\n' "$green" "$light_green" "$branch" "$reset" "$local_short"
+    else
+      echo "warning: '$branch' (current) could not be fast-forwarded, skipping"
+    fi
+    continue
+  fi
+
+  other_worktree=$(worktree_for_branch "$branch")
+  if [ -n "$other_worktree" ]; then
+    if git -C "$other_worktree" merge --ff-only --quiet "$upstream"; then
+      printf '%sUpdated branch %s%s%s (was %s, checked out at %s).\n' "$green" "$light_green" "$branch" "$reset" "$local_short" "$other_worktree"
+    else
+      printf '%swarning: '\''%s'\'' is checked out at %s with local changes, skipping%s\n' "$yellow" "$branch" "$other_worktree" "$reset"
+    fi
+    continue
+  fi
+
+  git update-ref "refs/heads/$branch" "$upstream"
+  printf '%sUpdated branch %s%s%s (was %s).\n' "$green" "$light_green" "$branch" "$reset" "$local_short"
+done
