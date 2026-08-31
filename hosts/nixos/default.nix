@@ -290,8 +290,12 @@
     alsa.enable = true;
   };
 
-  # Tailscale VPN
-  services.tailscale.enable = true;
+  # Tailscale VPN and SSH server
+  services.tailscale = {
+    enable = true;
+    extraUpFlags = [ "--ssh" ];
+    extraSetFlags = [ "--ssh" ];
+  };
 
   # Docker Rootless mode
   virtualisation.docker = {
