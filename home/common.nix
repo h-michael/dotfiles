@@ -7,7 +7,12 @@
 }:
 
 let
-  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  # copilot-language-server carries an unfree license; scope the exception
+  # to just that package rather than allowing unfree broadly.
+  unstablePkgs = import inputs.nixpkgs-unstable {
+    system = pkgs.stdenv.hostPlatform.system;
+    config.allowUnfreePredicate = pkg: pkg.pname or "" == "copilot-language-server";
+  };
 in
 {
   # Cross-platform modules
