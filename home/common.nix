@@ -91,6 +91,7 @@ in
     deno
     bun
     pandoc
+    zig
 
     # devcontainer wraps docker into its PATH; the default `docker` is the
     # now-insecure docker_28, so pin the maintained docker_29 instead.
