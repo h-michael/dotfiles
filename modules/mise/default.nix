@@ -21,6 +21,7 @@ in
       tools = {
         # Runtime versions (keep for project-specific version management)
         node = "24.11.1";
+        zig = "latest";
 
         # Tools not yet in Nix or need mise management
         "aqua:argoproj/argo-rollouts" = "latest";
