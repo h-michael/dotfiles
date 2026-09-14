@@ -1,4 +1,4 @@
-.gitignore-local
+.den
 lefthook-local.yml
 venv
 .envrc
