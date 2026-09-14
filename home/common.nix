@@ -65,6 +65,8 @@ in
     home-manager
     gh
     unstablePkgs.jujutsu
+    # Not yet in the nixos-26.05 stable channel.
+    unstablePkgs.tgrep
     # @github/copilot-language-server's published bin path
     # ("../dist/language-server.js") points outside its own package dir.
     # npm silently sanitizes leading ".." in bin paths; mise's npm backend
