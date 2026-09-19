@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   username,
   unstablePkgs,
@@ -9,6 +7,7 @@
 
 {
   imports = [
+    ../linux/common.nix
     ./hardware-configuration.nix
     ./monitoring.nix
     ./llm.nix
@@ -93,20 +92,8 @@
     options hid_apple fnmode=2
   '';
 
-  nixpkgs.config.allowUnfree = true;
-
-  # Flakes
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
-
-  # Time zone and locale
-  time.timeZone = "Asia/Tokyo";
-  i18n.defaultLocale = "en_US.UTF-8";
-
   # Networking
-  networking.hostName = "nixos";
+  networking.hostName = "ms-s1-max";
   networking.networkmanager.enable = true;
   networking.firewall = {
     enable = true;
@@ -138,23 +125,6 @@
       };
     };
   };
-  services.blueman.enable = true;
-
-  # Required by udiskie (user systemd unit in modules/systemd) — without this
-  # the UDisks2 D-Bus service is missing and udiskie restarts forever.
-  services.udisks2.enable = true;
-
-  services.logind = {
-    settings.Login = {
-      HandleLidSwitch = "suspend-then-hibernate";
-      HandleLidSwitchExternalPower = "suspend-then-hibernate";
-      HandleLidSwitchDocked = "ignore";
-      PowerKeyLongPress = "poweroff";
-    };
-  };
-
-  systemd.sleep.settings.Sleep.HibernateDelaySec = "30min";
-
   # Disable TP-Link Bluetooth USB Adapter (use internal MT7925 instead)
   # USB ID: 2357:0604
   services.udev.extraRules = ''
@@ -219,99 +189,6 @@
     };
   };
 
-  # Keyboard
-  services.xserver.xkb.layout = "us";
-
-  # xremap needs uinput access
-  hardware.uinput.enable = true;
-
-  # Enable nix-ld for running dynamically linked binaries (npm, cargo, pip, etc.)
-  programs.nix-ld.enable = true;
-
-  # Compositors
-  programs.hyprland.enable = true;
-  programs.niri.enable = true;
-
-  # KDE Plasma 6 session (selectable from SDDM alongside Hyprland/niri)
-  services.desktopManager.plasma6.enable = true;
-
-  # ydotool for gesture key simulation
-  programs.ydotool.enable = true;
-
-  # xremap (declarative via xremap/nix-flake).
-  # Replaces the previous hand-rolled user systemd services for
-  # hyprland/niri/KDE binaries. The YAML config is reused as-is from
-  # modules/xremap/files/config.yml. We don't enable any withXXX feature
-  # because our config has no application: filters, so the base xremap
-  # binary is enough across Hyprland, niri, and Plasma sessions.
-  services.xremap = {
-    enable = true;
-    serviceMode = "user";
-    userName = username;
-    yamlConfig = builtins.readFile ../../modules/xremap/files/config.yml;
-  };
-
-  # xremap's launch actions (esc-reminder, fcitx5-remote) live in the
-  # user profile, which isn't on the user systemd service's default PATH.
-  # Documented workaround: extend the service's path. Drop the trailing
-  # /bin per the xremap-flake README.
-  systemd.user.services.xremap.path = [
-    "/run/current-system/sw"
-    "/etc/profiles/per-user/${username}"
-  ];
-
-  # Steam
-  programs.steam = {
-    enable = true;
-    remotePlay.openFirewall = true; # Steam Remote Play
-    dedicatedServer.openFirewall = true; # Steam dedicated server
-    localNetworkGameTransfers.openFirewall = true; # Fast game transfers on LAN
-    extest.enable = true; # Fix Steam Input on Wayland
-    protontricks.enable = true; # Winetricks for Proton games
-    # Proton for Windows games
-    extraCompatPackages = with pkgs; [
-      proton-ge-bin # GloriousEggroll's custom Proton (better compatibility)
-    ];
-  };
-  programs.gamemode.enable = true; # Performance optimization for games
-
-  # SDDM login manager
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-  };
-  services.displayManager.defaultSession = "hyprland";
-
-  # PipeWire
-  services.pipewire = {
-    enable = true;
-    pulse.enable = true;
-    jack.enable = true;
-    alsa.enable = true;
-  };
-
-  # Tailscale VPN and SSH server
-  services.tailscale = {
-    enable = true;
-    extraUpFlags = [ "--ssh" ];
-    extraSetFlags = [ "--ssh" ];
-  };
-
-  # Docker Rootless mode
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-      daemon.settings = {
-        experimental = true;
-        features = {
-          buildkit = true;
-        };
-      };
-    };
-  };
-
   # Navidrome music streaming server
   # Access: Tailscale only (http://<Tailscale-IP>:4533)
   services.navidrome = {
@@ -328,14 +205,6 @@
       DefaultTheme = "Dark";
     };
   };
-
-  # Security / PAM
-  security.pam.services = {
-    hyprlock = { };
-    swaylock = { };
-  };
-
-  security.rtkit.enable = true;
 
   # TPM2 support for LUKS automatic unlock
   #
@@ -354,22 +223,6 @@
     tctiEnvironment.enable = true;
   };
 
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings = {
-      PasswordAuthentication = false;
-      # Disable challenge-response auth (PAM keyboard-interactive).
-      # Without this, password login may still be possible via PAM
-      # even with PasswordAuthentication = false.
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "no";
-    };
-  };
-
-  # Temp cleanup
-  boot.tmp.cleanOnBoot = true;
-
   # AMD GPU (Strix Halo / RDNA 3.5)
   # Reference: https://wiki.nixos.org/wiki/AMD_GPU
   hardware.graphics = {
@@ -387,115 +240,10 @@
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
   ];
 
-  # Shell configuration
-  programs.fish.enable = true;
-
-  # Disable man cache generation (slow rebuild caused by fish enabling this)
-  # https://discourse.nixos.org/t/slow-build-at-building-man-cache/52365
-  documentation.man.cache.enable = false;
-
-  # User configuration
-  users.users.${username} = {
-    isNormalUser = true;
-    group = username;
-    extraGroups = [
-      "wheel"
-      "input"
-      "uinput"
-      "video" # Webcam access for Discord/Slack video calls
-      "audio" # Audio device access
-      "optical" # CD/DVD drive access
-      "cdrom" # CD/DVD drive access
-      "ydotool" # ydotool socket access for gesture key simulation
-      "i2c" # I2C device access for ddcutil (external display control)
-    ];
-    shell = pkgs.fish;
-  };
-
-  users.groups.${username} = { };
-
-  # Allow passwordless sudo
-  security.sudo.wheelNeedsPassword = false;
-
   environment.systemPackages = with pkgs; [
-    # Disk utilities
-    nvme-cli
-    smartmontools
-    pciutils
-    sysstat
-    ddrescue
-
-    # Core (used with sudo)
-    curl
-    wget
-    git
-    openssh
-    htop
-    tmux
-    vim
-    neovim
-
-    # Utils
-    unzip
-    zip
-    tree
-    ripgrep
-    fd
-    fzf
-    bat
-    eza
-    delta
-    usbutils
-    pciutils
-    tpm2-tools
-    nixfmt-tree # Recursive nix formatter
-
-    # Compositor system dependencies (need hardware access or system integration)
-    dunst
-    brightnessctl
-    playerctl
-    networkmanagerapplet # nm-applet
-    blueman
-    udiskie
-    hyprlock
-    hypridle
-
-    # niri dependencies
-    swaylock
-    swayidle
-    fuzzel
-    swaybg
-    xwayland-satellite
-
-    # GPU stuff
-    vulkan-tools
-    mesa
-
-    # AMD GPU monitoring
-    amdgpu_top # TUI for AMDGPU usage (like nvidia-smi)
-    radeontop # Classic AMD GPU monitor
-    rocmPackages.rocm-smi # ROCm System Management Interface
-    rocmPackages.rocminfo # GFX version info (rocminfo | grep gfx)
-    clinfo # OpenCL info
-
-    # External display brightness control (DDC/CI)
-    ddcutil
-
-    # Webcam
-    v4l-utils # Webcam tools (v4l2-ctl)
+    amdgpu_top
+    rocmPackages.rocm-smi
+    rocmPackages.rocminfo
+    clinfo
   ];
-
-  # Fonts (must use fonts.packages, not environment.systemPackages)
-  fonts.packages = with pkgs; [
-    cica-font
-    noto-fonts
-    noto-fonts-color-emoji
-    noto-fonts-cjk-sans
-    liberation_ttf
-    nerd-fonts.symbols-only # For waybar icons
-    font-awesome_6 # For waybar icons
-    plemoljp-nf # PlemolJP with Nerd Fonts (Japanese + IBM Plex Mono)
-  ];
-
-  system.stateVersion = "24.11";
 }

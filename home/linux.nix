@@ -82,7 +82,6 @@ in
     kdePackages.dolphin # KDE file manager
 
     # AI & productivity
-    lmstudio # Local LLM GUI
     unstablePkgs.opencode # AI coding agent (unstable version)
     obsidian # Knowledge base and note-taking
     enpass # Password manager

@@ -56,6 +56,8 @@ in
         # released at least 7 days ago.
         minimum_release_age = "7d";
 
+        all_compile = false;
+
         # Supply chain hardening: enable extra-secure behaviour and signature
         # / attestation verification across backends.
         paranoid = true;

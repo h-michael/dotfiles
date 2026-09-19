@@ -48,4 +48,6 @@
       RAG_WEB_SEARCH_ENGINE = "duckduckgo";
     };
   };
+
+  home-manager.users.${username}.home.packages = [ pkgs.lmstudio ];
 }

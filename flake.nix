@@ -72,32 +72,20 @@
         config.allowUnfree = true;
         overlays = [ ];
       };
-    in
-    {
-      # Overlays
-      overlays = {
-        uhk-agent-fix = import ./overlays/uhk-agent-fix.nix;
-        tmux-master = import ./overlays/tmux-master.nix;
-        vscode-langservers-fix = import ./overlays/vscode-langservers-fix.nix;
-        custom-packages = final: prev: {
-          cica-font = final.callPackage ./pkgs/cica-font.nix { };
-        };
-      };
-
-      # NixOS configurations
-      nixosConfigurations = {
-        nixos = nixpkgs.lib.nixosSystem {
+      mkNixosHost =
+        hostPath:
+        nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
             inherit inputs username;
             unstablePkgs = nixosUnstablePkgs;
           };
           modules = [
-            ./hosts/nixos
+            hostPath
 
             # xremap as a NixOS module (replaces hand-rolled user systemd
-            # services for Hyprland/niri/KDE binaries; configured in
-            # hosts/nixos/default.nix via services.xremap)
+            # services for Hyprland/niri/KDE binaries; configured in the
+            # host module via services.xremap)
             inputs.xremap-flake.nixosModules.default
 
             # Apply overlays
@@ -133,6 +121,22 @@
             }
           ];
         };
+    in
+    {
+      # Overlays
+      overlays = {
+        uhk-agent-fix = import ./overlays/uhk-agent-fix.nix;
+        tmux-master = import ./overlays/tmux-master.nix;
+        vscode-langservers-fix = import ./overlays/vscode-langservers-fix.nix;
+        custom-packages = final: prev: {
+          cica-font = final.callPackage ./pkgs/cica-font.nix { };
+        };
+      };
+
+      # NixOS configurations
+      nixosConfigurations = {
+        ms-s1-max = mkNixosHost ./hosts/ms-s1-max;
+        t495s = mkNixosHost ./hosts/t495s;
       };
 
       # nix-darwin configurations for macOS (system only, home-manager is standalone)
