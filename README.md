@@ -12,19 +12,23 @@ NixOS and Home Manager configuration managed with Nix Flakes.
 
 ```bash
 # NixOS
-make switch-nix    # Rebuild and switch
-make build-nix     # Build only
-make test-nix      # Dry-run
+make switch NIXOS_HOST=ms-s1-max  # Rebuild and switch
+make build  NIXOS_HOST=ms-s1-max  # Build only
+make test   NIXOS_HOST=ms-s1-max  # Dry-run
+
+make switch NIXOS_HOST=t495s      # Rebuild and switch
+make build  NIXOS_HOST=t495s      # Build only
+make test   NIXOS_HOST=t495s      # Dry-run
 
 # Arch Linux
-make switch-arch   # Switch home-manager
-make build-arch    # Build only
-make test-arch     # Dry-run
+make switch  # Switch home-manager
+make build   # Build only
+make test    # Dry-run
 
 # macOS
-make switch-darwin # Switch home-manager
-make build-darwin  # Build only
-make test-darwin   # Dry-run
+make switch  # Switch nix-darwin + home-manager
+make build   # Build only
+make test    # Dry-run
 
 # Maintenance
 make update        # Update flake inputs

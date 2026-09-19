@@ -11,6 +11,8 @@ else
   HOST := arch
 endif
 
+NIXOS_HOST ?= $(shell hostname -s)
+
 # Default target
 help:
 	@echo "Commands (detected host: $(HOST)):"
@@ -88,13 +90,13 @@ brew-upgrade:
 else ifeq ($(HOST),nix)
 
 switch:
-	sudo nixos-rebuild switch --flake .#nixos
+	sudo nixos-rebuild switch --flake .#$(NIXOS_HOST)
 
 build:
-	nixos-rebuild build --flake .#nixos
+	nixos-rebuild build --flake .#$(NIXOS_HOST)
 
 test:
-	sudo nixos-rebuild dry-activate --flake .#nixos
+	sudo nixos-rebuild dry-activate --flake .#$(NIXOS_HOST)
 
 diff: build
 	@nvd diff /run/current-system ./result
@@ -149,7 +151,7 @@ news:
 		Darwin) home-manager --flake .#darwin --impure news ;; \
 		Linux) \
 			if [ -f /etc/NIXOS ]; then \
-				home-manager --flake .#nixos --impure news ; \
+				echo "home-manager news is only wired for standalone configs in this repo" ; \
 			else \
 				home-manager --flake .#arch --impure news ; \
 			fi ;; \
