@@ -7,9 +7,14 @@
 }:
 
 let
-  # Plugin paths for manual loading
-  prefixHighlightDir = "${pkgs.tmuxPlugins.prefix-highlight}/share/tmux-plugins/prefix-highlight";
-  resurrectDir = "${pkgs.tmuxPlugins.resurrect}/share/tmux-plugins/resurrect";
+  # Plugins are loaded directly from their Nix store paths below, rather than
+  # through TPM. Keep the packages in home.packages as well so they are part of
+  # the user's managed installation and remain available independently of the
+  # generated tmux.conf.
+  prefixHighlight = pkgs.tmuxPlugins.prefix-highlight;
+  resurrect = pkgs.tmuxPlugins.resurrect;
+  prefixHighlightDir = "${prefixHighlight}/share/tmux-plugins/prefix-highlight";
+  resurrectDir = "${resurrect}/share/tmux-plugins/resurrect";
   copyPaneDir = inputs.tmux-copy-pane;
 
   # Periodic resurrect save driven by an OS timer instead of tmux-continuum.
@@ -125,6 +130,8 @@ in
 
   home.packages = [
     pkgs.tmux
+    prefixHighlight
+    resurrect
   ];
 
   # Both option trees exist on every platform in Home Manager (launchd is
