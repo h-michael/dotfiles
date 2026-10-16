@@ -1,7 +1,13 @@
-#!/usr/bin/env -S deno run --allow-run --allow-read --allow-env
-// Claude Code statusline for Deno.
+#!/usr/bin/env bun
+// Claude Code statusline.
 // Reads the JSON payload documented at
 // https://code.claude.com/docs/en/statusline.md and prints one or two lines.
+
+import { execFile } from "node:child_process";
+import { text } from "node:stream/consumers";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 interface CurrentUsage {
   input_tokens?: number;
@@ -120,7 +126,7 @@ function pathVariants(input: StatusLineInput): string[] {
     return [full, mid, compact];
   }
 
-  const home = Deno.env.get("HOME") || "";
+  const home = process.env.HOME || "";
   if (home && cwd.startsWith(home + "/")) {
     const rel = cwd.slice(home.length);
     const tail = rel.split("/").filter(Boolean).pop() || "";
@@ -145,15 +151,14 @@ function formatModel(displayName: string): string | null {
 async function getGitStatus(cwd: string): Promise<string | null> {
   if (!cwd) return null;
   try {
-    const out = await new Deno.Command("git", {
-      args: ["status", "--branch", "--porcelain=v1"],
-      cwd,
-      stderr: "null",
-    }).output();
-    if (!out.success) return null;
-
-    const text = new TextDecoder().decode(out.stdout);
-    const lines = text.split("\n");
+    // execFile's default 1 MiB maxBuffer can overflow on repos with many
+    // untracked files, which would hide the branch entirely.
+    const { stdout } = await execFileAsync(
+      "git",
+      ["status", "--branch", "--porcelain=v1"],
+      { cwd, maxBuffer: 64 * 1024 * 1024 },
+    );
+    const lines = stdout.split("\n");
     const first = lines[0] || "";
     let branch = "detached";
     if (first.startsWith("## ")) {
@@ -298,19 +303,17 @@ function formatPr(pr: StatusLineInput["pr"]): string | null {
 }
 
 async function main() {
-  const buf = new Uint8Array(64 * 1024);
-  const n = await Deno.stdin.read(buf);
-  const raw = new TextDecoder().decode(buf.slice(0, n || 0));
+  const raw = await text(process.stdin);
 
   let input: StatusLineInput = {};
   try {
     input = JSON.parse(raw);
   } catch {
     console.error("Failed to parse input JSON");
-    Deno.exit(1);
+    process.exit(1);
   }
 
-  const cols = parseInt(Deno.env.get("COLUMNS") || "0", 10) || 200;
+  const cols = parseInt(process.env.COLUMNS || "0", 10) || 200;
 
   const paths = pathVariants(input);
   const gitText = await getGitStatus(resolveCwd(input));
@@ -389,5 +392,5 @@ async function main() {
 
 main().catch((err) => {
   console.error(err);
-  Deno.exit(1);
+  process.exit(1);
 });

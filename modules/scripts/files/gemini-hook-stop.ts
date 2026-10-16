@@ -1,7 +1,14 @@
-#!/usr/bin/env -S deno run --allow-run --allow-read --allow-env
+#!/usr/bin/env bun
 // Gemini CLI AfterAgent hook - Send desktop notification on task completion
 // Input: stdin JSON from gemini-cli AfterAgent event
 // Output: stdout JSON {} (advisory hook, no control fields needed)
+
+import { execFile, spawn } from "node:child_process";
+import { readFile } from "node:fs/promises";
+import { text } from "node:stream/consumers";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 interface AfterAgentInput {
   session_id?: string;
@@ -16,26 +23,15 @@ interface AfterAgentInput {
 
 async function getRef(cwd: string): Promise<string | null> {
   try {
-    const gitCheck = new Deno.Command("git", {
-      args: ["rev-parse", "--git-dir"],
-      cwd,
-      stdout: "null",
-      stderr: "null",
-    });
-    const gitResult = await gitCheck.output();
-
-    if (gitResult.success) {
-      const gitBranch = new Deno.Command("git", {
-        args: ["branch", "--show-current"],
-        cwd,
-        stdout: "piped",
-        stderr: "null",
-      });
-      const { stdout } = await gitBranch.output();
-      const branch = new TextDecoder().decode(stdout).trim();
-      if (branch) return branch;
-      return "detached";
-    }
+    await execFileAsync("git", ["rev-parse", "--git-dir"], { cwd });
+    const { stdout } = await execFileAsync(
+      "git",
+      ["branch", "--show-current"],
+      { cwd },
+    ).catch(() => ({ stdout: "" }));
+    const branch = stdout.trim();
+    if (branch) return branch;
+    return "detached";
   } catch {
     // Ignore errors
   }
@@ -44,7 +40,7 @@ async function getRef(cwd: string): Promise<string | null> {
 
 async function getLastTool(transcriptPath: string): Promise<string | null> {
   try {
-    const content = await Deno.readTextFile(transcriptPath);
+    const content = await readFile(transcriptPath, "utf8");
     const lines = content.trim().split("\n").reverse();
 
     for (const line of lines) {
@@ -75,9 +71,10 @@ async function sendNotify(
   subtitle: string,
   message: string,
 ): Promise<void> {
-  try {
-    const command = new Deno.Command("cc-notify", {
-      args: [
+  await new Promise<void>((resolve) => {
+    const child = spawn(
+      "cc-notify",
+      [
         title,
         "-s",
         subtitle,
@@ -87,20 +84,16 @@ async function sendNotify(
         "com.mitchellh.ghostty",
         "--mute-when-active",
       ],
-      stdout: "inherit",
-      stderr: "inherit",
-    });
-    await command.output();
-  } catch {
+      { stdio: ["ignore", "inherit", "inherit"] },
+    );
     // cc-notify not available, skip
-  }
+    child.on("error", () => resolve());
+    child.on("close", () => resolve());
+  });
 }
 
 async function main(): Promise<void> {
-  const decoder = new TextDecoder();
-  const buffer = new Uint8Array(64 * 1024);
-  const bytesRead = await Deno.stdin.read(buffer);
-  const jsonStr = decoder.decode(buffer.slice(0, bytesRead || 0));
+  const jsonStr = await text(process.stdin);
 
   let input: AfterAgentInput = {};
   try {
@@ -108,16 +101,16 @@ async function main(): Promise<void> {
   } catch {
     console.error("Failed to parse input JSON");
     console.log("{}");
-    Deno.exit(0);
+    process.exit(0);
   }
 
   // Prevent infinite loop
   if (input.stop_hook_active) {
     console.log("{}");
-    Deno.exit(0);
+    process.exit(0);
   }
 
-  const cwd = input.cwd || Deno.env.get("GEMINI_CWD") || Deno.cwd();
+  const cwd = input.cwd || process.env.GEMINI_CWD || process.cwd();
   const transcriptPath = input.transcript_path || "";
   const project = cwd.split("/").pop() || "unknown";
 
@@ -136,5 +129,5 @@ async function main(): Promise<void> {
 main().catch((err) => {
   console.error(err);
   console.log("{}");
-  Deno.exit(0);
+  process.exit(0);
 });

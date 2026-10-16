@@ -1,6 +1,13 @@
-#!/usr/bin/env -S deno run --allow-run --allow-read --allow-env
+#!/usr/bin/env bun
 // Claude Code Stop hook - Generate enhanced message with project context
 // Output: JSON { subtitle: string, message: string }
+
+import { execFile } from "node:child_process";
+import { readFile } from "node:fs/promises";
+import { text } from "node:stream/consumers";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 interface StopHookInput {
   session_id?: string;
@@ -19,26 +26,15 @@ interface Output {
 
 async function getRef(cwd: string): Promise<string | null> {
   try {
-    const gitCheck = new Deno.Command("git", {
-      args: ["rev-parse", "--git-dir"],
-      cwd,
-      stdout: "null",
-      stderr: "null",
-    });
-    const gitResult = await gitCheck.output();
-
-    if (gitResult.success) {
-      const gitBranch = new Deno.Command("git", {
-        args: ["branch", "--show-current"],
-        cwd,
-        stdout: "piped",
-        stderr: "null",
-      });
-      const { stdout } = await gitBranch.output();
-      const branch = new TextDecoder().decode(stdout).trim();
-      if (branch) return branch;
-      return "detached";
-    }
+    await execFileAsync("git", ["rev-parse", "--git-dir"], { cwd });
+    const { stdout } = await execFileAsync(
+      "git",
+      ["branch", "--show-current"],
+      { cwd },
+    ).catch(() => ({ stdout: "" }));
+    const branch = stdout.trim();
+    if (branch) return branch;
+    return "detached";
   } catch {
     // Ignore errors
   }
@@ -47,7 +43,7 @@ async function getRef(cwd: string): Promise<string | null> {
 
 async function getLastTool(transcriptPath: string): Promise<string | null> {
   try {
-    const content = await Deno.readTextFile(transcriptPath);
+    const content = await readFile(transcriptPath, "utf8");
     const lines = content.trim().split("\n").reverse();
 
     for (const line of lines) {
@@ -74,25 +70,22 @@ async function getLastTool(transcriptPath: string): Promise<string | null> {
 }
 
 async function main(): Promise<void> {
-  const decoder = new TextDecoder();
-  const buffer = new Uint8Array(64 * 1024);
-  const bytesRead = await Deno.stdin.read(buffer);
-  const jsonStr = decoder.decode(buffer.slice(0, bytesRead || 0));
+  const jsonStr = await text(process.stdin);
 
   let input: StopHookInput = {};
   try {
     input = JSON.parse(jsonStr);
   } catch {
     console.error("Failed to parse input JSON");
-    Deno.exit(1);
+    process.exit(1);
   }
 
   // Prevent infinite loop - output nothing and exit
   if (input.stop_hook_active) {
-    Deno.exit(0);
+    process.exit(0);
   }
 
-  const cwd = input.cwd || Deno.cwd();
+  const cwd = input.cwd || process.cwd();
   const transcriptPath = input.transcript_path || "";
   const project = cwd.split("/").pop() || "unknown";
 
@@ -116,5 +109,5 @@ async function main(): Promise<void> {
 
 main().catch((err) => {
   console.error(err);
-  Deno.exit(1);
+  process.exit(1);
 });

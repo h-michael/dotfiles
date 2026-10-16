@@ -1,8 +1,10 @@
-#!/usr/bin/env -S deno run --allow-read --allow-env
-// Claude Code subagent statusline for Deno.
+#!/usr/bin/env bun
+// Claude Code subagent statusline.
 // Reads the JSON payload documented at
 // https://code.claude.com/docs/en/statusline.md#subagent-status-lines
 // and writes one JSON line per row: {"id": "...", "content": "..."}.
+
+import { text } from "node:stream/consumers";
 
 interface Task {
   id: string;
@@ -107,15 +109,13 @@ function renderTask(t: Task): string {
 }
 
 async function main() {
-  const buf = new Uint8Array(64 * 1024);
-  const n = await Deno.stdin.read(buf);
-  const raw = new TextDecoder().decode(buf.slice(0, n || 0));
+  const raw = await text(process.stdin);
 
   let input: SubagentInput = {};
   try {
     input = JSON.parse(raw);
   } catch {
-    Deno.exit(1);
+    process.exit(1);
   }
 
   const tasks = input.tasks || [];
@@ -126,4 +126,4 @@ async function main() {
   }
 }
 
-main().catch(() => Deno.exit(1));
+main().catch(() => process.exit(1));

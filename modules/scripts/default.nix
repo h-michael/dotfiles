@@ -6,6 +6,12 @@
 }:
 
 let
+  # Pin the interpreter to the Nix store so the scripts don't depend on PATH.
+  bunScript =
+    file:
+    builtins.replaceStrings [ "#!/usr/bin/env bun" ] [ "#!${pkgs.bun}/bin/bun" ] (
+      builtins.readFile file
+    );
   yankScript = pkgs.writeTextFile {
     name = "yank";
     text = builtins.readFile ./files/yank;
@@ -20,37 +26,37 @@ let
   };
   ccStatuslineScript = pkgs.writeTextFile {
     name = "cc-statusline";
-    text = builtins.readFile ./files/cc-statusline.ts;
+    text = bunScript ./files/cc-statusline.ts;
     executable = true;
     destination = "/bin/cc-statusline";
   };
   ccSubagentStatuslineScript = pkgs.writeTextFile {
     name = "cc-subagent-statusline";
-    text = builtins.readFile ./files/cc-subagent-statusline.ts;
+    text = bunScript ./files/cc-subagent-statusline.ts;
     executable = true;
     destination = "/bin/cc-subagent-statusline";
   };
   ccHookStopScript = pkgs.writeTextFile {
     name = "cc-hook-stop";
-    text = builtins.readFile ./files/cc-hook-stop.ts;
+    text = bunScript ./files/cc-hook-stop.ts;
     executable = true;
     destination = "/bin/cc-hook-stop";
   };
   ccHookNotificationScript = pkgs.writeTextFile {
     name = "cc-hook-notification";
-    text = builtins.readFile ./files/cc-hook-notification.ts;
+    text = bunScript ./files/cc-hook-notification.ts;
     executable = true;
     destination = "/bin/cc-hook-notification";
   };
   geminiHookNotificationScript = pkgs.writeTextFile {
     name = "gemini-hook-notification";
-    text = builtins.readFile ./files/gemini-hook-notification.ts;
+    text = bunScript ./files/gemini-hook-notification.ts;
     executable = true;
     destination = "/bin/gemini-hook-notification";
   };
   geminiHookStopScript = pkgs.writeTextFile {
     name = "gemini-hook-stop";
-    text = builtins.readFile ./files/gemini-hook-stop.ts;
+    text = bunScript ./files/gemini-hook-stop.ts;
     executable = true;
     destination = "/bin/gemini-hook-stop";
   };
