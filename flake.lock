@@ -38,27 +38,6 @@
     },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": [
-          "neovim-nightly-overlay",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1790898470,
-        "narHash": "sha256-zTwuwezD0w3hpga6a6P8emidzAZFyWqlNeRBlpWOOl8=",
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "rev": "024633cd702b10285db5cb19b40ad48d2399ba60",
-        "type": "github"
-      },
-      "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
-      }
-    },
-    "flake-parts_2": {
-      "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
       },
       "locked": {
@@ -93,44 +72,6 @@
         "owner": "nix-community",
         "ref": "release-26.05",
         "repo": "home-manager",
-        "type": "github"
-      }
-    },
-    "neovim-nightly-overlay": {
-      "inputs": {
-        "flake-parts": "flake-parts",
-        "neovim-src": "neovim-src",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1792368179,
-        "narHash": "sha256-ZoWj95FA6/3Ow9iC0AsVMB/FZPY/HQTuwFa/BXo+m3I=",
-        "owner": "nix-community",
-        "repo": "neovim-nightly-overlay",
-        "rev": "0a1889356065f01f88d69f30ddd40352d48de893",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "neovim-nightly-overlay",
-        "type": "github"
-      }
-    },
-    "neovim-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1792365976,
-        "narHash": "sha256-2HrFFjzt83piKGgJFtrYVBI5kBz2YQC0YOBzXf8bUO4=",
-        "owner": "neovim",
-        "repo": "neovim",
-        "rev": "c049b8f002fe7535c9f85dad912cf2a631d02460",
-        "type": "github"
-      },
-      "original": {
-        "owner": "neovim",
-        "repo": "neovim",
         "type": "github"
       }
     },
@@ -209,7 +150,6 @@
       "inputs": {
         "darwin": "darwin",
         "home-manager": "home-manager",
-        "neovim-nightly-overlay": "neovim-nightly-overlay",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",
@@ -253,7 +193,7 @@
     "xremap-flake": {
       "inputs": {
         "crane": "crane",
-        "flake-parts": "flake-parts_2",
+        "flake-parts": "flake-parts",
         "nixpkgs": [
           "nixpkgs"
         ],

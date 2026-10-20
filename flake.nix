@@ -26,11 +26,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    neovim-nightly-overlay = {
-      url = "github:nix-community/neovim-nightly-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     tmux-copy-pane = {
       url = "github:h-michael/tmux-copy-pane";
       flake = false;
@@ -44,7 +39,6 @@
       nixpkgs-unstable,
       home-manager,
       darwin,
-      neovim-nightly-overlay,
       tmux-copy-pane,
       ...
     }@inputs:
@@ -95,7 +89,7 @@
                 self.overlays.tmux-master
                 self.overlays.custom-packages
                 self.overlays.vscode-langservers-fix
-                neovim-nightly-overlay.overlays.default
+                self.overlays.neovim-unstable
               ];
             }
 
@@ -131,6 +125,13 @@
         custom-packages = final: prev: {
           cica-font = final.callPackage ./pkgs/cica-font.nix { };
         };
+        # As of 2026-10, nixos-26.05 had no Neovim backports after 0.12.4,
+        # while unstable picks up each release within days and is still
+        # served from cache.nixos.org.
+        neovim-unstable = final: prev: {
+          neovim-unwrapped =
+            nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.neovim-unwrapped;
+        };
       };
 
       # NixOS configurations
@@ -154,7 +155,7 @@
             nixpkgs.overlays = [
               self.overlays.tmux-master
               self.overlays.custom-packages
-              neovim-nightly-overlay.overlays.default
+              self.overlays.neovim-unstable
             ];
           }
         ];
@@ -170,7 +171,7 @@
               self.overlays.tmux-master
               self.overlays.custom-packages
               self.overlays.vscode-langservers-fix
-              neovim-nightly-overlay.overlays.default
+              self.overlays.neovim-unstable
             ];
           };
           extraSpecialArgs = {
