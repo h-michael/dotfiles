@@ -154,6 +154,17 @@
     shell = pkgs.fish;
   };
 
+  # Distrust roots that chain to the compromised eMudhra intermediates.
+  # nixpkgs only fixed this in the NixOS module; remove once
+  # nix-darwin/nix-darwin#1877 lands and the darwin input is bumped.
+  # https://github.com/NixOS/nixpkgs/issues/576485
+  security.pki.caCertificateBlacklist = [
+    "Comodo AAA Services root"
+    "emSign ECC Root CA - G3"
+    "emSign Root CA - C1"
+    "emSign ECC Root CA - C3"
+  ];
+
   # Raise default open file descriptor limit (macOS default is 256, too low for Nix)
   launchd.daemons.limit-maxfiles = {
     serviceConfig = {
