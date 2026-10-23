@@ -27,6 +27,7 @@
       "obsidian" # Knowledge base and note-taking
       "cursor" # AI-powered code editor
       "visual-studio-code"
+      "zed" # Code editor
 
       # Development tools
       "bruno" # API client (Postman alternative, Git-friendly)
