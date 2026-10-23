@@ -72,6 +72,7 @@ truncate_to_repo = false
 disabled = true
 
 [gcloud]
+disabled = true
 symbol = '☁️ GC '
 format = '[$symbol$project\($region\)]($style) '
 
