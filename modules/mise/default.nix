@@ -7,7 +7,7 @@
   programs.mise = {
     enable = true;
     package = pkgs.mise;
-    enableFishIntegration = true;
+    enableFishIntegration = false;
 
     globalConfig = {
       tools = {
