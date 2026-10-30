@@ -154,15 +154,13 @@
     shell = pkgs.fish;
   };
 
-  # Distrust roots that chain to the compromised eMudhra intermediates.
-  # nixpkgs only fixed this in the NixOS module; remove once
-  # nix-darwin/nix-darwin#1877 lands and the darwin input is bumped.
+  # Mirror the blocklist nixpkgs applies only in the NixOS module; remove
+  # once nix-darwin/nix-darwin#1877 lands and the darwin input is bumped.
   # https://github.com/NixOS/nixpkgs/issues/576485
+  # The emSign roots were dropped here because NSS 3.131 removed them from
+  # the store, and cacert fails when a blocklisted name is missing.
   security.pki.caCertificateBlacklist = [
     "Comodo AAA Services root"
-    "emSign ECC Root CA - G3"
-    "emSign Root CA - C1"
-    "emSign ECC Root CA - C3"
   ];
 
   # Raise default open file descriptor limit (macOS default is 256, too low for Nix)
