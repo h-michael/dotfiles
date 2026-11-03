@@ -81,6 +81,20 @@
           (final: prev: {
             python3Packages = prev.python3Packages.overrideScope (
               pyFinal: pyPrev: {
+                # Open WebUI 0.12.3 requires MCP 1.x; MCP 2.x removed
+                # streamablehttp_client and prevents the service from starting.
+                mcp =
+                  (prev.lib.callPackageWith (
+                    pyPrev
+                    // {
+                      inherit (prev) fetchFromGitHub lib stdenv;
+                    }
+                  ) "${nixpkgs}/pkgs/development/python-modules/mcp" { }).overridePythonAttrs
+                    (_: {
+                      # MCP 1.x tests are incompatible with pytest 9.x.
+                      doCheck = false;
+                    });
+
                 # PostHog's MCP integration test expects the pre-2.x API.
                 # ChromaDB only needs its runtime package for Open WebUI.
                 posthog = pyPrev.posthog.overridePythonAttrs (old: {
