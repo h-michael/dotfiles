@@ -70,6 +70,30 @@
         self.overlays.vscode-langservers-fix
         self.overlays.neovim-unstable
       ];
+
+      # Unstable packages for NixOS services (Ollama, Open WebUI, Navidrome)
+      nixosUnstablePkgs = import nixpkgs-unstable {
+        system = "x86_64-linux";
+        config = {
+          allowUnfree = true;
+        };
+        overlays = [
+          (final: prev: {
+            python3Packages = prev.python3Packages.overrideScope (
+              pyFinal: pyPrev: {
+                # PostHog's MCP integration test expects the pre-2.x API.
+                # ChromaDB only needs its runtime package for Open WebUI.
+                posthog = pyPrev.posthog.overridePythonAttrs (old: {
+                  doCheck = false;
+                  meta = old.meta // {
+                    broken = false;
+                  };
+                });
+              }
+            );
+          })
+        ];
+      };
       mkNixosHost =
         hostPath:
         nixpkgs.lib.nixosSystem {
