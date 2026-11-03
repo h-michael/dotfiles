@@ -9,6 +9,10 @@
     # sessions, so IME toggle keys (e.g. Zenkaku_Hankaku) have no effect.
     configFile.kwinrc.Wayland.InputMethod = "org.fcitx.Fcitx5.desktop";
 
+    # Prevent Caps Lock state from being enabled if xremap restarts or misses
+    # an input device; xremap still provides the Ctrl_L remap consistently.
+    configFile.kxkbrc.Layout.Options = "ctrl:nocaps";
+
     # Disable KWin's built-in "Meta tap opens Application Launcher" behavior.
     # Without this, pressing left Cmd alone (xremap-mapped to Super_L) opens
     # Plasma's launcher, which conflicts with using Super as a plain modifier
