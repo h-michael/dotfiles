@@ -17,6 +17,12 @@ let
   resurrectDir = "${resurrect}/share/tmux-plugins/resurrect";
   copyPaneDir = inputs.tmux-copy-pane;
 
+  # Candidate replacement for resurrect. Installed only (no daemon,
+  # bootstrap, or agent hooks yet), so both can be compared side by side.
+  # callPackage instead of the custom-packages overlay because the Arch
+  # homeConfiguration is built without overlays.
+  lazyTmux = pkgs.callPackage ../../pkgs/lazy-tmux.nix { };
+
   # Periodic resurrect save driven by an OS timer instead of tmux-continuum.
   #
   # continuum has no timer of its own: it appends #(continuum_save.sh) to
@@ -132,6 +138,7 @@ in
     pkgs.tmux
     prefixHighlight
     resurrect
+    lazyTmux
   ];
 
   # Both option trees exist on every platform in Home Manager (launchd is
