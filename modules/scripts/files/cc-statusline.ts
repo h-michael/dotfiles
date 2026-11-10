@@ -155,7 +155,7 @@ async function getGitStatus(cwd: string): Promise<string | null> {
     // untracked files, which would hide the branch entirely.
     const { stdout } = await execFileAsync(
       "git",
-      ["status", "--branch", "--porcelain=v1"],
+      ["--no-optional-locks", "status", "--branch", "--porcelain=v1"],
       { cwd, maxBuffer: 64 * 1024 * 1024 },
     );
     const lines = stdout.split("\n");
