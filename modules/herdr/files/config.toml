@@ -5,6 +5,17 @@ onboarding = false
 name = "tokyo-night"
 auto_switch = false
 
+[ui]
+sidebar_collapsed_mode = "hidden"
+
+# Every agent here is Claude Code, so the default second row ("agent")
+# repeats "claude"; the terminal title carries its task summary instead.
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "machine", "workspace", "tab"],
+  ["terminal_title_stripped"],
+]
+
 # Claude Code's own Stop hook (cc-notify) already sends a notification
 # whose text we control; herdr's notification text is not configurable.
 [ui.toast]
