@@ -68,11 +68,6 @@ in
     home-manager
     gh
     unstablePkgs.jujutsu
-    # Not yet in the nixos-26.05 stable channel. The nixpkgs derivation
-    # (1.2.6) omits sqlite, so rusqlite fails to link -lsqlite3 on darwin.
-    (unstablePkgs.tgrep.overrideAttrs (old: {
-      buildInputs = (old.buildInputs or [ ]) ++ [ unstablePkgs.sqlite ];
-    }))
     # @github/copilot-language-server's published bin path
     # ("../dist/language-server.js") points outside its own package dir.
     # npm silently sanitizes leading ".." in bin paths; mise's npm backend
