@@ -1,0 +1,63 @@
+# Carried over from the config herdr wrote during first-run onboarding.
+onboarding = false
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
+
+# Claude Code's own Stop hook (cc-notify) already sends a notification
+# whose text we control; herdr's notification text is not configurable.
+[ui.toast]
+delivery = "off"
+
+[ui.sound]
+enabled = false
+
+# Approximates the tmux bindings in modules/tmux/files/tmux.conf. herdr
+# binds only prefix + one key: tmux's key tables ("n" then "w", "-", ...)
+# and repeatable (-r) bindings have no equivalent, so those are flattened.
+# Validate edits with `herdr config check`.
+[keys]
+prefix = "ctrl+s"
+
+# "n" stands in for tmux's "new" key table. Binding it to new_tab rather
+# than herdr's default next_tab keeps a habitual "prefix n -" from
+# switching tabs.
+new_tab = ["prefix+c", "prefix+n"]
+next_tab = "prefix+ctrl+l"
+previous_tab = "prefix+ctrl+h"
+move_tab_previous = "prefix+shift+left"
+move_tab_next = "prefix+shift+right"
+
+split_vertical = "prefix+|"
+split_horizontal = "prefix+minus"
+
+resize_pane_left = "prefix+shift+h"
+resize_pane_down = "prefix+shift+j"
+resize_pane_up = "prefix+shift+k"
+resize_pane_right = "prefix+shift+l"
+resize_mode = "prefix+shift+r"
+reload_config = "prefix+r"
+
+workspace_picker = "prefix+w"
+open_worktree = "prefix+shift+o"
+
+copy_mode = "prefix+enter"
+
+# Navigate mode (prefix+w): j/k move between workspaces, so pane up/down
+# moves to shift+j/k. `herdr config check` does not report duplicate keys
+# within navigate mode, so keep these distinct by hand.
+navigate_workspace_up = "k"
+navigate_workspace_down = "j"
+navigate_pane_up = "shift+k"
+navigate_pane_down = "shift+j"
+
+# Same key as the tmux fts session picker. herdr-switch comes from
+# modules/herdr/default.nix.
+[[keys.command]]
+key = "prefix+ctrl+f"
+type = "popup"
+command = "herdr-switch"
+description = "switch workspace"
+width = "100%"
+height = "100%"

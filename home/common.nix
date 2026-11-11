@@ -24,6 +24,7 @@ in
     ../modules/tmux
     ../modules/nvim
     ../modules/ghostty
+    ../modules/herdr
     ../modules/ripgrep
     ../modules/mise
     ../modules/scripts
@@ -60,6 +61,8 @@ in
     file
     yazi # Terminal file manager with image preview
     zellij
+    # Not yet in the nixos-26.05 stable channel.
+    unstablePkgs.herdr
 
     # Development tools
     home-manager
