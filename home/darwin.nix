@@ -91,7 +91,9 @@ in
     poppler-utils # PDF utilities (pdftoppm, pdftotext, etc.)
 
     # System utilities
-    terminal-notifier
+    # nixos-26.05 ships 2.0.0, an x86_64-only prebuilt binary that runs
+    # under Rosetta; 3.x is a universal build.
+    unstablePkgs.terminal-notifier
 
     # Monitoring
     python3Packages.datadog # Datadog CLI (dog, dogwrap)
