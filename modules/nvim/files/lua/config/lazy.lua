@@ -34,8 +34,9 @@ require("lazy").setup({
 		colorscheme = { "tokyonight-night" },
 	},
 	rocks = { enabled = false },
-	-- automatically check for plugin updates
-	checker = { enabled = true },
+	-- automatically check for plugin updates; the LazyCheck autocmd below
+	-- installs them, so the "updates available" notice would be stale
+	checker = { enabled = true, notify = false },
 
 	change_detection = {
 		-- automatically check for config file changes and reload the ui
@@ -45,4 +46,16 @@ require("lazy").setup({
 
 	-- Put lockfile in writable location (config dir is read-only on NixOS)
 	lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
+})
+
+-- lazy.nvim has no auto-update option. LazyCheck fires when a check
+-- (the background checker or :Lazy check) finishes; update() fires only
+-- LazyUpdate, so this does not loop.
+vim.api.nvim_create_autocmd("User", {
+	pattern = "LazyCheck",
+	callback = function()
+		if require("lazy.status").has_updates() then
+			require("lazy").update({ show = false })
+		end
+	end,
 })
