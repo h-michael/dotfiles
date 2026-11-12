@@ -147,6 +147,25 @@
       };
     };
 
+    # Hyprland-only: hypridle (reads ~/.config/hypr/hypridle.conf)
+    hypridle = {
+      Unit = {
+        Description = "Idle manager (Hyprland)";
+        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        ConditionEnvironment = "HYPRLAND_INSTANCE_SIGNATURE";
+      };
+      Service = {
+        Type = "simple";
+        ExecStart = "${pkgs.hypridle}/bin/hypridle";
+        Restart = "on-failure";
+        Slice = "session.slice";
+      };
+      Install = {
+        WantedBy = [ "hyprland-session.target" ];
+      };
+    };
+
     # niri-only: swayidle
     swayidle = {
       Unit = {
