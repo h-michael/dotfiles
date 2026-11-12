@@ -8,6 +8,9 @@
 {
   programs.git = {
     enable = true;
+    # Installs git-lfs and its filter config; a bare filter.lfs section
+    # with required = true fails every checkout of an LFS repo.
+    lfs.enable = true;
 
     ignores = [ ];
 
@@ -15,10 +18,11 @@
       user = {
         name = "Hirokazu Hata";
         email = "h.hata.ai.t@gmail.com";
-        excludesfile = "~/.git_secret";
       };
+      # A relative include.path resolves against the file containing it
+      # (~/.config/git/config), so spell out the home directory.
       include = {
-        path = ".gitconfig.local";
+        path = "~/.gitconfig.local";
       };
       core = {
         excludesFile = "~/.config/git/ignore";
@@ -38,11 +42,6 @@
       };
       github = {
         user = "h-michael";
-      };
-      filter.lfs = {
-        clean = "git-lfs clean %f";
-        smudge = "git-lfs smudge %f";
-        required = true;
       };
       color = {
         diff = "auto";
