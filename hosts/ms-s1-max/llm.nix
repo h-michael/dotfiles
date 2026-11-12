@@ -3,7 +3,6 @@
   config,
   lib,
   pkgs,
-  unstablePkgs,
   username,
   ...
 }:
@@ -12,7 +11,7 @@
   # Ollama - Local LLM runtime with AMD ROCm GPU acceleration
   services.ollama = {
     enable = true;
-    package = unstablePkgs.ollama-rocm; # ROCm-enabled build from nixpkgs-unstable
+    package = pkgs.unstable.ollama-rocm; # ROCm-enabled build from nixpkgs-unstable
     environmentVariables = {
       # Flash Attention: Improves memory efficiency and speeds up long context
       OLLAMA_FLASH_ATTENTION = "1";
@@ -36,7 +35,7 @@
   # Access: Tailscale only (http://<Tailscale-IP>:3080)
   services.open-webui = {
     enable = true;
-    package = unstablePkgs.open-webui; # Use latest from nixpkgs-unstable
+    package = pkgs.unstable.open-webui; # Use latest from nixpkgs-unstable
     host = "0.0.0.0"; # Listen on all interfaces including Tailscale
     port = 3080;
     openFirewall = false; # Block LAN access, allow Tailscale only

@@ -6,9 +6,6 @@
   ...
 }:
 
-let
-  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
 {
   imports = [
     ./common.nix
@@ -78,7 +75,7 @@ in
     # Database tools
     postgresql_16
     redis
-    unstablePkgs.tbls # Database schema documentation (unstable for latest)
+    pkgs.unstable.tbls # Database schema documentation (unstable for latest)
 
     # Network & Security
     pinentry_mac
@@ -93,7 +90,7 @@ in
     # System utilities
     # nixos-26.05 ships 2.0.0, an x86_64-only prebuilt binary that runs
     # under Rosetta; 3.x is a universal build.
-    unstablePkgs.terminal-notifier
+    pkgs.unstable.terminal-notifier
 
     # Monitoring
     python3Packages.datadog # Datadog CLI (dog, dogwrap)

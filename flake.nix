@@ -60,19 +60,22 @@
         "aarch64-darwin"
       ];
       forAllSystems = nixpkgs.lib.genAttrs systems;
-      # Unstable packages for NixOS services (Ollama, Open WebUI, Navidrome)
-      nixosUnstablePkgs = import nixpkgs-unstable {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-        overlays = [ ];
-      };
+      # Single overlay list for every pkgs instance, so no configuration
+      # silently misses one.
+      sharedOverlays = [
+        self.overlays.unstable
+        self.overlays.uhk-agent-fix
+        self.overlays.tmux-master
+        self.overlays.custom-packages
+        self.overlays.vscode-langservers-fix
+        self.overlays.neovim-unstable
+      ];
       mkNixosHost =
         hostPath:
         nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
             inherit inputs username;
-            unstablePkgs = nixosUnstablePkgs;
           };
           modules = [
             hostPath
@@ -82,16 +85,7 @@
             # host module via services.xremap)
             inputs.xremap-flake.nixosModules.default
 
-            # Apply overlays
-            {
-              nixpkgs.overlays = [
-                self.overlays.uhk-agent-fix
-                self.overlays.tmux-master
-                self.overlays.custom-packages
-                self.overlays.vscode-langservers-fix
-                self.overlays.neovim-unstable
-              ];
-            }
+            { nixpkgs.overlays = sharedOverlays; }
 
             # Home Manager as NixOS module
             home-manager.nixosModules.home-manager
@@ -119,6 +113,14 @@
     {
       # Overlays
       overlays = {
+        # pkgs.unstable: one nixpkgs-unstable instance per pkgs, inheriting
+        # its config so the unfree policy is decided in one place.
+        unstable = final: prev: {
+          unstable = import nixpkgs-unstable {
+            inherit (final.stdenv.hostPlatform) system;
+            inherit (final) config;
+          };
+        };
         uhk-agent-fix = import ./overlays/uhk-agent-fix.nix;
         tmux-master = import ./overlays/tmux-master.nix;
         vscode-langservers-fix = import ./overlays/vscode-langservers-fix.nix;
@@ -129,8 +131,7 @@
         # while unstable picks up each release within days and is still
         # served from cache.nixos.org.
         neovim-unstable = final: prev: {
-          neovim-unwrapped =
-            nixpkgs-unstable.legacyPackages.${final.stdenv.hostPlatform.system}.neovim-unwrapped;
+          neovim-unwrapped = final.unstable.neovim-unwrapped;
         };
       };
 
@@ -150,14 +151,7 @@
         modules = [
           ./hosts/darwin
 
-          # Apply overlays
-          {
-            nixpkgs.overlays = [
-              self.overlays.tmux-master
-              self.overlays.custom-packages
-              self.overlays.neovim-unstable
-            ];
-          }
+          { nixpkgs.overlays = sharedOverlays; }
         ];
       };
 
@@ -167,12 +161,11 @@
         darwin = home-manager.lib.homeManagerConfiguration {
           pkgs = import nixpkgs {
             system = "aarch64-darwin";
-            overlays = [
-              self.overlays.tmux-master
-              self.overlays.custom-packages
-              self.overlays.vscode-langservers-fix
-              self.overlays.neovim-unstable
-            ];
+            overlays = sharedOverlays;
+            # copilot-language-server carries an unfree license; scope the
+            # exception to just that package rather than allowing unfree
+            # broadly.
+            config.allowUnfreePredicate = pkg: pkg.pname or "" == "copilot-language-server";
           };
           extraSpecialArgs = {
             inherit inputs;
@@ -189,7 +182,10 @@
 
         # Arch Linux (or other non-NixOS Linux)
         arch = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = sharedOverlays;
+          };
           extraSpecialArgs = {
             inherit inputs username;
             isNixOS = false;

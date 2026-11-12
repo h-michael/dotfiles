@@ -6,14 +6,6 @@
   ...
 }:
 
-let
-  # copilot-language-server carries an unfree license; scope the exception
-  # to just that package rather than allowing unfree broadly.
-  unstablePkgs = import inputs.nixpkgs-unstable {
-    system = pkgs.stdenv.hostPlatform.system;
-    config.allowUnfreePredicate = pkg: pkg.pname or "" == "copilot-language-server";
-  };
-in
 {
   # Cross-platform modules
   imports = [
@@ -62,18 +54,18 @@ in
     yazi # Terminal file manager with image preview
     zellij
     # Not yet in the nixos-26.05 stable channel.
-    unstablePkgs.herdr
+    pkgs.unstable.herdr
 
     # Development tools
     home-manager
     gh
-    unstablePkgs.jujutsu
+    pkgs.unstable.jujutsu
     # @github/copilot-language-server's published bin path
     # ("../dist/language-server.js") points outside its own package dir.
     # npm silently sanitizes leading ".." in bin paths; mise's npm backend
     # (aube) does not, so `mise install`/shims fail to resolve the binary.
     # Install via nixpkgs instead, which builds/links it correctly.
-    unstablePkgs.copilot-language-server
+    pkgs.unstable.copilot-language-server
     gnumake
     pkg-config
     openssl # CLI

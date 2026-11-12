@@ -6,9 +6,6 @@
   ...
 }:
 
-let
-  unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-in
 {
   imports = [
     ./common.nix
@@ -82,7 +79,7 @@ in
     kdePackages.dolphin # KDE file manager
 
     # AI & productivity
-    unstablePkgs.opencode # AI coding agent (unstable version)
+    pkgs.unstable.opencode # AI coding agent (unstable version)
     obsidian # Knowledge base and note-taking
     enpass # Password manager
 
