@@ -235,7 +235,7 @@ opt.termguicolors = true
 --let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 opt.showmode = false
-opt.tags:append(".git/tags;", "codex.tags;")
+opt.tags:append({ ".git/tags;", "codex.tags;" })
 
 opt.inccommand = "split"
 

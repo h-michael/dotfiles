@@ -5,17 +5,18 @@ return {
 		cmd = { "ConformInfo" },
 		keys = {
       -- stylua: ignore start
-      { '<Leader>fmt', function() require('conform').format({ async = true, lsp_fallback = true }) end, mode = '', desc = 'Format buffer' },
+      { '<Leader>fmt', function() require('conform').format({ async = true, lsp_format = "fallback" }) end, mode = '', desc = 'Format buffer' },
 			-- stylua: ignore end
 		},
 		opts = {
 			formatters_by_ft = {
-				javascript = { "biome", "prettier" },
-				typescript = { "biome", "prettier" },
-				javascriptreact = { "biome", "prettier" },
-				typescriptreact = { "biome", "prettier" },
-				json = { "biome", "prettier" },
-				jsonc = { "biome", "prettier" },
+				-- Alternatives, not a pipeline: use whichever is available first
+				javascript = { "biome", "prettier", stop_after_first = true },
+				typescript = { "biome", "prettier", stop_after_first = true },
+				javascriptreact = { "biome", "prettier", stop_after_first = true },
+				typescriptreact = { "biome", "prettier", stop_after_first = true },
+				json = { "biome", "prettier", stop_after_first = true },
+				jsonc = { "biome", "prettier", stop_after_first = true },
 
 				css = { "prettier" },
 				html = { "prettier" },
@@ -42,7 +43,6 @@ return {
 				zsh = { "shfmt" },
 				fish = { "fish_indent" },
 				toml = { "taplo" },
-				vim = { "vimls" },
 			},
 			--format_after_save = function(bufnr)
 			--  -- Disable with a global or buffer-local variable

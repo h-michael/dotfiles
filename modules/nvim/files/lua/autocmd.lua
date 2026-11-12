@@ -17,12 +17,13 @@ api.nvim_create_autocmd("BufWritePre", {
 	callback = function()
 		-- http://vim-users.jp/2011/02/hack202/
 		local mk_dir_if_not_exist = function(dir)
+			-- isdirectory() returns 0 or 1, and 0 is truthy in Lua
 			if
-				not (vim.fn.isdirectory(dir))
+				vim.fn.isdirectory(dir) == 0
 				and vim.bo.buftype == ""
 				and string.match(vim.fn.input(vim.fn.printf('"%s" does not exist. Create? [y/N]', dir)), "^y$")
 			then
-				vim.fn.mkdir(vim.fn.iconv(dir, vim.opt.encoding:get(), vim.g.termencoding), "p")
+				vim.fn.mkdir(dir, "p")
 			end
 		end
 		mk_dir_if_not_exist(vim.fn.expand("<afile>:p:h"))

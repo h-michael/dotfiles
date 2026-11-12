@@ -28,7 +28,7 @@ return {
 							["<C-h>"] = "which_key",
 						},
 						n = {
-							["Esc"] = require("telescope.actions").close,
+							["<Esc>"] = require("telescope.actions").close,
 							["<C-h>"] = "which_key",
 						},
 					},

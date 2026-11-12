@@ -76,7 +76,8 @@ return {
 					cmd = { "terraform-ls", "serve", "-log-file=/dev/null" },
 				},
 				buf_ls = {},
-				omnisharp = {},
+				-- Installed only on Linux (home/linux.nix); a nil entry skips it
+				omnisharp = vim.fn.executable("OmniSharp") == 1 and {} or nil,
 				-- GDScript LSP is hosted inside the Godot editor itself
 				-- (Editor Settings → Network → Language Server, default
 				-- port 6005). Open the project in Godot before editing
