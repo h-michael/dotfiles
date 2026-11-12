@@ -1,27 +1,27 @@
-function init-ssh-agent -d "Ensure single ssh-agent instance and load keys"
-    # Location to store environment file (safely cleared per session)
+function init-ssh-agent -d "Ensure a reachable ssh-agent and load keys"
+    # ssh-add -l exits 2 when no agent is reachable. An agent the session
+    # already has (launchd's on macOS, a forwarded one over SSH) is used
+    # as is instead of being replaced.
+    ssh-add -l >/dev/null 2>&1
+    if test $status -eq 2
+        # XDG_RUNTIME_DIR is per-user with mode 0700, unlike /tmp, so no
+        # other user can plant the file sourced here.
+        set -q XDG_RUNTIME_DIR; or return
+        set -l agent_env $XDG_RUNTIME_DIR/ssh-agent-env.fish
 
-    set -l TMPDIR_VAR (test -n "$TMPDIR"; and echo "$TMPDIR"; or echo "/tmp")
-    set -l AGENT_ENV $TMPDIR_VAR/ssh-agent-env.fish
-
-    # Load existing environment file if present
-    if test -f $AGENT_ENV
-        source $AGENT_ENV
+        test -f $agent_env; and source $agent_env
+        ssh-add -l >/dev/null 2>&1
+        if test $status -eq 2
+            ssh-agent -c | sed \
+                -e '/^echo /d' \
+                -e 's/^setenv/set -gx/' \
+                -e 's/;//g' >$agent_env
+            source $agent_env
+        end
     end
 
-    # Restart agent if not running
-    if not set -q SSH_AGENT_PID; or not kill -0 $SSH_AGENT_PID >/dev/null 2>&1
-        ssh-agent -c | sed \
-            -e '/^echo /d' \
-            -e 's/^setenv/set -gx/' \
-            -e 's/;//g' >$AGENT_ENV
-
-        source $AGENT_ENV
-    end
-
-    # Add key only once if none are registered
+    # Load keys only once per agent
     if not ssh-add -l >/dev/null 2>&1
         ssh-add
-
     end
 end

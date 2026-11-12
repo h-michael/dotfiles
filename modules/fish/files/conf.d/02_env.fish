@@ -1,5 +1,6 @@
-# SSH agent - initialize once per terminal (not in tmux)
-if [ -z $TMUX ]
+# SSH agent - initialize once per terminal (not in tmux). Interactive
+# only: ssh-add may prompt for a passphrase, which would block scripts.
+if status is-interactive; and not set -q TMUX
     init-ssh-agent
 end
 
