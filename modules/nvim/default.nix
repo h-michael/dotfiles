@@ -31,4 +31,10 @@
     source = ./files;
     recursive = true;
   };
+
+  # lazy.nvim rewrites its lockfile on install/update, so link it to the
+  # git checkout instead of the read-only store; updates then show up as
+  # diffs to review and commit. Assumes the checkout lives at the ghq path.
+  xdg.configFile."nvim/lazy-lock.json".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/ghq/github.com/h-michael/dotfiles/modules/nvim/lazy-lock.json";
 }
