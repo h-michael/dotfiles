@@ -104,6 +104,9 @@
 
   services.openssh = {
     enable = true;
+    # Remote access goes through Tailscale (Tailscale SSH); keep sshd off
+    # every other interface.
+    openFirewall = false;
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
