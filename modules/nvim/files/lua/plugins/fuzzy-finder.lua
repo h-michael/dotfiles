@@ -1,14 +1,29 @@
 return {
-	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+	-- Loaded as telescope's dependency
+	{ "nvim-telescope/telescope-fzf-native.nvim", build = "make", lazy = true },
 	{
 		"nvim-telescope/telescope.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
 		},
+		-- Loaded on first use instead of at startup. The <Leader>f group label
+		-- is registered in which-key's opts (plugins/plugin.lua).
+		cmd = "Telescope",
+		-- stylua: ignore start
+		keys = {
+			{ '<Leader>f/', function() require('telescope.builtin').current_buffer_fuzzy_find({ previewer = false }) end, desc = 'Fuzzy find in buffer' },
+			{ '<Leader>fb', function() require('telescope.builtin').buffers() end, desc = 'Switch buffer' },
+			{ '<Leader>fcd', function() require('telescope.builtin').find_files({ cwd = vim.fn.expand('%:p:h') }) end, desc = "Find file in buffer's directory" },
+			{ '<Leader>fw', function() require('telescope.builtin').grep_string() end, desc = 'Grep string under cursor' },
+			{ '<Leader>ff', function() require('telescope.builtin').find_files() end, desc = 'Find file' },
+			{ '<Leader>fpf', function() require('telescope.builtin').find_files({ cwd = vim.fn.getcwd() }) end, desc = 'Find file in project root' },
+			{ '<Leader>frg', function() require('telescope.builtin').live_grep() end, desc = 'Live grep project' },
+			{ '<Leader>ft', function() require('telescope.builtin').tags() end, desc = 'Find tag' },
+		},
+		-- stylua: ignore end
 		config = function()
 			local telescope = require("telescope")
-			local builtin = require("telescope.builtin")
 
 			telescope.setup({
 				defaults = {
@@ -51,22 +66,6 @@ return {
 				},
 			})
 			telescope.load_extension("fzf")
-
-			local wk = require("which-key")
-
-      -- stylua: ignore start
-      wk.add({
-        { '<Leader>f', group = 'Telescope' },
-        { '<Leader>f/', function() builtin.current_buffer_fuzzy_find({ previewer = false }) end, desc = 'Fuzzy find in buffer' },
-        { '<Leader>fb', function() builtin.buffers() end, desc = 'Switch buffer' },
-        { '<Leader>fcd', function() builtin.find_files({ cwd = vim.fn.expand('%:p:h') }) end, desc = "Find file in buffer's directory" },
-        { '<Leader>fw', function() builtin.grep_string() end, desc = 'Grep string under cursor' },
-        { '<Leader>ff', function() builtin.find_files() end, desc = 'Find file' },
-        { '<Leader>fpf', function() builtin.find_files({ cwd = vim.fn.getcwd() }) end, desc = 'Find file in project root' },
-        { '<Leader>frg', function() builtin.live_grep() end, desc = 'Live grep project' },
-        { '<Leader>ft', function() builtin.tags() end, desc = 'Find tag' },
-      })
-			-- stylua: ignore end
 		end,
 	},
 }

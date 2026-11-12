@@ -28,6 +28,10 @@ return {
 		dependencies = {
 			"b0o/SchemaStore.nvim",
 		},
+		-- BufReadPre/BufNewFile fire before FileType, so vim.lsp.enable() below
+		-- still sees the first buffer's FileType. The config requires
+		-- blink.cmp for capabilities, which loads blink before any server starts.
+		event = { "BufReadPre", "BufNewFile" },
 		config = function()
 			vim.lsp.log.set_level("warn")
 

@@ -20,7 +20,7 @@ return {
 			map_cr = true,
 		},
 	},
-	{ "bfredl/nvim-luadev" },
+	{ "bfredl/nvim-luadev", cmd = "Luadev" },
 	--  Plugin for vim to enabling opening a file in a given line
 	{ "bogado/file-line" },
 	-- Vim and Neovim plugin to reveal the commit messages under the cursor
@@ -52,6 +52,9 @@ return {
 	{
 		"github/copilot.vim",
 		enabled = true,
+		-- Not lazy-loaded: copilot.vim initializes and maps <Tab> on VimEnter
+		-- and attaches to buffers on FileType/BufEnter, which a later load
+		-- would miss.
 		init = function()
 			vim.g.copilot_command = "copilot-language-server"
 		end,
@@ -59,7 +62,11 @@ return {
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = {},
+		opts = {
+			spec = {
+				{ "<Leader>f", group = "Telescope" },
+			},
+		},
 		keys = {
 			{ "<C-h>", "<cmd>WhichKey<CR>", mode = "n", desc = "WhichKey" }, -- stylua: ignore
 		},

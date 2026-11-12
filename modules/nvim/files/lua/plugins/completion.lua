@@ -2,6 +2,8 @@ return {
 	{
 		"saghen/blink.cmp",
 		version = "1.*",
+		-- Also loaded earlier by nvim-lspconfig's config (capabilities)
+		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			"fang2hou/blink-copilot",
 		},

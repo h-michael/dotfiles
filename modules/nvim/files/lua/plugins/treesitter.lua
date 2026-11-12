@@ -11,16 +11,59 @@ return {
 			-- stopped committing generated files to its default branch.
 			-- tmux.conf falls back to Neovim's syntax/tmux.vim.
 			require("nvim-treesitter").install({
-				"bash", "c", "cmake", "cpp", "css", "csv", "diff",
-				"dockerfile", "fish", "git_config", "git_rebase",
-				"gitattributes", "gitcommit", "gitignore", "go", "gomod",
-				"gosum", "gotmpl", "haskell", "html", "hyprlang", "ini",
-				"java", "javascript", "json", "json5", "jsonnet", "lua",
-				"luadoc", "make", "markdown", "markdown_inline", "mermaid",
-				"nginx", "nix", "ocaml", "perl", "php", "proto", "python",
-				"regex", "ruby", "rust", "scss", "sql", "ssh_config",
-				"terraform", "toml", "tsv", "tsx", "typescript",
-				"vim", "yaml",
+				"bash",
+				"c",
+				"cmake",
+				"cpp",
+				"css",
+				"csv",
+				"diff",
+				"dockerfile",
+				"fish",
+				"git_config",
+				"git_rebase",
+				"gitattributes",
+				"gitcommit",
+				"gitignore",
+				"go",
+				"gomod",
+				"gosum",
+				"gotmpl",
+				"haskell",
+				"html",
+				"hyprlang",
+				"ini",
+				"java",
+				"javascript",
+				"json",
+				"json5",
+				"jsonnet",
+				"lua",
+				"luadoc",
+				"make",
+				"markdown",
+				"markdown_inline",
+				"mermaid",
+				"nginx",
+				"nix",
+				"ocaml",
+				"perl",
+				"php",
+				"proto",
+				"python",
+				"regex",
+				"ruby",
+				"rust",
+				"scss",
+				"sql",
+				"ssh_config",
+				"terraform",
+				"toml",
+				"tsv",
+				"tsx",
+				"typescript",
+				"vim",
+				"yaml",
 			})
 
 			vim.api.nvim_create_autocmd("FileType", {
@@ -31,24 +74,25 @@ return {
 		end,
 	},
 	{
-		"nvim-treesitter/nvim-treesitter-textobjects",
-		branch = "main",
-	},
-	{
 		"nvim-treesitter/nvim-treesitter-context",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 		},
-		config = function()
-			require("treesitter-context").setup({
-				enable = false,
-			})
-			vim.api.nvim_set_keymap(
-				"n",
+		-- The context window is disabled; load only for the jump mapping or
+		-- an explicit :TSContext.
+		cmd = "TSContext",
+		keys = {
+			{
 				"<Leader>gc",
-				'<cmd>lua require("treesitter-context").go_to_context(vim.v.count1)<CR>',
-				{ noremap = true, silent = true }
-			)
-		end,
+				function()
+					require("treesitter-context").go_to_context(vim.v.count1)
+				end,
+				silent = true,
+				desc = "Go to context",
+			},
+		},
+		opts = {
+			enable = false,
+		},
 	},
 }
