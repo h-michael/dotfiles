@@ -1,13 +1,11 @@
 # Hook initialization
 
-# direnv is critical for defining the environment for both interactive and
-# non-interactive shells (e.g., for tools like gemini-cli).
-# The hook itself is lightweight.
-direnv hook fish | source
-
-# The following hooks are for interactive convenience only and can be skipped
-# in non-interactive shells to speed up startup.
+# Interactive only: these hooks run on prompt events, which never fire in
+# non-interactive shells (direnv's hook included), so loading them there
+# only costs startup time.
 if status is-interactive
+    direnv hook fish | source
+
     if not set -q __fish_interactive_hooks_initialized
         starship init fish | source
         atuin init fish | source
