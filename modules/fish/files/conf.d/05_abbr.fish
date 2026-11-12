@@ -6,4 +6,4 @@ abbr -a kubectld "kubectl describe"
 abbr -a kubectlg "kubectl get"
 
 abbr -a tmuxa "tmux attach"
-abbr -a tmuxd "tmux dettach"
+abbr -a tmuxd "tmux detach"

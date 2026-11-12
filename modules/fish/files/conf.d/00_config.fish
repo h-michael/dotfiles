@@ -7,7 +7,8 @@ set -gx SHELL "$__fish_bin_dir"/fish
 set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx XDG_CACHE_HOME $HOME/.cache
 set -gx XDG_DATA_HOME $HOME/.local/share
-set -gx XDG_CONFIG_DIRS /etc/xdg
+# Default only: NixOS sets its own list, which includes /etc/xdg
+set -q XDG_CONFIG_DIRS; or set -gx XDG_CONFIG_DIRS /etc/xdg
 # XDG_DATA_DIRS is set by home-manager (see modules/fish/default.nix)
 
 # Add private functions directory to function path

@@ -37,7 +37,6 @@ set -gx PAGER less
 # Less
 set -gx LESSCHARSET utf-8
 set -gx LESS -R
-set -gx LESSOPEN '|lessfilter %s'
 
 # LESS man page colors (makes Man pages more readable).
 set -gx LESS_TERMCAP_mb (printf "\033[01;31m")
@@ -93,7 +92,8 @@ set -gx CLOUDSDK_PYTHON_SITEPACKAGES 1
 # Nvim
 set -gx DEIN_CACHE_PATH $XDG_CACHE_HOME/dein-nvim/.cache
 set -gx NVIM_SHARED_PATH $HOME/.local/share/nvim
-set -gx LSP_LOG_PATH $NVIM_SHARED_PATH/lsp.log
+# stdpath("log"), where Neovim writes lsp.log
+set -gx LSP_LOG_PATH $HOME/.local/state/nvim/lsp.log
 
 # CMake
 set -gx CMAKE_EXPORT_COMPILE_COMMANDS ON

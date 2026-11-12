@@ -14,12 +14,17 @@ pre-commit:
 pre-push:
   commands:
     protect-branches:
+      # Check the refs being pushed (git passes them on stdin), not HEAD:
+      # `git push origin main` from a feature branch must be caught too.
+      use_stdin: true
       run: |
-        branch=$(git rev-parse --abbrev-ref HEAD)
-        case "$branch" in
-          main|master|develop|production)
-            echo "ERROR: Direct push to $branch is not allowed"
-            echo "Create a PR instead"
-            exit 1
-            ;;
-        esac
+        while read -r local_ref local_sha remote_ref remote_sha; do
+          branch=${remote_ref#refs/heads/}
+          case "$branch" in
+            main|master|develop|production)
+              echo "ERROR: Direct push to $branch is not allowed"
+              echo "Create a PR instead"
+              exit 1
+              ;;
+          esac
+        done

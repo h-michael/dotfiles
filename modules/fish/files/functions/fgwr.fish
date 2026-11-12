@@ -46,16 +46,15 @@ function fgwr -d "Remove git worktrees with fzf selection (supports multiple sel
         return 0
     end
 
-    # Count selected worktrees
-    set -l count (echo $selected | wc -l | tr -d ' ')
+    # $selected holds one list element per selected line; echo would join
+    # them into a single line, so iterate the list directly.
+    set -l count (count $selected)
 
     # Confirm deletion
     echo "Selected worktrees for removal:"
-    echo $selected | while read -l line
-        set -l worktree_path (echo $line | cut -f1)
-        set -l branch_name (echo $line | cut -f2)
-        set -l status_icon (echo $line | cut -f3)
-        echo "  - $branch_name ($status_icon) - $worktree_path"
+    for line in $selected
+        set -l fields (string split \t -- $line)
+        echo "  - $fields[2] ($fields[3]) - $fields[1]"
     end
     echo ""
 
@@ -69,9 +68,10 @@ function fgwr -d "Remove git worktrees with fzf selection (supports multiple sel
     set -l removed 0
     set -l failed 0
 
-    echo $selected | while read -l line
-        set -l worktree_path (echo $line | cut -f1)
-        set -l branch_name (echo $line | cut -f2)
+    for line in $selected
+        set -l fields (string split \t -- $line)
+        set -l worktree_path $fields[1]
+        set -l branch_name $fields[2]
 
         echo "Removing worktree: $worktree_path ($branch_name)"
 

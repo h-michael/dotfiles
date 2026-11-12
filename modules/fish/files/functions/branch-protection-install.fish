@@ -22,8 +22,9 @@ function branch-protection-install --description "Enable/disable branch protecti
         return
     end
 
-    # Enable protection
-    if not test -d .git
+    # Enable protection. rev-parse instead of `test -d .git`, which fails
+    # in linked worktrees (.git is a file there).
+    if not git rev-parse --git-dir >/dev/null 2>&1
         echo "ERROR: Not a git repository"
         return 1
     end
@@ -39,7 +40,7 @@ function branch-protection-install --description "Enable/disable branch protecti
 # Actual config is in lefthook-local.yml (gitignored)
 " > $main_config
         # Add to repo-local exclude (not tracked by git)
-        set -l exclude_file ".git/info/exclude"
+        set -l exclude_file (git rev-parse --git-path info/exclude)
         if not grep -q "^lefthook.yml\$" $exclude_file 2>/dev/null
             echo "lefthook.yml" >> $exclude_file
         end

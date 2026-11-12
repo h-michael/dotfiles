@@ -1,9 +1,4 @@
 function yank-clipboard -d "Copy stdin to tmux and system clipboard"
-    set -l buf (cat)
-
-    if set -q TMUX
-        printf '%s' "$buf" | tmux load-buffer -
-    end
-
-    printf '%s' "$buf" | pbcopy
+    # yank (modules/scripts) copies via OSC 52 and tmux on every platform
+    yank
 end
