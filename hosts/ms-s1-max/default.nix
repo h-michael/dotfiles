@@ -23,7 +23,10 @@
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 15;
-    editor = true;
+    # The TPM2 LUKS unlock below binds PCRs 0+7, which do not cover the
+    # kernel command line. An editable command line would let anyone at
+    # the console boot init=/bin/sh on the already unlocked disk.
+    editor = false;
     consoleMode = "keep";
   };
 
