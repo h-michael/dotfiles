@@ -24,17 +24,6 @@
     configurationLimit = 15;
     editor = true;
     consoleMode = "keep";
-    # Dual-boot with Arch Linux
-    # "zz-" prefix ensures Arch entry sorts after NixOS entries alphabetically
-    extraEntries = {
-      "zz-arch.conf" = ''
-        title Arch Linux
-        linux /vmlinuz-linux
-        initrd /amd-ucode.img
-        initrd /initramfs-linux.img
-        options rd.luks.name=47d5b5a8-226d-4574-bcda-0fc32efbdf59=luks-linux rd.lvm.vg=vg_linux root=/dev/mapper/vg_linux-arch rootflags=subvol=@ rw rd.break
-      '';
-    };
   };
 
   # I2C support for DDC/CI (external display brightness control)

@@ -104,7 +104,6 @@
               ];
               home-manager.extraSpecialArgs = {
                 inherit inputs username;
-                isNixOS = true;
               };
             }
           ];
@@ -126,6 +125,7 @@
         vscode-langservers-fix = import ./overlays/vscode-langservers-fix.nix;
         custom-packages = final: prev: {
           cica-font = final.callPackage ./pkgs/cica-font.nix { };
+          lazy-tmux = final.callPackage ./pkgs/lazy-tmux.nix { };
         };
         # As of 2026-10, nixos-26.05 had no Neovim backports after 0.12.4,
         # while unstable picks up each release within days and is still
@@ -155,7 +155,7 @@
         ];
       };
 
-      # Standalone Home Manager for non-NixOS systems
+      # Standalone Home Manager for macOS
       homeConfigurations = {
         # macOS (Apple Silicon)
         darwin = home-manager.lib.homeManagerConfiguration {
@@ -169,33 +169,12 @@
           };
           extraSpecialArgs = {
             inherit inputs;
-            isNixOS = false;
           };
           modules = [
             ./home/darwin.nix
             {
               home.username = darwinUsername;
               home.homeDirectory = "/Users/${darwinUsername}";
-            }
-          ];
-        };
-
-        # Arch Linux (or other non-NixOS Linux)
-        arch = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            overlays = sharedOverlays;
-          };
-          extraSpecialArgs = {
-            inherit inputs username;
-            isNixOS = false;
-          };
-          modules = [
-            ./home/linux.nix
-            {
-              home.username = username;
-              home.homeDirectory = "/home/${username}";
-              targets.genericLinux.enable = true;
             }
           ];
         };

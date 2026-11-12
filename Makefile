@@ -8,7 +8,7 @@ ifeq ($(UNAME_S),Darwin)
 else ifeq ($(shell test -f /etc/NIXOS && echo yes),yes)
   HOST := nix
 else
-  HOST := arch
+  HOST := unsupported
 endif
 
 NIXOS_HOST ?= $(shell hostname -s)
@@ -101,19 +101,10 @@ test:
 diff: build
 	@nvd diff /run/current-system ./result
 
-else # arch
+else
 
-switch:
-	nix run .#homeConfigurations.arch.activationPackage
-
-build:
-	nix build .#homeConfigurations.arch.activationPackage
-
-test:
-	nix build .#homeConfigurations.arch.activationPackage --dry-run
-
-diff: build
-	@nvd diff $$(readlink -f ~/.local/state/nix/profiles/home-manager) ./result
+switch build test diff:
+	@echo "Unsupported host: only macOS and NixOS are configured" >&2; exit 1
 
 endif
 
@@ -149,10 +140,5 @@ setup:
 news:
 	@case "$$(uname -s)" in \
 		Darwin) home-manager --flake .#darwin --impure news ;; \
-		Linux) \
-			if [ -f /etc/NIXOS ]; then \
-				echo "home-manager news is only wired for standalone configs in this repo" ; \
-			else \
-				home-manager --flake .#arch --impure news ; \
-			fi ;; \
+		Linux) echo "home-manager news is only wired for standalone configs in this repo" ;; \
 	esac

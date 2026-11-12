@@ -19,9 +19,7 @@ let
 
   # Candidate replacement for resurrect. Installed only (no daemon,
   # bootstrap, or agent hooks yet), so both can be compared side by side.
-  # callPackage instead of the custom-packages overlay because the Arch
-  # homeConfiguration is built without overlays.
-  lazyTmux = pkgs.callPackage ../../pkgs/lazy-tmux.nix { };
+  lazyTmux = pkgs.lazy-tmux;
 
   # Periodic resurrect save driven by an OS timer instead of tmux-continuum.
   #
