@@ -20,6 +20,7 @@ return {
 			{ '<Leader>fpf', function() require('telescope.builtin').find_files({ cwd = vim.fn.getcwd() }) end, desc = 'Find file in project root' },
 			{ '<Leader>frg', function() require('telescope.builtin').live_grep() end, desc = 'Live grep project' },
 			{ '<Leader>ft', function() require('telescope.builtin').tags() end, desc = 'Find tag' },
+			{ '<Leader>fs', function() require('serverlist').pick() end, desc = 'Switch to another Neovim instance' },
 		},
 		-- stylua: ignore end
 		config = function()
