@@ -126,10 +126,7 @@
   # https://mynixos.com/nix-darwin/options/security.pam
   security.pam.services.sudo_local = {
     touchIdAuth = true;
-    # Enable pam_reattach for tmux support
-    text = ''
-      auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so
-      auth       sufficient     pam_tid.so
-    '';
+    # pam_reattach, so Touch ID also works inside tmux
+    reattach = true;
   };
 }
