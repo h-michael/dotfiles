@@ -47,12 +47,12 @@ switch:
 	@if command -v darwin-rebuild >/dev/null 2>&1; then \
 		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" darwin-rebuild switch --flake .#darwin --impure ; \
 	else \
-		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" nix run nix-darwin/nix-darwin-25.11#darwin-rebuild -- switch --flake .#darwin --impure ; \
+		sudo DARWIN_USERNAME="$$DARWIN_USERNAME" nix run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake .#darwin --impure ; \
 	fi
 	@if command -v home-manager >/dev/null 2>&1; then \
 		home-manager switch --flake .#darwin --impure ; \
 	else \
-		nix run home-manager/release-25.11 -- switch --flake .#darwin --impure ; \
+		nix run home-manager/release-26.05 -- switch --flake .#darwin --impure ; \
 	fi
 
 build:
@@ -122,11 +122,8 @@ nix-gc:
 			exit 1; \
 		fi; \
 		echo "Keeping latest $(KEEP) NixOS system generations..."; \
-		sudo nix-env --list-generations --profile /nix/var/nix/profiles/system \
-			| awk '{print $$1}' \
-			| head -n -$(KEEP) \
-			| xargs -r sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations; \
-		sudo nix-collect-garbage -d; \
+		sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +$(KEEP); \
+		sudo nix-collect-garbage; \
 	else \
 		nix store gc; \
 	fi
