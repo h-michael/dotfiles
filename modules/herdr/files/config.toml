@@ -19,8 +19,15 @@ mouse_selection_copy_mode = true
 # repeats "claude"; the terminal title carries its task summary instead.
 [ui.sidebar.agents]
 rows = [
-  ["state_icon", "machine", "workspace", "tab"],
-  ["terminal_title_stripped"],
+  [
+    "state_icon",
+    "machine",
+    "workspace",
+    "tab",
+  ],
+  [
+    "terminal_title_stripped",
+  ],
 ]
 
 # Claude Code's own Stop hook (cc-notify) already sends a notification
@@ -61,6 +68,10 @@ workspace_picker = "prefix+w"
 open_worktree = "prefix+shift+o"
 
 copy_mode = "prefix+enter"
+# Jumps a scrolled-back pane to the live bottom without sending input.
+# scroll_to_bottom exists only in the self-built fork (h-michael/herdr PR
+# #7); the nixpkgs herdr reports it as an unknown key and ignores it.
+scroll_to_bottom = "prefix+]"
 
 # Navigate mode (prefix+w): j/k move between workspaces, so pane up/down
 # moves to shift+j/k. `herdr config check` does not report duplicate keys
