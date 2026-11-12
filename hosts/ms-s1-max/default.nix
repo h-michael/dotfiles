@@ -103,6 +103,9 @@
       iptables -A nixos-fw -p udp --dport 1714:1764 -s 100.64.0.0/10 -j nixos-fw-accept
     '';
   };
+  # LAN game transfers are enabled on this desktop only, so the laptop
+  # keeps the ports closed on outside networks.
+  programs.steam.localNetworkGameTransfers.openFirewall = true;
 
   # Bluetooth (with MT7925 workarounds)
   hardware.bluetooth = {
