@@ -7,6 +7,9 @@ return {
 		config = function()
 			require("nvim-treesitter").setup({})
 
+			-- No tmux: nvim-treesitter dropped it (78bebef1) after upstream
+			-- stopped committing generated files to its default branch.
+			-- tmux.conf falls back to Neovim's syntax/tmux.vim.
 			require("nvim-treesitter").install({
 				"bash", "c", "cmake", "cpp", "css", "csv", "diff",
 				"dockerfile", "fish", "git_config", "git_rebase",
@@ -16,7 +19,7 @@ return {
 				"luadoc", "make", "markdown", "markdown_inline", "mermaid",
 				"nginx", "nix", "ocaml", "perl", "php", "proto", "python",
 				"regex", "ruby", "rust", "scss", "sql", "ssh_config",
-				"terraform", "tmux", "toml", "tsv", "tsx", "typescript",
+				"terraform", "toml", "tsv", "tsx", "typescript",
 				"vim", "yaml",
 			})
 
