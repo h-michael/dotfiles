@@ -7,6 +7,12 @@
 }:
 
 {
+  # Reachable over Tailscale only: no other interface opens these ports.
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    config.services.prometheus.port
+    config.services.grafana.settings.server.http_port
+  ];
+
   # Prometheus - Metrics collection and storage
   # Access: Tailscale only (http://<Tailscale-IP>:9090)
   services.prometheus = {
@@ -15,8 +21,10 @@
     retentionTime = "30d"; # 1 month retention
 
     exporters = {
+      # Only Prometheus on this host scrapes the exporters.
       node = {
         enable = true;
+        listenAddress = "127.0.0.1";
         port = 9100;
         enabledCollectors = [
           "systemd"
@@ -34,7 +42,7 @@
         job_name = "node";
         static_configs = [
           {
-            targets = [ "localhost:9100" ];
+            targets = [ "127.0.0.1:9100" ];
           }
         ];
       }
@@ -42,7 +50,7 @@
         job_name = "process";
         static_configs = [
           {
-            targets = [ "localhost:9256" ];
+            targets = [ "127.0.0.1:9256" ];
           }
         ];
       }
@@ -52,6 +60,7 @@
   # Process exporter - Per-process CPU/memory monitoring
   services.prometheus.exporters.process = {
     enable = true;
+    listenAddress = "127.0.0.1";
     port = 9256;
     settings.process_names = [
       # Ollama LLM
@@ -121,6 +130,10 @@
         http_port = 3081;
       };
       security.secret_key = "$__file{/var/lib/grafana/secret_key}";
+      # Grafana applies admin_password only when it creates the admin user
+      # on first start; an existing database keeps its current password.
+      # The file must exist before Grafana starts, like secret_key.
+      security.admin_password = "$__file{/var/lib/grafana/admin_password}";
       analytics.reporting_enabled = false;
     };
     provision = {

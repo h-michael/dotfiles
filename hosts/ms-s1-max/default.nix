@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   username,
   ...
@@ -193,6 +194,9 @@
       DefaultTheme = "Dark";
     };
   };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    config.services.navidrome.settings.Port
+  ];
 
   # TPM2 support for LUKS automatic unlock
   #

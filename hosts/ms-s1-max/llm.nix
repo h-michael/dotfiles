@@ -48,6 +48,9 @@
       RAG_WEB_SEARCH_ENGINE = "duckduckgo";
     };
   };
+  networking.firewall.interfaces.tailscale0.allowedTCPPorts = [
+    config.services.open-webui.port
+  ];
 
   home-manager.users.${username}.home.packages = [ pkgs.lmstudio ];
 }
