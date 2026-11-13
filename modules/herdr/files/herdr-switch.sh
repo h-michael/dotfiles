@@ -8,8 +8,11 @@
 
 herdr=${HERDR_BIN_PATH:-herdr}
 
-# Tabs running an agent come first, each group sorted by name and then
-# tab number. Membership comes from `agent list` rather than
+# Tabs waiting on the user come first: blocked (needs input), then done
+# (finished while unseen), the same order as herdr's
+# tab_attention_priority in src/app/api_helpers.rs. Other tabs running an
+# agent follow, then tabs without one. Each group is sorted by name and
+# then tab number. Membership comes from `agent list` rather than
 # agent_status, which cannot tell an agent in the unknown state from a
 # pane without one.
 list=$(jq -n -r \
@@ -22,6 +25,8 @@ list=$(jq -n -r \
     elif . == "working" then "\u001b[33m●"
     elif . == "idle" then "\u001b[32m○"
     else "\u001b[90m·" end + "\u001b[0m";
+  def attention:
+    if . == "blocked" then 0 elif . == "done" then 1 else 2 end;
   ($agents.result.agents | map({key: .tab_id, value: true}) | from_entries) as $has_agent
   | $workspaces.result.workspaces as $all
   | ($all
@@ -43,7 +48,7 @@ list=$(jq -n -r \
       id: .tab_id,
       no_agent: ($has_agent[.tab_id] | not)
     })
-  | sort_by(.no_agent, (.name | ascii_downcase), .number)
+  | sort_by((.status | attention), .no_agent, (.name | ascii_downcase), .number)
   | .[]
   | "\(.status | icon) \(.name) · \(.tab)\t\(.id)"')
 
