@@ -17,6 +17,7 @@
 
         # Tools not yet in Nix or need mise management
         "aqua:argoproj/argo-rollouts" = "latest";
+        "github:backnotprop/plannotator" = "latest";
         "npm:js-beautify" = "latest";
 
         # LLM Tools (npm packages, keep in mise)
