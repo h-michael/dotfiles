@@ -18,6 +18,8 @@
         # Tools not yet in Nix or need mise management
         "aqua:argoproj/argo-rollouts" = "latest";
         "github:backnotprop/plannotator" = "latest";
+        # Prebuilt binary; cargo:cargo-nextest would compile from source
+        "aqua:nextest-rs/nextest/cargo-nextest" = "latest";
         "npm:js-beautify" = "latest";
 
         # LLM Tools (npm packages, keep in mise)
