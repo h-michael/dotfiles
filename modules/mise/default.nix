@@ -46,8 +46,10 @@
           "terraform"
         ];
         # Mitigate supply chain attacks by only allowing tool versions
-        # released at least 7 days ago.
-        minimum_release_age = "7d";
+        # released at least 3 days ago. npm lets authors unpublish within
+        # 72 hours, so a broken or compromised release is usually gone by
+        # then.
+        minimum_release_age = "3d";
 
         all_compile = false;
 
