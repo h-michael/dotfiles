@@ -6,7 +6,7 @@
 {
   programs.mise = {
     enable = true;
-    package = pkgs.mise;
+    package = pkgs.unstable.mise;
     enableFishIntegration = false;
 
     globalConfig = {
