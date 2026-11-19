@@ -29,6 +29,7 @@ help:
 	@echo "  make clean          - Remove old generations"
 	@echo "  make nix-gc         - Garbage collect nix store"
 	@echo "                        Or keep latest NixOS generations (KEEP=15)"
+	@echo "                        Or remove generations older than a period (OLDER=14d)"
 	@echo "  make news           - Show home-manager news"
 ifeq ($(HOST),darwin)
 	@echo ""
@@ -124,6 +125,11 @@ nix-gc:
 		echo "Keeping latest $(KEEP) NixOS system generations..."; \
 		sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +$(KEEP); \
 		sudo nix-collect-garbage; \
+	elif [ -n "$(OLDER)" ]; then \
+		echo "Removing system generations older than $(OLDER)..."; \
+		sudo nix-collect-garbage --delete-older-than $(OLDER); \
+		echo "Removing user generations older than $(OLDER)..."; \
+		nix-collect-garbage --delete-older-than $(OLDER); \
 	else \
 		nix store gc; \
 	fi

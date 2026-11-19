@@ -28,9 +28,10 @@ make test    # Dry-run
 make setup         # Install git hooks (gitleaks, formatters)
 
 # Maintenance
-make update        # Update flake inputs
-make clean         # Remove old generations
-make nix-gc        # Garbage collect nix store (NixOS: KEEP=N keeps N generations)
+make update            # Update flake inputs
+make clean             # Remove old generations
+make nix-gc            # Garbage collect nix store (NixOS: KEEP=N keeps N generations)
+make nix-gc OLDER=14d  # Remove system and user generations older than 14 days, then collect
 ```
 
 Neovim plugins are pinned by `modules/nvim/lazy-lock.json`. Update them with `:Lazy update` and commit the lockfile diff.
