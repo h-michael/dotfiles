@@ -24,6 +24,30 @@
     HOMEBREW_NO_ANALYTICS = "1";
   };
 
+  # Expire Home Manager and user profile generations older than 14 days,
+  # then collect the store. Run as the user, nix-collect-garbage skips the
+  # system profile; the daemon in hosts/darwin handles that one.
+  # nix.gc is not used: its launchd agent passes `options` as one argument,
+  # and nix-collect-garbage rejects "--delete-older-than 14d" in that form.
+  launchd.agents.nix-gc = {
+    enable = true;
+    config = {
+      ProgramArguments = [
+        "/nix/var/nix/profiles/default/bin/nix-collect-garbage"
+        "--delete-older-than"
+        "14d"
+      ];
+      StartCalendarInterval = [
+        {
+          Weekday = 7;
+          Hour = 3;
+          Minute = 45;
+        }
+      ];
+      ProcessType = "Background";
+    };
+  };
+
   # macOS-specific packages (migrated from Homebrew)
   home.packages = with pkgs; [
     # Shell & Core utilities

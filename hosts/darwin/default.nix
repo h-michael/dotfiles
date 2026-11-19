@@ -18,6 +18,24 @@
   # Disable nix-darwin's Nix management (using Determinate Systems Installer)
   nix.enable = false;
 
+  # nix.gc.automatic asserts nix.enable, so the job is defined directly.
+  # Running as root, it expires generations of the root-owned system profile
+  # older than 14 days, then collects the store. Home Manager generations
+  # are expired by the agent in home/darwin.nix.
+  launchd.daemons.nix-gc = {
+    command = "/nix/var/nix/profiles/default/bin/nix-collect-garbage --delete-older-than 14d";
+    serviceConfig = {
+      RunAtLoad = false;
+      StartCalendarInterval = [
+        {
+          Weekday = 7;
+          Hour = 3;
+          Minute = 15;
+        }
+      ];
+    };
+  };
+
   # Enable Fish shell system-wide
   programs.fish.enable = true;
 
