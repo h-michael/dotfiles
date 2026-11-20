@@ -30,6 +30,16 @@ interface RateLimitWindow {
   resets_at?: number;
 }
 
+interface PromptCache {
+  warm?: boolean;
+  caching_observed?: boolean;
+  ttl?: string;
+  expires_at?: number | null;
+  hit_ratio?: number | null;
+  last_miss_at?: number | null;
+  last_miss_cause?: { causes?: string[] } | null;
+}
+
 interface StatusLineInput {
   cwd?: string;
   session_id?: string;
@@ -62,6 +72,8 @@ interface StatusLineInput {
   };
   agent?: { name?: string };
   pr?: { number?: number; url?: string; review_state?: string };
+  prompt_cache?: PromptCache;
+  vim?: { mode?: string };
 }
 
 // Tokyo Night truecolor palette.
@@ -75,6 +87,7 @@ const colors = {
   orange: "\x1b[38;2;255;158;100m",
   white: "\x1b[38;2;192;202;245m",
   gray: "\x1b[38;2;139;148;191m",
+  dim: "\x1b[38;2;86;95;137m",
   reset: "\x1b[0m",
   blink: "\x1b[5m",
 };
@@ -189,18 +202,12 @@ async function getGitStatus(cwd: string): Promise<string | null> {
 
 function formatCost(v: number): string | null {
   if (v < 0.01) return null;
-  return `$${v.toFixed(3)}`;
+  return `$${v.toFixed(2)}`;
 }
 
 function formatLinesChanged(added: number, removed: number): string | null {
   if (added <= 0 && removed <= 0) return null;
   return `${paint(colors.green, `+${added}`)}/${paint(colors.red, `-${removed}`)}`;
-}
-
-function formatTokenCount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
-  return n.toString();
 }
 
 // Suffix like "/1M" only when the model isn't on the default 200k window.
@@ -210,6 +217,13 @@ function formatContextSize(size?: number): string {
   return `/${Math.round(size / 1000)}k`;
 }
 
+function thresholdColor(p: number, warn: number, high: number, crit: number): string {
+  if (p >= crit) return colors.red;
+  if (p >= high) return colors.orange;
+  if (p >= warn) return colors.yellow;
+  return colors.white;
+}
+
 function formatContextPct(
   pct: number,
   exceeds: boolean,
@@ -217,22 +231,26 @@ function formatContextPct(
 ): string | null {
   if (pct <= 0 && !exceeds) return null;
   const p = Math.round(pct);
-  let color = colors.gray;
-  if (exceeds) color = colors.blink + colors.red;
-  else if (p >= 90) color = colors.red;
-  else if (p >= 80) color = colors.orange;
-  else if (p >= 60) color = colors.yellow;
+  const color = exceeds
+    ? colors.blink + colors.red
+    : thresholdColor(p, 60, 80, 90);
   return paint(color, `ctx:${p}%${formatContextSize(size)}`);
 }
 
 function formatDuration(seconds: number): string {
   if (seconds <= 0) return "0m";
-  const h = Math.floor(seconds / 3600);
+  if (seconds < 60) return "<1m";
+  const d = Math.floor(seconds / 86400);
+  const h = Math.floor((seconds % 86400) / 3600);
   const m = Math.floor((seconds % 3600) / 60);
+  if (d > 0) return `${d}d${h}h`;
   return h > 0 ? `${h}h${m}m` : `${m}m`;
 }
 
-function formatFiveHourBlock(rl: RateLimitWindow | undefined): string | null {
+function formatRateLimit(
+  name: string,
+  rl: RateLimitWindow | undefined,
+): string | null {
   if (!rl) return null;
   const pct = rl.used_percentage;
   const resetsAt = rl.resets_at;
@@ -241,41 +259,14 @@ function formatFiveHourBlock(rl: RateLimitWindow | undefined): string | null {
   const segments: string[] = [];
   if (pct != null) {
     const p = Math.round(pct);
-    const width = 10;
-    const filled = Math.min(width, Math.max(0, Math.floor((p / 100) * width)));
-    const bar = "█".repeat(filled) + "░".repeat(width - filled);
-
-    let color = colors.gray;
-    if (p >= 90) color = colors.red;
-    else if (p >= 75) color = colors.orange;
-    else if (p >= 50) color = colors.yellow;
-
-    segments.push(paint(color, `5h[${bar}] ${p}%`));
+    segments.push(paint(thresholdColor(p, 50, 75, 90), `${name}:${p}%`));
+  } else {
+    segments.push(paint(colors.white, `${name}:`));
   }
   if (resetsAt != null) {
     const remaining = resetsAt - Math.floor(Date.now() / 1000);
     if (remaining > 0) {
-      segments.push(paint(colors.gray, `⟳${formatDuration(remaining)}`));
-    }
-  }
-  return segments.join(" ");
-}
-
-// Only render 7-day usage once it crosses 75% — otherwise it's noise.
-function formatSevenDay(rl: RateLimitWindow | undefined): string | null {
-  if (!rl || rl.used_percentage == null) return null;
-  const p = Math.round(rl.used_percentage);
-  if (p < 75) return null;
-
-  let color = colors.yellow;
-  if (p >= 90) color = colors.red;
-  else if (p >= 80) color = colors.orange;
-
-  const segments = [paint(color, `7d:${p}%`)];
-  if (rl.resets_at) {
-    const remaining = rl.resets_at - Math.floor(Date.now() / 1000);
-    if (remaining > 0) {
-      segments.push(paint(colors.gray, `⟳${formatDuration(remaining)}`));
+      segments.push(paint(colors.gray, formatDuration(remaining)));
     }
   }
   return segments.join(" ");
@@ -300,6 +291,75 @@ function formatPr(pr: StatusLineInput["pr"]): string | null {
   }
   const painted = paint(color, `#${pr.number}`);
   return pr.url ? osc8(painted, pr.url) : painted;
+}
+
+// Keep a miss cause visible only briefly; the payload holds the last cause
+// until the next miss, which could be hours later.
+const MISS_CAUSE_WINDOW_SEC = 5 * 60;
+
+function formatPromptCache(pc: PromptCache | undefined): string | null {
+  if (!pc?.caching_observed) return null;
+  const now = Math.floor(Date.now() / 1000);
+  const segments: string[] = [];
+
+  if (pc.hit_ratio != null) {
+    const p = Math.round(pc.hit_ratio * 100);
+    let color = colors.white;
+    if (p < 50) color = colors.red;
+    else if (p < 80) color = colors.yellow;
+    segments.push(paint(color, `cache:${p}%`));
+  } else {
+    segments.push(paint(colors.white, "cache:"));
+  }
+
+  const causes = pc.last_miss_cause?.causes;
+  if (
+    causes?.length &&
+    pc.last_miss_at != null &&
+    now - pc.last_miss_at < MISS_CAUSE_WINDOW_SEC
+  ) {
+    segments.push(paint(colors.orange, `miss:${causes.join(",")}`));
+  }
+
+  return segments.join(" ");
+}
+
+const TTL_SECONDS: Record<string, number> = { "5m": 5 * 60, "1h": 60 * 60 };
+
+// Colour by the fraction of the TTL left so the same rule works for both
+// the 5m and 1h TTLs.
+function formatCacheExpiry(pc: PromptCache | undefined): string | null {
+  if (!pc?.caching_observed) return null;
+  const now = Math.floor(Date.now() / 1000);
+  const remaining = pc.expires_at != null ? pc.expires_at - now : 0;
+  if (!pc.warm || remaining <= 0) return paint(colors.red, "cache expire:cold");
+
+  const ttl = TTL_SECONDS[pc.ttl ?? ""];
+  let color = colors.white;
+  if (ttl) {
+    const ratio = remaining / ttl;
+    if (ratio < 0.1) color = colors.orange;
+    else if (ratio < 0.25) color = colors.yellow;
+  }
+  return paint(color, `cache expire:${formatDuration(remaining)}`);
+}
+
+// Same colours as the lualine mode section under tokyonight-night
+// (lua/lualine/themes/_tokyonight.lua): mode colour as background with
+// the theme's `black` as foreground.
+const vimModeBg: Record<string, string> = {
+  NORMAL: "\x1b[48;2;122;162;247m",
+  INSERT: "\x1b[48;2;158;206;106m",
+  VISUAL: "\x1b[48;2;187;154;247m",
+  "VISUAL LINE": "\x1b[48;2;187;154;247m",
+};
+const vimModeFg = "\x1b[38;2;21;22;30m";
+
+function formatVimMode(mode: string | undefined): string | null {
+  if (!mode) return null;
+  const bg = vimModeBg[mode];
+  if (!bg) return paint(colors.white, mode);
+  return paint(bg + vimModeFg, ` ${mode} `);
 }
 
 async function main() {
@@ -328,29 +388,18 @@ async function main() {
     input.context_window?.context_window_size,
   );
 
-  const cu = input.context_window?.current_usage;
-  let tokensText: string | null = null;
-  if (cu) {
-    const inTok = cu.input_tokens ?? 0;
-    const outTok = cu.output_tokens ?? 0;
-    const cacheTok = cu.cache_read_input_tokens ?? 0;
-    if (inTok > 0 || outTok > 0 || cacheTok > 0) {
-      tokensText = paint(
-        colors.gray,
-        `in:${formatTokenCount(inTok)} out:${formatTokenCount(outTok)} cache:${formatTokenCount(cacheTok)}`,
-      );
-    }
-  }
-
   const costText = formatCost(input.cost?.total_cost_usd ?? 0);
   const linesText = formatLinesChanged(
     input.cost?.total_lines_added ?? 0,
     input.cost?.total_lines_removed ?? 0,
   );
 
-  const block5h = formatFiveHourBlock(input.rate_limits?.five_hour);
-  const block7d = formatSevenDay(input.rate_limits?.seven_day);
+  const block5h = formatRateLimit("5h", input.rate_limits?.five_hour);
+  const block7d = formatRateLimit("7d", input.rate_limits?.seven_day);
   const prText = formatPr(input.pr);
+  const cacheText = formatPromptCache(input.prompt_cache);
+  const cacheExpiryText = formatCacheExpiry(input.prompt_cache);
+  const vimText = formatVimMode(input.vim?.mode);
   const sessionName = input.session_name
     ? paint(colors.gray, `[${input.session_name}]`)
     : null;
@@ -376,18 +425,27 @@ async function main() {
   }
 
   // Line 2: execution context and usage — what's running and how much it costs.
-  const line2Items: string[] = [];
-  if (modelText) line2Items.push(paint(colors.magenta, modelText));
-  if (effort) line2Items.push(paint(colors.cyan, effort));
-  if (agentName) line2Items.push(paint(colors.yellow, `@${agentName}`));
-  if (ctxText) line2Items.push(ctxText);
-  if (tokensText) line2Items.push(tokensText);
-  if (costText) line2Items.push(paint(colors.gray, costText));
-  if (block5h) line2Items.push(block5h);
-  if (block7d) line2Items.push(block7d);
+  const groups: (string | null)[][] = [
+    [
+      vimText,
+      modelText ? paint(colors.magenta, modelText) : null,
+      effort ? paint(colors.cyan, effort) : null,
+      agentName ? paint(colors.yellow, `@${agentName}`) : null,
+    ],
+    [ctxText],
+    [cacheText],
+    [cacheExpiryText],
+    [block5h],
+    [block7d],
+    [costText ? paint(colors.white, costText) : null],
+  ];
+  const line2 = groups
+    .map((g) => g.filter(Boolean).join(" "))
+    .filter(Boolean)
+    .join(paint(colors.dim, " │ "));
 
   console.log(line1);
-  if (line2Items.length) console.log(line2Items.join(" "));
+  if (line2) console.log(line2);
 }
 
 main().catch((err) => {
