@@ -12,7 +12,7 @@
     globalConfig = {
       tools = {
         # Runtime versions (keep for project-specific version management)
-        node = "24.22.1";
+        node = "26.13.1";
         zig = "latest";
 
         # Tools not yet in Nix or need mise management
