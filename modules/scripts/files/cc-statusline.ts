@@ -80,7 +80,7 @@ interface StatusLineInput {
 
 // Tokyo Night truecolor palette.
 const colors = {
-  blue: "\x1b[38;2;122;170;247m",
+  blue: "\x1b[38;2;122;162;247m",
   cyan: "\x1b[38;2;125;207;255m",
   magenta: "\x1b[38;2;187;154;247m",
   yellow: "\x1b[38;2;224;175;104m",
@@ -109,8 +109,9 @@ function stripAnsi(s: string): string {
     .replace(/\x1b\[[0-9;]*m/g, "");
 }
 
+// Terminal columns, so wide (CJK) characters count as two.
 function visibleLength(s: string): number {
-  return [...stripAnsi(s)].length;
+  return Bun.stringWidth(stripAnsi(s));
 }
 
 function resolveCwd(input: StatusLineInput): string {
@@ -178,8 +179,11 @@ async function getGitStatus(cwd: string): Promise<string | null> {
     let branch = "detached";
     if (first.startsWith("## ")) {
       const rest = first.slice(3);
+      const unborn = rest.match(/^(?:No commits yet|Initial commit) on (\S+)/);
       if (rest.startsWith("HEAD (no branch)")) {
         branch = "detached";
+      } else if (unborn) {
+        branch = unborn[1];
       } else {
         const upstreamIdx = rest.indexOf("...");
         branch = upstreamIdx >= 0 ? rest.slice(0, upstreamIdx) : rest.split(" ")[0];
@@ -187,8 +191,8 @@ async function getGitStatus(cwd: string): Promise<string | null> {
     }
 
     const entries = lines.slice(1).filter((l) => l);
-    const staged = entries.some((l) => /^[MADRCU]/.test(l));
-    const modified = entries.some((l) => /^.[MD]/.test(l));
+    const staged = entries.some((l) => /^[MADRCUT]/.test(l));
+    const modified = entries.some((l) => /^.[MDT]/.test(l));
     const untracked = entries.some((l) => l.startsWith("??"));
 
     const marks: string[] = [];
@@ -417,10 +421,13 @@ async function main() {
   const effort = input.effort?.level;
   const agentName = input.agent?.name;
 
+  // exceeds_200k_tokens uses a fixed 200k threshold, so on a 1M window it
+  // fires at about 20% used; only treat it as full on windows of 200k or less.
+  const ctxSize = input.context_window?.context_window_size;
   const ctxText = formatContextPct(
     input.context_window?.used_percentage ?? 0,
-    input.exceeds_200k_tokens ?? false,
-    input.context_window?.context_window_size,
+    (input.exceeds_200k_tokens ?? false) && (ctxSize ?? 0) <= 200_000,
+    ctxSize,
   );
 
   const costText = formatCost(input.cost?.total_cost_usd ?? 0);
@@ -461,24 +468,34 @@ async function main() {
   }
 
   // Line 2: execution context and usage — what's running and how much it costs.
-  const groups: (string | null)[][] = [
-    [
-      vimText,
-      modelText ? paint(colors.magenta, modelText) : null,
-      effort ? paint(colors.cyan, effort) : null,
-      agentName ? paint(colors.yellow, `@${agentName}`) : null,
-    ],
-    [ctxText],
-    [cacheText],
-    [cacheExpiryText],
-    [block5h],
-    [block7d],
-    [costText ? paint(colors.white, costText) : null],
+  // `drop` orders what goes first when the row is wider than COLUMNS; the
+  // model group is never dropped.
+  const groups: { items: (string | null)[]; drop?: number }[] = [
+    {
+      items: [
+        vimText,
+        modelText ? paint(colors.magenta, modelText) : null,
+        effort ? paint(colors.cyan, effort) : null,
+        agentName ? paint(colors.yellow, `@${agentName}`) : null,
+      ],
+    },
+    { items: [ctxText], drop: 6 },
+    { items: [cacheText], drop: 3 },
+    { items: [cacheExpiryText], drop: 2 },
+    { items: [block5h], drop: 5 },
+    { items: [block7d], drop: 4 },
+    { items: [costText ? paint(colors.white, costText) : null], drop: 1 },
   ];
-  const line2 = groups
-    .map((g) => g.filter(Boolean).join(" "))
-    .filter(Boolean)
-    .join(paint(colors.dim, " │ "));
+  const buildLine2 = (dropped: number) =>
+    groups
+      .filter((g) => g.drop == null || g.drop > dropped)
+      .map((g) => g.items.filter(Boolean).join(" "))
+      .filter(Boolean)
+      .join(paint(colors.dim, " │ "));
+  let line2 = buildLine2(0);
+  for (let d = 1; d <= 6 && visibleLength(line2) > cols; d++) {
+    line2 = buildLine2(d);
+  }
 
   console.log(line1);
   if (line2) console.log(line2);
