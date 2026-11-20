@@ -1,5 +1,5 @@
 {
-  "SchemaStore.nvim": { "branch": "main", "commit": "a0479e8a6d5d3471899d2be630fd207f4804dc7d" },
+  "SchemaStore.nvim": { "branch": "main", "commit": "abc95e13502ff3acbed151de97667174b2e4132d" },
   "aerial.nvim": { "branch": "master", "commit": "28fe6e822ae344544c379d60fcb13c9519a1f08a" },
   "auto-session": { "branch": "main", "commit": "62437532b38495551410b3f377bcf4aaac574ebe" },
   "blink-copilot": { "branch": "main", "commit": "7ad8209b2f880a2840c94cdcd80ab4dc511d4f39" },
@@ -17,7 +17,7 @@
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lsp_signature.nvim": { "branch": "master", "commit": "1997451c4c9956a1380d8bea4b0e33ebdf07976e" },
   "lualine.nvim": { "branch": "master", "commit": "221ce6b2d999187044529f49da6554a92f740a96" },
-  "md-render.nvim": { "branch": "main", "commit": "4f6d73a276356bc23dbffa594d2a54dc978e98bb" },
+  "md-render.nvim": { "branch": "main", "commit": "b1d7df78e6fadc939908d87fb44b75db3f52dc17" },
   "memolist.vim": { "branch": "master", "commit": "8090f7a973f266a600c2ea84ec6941346414300a" },
   "mini.icons": { "branch": "main", "commit": "fc90b3925a2a68282be06e28cfe0cbb366c75dad" },
   "nvim-autopairs": { "branch": "master", "commit": "3172f40c16563db871a58f20d205c710ad782311" },
