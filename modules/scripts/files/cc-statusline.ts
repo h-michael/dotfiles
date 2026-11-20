@@ -4,6 +4,8 @@
 // https://code.claude.com/docs/en/statusline.md and prints one or two lines.
 
 import { execFile } from "node:child_process";
+import { readdir, readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { text } from "node:stream/consumers";
 import { promisify } from "node:util";
 
@@ -362,6 +364,36 @@ function formatVimMode(mode: string | undefined): string | null {
   return paint(bg + vimModeFg, ` ${mode} `);
 }
 
+// The session name other sessions use to message this one (shown by
+// /list-agents) is not in the status line payload, whose `session_name` is
+// the /rename title instead. Claude Code keeps it in
+// <config dir>/sessions/<pid>.json next to the session id; this file format
+// is undocumented, so any failure just hides the item.
+async function getPeerSessionName(
+  sessionId: string | undefined,
+): Promise<string | null> {
+  if (!sessionId) return null;
+  const configDir =
+    process.env.CLAUDE_CONFIG_DIR || join(process.env.HOME || "", ".claude");
+  const dir = join(configDir, "sessions");
+  try {
+    const files = (await readdir(dir)).filter((f) => f.endsWith(".json"));
+    for (const f of files) {
+      try {
+        const data = JSON.parse(await readFile(join(dir, f), "utf8"));
+        if (data?.sessionId === sessionId && typeof data.name === "string") {
+          return data.name;
+        }
+      } catch {
+        // A session may rewrite or remove its file while we read it.
+      }
+    }
+  } catch {
+    return null;
+  }
+  return null;
+}
+
 async function main() {
   const raw = await text(process.stdin);
 
@@ -376,7 +408,10 @@ async function main() {
   const cols = parseInt(process.env.COLUMNS || "0", 10) || 200;
 
   const paths = pathVariants(input);
-  const gitText = await getGitStatus(resolveCwd(input));
+  const [gitText, peerSessionName] = await Promise.all([
+    getGitStatus(resolveCwd(input)),
+    getPeerSessionName(input.session_id),
+  ]);
 
   const modelText = formatModel(input.model?.display_name || "");
   const effort = input.effort?.level;
@@ -415,6 +450,7 @@ async function main() {
     if (prText) items.push(prText);
     if (sessionName) items.push(sessionName);
     if (sessionIdText) items.push(sessionIdText);
+    if (peerSessionName) items.push(paint(colors.gray, `peer:${peerSessionName}`));
     return items.join(" ");
   };
 
