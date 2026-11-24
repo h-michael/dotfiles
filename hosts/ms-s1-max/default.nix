@@ -19,6 +19,9 @@
 
   boot.loader.timeout = null;
 
+  # Let the desktop session own idle behavior instead of logind suspending it.
+  services.logind.settings.Login.IdleAction = "ignore";
+
   # Use systemd-boot
   boot.loader.systemd-boot = {
     enable = true;
