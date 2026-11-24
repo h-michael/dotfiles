@@ -167,6 +167,7 @@
     };
 
     # niri-only: swayidle
+    # Automatic suspend is intentionally disabled; suspend only through explicit manual actions.
     swayidle = {
       Unit = {
         Description = "Idle manager (niri)";
@@ -178,8 +179,8 @@
         Type = "simple";
         ExecStart = builtins.concatStringsSep " " [
           "${pkgs.swayidle}/bin/swayidle -w"
-          "timeout 300 '${pkgs.swaylock}/bin/swaylock -f'"
-          "timeout 305 'niri msg action power-off-monitors'"
+          "timeout 600 '${pkgs.swaylock}/bin/swaylock -f'"
+          "timeout 600 'niri msg action power-off-monitors'"
           "resume 'niri msg action power-on-monitors'"
           "before-sleep '${pkgs.swaylock}/bin/swaylock -f'"
         ];

@@ -19,6 +19,16 @@
 
   boot.loader.timeout = null;
 
+  # Keep Plasma's lock and display-off timers aligned with the Wayland sessions.
+  # This desktop must not auto-suspend while connected to AC power.
+  home-manager.users.${username}.programs.plasma = {
+    kscreenlocker.timeout = 10;
+    powerdevil.AC = {
+      autoSuspend.action = "nothing";
+      turnOffDisplay.idleTimeout = 600;
+    };
+  };
+
   # Let the desktop session own idle behavior instead of logind suspending it.
   services.logind.settings.Login.IdleAction = "ignore";
 
