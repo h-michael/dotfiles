@@ -113,6 +113,7 @@
     socat
     websocat # WebSocket client/server
     grpcurl # gRPC testing tool
+    mitmproxy # HTTP(S) proxy (mitmdump, mitmproxy, mitmweb)
 
     # Language Servers
     lua-language-server
