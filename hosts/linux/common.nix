@@ -11,6 +11,7 @@
     "nix-command"
     "flakes"
   ];
+  nix.settings.max-substitution-jobs = 32;
 
   time.timeZone = "Asia/Tokyo";
   i18n.defaultLocale = "en_US.UTF-8";
