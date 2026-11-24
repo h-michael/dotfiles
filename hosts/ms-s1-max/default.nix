@@ -129,10 +129,23 @@
     # WebHID needs read-write access; explicit ownership avoids relying on uaccess ACLs.
     KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3434", MODE="0660", GROUP="${username}"
     SUBSYSTEM=="usb", ATTR{idVendor}=="3434", MODE="0660", GROUP="${username}"
+
   '';
 
   # ddcutil udev rules for I2C device access
   services.udev.packages = [ pkgs.ddcutil ];
+
+  # Use a Windows guest for vendor tools that require native HID ioctls.
+  # USB redirection lets the guest own the HORI receiver while configuring it.
+  virtualisation = {
+    libvirtd = {
+      enable = true;
+      qemu.swtpm.enable = true;
+    };
+    spiceUSBRedirection.enable = true;
+  };
+
+  users.users.${username}.extraGroups = [ "libvirtd" ];
 
   # Workaround: MediaTek MT7925 Bluetooth is soft-blocked on boot with kernel 6.12+
   #
@@ -236,6 +249,8 @@
   # HIP support for AMD GPU (many applications hardcode /opt/rocm/hip path)
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+    # swtpm-localca runs as tss and cannot create a top-level /var/lib entry.
+    "d     /var/lib/swtpm-localca 0750 tss tss -"
   ];
 
   environment.systemPackages = with pkgs; [
@@ -243,5 +258,7 @@
     rocmPackages.rocm-smi
     rocmPackages.rocminfo
     clinfo
+    virt-manager
+    virt-viewer
   ];
 }
