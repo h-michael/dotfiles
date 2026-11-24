@@ -40,6 +40,7 @@
   programs.niri.enable = true;
   services.desktopManager.plasma6.enable = true;
   programs.ydotool.enable = true;
+  programs.gnupg.agent.enable = true;
 
   services.xremap = {
     enable = true;
