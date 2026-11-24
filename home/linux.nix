@@ -80,6 +80,8 @@
 
     # AI & productivity
     pkgs.unstable.opencode # AI coding agent (unstable version)
+    pkgs.unstable.antigravity-ide-fhs
+    pkgs.unstable.antigravity-cli
     obsidian # Knowledge base and note-taking
     enpass # Password manager
 
