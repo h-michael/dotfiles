@@ -4,7 +4,7 @@
       "complex_modifications": {
         "rules": [
           {
-            "description": "Toggle built-in keyboard with ctrl+opt+cmd+k",
+            "description": "Toggle built-in keyboard (ctrl+opt+cmd+k) or keyboard and clicks (ctrl+opt+cmd+t)",
             "manipulators": [
               {
                 "conditions": [{ "name": "builtin_kbd_off", "type": "variable_if", "value": 1 }],
@@ -14,7 +14,44 @@
                 },
                 "to": [
                   { "set_variable": { "name": "builtin_kbd_off", "value": 0 } },
-                  { "set_notification_message": { "id": "builtin_kbd_off", "text": "" } }
+                  { "set_notification_message": { "id": "builtin_kbd_off", "text": "" } },
+                  { "shell_command": "/usr/bin/pkill -x nopaw" }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [{ "name": "builtin_kbd_off", "type": "variable_if", "value": 1 }],
+                "from": {
+                  "key_code": "t",
+                  "modifiers": { "mandatory": ["control", "option", "command"] }
+                },
+                "to": [
+                  { "set_variable": { "name": "builtin_kbd_off", "value": 0 } },
+                  { "set_notification_message": { "id": "builtin_kbd_off", "text": "" } },
+                  { "shell_command": "/usr/bin/pkill -x nopaw" }
+                ],
+                "type": "basic"
+              },
+              {
+                "conditions": [
+                  { "name": "builtin_kbd_off", "type": "variable_unless", "value": 1 },
+                  { "identifiers": [{ "is_built_in_keyboard": true }], "type": "device_if" }
+                ],
+                "from": {
+                  "key_code": "t",
+                  "modifiers": { "mandatory": ["control", "option", "command"] }
+                },
+                "to": [
+                  { "set_variable": { "name": "builtin_kbd_off", "value": 1 } },
+                  {
+                    "set_notification_message": {
+                      "id": "builtin_kbd_off",
+                      "text": "Built-in keyboard and clicks disabled (ctrl+opt+cmd+t to enable)"
+                    }
+                  },
+                  {
+                    "shell_command": "/usr/bin/pkill -x nopaw; \"$HOME/.local/bin/nopaw\" >/dev/null 2>&1 &"
+                  }
                 ],
                 "type": "basic"
               },
