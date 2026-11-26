@@ -150,7 +150,7 @@
       name = "Google Chrome (2-finger gestures)";
       genericName = "Web Browser";
       icon = "google-chrome";
-      exec = "google-chrome-stable --ozone-platform=wayland --enable-features=TouchpadOverscrollHistoryNavigation %U";
+      exec = "google-chrome-stable --ozone-platform=wayland --enable-features=TouchpadOverscrollHistoryNavigation --enable-wayland-ime %U";
       terminal = false;
       categories = [
         "Network"
