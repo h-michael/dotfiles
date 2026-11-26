@@ -124,6 +124,7 @@
   documentation.man.cache.enable = false;
 
   users.users.${username} = {
+    uid = 1000;
     isNormalUser = true;
     group = username;
     extraGroups = [

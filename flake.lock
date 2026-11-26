@@ -122,6 +122,26 @@
         "type": "github"
       }
     },
+    "paseo": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1795681048,
+        "narHash": "sha256-EP2rapawHw7CutZSMy3/HXWMYRqj9u3sJ8mWqBklxso=",
+        "owner": "getpaseo",
+        "repo": "paseo",
+        "rev": "17c08edccfb043a706e8b8e0b05c62f998e44504",
+        "type": "github"
+      },
+      "original": {
+        "owner": "getpaseo",
+        "repo": "paseo",
+        "type": "github"
+      }
+    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -152,6 +172,7 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "paseo": "paseo",
         "plasma-manager": "plasma-manager",
         "tmux-copy-pane": "tmux-copy-pane",
         "xremap-flake": "xremap-flake"

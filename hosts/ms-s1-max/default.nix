@@ -11,6 +11,7 @@
     ./hardware-configuration.nix
     ./monitoring.nix
     ./llm.nix
+    ./paseo.nix
   ];
 
   # Use latest kernel for Strix Halo (gfx1151) VRAM fix

@@ -30,6 +30,14 @@
       url = "github:h-michael/tmux-copy-pane";
       flake = false;
     };
+
+    # Paseo follows nixpkgs-unstable: upstream builds against unstable.
+    # Upstream pins an npm deps hash, so an unstable bump can break this
+    # build until upstream catches up.
+    paseo = {
+      url = "github:getpaseo/paseo";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
