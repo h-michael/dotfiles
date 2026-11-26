@@ -27,6 +27,7 @@
     powerdevil.AC = {
       autoSuspend.action = "nothing";
       turnOffDisplay.idleTimeout = 600;
+      powerProfile = "balanced";
     };
   };
 
@@ -90,6 +91,9 @@
     # AMD P-State driver for better CPU power management
     # Reference: https://wiki.archlinux.org/title/CPU_frequency_scaling#amd_pstate
     "amd_pstate=active"
+    # Use passthrough IOMMU for host DMA to reduce unified-memory translation overhead
+    # while keeping virtualization (libvirtd) functional.
+    "iommu=pt"
   ];
 
   # Apple Magic Keyboard: F1-F12 as default function keys
@@ -159,7 +163,35 @@
     spiceUSBRedirection.enable = true;
   };
 
-  users.users.${username}.extraGroups = [ "libvirtd" ];
+  users.users.${username}.extraGroups = [
+    "libvirtd"
+    "render"
+  ];
+
+  # Keep this AC-powered desktop out of power-saver mode (which disables CPU
+  # boost and caps clocks at 3.0 GHz) across Hyprland and niri sessions.
+  systemd.services.power-profile-default = {
+    description = "Set default AC power profile to balanced";
+    after = [ "power-profiles-daemon.service" ];
+    wants = [ "power-profiles-daemon.service" ];
+    wantedBy = [ "graphical.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced";
+    };
+  };
+
+  # Allow locking large GPU/NPU memory buffers (XDNA 2 NPU / amdxdna, llama.cpp --mlock).
+  systemd.settings.Manager.DefaultLimitMEMLOCK = "infinity";
+  security.pam.loginLimits = [
+    {
+      domain = username;
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
+  ];
 
   # Workaround: MediaTek MT7925 Bluetooth is soft-blocked on boot with kernel 6.12+
   #

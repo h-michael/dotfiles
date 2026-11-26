@@ -68,6 +68,11 @@
         name = "{{.Comm}}";
         comm = [ "ollama" ];
       }
+      # llama.cpp server
+      {
+        name = "{{.Comm}}";
+        comm = [ "llama-server" ];
+      }
       # Grafana
       {
         name = "{{.Comm}}";
@@ -1094,10 +1099,10 @@
             }
           ];
         }
-        # VRAM Usage History
+        # GPU Memory Usage History (VRAM / GTT)
         {
           type = "timeseries";
-          title = "VRAM Usage History";
+          title = "GPU Memory Usage History (VRAM / GTT)";
           gridPos = {
             h = 8;
             w = 12;
@@ -1151,13 +1156,23 @@
           targets = [
             {
               expr = "amdgpu_vram_used_bytes";
-              legendFormat = "Used";
+              legendFormat = "VRAM Used";
               refId = "A";
             }
             {
               expr = "amdgpu_vram_total_bytes - amdgpu_vram_used_bytes";
-              legendFormat = "Free";
+              legendFormat = "VRAM Free";
               refId = "B";
+            }
+            {
+              expr = "amdgpu_gtt_used_bytes";
+              legendFormat = "GTT Used";
+              refId = "C";
+            }
+            {
+              expr = "amdgpu_gtt_total_bytes - amdgpu_gtt_used_bytes";
+              legendFormat = "GTT Free";
+              refId = "D";
             }
           ];
         }
@@ -1318,11 +1333,13 @@
       #!/bin/sh
       OUTPUT_FILE="/var/lib/prometheus-node-exporter/amdgpu.prom"
 
-      ALL=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showtemp --showuse --showmeminfo vram --showpower --json 2>/dev/null)
+      ALL=$(${pkgs.rocmPackages.rocm-smi}/bin/rocm-smi --showtemp --showuse --showmeminfo vram gtt --showpower --json 2>/dev/null)
       TEMP=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."Temperature (Sensor edge) (C)" // "0"')
       GPU_USE=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."GPU use (%)" // "0"')
       VRAM_USED=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Used Memory (B)" // "0"')
       VRAM_TOTAL=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."VRAM Total Memory (B)" // "0"')
+      GTT_USED=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."GTT Total Used Memory (B)" // "0"')
+      GTT_TOTAL=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."GTT Total Memory (B)" // "0"')
       POWER=$(echo "$ALL" | ${pkgs.jq}/bin/jq -r '.card0."Current Socket Graphics Package Power (W)" // "0"')
 
       cat > "$OUTPUT_FILE" << EOF
@@ -1338,6 +1355,12 @@
       # HELP amdgpu_vram_total_bytes VRAM total in bytes
       # TYPE amdgpu_vram_total_bytes gauge
       amdgpu_vram_total_bytes $VRAM_TOTAL
+      # HELP amdgpu_gtt_used_bytes GTT used in bytes
+      # TYPE amdgpu_gtt_used_bytes gauge
+      amdgpu_gtt_used_bytes $GTT_USED
+      # HELP amdgpu_gtt_total_bytes GTT total in bytes
+      # TYPE amdgpu_gtt_total_bytes gauge
+      amdgpu_gtt_total_bytes $GTT_TOTAL
       # HELP amdgpu_power_watts GPU power consumption in watts
       # TYPE amdgpu_power_watts gauge
       amdgpu_power_watts $POWER
