@@ -82,6 +82,12 @@
     extraSetFlags = [ "--ssh" ];
   };
 
+  # Do not restart tailscaled during nixos-rebuild switch: this host is
+  # managed over Tailscale SSH, so restarting it would cut the session
+  # performing the switch. Tailscale updates apply on reboot or on a
+  # manual restart.
+  systemd.services.tailscaled.restartIfChanged = false;
+
   virtualisation.docker = {
     enable = true;
     rootless = {
