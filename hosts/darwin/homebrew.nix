@@ -25,7 +25,6 @@
       "enpass" # password manager
       "alfred" # launcher
       "obsidian" # Knowledge base and note-taking
-      "cursor" # AI-powered code editor
       "visual-studio-code"
       "zed" # Code editor
 
