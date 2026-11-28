@@ -7,7 +7,10 @@
     # Register fcitx5 as KWin's Wayland input method.
     # Without this, KWin doesn't route key events through fcitx5 on Wayland
     # sessions, so IME toggle keys (e.g. Zenkaku_Hankaku) have no effect.
-    configFile.kwinrc.Wayland.InputMethod = "org.fcitx.Fcitx5.desktop";
+    # The value must be an absolute path: for a bare desktop file name KWin
+    # only looks in ~/.local/share/applications, finds nothing there, and
+    # silently never launches fcitx5 (verified 2026-11-28).
+    configFile.kwinrc.Wayland.InputMethod = "/etc/profiles/per-user/h-michael/share/applications/org.fcitx.Fcitx5.desktop";
 
     # Prevent Caps Lock state from being enabled if xremap restarts or misses
     # an input device; xremap still provides the Ctrl_L remap consistently.

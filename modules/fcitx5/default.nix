@@ -1,6 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
 {
+  # Do not autostart fcitx5 via a systemd user service. On Plasma it must
+  # be launched by KWin itself (as its virtual keyboard), or the Wayland
+  # input method protocol never engages; Hyprland and Niri start it from
+  # their own session config instead (verified 2026-11-28). The i18n
+  # module defines the unit unconditionally and this home-manager
+  # revision has no per-service enable flag, so drop its [Install]
+  # WantedBy to keep the unit from being pulled in.
+  systemd.user.services.fcitx5-daemon.Install.WantedBy = lib.mkForce [ ];
+
   # GTK im-module settings for fcitx5 (XWayland apps)
   # Wayland native apps use text-input-v3 protocol automatically
   gtk = {
