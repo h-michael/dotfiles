@@ -5,6 +5,11 @@
 }:
 
 {
+  imports = [
+    # Paseo daemon for all Linux hosts (coding-agent orchestration)
+    ./paseo.nix
+  ];
+
   nixpkgs.config.allowUnfree = true;
 
   nix.settings.experimental-features = [
