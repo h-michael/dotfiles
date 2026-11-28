@@ -61,12 +61,12 @@
       "qwen3.6-35b-a3b" = {
         hf-repo = "unsloth/Qwen3.6-35B-A3B-GGUF";
         hf-file = "Qwen3.6-35B-A3B-UD-Q6_K_XL.gguf";
-        ctx-size = "65536";
+        ctx-size = "131072";
       };
       "qwen3-coder-next" = {
         hf-repo = "unsloth/Qwen3-Coder-Next-GGUF";
         hf-file = "Qwen3-Coder-Next-UD-Q4_K_XL.gguf";
-        ctx-size = "65536";
+        ctx-size = "131072";
       };
       "qwen3.5-122b-a10b" = {
         hf-repo = "unsloth/Qwen3.5-122B-A10B-GGUF";
@@ -76,12 +76,12 @@
       "gemma-4-26b-a4b" = {
         hf-repo = "unsloth/gemma-4-26B-A4B-it-GGUF";
         hf-file = "gemma-4-26B-A4B-it-UD-Q6_K_XL.gguf";
-        ctx-size = "65536";
+        ctx-size = "131072";
       };
       "qwen3.6-35b-a3b-abliterated" = {
         hf-repo = "huihui-ai/Huihui-Qwen3.6-35B-A3B-abliterated-MTP-GGUF";
         hf-file = "Huihui-Qwen3.6-35B-A3B-abliterated-ggml-model-Q6_K.gguf";
-        ctx-size = "65536";
+        ctx-size = "131072";
       };
     };
   };
