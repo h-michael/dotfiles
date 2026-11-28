@@ -44,6 +44,9 @@ spawn-at-startup "sh" "-c" "dbus-update-activation-environment --systemd WAYLAND
 // XWayland support via xwayland-satellite
 spawn-at-startup "xwayland-satellite"
 
+// Input method (no systemd user service for fcitx5; each compositor starts it)
+spawn-at-startup "fcitx5"
+
 cursor {
     xcursor-theme "breeze_cursors"
     xcursor-size 24
